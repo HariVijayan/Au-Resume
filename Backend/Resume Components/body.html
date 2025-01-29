@@ -4,256 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+            width: 100%;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            margin: 0;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .section h2 {
-            margin-bottom: 10px;
-            font-size: 1.2em;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-        .section ul {
-            margin: 0;
+        *{
+            margin: 0 auto;
             padding: 0;
-            list-style: none;
         }
-        .section ul li {
-            margin-bottom: 5px;
+
+        #header{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width:100%;
         }
+        #headertop{
+            width: 100%;
+        }
+
+        #name{
+            width: 40%;
+            float: left;
+            text-align: left;
+        }
+
+        #smallbio{
+            width: 60%;
+            float: right;
+            text-align: right;
+        }
+
+        #linkedinlink, #githublink{
+            text-decoration: none;
+            color: black;
+        }
+
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
+    <div id="header">
+        <div id="headertop">
+            <h2 id="name">{{username}}</h2>
+            <h3 id="smallbio">{{small_bio}}</h3>
+        </div>
+        <p>{{phone_number}} | {{emailid}} | <a id ="linkedinlink" href="{{linkedinlink}}">{{linkedin}}</a> | <a id ="githublink" href="{{githublink}}">{{github}}</a></p>
     </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
-    <div class="header">
-        <h1>{{name}}</h1>
-        <p>Email: {{email}} | Phone: {{phone}}</p>
-    </div>
-    <div class="section">
-        <h2>Education</h2>
-        <ul>
-            {{#education}}
-            <li>{{degree}}, {{institution}} ({{year}})</li>
-            {{/education}}
-        </ul>
-    </div>
-    <div class="section">
-        <h2>Experience</h2>
-        <ul>
-            {{#experience}}
-            <li>{{role}}, {{company}} ({{years}})</li>
-            {{/experience}}
-        </ul>
-    </div>
+    
 </body>
 </html>

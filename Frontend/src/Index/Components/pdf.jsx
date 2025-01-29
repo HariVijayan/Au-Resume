@@ -13,7 +13,15 @@ const GeneratePDF = () => {
         experience: [
             { role: "Software Developer", company: "ABC Corp", years: "2022 - Present" },
             { role: "Intern", company: "Tech Solutions", years: "2021 - 2022" }
-        ]
+        ],
+        username: "Hari",
+        small_bio: "Developer meow meow",
+        phone_number: "+91 9090909099",
+        emailid: "abc@gmail.com",
+        linkedin: "www.linkedin.com/meow",
+        linkedinlink: "https://www.linkedin.com/meow",
+        github: "www.github.com/meow",
+        githublink: "https://www.github.com/meow"
     });
 
     const handleGeneratePDF = async () => {

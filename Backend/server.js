@@ -33,7 +33,7 @@ app.post('/generate-pdf', async (req, res) => {
 
    // Compile the template with Handlebars
    const bodyPath = path.join(__dirname, '/Resume Components/body.html');
-   const pdfBody = await compileTemplate(bodyPath, resumeData);
+   let pdfBody = await compileTemplate(bodyPath, resumeData);
 
    const headerPath = path.join(__dirname, '/Resume Components/header.html');
    const footerPath = path.join(__dirname, '/Resume Components/footer.html');
@@ -86,10 +86,10 @@ app.post('/generate-pdf', async (req, res) => {
       format: 'A4',
       printBackground: true,
       margin: {
-         top: '20mm', // Extra space for the header
+         top: '15mm', // Extra space for the header
          bottom: '20mm', // Extra space for the footer
-         left: '5mm',
-         right: '5mm',
+         left: '15mm',
+         right: '15mm',
       },
       displayHeaderFooter: true,
       headerTemplate: pdfHeader,
