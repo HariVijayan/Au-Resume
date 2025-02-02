@@ -6,7 +6,6 @@ import Header from './Components/Header.jsx'
 
 createRoot(document.getElementById('dashboardbodywrapper')).render(
   <StrictMode>
-    <Header/>
     <Pdf />
   </StrictMode>,
 )
