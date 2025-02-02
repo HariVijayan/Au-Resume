@@ -21,7 +21,18 @@ const GeneratePDF = () => {
         linkedin: "www.linkedin.com/Hari",
         linkedinlink: "https://www.linkedin.com/Hari",
         github: "www.github.com/Hari",
-        githublink: "https://www.github.com/Hari"
+        githublink: "https://www.github.com/Hari",
+        summary:"I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.",
+        pg_degree_name1: "M.Tech in Computer Science",
+        pg_degree_university1: "XYZ University",
+        pg_degree_year1: "2022 - 2024",
+        pg_degree_cgpa1: "CGPA : 9.5",
+        pg_degree_name2: "M.Tech in Computer Science",
+        pg_degree_university2: "XYZ University",
+        pg_degree_year2: "2022 - 2024",
+        pg_degree_cgpa2: "CGPA : 9.5",
+        pg_degree: [{pg_degree_name: "M.Tech in Computer Science",pg_degree_university: "XYZ University",pg_degree_year: "2022 - 2024",pg_degree_cgpa: "CGPA : 9.5"},{pg_degree_name: "M.Tech in Computer Science",pg_degree_university: "XYZ University",pg_degree_year: "2022 - 2024",pg_degree_cgpa: "CGPA : 9.5"}],
+        ug_degree: [{ug_degree_name: "M.Tech in Computer Science",ug_degree_university: "XYZ University",ug_degree_year: "2022 - 2024",ug_degree_cgpa: "CGPA : 9.5"},{ug_degree_name: "M.Tech in Computer Science",ug_degree_university: "XYZ University",ug_degree_year: "2022 - 2024",ug_degree_cgpa: "CGPA : 9.5"}],
     });
 
     const handleGeneratePDF = async () => {

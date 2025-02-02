@@ -27,7 +27,7 @@
         #headertop{
             width: 100%;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             margin-bottom: 1em;
         }
 
@@ -50,6 +50,138 @@
             color: black;
         }
 
+        #summary{
+            margin-top: 1em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        #h2-summary{
+            width: 100%;
+            text-align: left;
+            font-size: 1.5rem;
+            margin-bottom: 1em;
+            border-bottom: 2px solid black;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        #p-summary{
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        #education{
+            margin-top: 1em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        #h2-education{
+            width: 100%;
+            text-align: left;
+            font-size: 1.5rem;
+            margin-bottom: 1em;
+            border-bottom: 2px solid black;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        #pg-degree{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1em;
+        }
+
+        #pgdegreetab1{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #pgdegreetab2{
+            margin-top: 0.5em;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #h3-pgdegreename{
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        #p-pgdegreeyear{
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        #p-pgdegreeuni{
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        #p-pgdegreecgpa{
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        #ug-degree{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1em;
+        }
+
+        #ugdegreetab1{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #ugdegreetab2{
+            margin-top: 0.5em;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #h3-ugdegreename{
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        #p-ugdegreeyear{
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        #p-ugdegreeuni{
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        #p-ugdegreecgpa{
+            margin: 0;
+            font-size: 1rem;
+        }
+
     </style>
 </head>
 <body>
@@ -59,6 +191,42 @@
             <h3 id="smallbio">{{small_bio}}</h3>
         </div>
         <p>{{phone_number}} | {{emailid}} | <a id ="linkedinlink" href="{{linkedinlink}}">{{linkedin}}</a> | <a id ="githublink" href="{{githublink}}">{{github}}</a></p>
+    </div>
+
+    <div id="summary">
+        <h2 id="h2-summary">Summary</h2>
+        <p id="p-summary">{{summary}}</p>
+    </div>
+
+    <div id="education">
+        <h2 id="h2-education">Education</h2>
+
+        {{#each pg_degree}}
+        <div id="pg-degree">
+            <div id="pgdegreetab1">
+                <h3 id="h3-pgdegreename">{{pg_degree_name}}</h3>
+                <p id="p-pgdegreeyear">{{pg_degree_year}}</p>
+            </div>
+            <div id="pgdegreetab2">
+                <p id="p-pgdegreeuni">{{pg_degree_university}}</p>
+                <p id="p-pgdegreecgpa">{{pg_degree_cgpa}}</p>
+            </div>
+        </div>
+        {{/each}}
+
+        {{#each ug_degree}}
+        <div id="ug-degree">
+            <div id="ugdegreetab1">
+                <h3 id="h3-ugdegreename">{{ug_degree_name}}</h3>
+                <p id="p-ugdegreeyear">{{ug_degree_year}}</p>
+            </div>
+            <div id="ugdegreetab2">
+                <p id="p-ugdegreeuni">{{ug_degree_university}}</p>
+                <p id="p-ugdegreecgpa">{{ug_degree_cgpa}}</p>
+            </div>
+        </div>
+        {{/each}}
+
     </div>
     
 </body>

@@ -35,6 +35,8 @@ app.post('/generate-pdf', async (req, res) => {
    const bodyPath = path.join(__dirname, '/Resume Components/body.html');
    let pdfBody = await compileTemplate(bodyPath, resumeData);
 
+   //console.log(pdfBody);
+
    const headerPath = path.join(__dirname, '/Resume Components/header.html');
    const footerPath = path.join(__dirname, '/Resume Components/footer.html');
    const pdfHeader = fs.readFileSync(headerPath, 'utf8');
