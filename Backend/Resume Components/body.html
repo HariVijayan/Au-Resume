@@ -94,7 +94,7 @@
             margin: 0;
         }
 
-        #pg-degree{
+        .education_main_div{
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -103,14 +103,14 @@
             margin-top: 1em;
         }
 
-        #pgdegreetab1{
+        .education_sub_div1{
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        #pgdegreetab2{
+        .education_sub_div2{
             margin-top: 0.5em;
             width: 100%;
             display: flex;
@@ -118,68 +118,56 @@
             align-items: center;
         }
 
-        #h3-pgdegreename{
+       .education_name_heading{
             margin: 0;
             font-size: 1rem;
         }
 
-        #p-pgdegreeyear{
+        .education_period{
             margin: 0;
             font-size: 1rem;
         }
 
-        #p-pgdegreeuni{
+        .education_university{
             margin: 0;
             font-size: 1rem;
         }
 
-        #p-pgdegreecgpa{
+        .education_custom_field{
             margin: 0;
             font-size: 1rem;
         }
 
-        #ug-degree{
-            width: 100%;
+        .school_main_div{
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            width: 100%;
             margin-top: 1em;
         }
 
-        #ugdegreetab1{
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
+        .school_sub_div{
+            width: 70%;
+            display:flex;
+            justify-content: flex-start;
             align-items: center;
+            margin: 0;
         }
 
-        #ugdegreetab2{
-            margin-top: 0.5em;
+        .school_name_heading{
+            font-size: 1rem;
+            float:left;
             width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-top: 1em;
         }
 
-        #h3-ugdegreename{
-            margin: 0;
+        .school_name, .school_period, .school_grade{
             font-size: 1rem;
+            margin: 0;
         }
 
-        #p-ugdegreeyear{
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        #p-ugdegreeuni{
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        #p-ugdegreecgpa{
-            margin: 0;
-            font-size: 1rem;
+        .school_grade{
+            margin-left: 1em;
         }
 
     </style>
@@ -201,31 +189,75 @@
     <div id="education">
         <h2 id="h2-education">Education</h2>
 
-        {{#each pg_degree}}
-        <div id="pg-degree">
-            <div id="pgdegreetab1">
-                <h3 id="h3-pgdegreename">{{pg_degree_name}}</h3>
-                <p id="p-pgdegreeyear">{{pg_degree_year}}</p>
+        {{#each phd}}
+        <div id="phd" class="education_main_div">
+            <div id="phdtab1" class="education_sub_div1">
+                <h3 id="h3-phdname" class="education_name_heading">{{phd_name}}</h3>
+                <p id="p-phdyear" class="education_period">{{phd_year}}</p>
             </div>
-            <div id="pgdegreetab2">
-                <p id="p-pgdegreeuni">{{pg_degree_university}}</p>
-                <p id="p-pgdegreecgpa">{{pg_degree_cgpa}}</p>
+            <div id="phdtab2" class="education_sub_div2">
+                <p id="p-phduni" class="education_university">{{phd_university}}</p>
+                <p id="p-phdexp" class="education_custom_field">{{phd_exp}}</p>
+            </div>
+        </div>
+        {{/each}}
+
+        {{#each pg_degree}}
+        <div id="pg-degree" class="education_main_div">
+            <div id="pgdegreetab1" class="education_sub_div1">
+                <h3 id="h3-pgdegreename" class="education_name_heading">{{pg_degree_name}}</h3>
+                <p id="p-pgdegreeyear" class="education_period">{{pg_degree_year}}</p>
+            </div>
+            <div id="pgdegreetab2" class="education_sub_div2">
+                <p id="p-pgdegreeuni" class="education_university">{{pg_degree_university}}</p>
+                <p id="p-pgdegreecgpa" class="education_custom_field">{{pg_degree_cgpa}}</p>
             </div>
         </div>
         {{/each}}
 
         {{#each ug_degree}}
-        <div id="ug-degree">
-            <div id="ugdegreetab1">
-                <h3 id="h3-ugdegreename">{{ug_degree_name}}</h3>
-                <p id="p-ugdegreeyear">{{ug_degree_year}}</p>
+        <div id="ug-degree" class="education_main_div">
+            <div id="ugdegreetab1" class="education_sub_div1">
+                <h3 id="h3-ugdegreename" class="education_name_heading">{{ug_degree_name}}</h3>
+                <p id="p-ugdegreeyear" class="education_period">{{ug_degree_year}}</p>
             </div>
-            <div id="ugdegreetab2">
-                <p id="p-ugdegreeuni">{{ug_degree_university}}</p>
-                <p id="p-ugdegreecgpa">{{ug_degree_cgpa}}</p>
+            <div id="ugdegreetab2" class="education_sub_div2">
+                <p id="p-ugdegreeuni" class="education_university">{{ug_degree_university}}</p>
+                <p id="p-ugdegreecgpa" class="education_custom_field">{{ug_degree_cgpa}}</p>
             </div>
         </div>
         {{/each}}
+
+        {{#each diploma}}
+        <div id="diploma" class="education_main_div">
+            <div id="diplomatab1" class="education_sub_div1">
+                <h3 id="h3-diplomaname" class="education_name_heading">{{diploma_name}}</h3>
+                <p id="p-diplomayear" class="education_period">{{diploma_year}}</p>
+            </div>
+            <div id="diplomatab2" class="education_sub_div2">
+                <p id="p-diplomauni" class="education_university">{{diploma_university}}</p>
+                <p id="p-diplomacgpa" class="education_custom_field">{{diploma_cgpa}}</p>
+            </div>
+        </div>
+        {{/each}}
+
+        <h3 id="h3-xiischool" class="school_name_heading">HSC</h3>
+        <div id="hsc" class="school_main_div">
+            <div id="hsctableft" class="school_sub_div">
+                <h3 id="h3-xiischoolname" class="school_name">{{hsc_name}}</h3>
+                <p id="p-xiischoolgrade" class="school_grade">{{hsc_grade}}</p>
+            </div>
+            <p id="p-xiischoolyear" class="school_period">{{hsc_year}}</p>
+        </div>
+
+        <h3 id="h3-xschool" class="school_name_heading">SSLC</h3>
+        <div id="sslc" class="school_main_div">
+            <div id="hsctableft" class="school_sub_div">
+                <h3 id="h3-xschoolname" class="school_name">{{sslc_name}}</h3>
+                <p id="p-xschoolgrade" class="school_grade">{{sslc_grade}}</p>
+            </div>
+            <p id="p-xschoolyear" class="school_period">{{sslc_year}}</p>
+        </div>
 
     </div>
     
