@@ -1,265 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body{
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+         body{
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+         width: 100%;
+         }
+         *{
+         margin: 0 auto;
+         padding: 0;
+         }
+         #header{
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         width:100%;
+         }
+         #headertop{
+         width: 100%;
+         display: flex;
+         align-items: flex-end;
+         margin-bottom: 1em;
+         }
+         #name{
+         width: 40%;
+         float: left;
+         text-align: left;
+         font-size: 2rem;
+         }
+         #smallbio{
+         width: 60%;
+         float: right;
+         text-align: right;
+         font-size: 1rem;
+         }
+         #linkedinlink, #githublink{
+         text-decoration: none;
+         color: rgb(0, 121, 172);
+         }
+         #summary{
+         margin-top: 1em;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: flex-start;
+         width: 100%;
+         }
+         #h2-summary{
+         width: 100%;
+         text-align: left;
+         font-size: 1.5rem;
+         margin-bottom: 1em;
+         border-bottom: 2px solid black;
+         font-weight: normal;
+         margin: 0;
+         padding-bottom: 0.2em;
+         }
+         #p-summary{
+         width: 100%;
+         text-align: left;
+         font-size: 1rem;
+         margin-top: 0.5em;
+         }
+         #education{
+         margin-top: 1em;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: flex-start;
+         width: 100%;
+         }
+         #h2-education{
+         width: 100%;
+         text-align: left;
+         font-size: 1.5rem;
+         margin-bottom: 1em;
+         border-bottom: 2px solid black;
+         font-weight: normal;
+         margin: 0;
+         }
+         .education_main_div{
+         width: 100%;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         margin-top: 1em;
+         }
+         .education_sub_div1{
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         }
+         .education_sub_div2{
+         margin-top: 0.5em;
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         }
+         .education_name_heading{
+         margin: 0;
+         font-size: 1rem;
+         }
+         .education_period{
+         margin: 0;
+         font-size: 1rem;
+         }
+         .education_university{
+         margin: 0;
+         font-size: 1rem;
+         }
+         .education_custom_field{
+         margin: 0;
+         font-size: 1rem;
+         }
+         .school_main_div{
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         width: 100%;
+         margin-top: 1em;
+         }
+         .school_sub_div{
+         width: 70%;
+         display:flex;
+         justify-content: flex-start;
+         align-items: center;
+         margin: 0;
+         }
+         .school_name_heading{
+         font-size: 1rem;
+         float:left;
+         width: 100%;
+         margin-top: 1em;
+         }
+         .school_name, .school_period, .school_grade{
+         font-size: 1rem;
+         margin: 0;
+         }
+         .school_grade{
+         margin-left: 1em;
+         }
+         #experience{
+         margin-top: 1em;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: flex-start;
+         width: 100%;
+         }
+         #h2-experience{
+         width: 100%;
+         text-align: left;
+         font-size: 1.5rem;
+         margin-bottom: 1em;
+         border-bottom: 2px solid black;
+         font-weight: normal;
+         margin: 0;
+         }
+         .experience_main_div{
+         width: 100%;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         margin-top: 1em;
+         }
+         .experience_sub_div1{
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         }
+         .experience_sub_div2{
+         margin-top: 0.5em;
+         width: 100%;
+         display: flex;
+         justify-content: flex-start;
+         align-items: center;
+         }
+         .experience_sub_div3{
+         margin-top: 0.5em;
+         width: 100%;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: flex-start;
+         }
+         .experience_company{
+         margin: 0;
+         font-size: 1rem;
+         }
+         .experience_period{
+         margin: 0;
+         font-size: 1rem;
+         }
+         .experience_designation{
+         margin: 0;
+         font-size: 1rem;
+         }
+         .experience_custom_field{
+         margin: 0;
+         font-size: 1rem;
+         }
+         #p-experiencedescription{
+         margin: 0;
+         font-size: 1rem;
+         }
+         #ul-experienceroles{
+         margin: 0;
+         font-size: 1rem;
+         list-style-type: square;
+         margin-left: 5em;
+         }
+         #h3-experiencerole{
+         margin: 0;
+         font-size: 1rem;
+         }
+         #projects{
+         margin-top: 1em;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: flex-start;
+         width: 100%;
+         }
+         #h2-projects{
+         width: 100%;
+         text-align: left;
+         font-size: 1.5rem;
+         margin-bottom: 1em;
+         border-bottom: 2px solid black;
+         font-weight: normal;
+         margin: 0;
+         }
+         .project_main_div{
+         width: 100%;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         margin-top: 1em;
+         }
+         .project_sub_div1{
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         }
+         .project_sub_div2{
+         margin-top: 0.5em;
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         flex-direction: column;
+         }
+         .project_name{
+         margin: 0;
+         font-size: 1rem;
+         width: 30%;
+         }
+         #projectlink{
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
-            font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-            width: 100%;
-        }
-        *{
-            margin: 0 auto;
-            padding: 0;
-        }
-
-        #header{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width:100%;
-        }
-        #headertop{
-            width: 100%;
-            display: flex;
-            align-items: flex-end;
-            margin-bottom: 1em;
-        }
-
-        #name{
-            width: 40%;
-            float: left;
-            text-align: left;
-            font-size: 2rem;
-        }
-
-        #smallbio{
-            width: 60%;
-            float: right;
-            text-align: right;
-            font-size: 1rem;
-        }
-
-        #linkedinlink, #githublink{
-            text-decoration: none;
-            color: black;
-        }
-
-        #summary{
-            margin-top: 1em;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            width: 100%;
-        }
-
-        #h2-summary{
-            width: 100%;
-            text-align: left;
-            font-size: 1.5rem;
-            margin-bottom: 1em;
-            border-bottom: 2px solid black;
-            font-weight: normal;
-            margin: 0;
-        }
-
-        #p-summary{
-            width: 100%;
-            text-align: left;
-            font-size: 1rem;
-        }
-
-        #education{
-            margin-top: 1em;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            width: 100%;
-        }
-
-        #h2-education{
-            width: 100%;
-            text-align: left;
-            font-size: 1.5rem;
-            margin-bottom: 1em;
-            border-bottom: 2px solid black;
-            font-weight: normal;
-            margin: 0;
-        }
-
-        .education_main_div{
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-top: 1em;
-        }
-
-        .education_sub_div1{
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .education_sub_div2{
-            margin-top: 0.5em;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-       .education_name_heading{
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        .education_period{
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        .education_university{
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        .education_custom_field{
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        .school_main_div{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-top: 1em;
-        }
-
-        .school_sub_div{
             width: 70%;
-            display:flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin: 0;
-        }
-
-        .school_name_heading{
-            font-size: 1rem;
-            float:left;
-            width: 100%;
-            margin-top: 1em;
-        }
-
-        .school_name, .school_period, .school_grade{
-            font-size: 1rem;
-            margin: 0;
-        }
-
-        .school_grade{
-            margin-left: 1em;
-        }
-
-    </style>
-</head>
-<body>
-    <div id="header">
-        <div id="headertop">
+         }
+         #h3-projectlink{
+         margin: 0;
+         font-size: 1rem;
+         }
+         .project_link{
+         margin: 0;
+         font-size: 1rem;
+         text-decoration: none;
+         color:rgb(0, 121, 172);
+         }
+         .project_description{
+         margin: 0;
+         font-size: 1rem;
+         width: 100%;
+         }
+         .project_tech{
+         margin: 0;
+         font-size: 1rem;
+         width: 100%;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="header">
+         <div id="headertop">
             <h2 id="name">{{username}}</h2>
             <h3 id="smallbio">{{small_bio}}</h3>
-        </div>
-        <p>{{phone_number}} | {{emailid}} | <a id ="linkedinlink" href="{{linkedinlink}}">{{linkedin}}</a> | <a id ="githublink" href="{{githublink}}">{{github}}</a></p>
-    </div>
-
-    <div id="summary">
-        <h2 id="h2-summary">Summary</h2>
-        <p id="p-summary">{{summary}}</p>
-    </div>
-
-    <div id="education">
-        <h2 id="h2-education">Education</h2>
-
-        {{#each phd}}
-        <div id="phd" class="education_main_div">
+         </div>
+         <p>{{phone_number}} | {{emailid}} | <a id ="linkedinlink" href="{{linkedinlink}}">{{linkedin}}</a> | <a id ="githublink" href="{{githublink}}">{{github}}</a></p>
+      </div>
+      {{#if summary}}
+      <div id="summary">
+         <h2 id="h2-summary">Summary</h2>
+         <p id="p-summary">{{summary}}</p>
+      </div>
+      {{/if}}
+      <div id="education">
+         {{#if education.length}}
+         <h2 id="h2-education">Education</h2>
+         {{#each education}}
+         {{#each phd}}
+         <div id="phd" class="education_main_div">
             <div id="phdtab1" class="education_sub_div1">
-                <h3 id="h3-phdname" class="education_name_heading">{{phd_name}}</h3>
-                <p id="p-phdyear" class="education_period">{{phd_year}}</p>
+               <h3 id="h3-phdname" class="education_name_heading">{{phd_name}}</h3>
+               <p id="p-phdyear" class="education_period">{{phd_year}}</p>
             </div>
             <div id="phdtab2" class="education_sub_div2">
-                <p id="p-phduni" class="education_university">{{phd_university}}</p>
-                <p id="p-phdexp" class="education_custom_field">{{phd_exp}}</p>
+               <p id="p-phduni" class="education_university">{{phd_university}}</p>
+               <p id="p-phdexp" class="education_custom_field">{{phd_exp}}</p>
             </div>
-        </div>
-        {{/each}}
-
-        {{#each pg_degree}}
-        <div id="pg-degree" class="education_main_div">
+         </div>
+         {{/each}}
+         {{#each pg_degree}}
+         <div id="pg-degree" class="education_main_div">
             <div id="pgdegreetab1" class="education_sub_div1">
-                <h3 id="h3-pgdegreename" class="education_name_heading">{{pg_degree_name}}</h3>
-                <p id="p-pgdegreeyear" class="education_period">{{pg_degree_year}}</p>
+               <h3 id="h3-pgdegreename" class="education_name_heading">{{pg_degree_name}}</h3>
+               <p id="p-pgdegreeyear" class="education_period">{{pg_degree_year}}</p>
             </div>
             <div id="pgdegreetab2" class="education_sub_div2">
-                <p id="p-pgdegreeuni" class="education_university">{{pg_degree_university}}</p>
-                <p id="p-pgdegreecgpa" class="education_custom_field">{{pg_degree_cgpa}}</p>
+               <p id="p-pgdegreeuni" class="education_university">{{pg_degree_university}}</p>
+               <p id="p-pgdegreecgpa" class="education_custom_field">{{pg_degree_cgpa}}</p>
             </div>
-        </div>
-        {{/each}}
-
-        {{#each ug_degree}}
-        <div id="ug-degree" class="education_main_div">
+         </div>
+         {{/each}}
+         {{#each ug_degree}}
+         <div id="ug-degree" class="education_main_div">
             <div id="ugdegreetab1" class="education_sub_div1">
-                <h3 id="h3-ugdegreename" class="education_name_heading">{{ug_degree_name}}</h3>
-                <p id="p-ugdegreeyear" class="education_period">{{ug_degree_year}}</p>
+               <h3 id="h3-ugdegreename" class="education_name_heading">{{ug_degree_name}}</h3>
+               <p id="p-ugdegreeyear" class="education_period">{{ug_degree_year}}</p>
             </div>
             <div id="ugdegreetab2" class="education_sub_div2">
-                <p id="p-ugdegreeuni" class="education_university">{{ug_degree_university}}</p>
-                <p id="p-ugdegreecgpa" class="education_custom_field">{{ug_degree_cgpa}}</p>
+               <p id="p-ugdegreeuni" class="education_university">{{ug_degree_university}}</p>
+               <p id="p-ugdegreecgpa" class="education_custom_field">{{ug_degree_cgpa}}</p>
             </div>
-        </div>
-        {{/each}}
-
-        {{#each diploma}}
-        <div id="diploma" class="education_main_div">
+         </div>
+         {{/each}}
+         {{#each diploma}}
+         <div id="diploma" class="education_main_div">
             <div id="diplomatab1" class="education_sub_div1">
-                <h3 id="h3-diplomaname" class="education_name_heading">{{diploma_name}}</h3>
-                <p id="p-diplomayear" class="education_period">{{diploma_year}}</p>
+               <h3 id="h3-diplomaname" class="education_name_heading">{{diploma_name}}</h3>
+               <p id="p-diplomayear" class="education_period">{{diploma_year}}</p>
             </div>
             <div id="diplomatab2" class="education_sub_div2">
-                <p id="p-diplomauni" class="education_university">{{diploma_university}}</p>
-                <p id="p-diplomacgpa" class="education_custom_field">{{diploma_cgpa}}</p>
+               <p id="p-diplomauni" class="education_university">{{diploma_university}}</p>
+               <p id="p-diplomacgpa" class="education_custom_field">{{diploma_cgpa}}</p>
             </div>
-        </div>
-        {{/each}}
-
-        <h3 id="h3-xiischool" class="school_name_heading">HSC</h3>
-        <div id="hsc" class="school_main_div">
+         </div>
+         {{/each}}
+         <h3 id="h3-xiischool" class="school_name_heading">HSC</h3>
+         <div id="hsc" class="school_main_div">
             <div id="hsctableft" class="school_sub_div">
-                <h3 id="h3-xiischoolname" class="school_name">{{hsc_name}}</h3>
-                <p id="p-xiischoolgrade" class="school_grade">{{hsc_grade}}</p>
+               <h3 id="h3-xiischoolname" class="school_name">{{hsc_name}}</h3>
+               <p id="p-xiischoolgrade" class="school_grade">{{hsc_grade}}</p>
             </div>
             <p id="p-xiischoolyear" class="school_period">{{hsc_year}}</p>
-        </div>
-
-        <h3 id="h3-xschool" class="school_name_heading">SSLC</h3>
-        <div id="sslc" class="school_main_div">
+         </div>
+         <h3 id="h3-xschool" class="school_name_heading">SSLC</h3>
+         <div id="sslc" class="school_main_div">
             <div id="hsctableft" class="school_sub_div">
-                <h3 id="h3-xschoolname" class="school_name">{{sslc_name}}</h3>
-                <p id="p-xschoolgrade" class="school_grade">{{sslc_grade}}</p>
+               <h3 id="h3-xschoolname" class="school_name">{{sslc_name}}</h3>
+               <p id="p-xschoolgrade" class="school_grade">{{sslc_grade}}</p>
             </div>
             <p id="p-xschoolyear" class="school_period">{{sslc_year}}</p>
-        </div>
-
-    </div>
-    
-</body>
+         </div>
+         {{/each}}
+         {{/if}}
+      </div>
+      <div id="projects">
+         {{#if projects.length}}
+         <h2 id="h2-projects">Projects</h2>
+         {{#each projects}}
+         <div class="project_main_div">
+            <div id="projecttab1" class="project_sub_div1">
+               <h3 id="h3-projectname" class="project_name">{{project_name}}</h3>
+               {{#if project_link}}
+               <div id="projectlink">
+                  <h3 id="h3-projectlink">Code :&nbsp;</h3>
+                  <a id="p-projectlink" class="project_link" href="{{project_link}}">{{project_link}}</a>
+               </div>
+               {{/if}}
+            </div>
+            <div id="projecttab2" class="project_sub_div2">
+               {{#if project_description}}
+               <p id="p-projectdescription" class="project_description">{{project_description}}</p>
+               {{/if}}
+               {{#if project_tech}}
+               <p id="p-projecttech" class="project_tech">Tech Stack: {{project_tech}}</p>
+               {{/if}}
+            </div>
+         </div>
+         {{/each}}
+         {{/if}}
+      </div>
+      <div id="experience">
+         {{#if experience.length}}
+         <h2 id="h2-experience">Experience</h2>
+         {{#each experience}}
+         <div class="experience_main_div">
+            <div id="experiencetab1" class="experience_sub_div1">
+               <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}}</h3>
+               <p id="p-experienceyear" class="experience_period">{{experience_year}}</p>
+            </div>
+            <div id="experiencetab2" class="experience_sub_div2">
+               <p id="p-experiencedesignation" class="experience_designation">{{experience_designation}}</p>
+               {{#if experience_team}}
+               <p id="p-experienceteamname" class="experience_custom_field">&nbsp;in {{experience_team}}</p>
+               {{/if}}
+            </div>
+            <div id="experiencetab3" class="experience_sub_div3">
+               {{#if experience_description}}
+               <p id="p-experiencedescription">{{experience_description}}</p>
+               {{else}}
+               <h3 id="h3-experiencerole">Roles : </h3>
+               <ul id="ul-experienceroles">
+                  {{#each experience_roles}}
+                  <li>{{this}}</li>
+                  {{/each}}
+               </ul>
+               {{/if}}
+            </div>
+         </div>
+         {{/each}}
+         {{/if}}
+      </div>
+   </body>
 </html>

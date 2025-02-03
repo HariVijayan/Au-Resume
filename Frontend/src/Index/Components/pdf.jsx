@@ -3,17 +3,6 @@ import axios from 'axios';
 
 const GeneratePDF = () => {
     const [resumeData, setResumeData] = useState({
-        name: "John Doe",
-        email: "john.doe@example.com",
-        phone: "+123456789",
-        education: [
-            { degree: "B.Sc. in Computer Science", institution: "XYZ University", year: "2018 - 2022" },
-            { degree: "High School Diploma", institution: "ABC High School", year: "2014 - 2018" }
-        ],
-        experience: [
-            { role: "Software Developer", company: "ABC Corp", years: "2022 - Present" },
-            { role: "Intern", company: "Tech Solutions", years: "2021 - 2022" }
-        ],
         username: "Hari Prasad V",
         small_bio: "Developer|Designer|Freelancer",
         phone_number: "+91 9090909099",
@@ -23,16 +12,108 @@ const GeneratePDF = () => {
         github: "www.github.com/Hari",
         githublink: "https://www.github.com/Hari",
         summary:"I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.",
-        phd: [{phd_name: "M.Tech in Computer Science",phd_university: "XYZ University",phd_year: "2022 - 2024",phd_exp: "CGPA : 9.5"},{phd_name: "M.Tech in Computer Science",phd_university: "XYZ University",phd_year: "2022 - 2024",phd_exp: "CGPA : 9.5"}],
-        pg_degree: [{pg_degree_name: "M.Tech in Computer Science",pg_degree_university: "XYZ University",pg_degree_year: "2022 - 2024",pg_degree_cgpa: "CGPA : 9.5"},{pg_degree_name: "M.Tech in Computer Science",pg_degree_university: "XYZ University",pg_degree_year: "2022 - 2024",pg_degree_cgpa: "CGPA : 9.5"}],
-        ug_degree: [{ug_degree_name: "M.Tech in Computer Science",ug_degree_university: "XYZ University",ug_degree_year: "2022 - 2024",ug_degree_cgpa: "CGPA : 9.5"},{ug_degree_name: "M.Tech in Computer Science",ug_degree_university: "XYZ University",ug_degree_year: "2022 - 2024",ug_degree_cgpa: "CGPA : 9.5"}],
-        diploma: [{diploma_name: "M.Tech in Computer Science",diploma_university: "XYZ University",diploma_year: "2022 - 2024",diploma_cgpa: "CGPA : 9.5"},{diploma_name: "M.Tech in Computer Science",diploma_university: "XYZ University",diploma_year: "2022 - 2024",diploma_cgpa: "CGPA : 9.5"}],
-        hsc_name:"Jawahar Matric", 
-        hsc_year:"2017 - 2019", 
-        hsc_grade: "Grade : 68.0",
-        sslc_name:"Jawahar Matric", 
-        sslc_year:"2017 - 2019", 
-        sslc_grade: "Grade : 68.0"
+        education: [
+            {
+                phd: 
+                [
+                    {
+                        phd_name: "M.Tech in Computer Science",
+                        phd_university: "XYZ University",
+                        phd_year: "2022 - 2024",
+                        phd_exp: "CGPA : 9.5"
+                    },
+                    {
+                        phd_name: "M.Tech in Computer Science",
+                        phd_university: "XYZ University",
+                        phd_year: "2022 - 2024",
+                        phd_exp: "CGPA : 9.5"
+                    }
+                ],
+                pg_degree: 
+                [
+                    {
+                        pg_degree_name: "M.Tech in Computer Science",
+                        pg_degree_university: "XYZ University",
+                        pg_degree_year: "2022 - 2024",
+                        pg_degree_cgpa: "CGPA : 9.5"
+                    },
+                    {
+                        pg_degree_name: "M.Tech in Computer Science",
+                        pg_degree_university: "XYZ University",
+                        pg_degree_year: "2022 - 2024",
+                        pg_degree_cgpa: "CGPA : 9.5"
+                    }
+                ],
+                ug_degree: 
+                [
+                    {
+                        ug_degree_name: "M.Tech in Computer Science",
+                        ug_degree_university: "XYZ University",
+                        ug_degree_year: "2022 - 2024",
+                        ug_degree_cgpa: "CGPA : 9.5"
+                    },
+                    {
+                        ug_degree_name: "M.Tech in Computer Science",
+                        ug_degree_university: "XYZ University",
+                        ug_degree_year: "2022 - 2024",
+                        ug_degree_cgpa: "CGPA : 9.5"
+                    }
+                ],
+                diploma: 
+                [
+                    {
+                        diploma_name: "M.Tech in Computer Science",
+                        diploma_university: "XYZ University",
+                        diploma_year: "2022 - 2024",
+                        diploma_cgpa: "CGPA : 9.5"
+                    },
+                    {
+                        diploma_name: "M.Tech in Computer Science",
+                        diploma_university: "XYZ University",
+                        diploma_year: "2022 - 2024",
+                        diploma_cgpa: "CGPA : 9.5"
+                    }
+                ],
+                hsc_name:"Some School", 
+                hsc_year:"2017 - 2019", 
+                hsc_grade: "Grade : 68.0",
+                sslc_name:"Some School", 
+                sslc_year:"2017 - 2019", 
+                sslc_grade: "Grade : 68.0"
+            }
+        ],
+        projects:
+        [
+            {
+                project_name:"Project 1", 
+                project_link:"https://github.com/Hari/Project1",
+                project_description:"Developed and maintained the company website", 
+                project_tech: "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+            },
+            {
+                project_name:"Project 2", 
+                project_link:"https://github.com/Hari/Project2",
+                project_description:"Developed and maintained the company website", 
+                project_tech: "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+            }
+        ],
+        experience: [   
+            {
+                experience_company:"ABC Corp", 
+                experience_year:"2022 - Present", 
+                experience_designation:"Software Developer", 
+                experience_team:"Cloud Deployment", 
+                experience_roles: [
+                    "Developed and maintained the company website","Developed and maintained the company website"
+                    ],
+            },
+            {
+                experience_company:"ABCD Corp", 
+                experience_year:"2023 - Present", 
+                experience_designation:"Software Developer", 
+                experience_description: "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies."
+            },
+        ],
     });
 
     const handleGeneratePDF = async () => {
