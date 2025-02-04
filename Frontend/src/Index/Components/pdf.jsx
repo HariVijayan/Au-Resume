@@ -82,6 +82,17 @@ const GeneratePDF = () => {
                 sslc_grade: "Grade : 68.0"
             }
         ],
+        skills: 
+        [
+            {
+                skillstyle1: true, 
+                skillset: ["Web Development", "Cloud Deployment", "Machine Learning"]
+            },
+            {
+                skillstyle2: true, 
+                skillset: "Web Development, Cloud Deployment, Machine Learning"
+            }
+        ],
         projects:
         [
             {
@@ -99,7 +110,8 @@ const GeneratePDF = () => {
         ],
         experience: [   
             {
-                experience_company:"ABC Corp", 
+                experience_company:"ABC Corp",
+                experience_location:"Bangalore", 
                 experience_year:"2022 - Present", 
                 experience_designation:"Software Developer", 
                 experience_team:"Cloud Deployment", 
@@ -108,7 +120,8 @@ const GeneratePDF = () => {
                     ],
             },
             {
-                experience_company:"ABCD Corp", 
+                experience_company:"ABCD Corp",
+                experience_location:"Hyderabad", 
                 experience_year:"2023 - Present", 
                 experience_designation:"Software Developer", 
                 experience_description: "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies."

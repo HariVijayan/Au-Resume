@@ -16,6 +16,9 @@
          margin: 0 auto;
          padding: 0;
          }
+         h1, h2, h3, h4, h5, h6, p, ul, li{
+         word-break: break-word;
+         }
          #header{
          display: flex;
          flex-direction: column;
@@ -150,6 +153,40 @@
          .school_grade{
          margin-left: 1em;
          }
+         #skills{
+         margin-top: 1em;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: flex-start;
+         width: 100%;
+         }
+         #h2-skills{
+         width: 100%;
+         text-align: left;
+         font-size: 1.5rem;
+         margin-bottom: 1em;
+         border-bottom: 2px solid black;
+         font-weight: normal;
+         margin: 0;
+         }
+         #skillsstyle1, #skillsstyle2{
+         width: 100%;
+         display: flex;
+         justify-content: flex-start;
+         align-items: center;
+         flex-wrap: wrap;
+         }
+         #ul-skillsstyle1{
+         margin: 0;
+         font-size: 1rem;
+         list-style-type: square;
+         margin-left: 5em;
+         }
+         #p-skillset{
+         margin: 0;
+         font-size: 1rem;
+         }
          #experience{
          margin-top: 1em;
          display: flex;
@@ -195,14 +232,28 @@
          flex-direction: column;
          justify-content: center;
          align-items: flex-start;
+         flex-wrap: wrap;
+         }
+         #experiencecompanyinfo{
+         width: 70%;
+         display: flex;
+         justify-content: flex-start;
+         align-items: center;
+         flex-wrap: wrap;
          }
          .experience_company{
          margin: 0;
          font-size: 1rem;
          }
+         .experience_location{
+         margin: 0;
+         font-size: 1rem;
+         padding-left: 10px;
+         }
          .experience_period{
          margin: 0;
          font-size: 1rem;
+         width: 30%;
          }
          .experience_designation{
          margin: 0;
@@ -271,10 +322,10 @@
          width: 30%;
          }
          #projectlink{
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            width: 70%;
+         display: flex;
+         justify-content: flex-end;
+         align-items: center;
+         width: 70%;
          }
          #h3-projectlink{
          margin: 0;
@@ -383,6 +434,28 @@
          {{/each}}
          {{/if}}
       </div>
+      <div id="skills">
+         {{#if skills.length}}
+         <h2 id="h2-skills">Skills</h2>
+         {{#each skills}}
+            {{#if skillstyle1}}
+               <div id="skillsstyle1">
+                  <ul id="ul-skillsstyle1">
+                     {{#each skillset}}
+                        <li>{{this}}</li> 
+                     {{/each}}
+                  </ul>
+               </div>
+            {{/if}}
+      
+            {{#if skillstyle2}}
+               <div id="skillsstyle2">
+                     <p id="p-skillset">{{skillset}}</p>
+               </div>
+            {{/if}}
+         {{/each}}
+         {{/if}}
+      </div>      
       <div id="projects">
          {{#if projects.length}}
          <h2 id="h2-projects">Projects</h2>
@@ -415,7 +488,10 @@
          {{#each experience}}
          <div class="experience_main_div">
             <div id="experiencetab1" class="experience_sub_div1">
-               <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}}</h3>
+               <div id="experiencecompanyinfo">
+                  <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}}</h3>
+                  <p id="p-experiencelocation" class="experience_location">{{experience_location}}</p>
+               </div>
                <p id="p-experienceyear" class="experience_period">{{experience_year}}</p>
             </div>
             <div id="experiencetab2" class="experience_sub_div2">
