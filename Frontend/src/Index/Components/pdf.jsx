@@ -7,6 +7,7 @@ const GeneratePDF = () => {
         small_bio: "Developer|Designer|Freelancer",
         phone_number: "+91 9090909099",
         emailid: "hari@gmail.com",
+        location: "Chennai, India",
         linkedin: "www.linkedin.com/Hari",
         linkedinlink: "https://www.linkedin.com/Hari",
         github: "www.github.com/Hari",
@@ -19,7 +20,7 @@ const GeneratePDF = () => {
                     {
                         phd_name: "Ph.D in Network Security",
                         phd_university: "Anna University",
-                        phd_year: "2017 - 2023",
+                        phd_year: "2024 - 2029",
                         phd_exp: "Expertise : Networking, Security, Machine Learning, Hash Algorithms",
                         phd_additional_info: "Widely accepted research"
                     }
@@ -70,10 +71,10 @@ const GeneratePDF = () => {
                 skillstyle1: true, 
                 skillset: ["Web Development", "Cloud Deployment", "Machine Learning"]
             },
-            {
+            /*{
                 skillstyle2: true, 
                 skillset: "Web Development, Cloud Deployment, Machine Learning"
-            }
+            }*/
         ],
         projects:
         [
@@ -92,7 +93,7 @@ const GeneratePDF = () => {
         ],
         experience: [   
             {
-                experience_company:"ABC Corp",
+                experience_company:"ABC Corp,",
                 experience_location:"Bangalore", 
                 experience_year:"2022 - Present", 
                 experience_designation:"Software Developer", 
@@ -101,14 +102,26 @@ const GeneratePDF = () => {
                     "Developed and maintained the company website","Developed and maintained the company website"
                     ],
             },
-            {
-                experience_company:"ABCD Corp",
+            /*{
+                experience_company:"ABCD Corp,",
                 experience_location:"Hyderabad", 
                 experience_year:"2023 - Present", 
                 experience_designation:"Software Developer", 
                 experience_description: "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies."
-            },
+            },*/
         ],
+        certifications: 
+        [
+            {
+                certificationstyle1: true, 
+                certificationset: ["AWS Certified Developer (www.awsverification.com/ghvsgv212)", "Google Cloud Certified", "Machine Learning Expert"]
+            },
+            /*{
+                certificationstyle2: true, 
+                certificationset: "AWS Certified Developer, Google Cloud Certified (udemy.com/certificate/ghvsgv212), Machine Learning Expert"
+            }*/
+        ],
+        languages: ["English (Full professional proficiency)", "Tamil (Mother Tongue)", "Hindi (Limited working proficiency)"],
     });
 
     const handleGeneratePDF = async () => {

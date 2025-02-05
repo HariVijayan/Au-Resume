@@ -433,201 +433,155 @@
    <body>
       <div id="header" class="main_div">
          <div id="headertop">
-            <h2 id="name">{{username}}</h2>
-            <h3 id="smallbio">{{small_bio}}</h3>
+            <h2 id="name">Hari Prasad V</h2>
+            <h3 id="smallbio">Developer|Designer|Freelancer</h3>
          </div>
-         <p id="p-contactinfo">{{phone_number}} | {{emailid}} | {{location}} | <a id ="linkedinlink" href="{{linkedinlink}}">{{linkedin}}</a> | <a id ="githublink" href="{{githublink}}">{{github}}</a></p>
+         <p id="p-contactinfo">+91 9090909099 | hari@gmail.com | Chennai, India | <a id ="linkedinlink" href="https://www.linkedin.com/Hari">www.linkedin.com/Hari</a> | <a id ="githublink" href="https://www.github.com/Hari">www.github.com/Hari</a></p>
       </div>
       <div id="summary" class="main_div">
-         {{#if summary}}
          <h2 id="h2-summary">SUMMARY</h2>
-         <p id="p-summary">{{summary}}</p>
-         {{/if}}
+         <p id="p-summary">I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.</p>
       </div>
       <div id="experience" class="main_div">
-         {{#if experience.length}}
          <h2 id="h2-experience">EXPERIENCE</h2>
-         {{#each experience}}
          <div class="experience_main_div">
             <div id="experiencetab1" class="experience_sub_div1">
                <div id="experiencecompanyinfo">
-                  <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}}</h3>
-                  <p id="p-experiencelocation" class="experience_location">{{experience_location}}</p>
+                  <h3 id="h3-experiencecompany" class="experience_company">ABC Corp,</h3>
+                  <p id="p-experiencelocation" class="experience_location">Bangalore</p>
                </div>
-               <p id="p-experienceyear" class="experience_period">{{experience_year}}</p>
+               <p id="p-experienceyear" class="experience_period">2022 - Present</p>
             </div>
             <div id="experiencetab2" class="experience_sub_div2">
-               <p id="p-experiencedesignation" class="experience_designation">{{experience_designation}}</p>
-               {{#if experience_team}}
-               <p id="p-experienceteamname" class="experience_custom_field">&nbsp;in {{experience_team}}</p>
-               {{/if}}
+               <p id="p-experiencedesignation" class="experience_designation">Software Developer</p>
+               <p id="p-experienceteamname" class="experience_custom_field">&nbsp;in Cloud Deployment</p>
             </div>
             <div id="experiencetab3" class="experience_sub_div3">
-               {{#if experience_description}}
-               <p id="p-experiencedescription">{{experience_description}}</p>
-               {{else}}
                <h3 id="h3-experiencerole">Roles : </h3>
                <ul id="ul-experienceroles">
-                  {{#each experience_roles}}
-                  <li>{{this}}</li>
-                  {{/each}}
+                  <li>Developed and maintained the company website</li>
+                  <li>Developed and maintained the company website</li>
                </ul>
-               {{/if}}
             </div>
          </div>
-         {{/each}}
-         {{/if}}
       </div>
       <div id="education" class="main_div">
-         {{#if education.length}}
          <h2 id="h2-education">EDUCATION</h2>
-         {{#each education}}
-         {{#each phd}}
          <div id="phd" class="education_main_div">
             <div id="phdtab1" class="education_sub_div1">
-               <h3 id="h3-phdname" class="education_name_heading">{{phd_name}}</h3>
-               <p id="p-phdyear" class="education_period">{{phd_year}}</p>
+               <h3 id="h3-phdname" class="education_name_heading">Ph.D in Network Security</h3>
+               <p id="p-phdyear" class="education_period">2024 - 2029</p>
             </div>
             <div id="phdtab2" class="education_sub_div2">
-               <p id="p-phduni" class="education_university">{{phd_university}}</p>
-               <p id="p-phdexp" class="education_custom_field">{{phd_exp}}&nbsp;({{phd_additional_info}})</p>
+               <p id="p-phduni" class="education_university">Anna University</p>
+               <p id="p-phdexp" class="education_custom_field">Expertise : Networking, Security, Machine Learning, Hash Algorithms&nbsp;(Widely accepted research)</p>
             </div>
          </div>
-         {{/each}}
-         {{#each pg_degree}}
          <div id="pg-degree" class="education_main_div">
             <div id="pgdegreetab1" class="education_sub_div1">
-               <h3 id="h3-pgdegreename" class="education_name_heading">{{pg_degree_name}}</h3>
-               <p id="p-pgdegreeyear" class="education_period">{{pg_degree_year}}</p>
+               <h3 id="h3-pgdegreename" class="education_name_heading">Master of Computer Applications</h3>
+               <p id="p-pgdegreeyear" class="education_period">2022 - 2024</p>
             </div>
             <div id="pgdegreetab2" class="education_sub_div2">
-               <p id="p-pgdegreeuni" class="education_university">{{pg_degree_university}}</p>
-               <p id="p-pgdegreecgpa" class="education_custom_field">{{pg_degree_cgpa}}&nbsp;({{pg_additional_info}})</p>
+               <p id="p-pgdegreeuni" class="education_university">Anna University</p>
+               <p id="p-pgdegreecgpa" class="education_custom_field">CGPA : 9.5&nbsp;(As of Semester 3)</p>
             </div>
          </div>
-         {{/each}}
-         {{#each ug_degree}}
          <div id="ug-degree" class="education_main_div">
             <div id="ugdegreetab1" class="education_sub_div1">
-               <h3 id="h3-ugdegreename" class="education_name_heading">{{ug_degree_name}}</h3>
-               <p id="p-ugdegreeyear" class="education_period">{{ug_degree_year}}</p>
+               <h3 id="h3-ugdegreename" class="education_name_heading">B.Sc. Computer Science</h3>
+               <p id="p-ugdegreeyear" class="education_period">2019 - 2022</p>
             </div>
             <div id="ugdegreetab2" class="education_sub_div2">
-               <p id="p-ugdegreeuni" class="education_university">{{ug_degree_university}}</p>
-               <p id="p-ugdegreecgpa" class="education_custom_field">{{ug_degree_cgpa}}&nbsp;({{ug_additional_info}})</p>
+               <p id="p-ugdegreeuni" class="education_university">Anna University</p>
+               <p id="p-ugdegreecgpa" class="education_custom_field">CGPA : 8.7&nbsp;(Distinction Grade)</p>
             </div>
          </div>
-         {{/each}}
-         {{#each diploma}}
          <div id="diploma" class="education_main_div">
             <div id="diplomatab1" class="education_sub_div1">
-               <h3 id="h3-diplomaname" class="education_name_heading">{{diploma_name}}</h3>
-               <p id="p-diplomayear" class="education_period">{{diploma_year}}</p>
+               <h3 id="h3-diplomaname" class="education_name_heading">Diploma in Technology</h3>
+               <p id="p-diplomayear" class="education_period">2017 - 2019</p>
             </div>
             <div id="diplomatab2" class="education_sub_div2">
-               <p id="p-diplomauni" class="education_university">{{diploma_university}}</p>
-               <p id="p-diplomacgpa" class="education_custom_field">{{diploma_cgpa}}&nbsp;({{diploma_additional_info}})</p>
+               <p id="p-diplomauni" class="education_university">Anna University</p>
+               <p id="p-diplomacgpa" class="education_custom_field">CGPA : 9.5&nbsp;(Distinction Grade)</p>
             </div>
          </div>
-         {{/each}}
          <h3 id="h3-xiischool" class="school_name_heading">HSC</h3>
          <div id="hsc" class="school_main_div">
             <div id="hsctableft" class="school_sub_div">
-               <h3 id="h3-xiischoolname" class="school_name">{{hsc_name}}</h3>
-               <p id="p-xiischoolgrade" class="school_grade">{{hsc_grade}}&nbsp;({{hsc_additional_info}})</p>
+               <h3 id="h3-xiischoolname" class="school_name">Jawahar School</h3>
+               <p id="p-xiischoolgrade" class="school_grade">Grade : 68.0&nbsp;(State Board)</p>
             </div>
-            <p id="p-xiischoolyear" class="school_period">{{hsc_year}}</p>
+            <p id="p-xiischoolyear" class="school_period">2015 - 2017</p>
          </div>
          <h3 id="h3-xschool" class="school_name_heading">SSLC</h3>
          <div id="sslc" class="school_main_div">
             <div id="hsctableft" class="school_sub_div">
-               <h3 id="h3-xschoolname" class="school_name">{{sslc_name}}</h3>
-               <p id="p-xschoolgrade" class="school_grade">{{sslc_grade}}&nbsp;({{sslc_additional_info}})</p>
+               <h3 id="h3-xschoolname" class="school_name">Jawahar School</h3>
+               <p id="p-xschoolgrade" class="school_grade">Grade : 68.0&nbsp;(State Board)</p>
             </div>
-            <p id="p-xschoolyear" class="school_period">{{sslc_year}}</p>
+            <p id="p-xschoolyear" class="school_period">2014 - 2015</p>
          </div>
-         {{/each}}
-         {{/if}}
       </div>
       <div id="skills" class="main_div">
-         {{#if skills.length}}
          <h2 id="h2-skills">SKILLS</h2>
-         {{#each skills}}
-         {{#if skillstyle1}}
          <div id="skillsstyle1">
             <ul id="ul-skillsstyle1">
-               {{#each skillset}}
-               <li>{{this}}</li>
-               {{/each}}
+               <li>Web Development</li>
+               <li>Cloud Deployment</li>
+               <li>Machine Learning</li>
             </ul>
          </div>
-         {{/if}}
-         {{#if skillstyle2}}
-         <div id="skillsstyle2">
-            <p id="p-skillset">{{skillset}}</p>
-         </div>
-         {{/if}}
-         {{/each}}
-         {{/if}}
       </div>
       <div id="projects" class="main_div">
-         {{#if projects.length}}
          <h2 id="h2-projects">PROJECTS</h2>
-         {{#each projects}}
          <div class="project_main_div">
             <div id="projecttab1" class="project_sub_div1">
-               <h3 id="h3-projectname" class="project_name">{{project_name}}</h3>
-               {{#if project_link}}
+               <h3 id="h3-projectname" class="project_name">Project 1</h3>
                <div id="projectlink">
                   <h3 id="h3-projectlink">Code :&nbsp;</h3>
-                  <a id="p-projectlink" class="project_link" href="{{project_link}}">{{project_link}}</a>
+                  <a id="p-projectlink" class="project_link" href="https://github.com/Hari/Project1">https://github.com/Hari/Project1</a>
                </div>
-               {{/if}}
             </div>
             <div id="projecttab2" class="project_sub_div2">
-               {{#if project_description}}
-               <p id="p-projectdescription" class="project_description">{{project_description}}</p>
-               {{/if}}
-               {{#if project_tech}}
-               <p id="p-projecttech" class="project_tech">Tech Stack: {{project_tech}}</p>
-               {{/if}}
+               <p id="p-projectdescription" class="project_description">Developed and maintained the company website</p>
+               <p id="p-projecttech" class="project_tech">Tech Stack: HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB</p>
             </div>
          </div>
-         {{/each}}
-         {{/if}}
+         <div class="project_main_div">
+            <div id="projecttab1" class="project_sub_div1">
+               <h3 id="h3-projectname" class="project_name">Project 2</h3>
+               <div id="projectlink">
+                  <h3 id="h3-projectlink">Code :&nbsp;</h3>
+                  <a id="p-projectlink" class="project_link" href="https://github.com/Hari/Project2">https://github.com/Hari/Project2</a>
+               </div>
+            </div>
+            <div id="projecttab2" class="project_sub_div2">
+               <p id="p-projectdescription" class="project_description">Developed and maintained the company website</p>
+               <p id="p-projecttech" class="project_tech">Tech Stack: HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB</p>
+            </div>
+         </div>
       </div>
       <div id="certifications" class="main_div">
-         {{#if certifications.length}}
          <h2 id="h2-certification">CERTIFICATIONS</h2>
-         {{#each certifications}}
-         {{#if certificationstyle1}}
          <div id="certificationstyle1">
             <ul id="ul-certificationstyle1">
-               {{#each certificationset}}
-               <li>{{this}}</li>
-               {{/each}}
+               <li>AWS Certified Developer (www.awsverification.com/ghvsgv212)</li>
+               <li>Google Cloud Certified</li>
+               <li>Machine Learning Expert</li>
             </ul>
          </div>
-         {{/if}}
-         {{#if certificationstyle2}}
-         <div id="certificationstyle2">
-            <p id="p-certificationset">{{certificationset}}</p>
-         </div>
-         {{/if}}
-         {{/each}}
-         {{/if}}
       </div>
       <div id="languages" class="main_div">
-         {{#if languages.length}}
          <h2 id="h2-languages">LANGUAGE PROFICIENCY</h2>
          <div id="languagesubdiv">
             <ul id="ul-languages">
-               {{#each languages}}
-               <li>{{this}}</li>
-               {{/each}}
+               <li>English (Full professional proficiency)</li>
+               <li>Tamil (Mother Tongue)</li>
+               <li>Hindi (Limited working proficiency)</li>
             </ul>
          </div>
-         {{/if}}
       </div>
    </body>
 </html>

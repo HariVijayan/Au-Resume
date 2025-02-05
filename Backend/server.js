@@ -35,7 +35,8 @@ app.post('/generate-pdf', async (req, res) => {
    const bodyPath = path.join(__dirname, '/Resume Components/body.html');
    let pdfBody = await compileTemplate(bodyPath, resumeData);
 
-   //console.log(pdfBody);
+   const htmlBodyOutputPath = path.join(__dirname, '/Output/Body.html');
+   fs.writeFileSync(htmlBodyOutputPath, pdfBody);
 
    const headerPath = path.join(__dirname, '/Resume Components/header.html');
    const footerPath = path.join(__dirname, '/Resume Components/footer.html');
@@ -47,33 +48,33 @@ app.post('/generate-pdf', async (req, res) => {
 
    let date_time = new Date();
 
-// get current date
-let date = ("0" + date_time.getDate()).slice(-2);
+   // get current date
+   let date = ("0" + date_time.getDate()).slice(-2);
 
-// get current month
-let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+   // get current month
+   let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
 
-// get current year
-let year = date_time.getFullYear();
+   // get current year
+   let year = date_time.getFullYear();
 
-// get current hours
-let hours = String(date_time.getHours()).padStart(2, '0');
+   // get current hours
+   let hours = String(date_time.getHours()).padStart(2, '0');
 
-// get current minutes
-let minutes = String(date_time.getMinutes()).padStart(2, '0');
+   // get current minutes
+   let minutes = String(date_time.getMinutes()).padStart(2, '0');
 
-// get current seconds
-let seconds = String(date_time.getSeconds()).padStart(2, '0');
+   // get current seconds
+   let seconds = String(date_time.getSeconds()).padStart(2, '0');
 
-const currentTime = `${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+   const currentTime = `${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 
 
    pdfFooter = pdfFooter.replace('<img id="aulogo" src=""', `<img id="aulogo" src="data:image/png;base64,${auLogoBase64}"`);
 
    pdfFooter = pdfFooter.replace('<p>Developed by the Department of IST. Generated at</p>', `<p>Developed by the Department of IST. Generated at ${currentTime}</p>`);
 
-   // Debug: Log the compiled HTML
-   //console.log(pdfFooter);
+   const htmlFooterOutputPath = path.join(__dirname, '/Output/Footer.html');
+   fs.writeFileSync(htmlFooterOutputPath, pdfFooter);
 
    const browser = await puppeteer.launch({
       headless: true
@@ -84,7 +85,7 @@ const currentTime = `${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
    });
 
    const pdfBuffer = await page.pdf({
-      path: 'Resume Output.pdf',
+      path: 'Output/Resume Output.pdf',
       format: 'A4',
       printBackground: true,
       margin: {
@@ -99,7 +100,7 @@ const currentTime = `${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
    });
 
    await page.screenshot({
-      path: 'ScreenShot.png',
+      path: 'Output/ScreenShot.png',
       fullPage: true
    })
 
