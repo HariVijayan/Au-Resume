@@ -42,38 +42,38 @@ app.post('/generate-pdf', async (req, res) => {
    const pdfHeader = fs.readFileSync(headerPath, 'utf8');
    let pdfFooter = fs.readFileSync(footerPath, 'utf8');
 
-   const auLogoBase64Path = path.join(__dirname, '/Images/Base64 Values/aulogo.txt');
+   const auLogoBase64Path = path.join(__dirname, '/Images/Base64 Values/Au Logo.txt');
    const auLogoBase64 = fs.readFileSync(auLogoBase64Path, 'utf8');
 
    let date_time = new Date();
 
-   // get current date
-   // adjust 0 before single digit date
-   let date = ("0" + date_time.getDate()).slice(-2);
+// get current date
+let date = ("0" + date_time.getDate()).slice(-2);
 
-   // get current month
-   let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+// get current month
+let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
 
-   // get current year
-   let year = date_time.getFullYear();
+// get current year
+let year = date_time.getFullYear();
 
-   // get current hours
-   let hours = date_time.getHours();
+// get current hours
+let hours = String(date_time.getHours()).padStart(2, '0');
 
-   // get current minutes
-   let minutes = date_time.getMinutes();
+// get current minutes
+let minutes = String(date_time.getMinutes()).padStart(2, '0');
 
-   // get current seconds
-   let seconds = date_time.getSeconds();
+// get current seconds
+let seconds = String(date_time.getSeconds()).padStart(2, '0');
 
-   const currentTime = (date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds);
+const currentTime = `${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+
 
    pdfFooter = pdfFooter.replace('<img id="aulogo" src=""', `<img id="aulogo" src="data:image/png;base64,${auLogoBase64}"`);
 
-   pdfFooter = pdfFooter.replace('<p>Approved by CUIC, downloaded from CUIC portal at', `<p>Approved by CUIC, downloaded from CUIC portal at ${currentTime}`);
+   pdfFooter = pdfFooter.replace('<p>Developed by the Department of IST. Generated at</p>', `<p>Developed by the Department of IST. Generated at ${currentTime}</p>`);
 
    // Debug: Log the compiled HTML
-   //console.log(pdfBody);
+   //console.log(pdfFooter);
 
    const browser = await puppeteer.launch({
       headless: true

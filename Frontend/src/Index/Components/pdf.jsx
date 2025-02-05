@@ -17,69 +17,51 @@ const GeneratePDF = () => {
                 phd: 
                 [
                     {
-                        phd_name: "M.Tech in Computer Science",
-                        phd_university: "XYZ University",
-                        phd_year: "2022 - 2024",
-                        phd_exp: "CGPA : 9.5"
-                    },
-                    {
-                        phd_name: "M.Tech in Computer Science",
-                        phd_university: "XYZ University",
-                        phd_year: "2022 - 2024",
-                        phd_exp: "CGPA : 9.5"
+                        phd_name: "Ph.D in Network Security",
+                        phd_university: "Anna University",
+                        phd_year: "2017 - 2023",
+                        phd_exp: "Expertise : Networking, Security, Machine Learning, Hash Algorithms",
+                        phd_additional_info: "Widely accepted research"
                     }
                 ],
                 pg_degree: 
                 [
                     {
-                        pg_degree_name: "M.Tech in Computer Science",
-                        pg_degree_university: "XYZ University",
+                        pg_degree_name: "Master of Computer Applications",
+                        pg_degree_university: "Anna University",
                         pg_degree_year: "2022 - 2024",
-                        pg_degree_cgpa: "CGPA : 9.5"
-                    },
-                    {
-                        pg_degree_name: "M.Tech in Computer Science",
-                        pg_degree_university: "XYZ University",
-                        pg_degree_year: "2022 - 2024",
-                        pg_degree_cgpa: "CGPA : 9.5"
+                        pg_degree_cgpa: "CGPA : 9.5",
+                        pg_additional_info: "As of Semester 3"
                     }
                 ],
                 ug_degree: 
                 [
                     {
-                        ug_degree_name: "M.Tech in Computer Science",
-                        ug_degree_university: "XYZ University",
-                        ug_degree_year: "2022 - 2024",
-                        ug_degree_cgpa: "CGPA : 9.5"
-                    },
-                    {
-                        ug_degree_name: "M.Tech in Computer Science",
-                        ug_degree_university: "XYZ University",
-                        ug_degree_year: "2022 - 2024",
-                        ug_degree_cgpa: "CGPA : 9.5"
+                        ug_degree_name: "B.Sc. Computer Science",
+                        ug_degree_university: "Anna University",
+                        ug_degree_year: "2019 - 2022",
+                        ug_degree_cgpa: "CGPA : 8.7",
+                        ug_additional_info: "Distinction Grade"
                     }
                 ],
                 diploma: 
                 [
                     {
-                        diploma_name: "M.Tech in Computer Science",
-                        diploma_university: "XYZ University",
-                        diploma_year: "2022 - 2024",
-                        diploma_cgpa: "CGPA : 9.5"
-                    },
-                    {
-                        diploma_name: "M.Tech in Computer Science",
-                        diploma_university: "XYZ University",
-                        diploma_year: "2022 - 2024",
-                        diploma_cgpa: "CGPA : 9.5"
+                        diploma_name: "Diploma in Technology",
+                        diploma_university: "Anna University",
+                        diploma_year: "2017 - 2019",
+                        diploma_cgpa: "CGPA : 9.5",
+                        diploma_additional_info: "Distinction Grade"
                     }
                 ],
-                hsc_name:"Some School", 
-                hsc_year:"2017 - 2019", 
+                hsc_name:"Jawahar School", 
+                hsc_year:"2015 - 2017", 
                 hsc_grade: "Grade : 68.0",
-                sslc_name:"Some School", 
-                sslc_year:"2017 - 2019", 
-                sslc_grade: "Grade : 68.0"
+                hsc_additional_info: "State Board",
+                sslc_name:"Jawahar School", 
+                sslc_year:"2014 - 2015", 
+                sslc_grade: "Grade : 68.0",
+                sslc_additional_info: "State Board"
             }
         ],
         skills: 
