@@ -9,13 +9,22 @@ const GeneratePDF = () => {
   emailid: "john@gmail.com",
   location: "Chennai, India",
   linkedin: "linkedin.com/John",
-  linkedinlink: "https://www.linkedin.com/John",
+  linkedinurl: "https://www.linkedin.com/John",
   github: "github.com/John",
-  githublink: "https://www.github.com/John",
+  githuburl: "https://www.github.com/John",
+  customlink:"www.myportfolio.com",
+  customlinkurl:"https://www.myportfolio.com",
   summary: "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies. I specialize in building scalable web applications using modern frameworks and cloud technologies.",
   education: [
     {
       phd: [
+        {
+          phd_name: "Ph.D in Network Security",
+          phd_university: "Princeton University",
+          phd_year: "2024 - 2029",
+          phd_exp: "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
+          phd_additional_info: "Widely accepted research in cybersecurity protocols and machine learning"
+        },
         {
           phd_name: "Ph.D in Network Security",
           phd_university: "Princeton University",
@@ -65,6 +74,10 @@ const GeneratePDF = () => {
     {
       skillstyle1: true,
       skillset: ["Web Development", "Cloud Deployment", "Machine Learning"]
+    },
+    {
+      skillstyle2: true, 
+      skillset: "Web Development, Cloud Deployment, Machine Learning"
     }
   ],
   projects: [
@@ -92,6 +105,13 @@ const GeneratePDF = () => {
         "Developed and maintained the company website using modern JavaScript frameworks",
         "Collaborated with cross-functional teams to deploy cloud solutions and improve scalability"
       ]
+    },
+    {
+      experience_company:"ABCD Corp,",
+      experience_location:"Hyderabad", 
+      experience_year:"2023 - Present", 
+      experience_designation:"Software Developer", 
+      experience_description: "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies."
     }
   ],
   certifications: [
@@ -102,6 +122,10 @@ const GeneratePDF = () => {
         "Google Cloud Certified",
         "Machine Learning Expert"
       ]
+    },
+    {
+      certificationstyle2: true, 
+      certificationset: "AWS Certified Developer, Google Cloud Certified (udemy.com/certificate/ghvsgv212), Machine Learning Expert"
     }
   ],
   languages: [
@@ -126,6 +150,7 @@ const GeneratePDF = () => {
     });
 
     const handleGeneratePDF = async () => {
+        //console.log(resumeData);
         try {
             const response = await axios.post('http://localhost:5000/generate-pdf', resumeData, {
                 responseType: 'arraybuffer', // Expect the PDF as a buffer
