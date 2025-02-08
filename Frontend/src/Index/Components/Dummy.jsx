@@ -35,18 +35,62 @@ const ResumeForm = () => {
             pg_degree_additional_info: ""
           }
         ],
+        ug_degree: [
+          {
+            ug_degree_name: "",
+            ug_degree_university: "",
+            ug_degree_year: "",
+            ug_degree_cgpa: "",
+            ug_degree_additional_info: ""
+          }
+        ],
+        diploma: [
+          {
+            diploma_name: "",
+            diploma_university: "",
+            diploma_year: "",
+            diploma_cgpa: "",
+            diploma_additional_info: ""
+          }
+        ],
+        hsc_name: "",
+        hsc_year: "",
+        hsc_grade: "",
+        hsc_additional_info: "",
+        sslc_name: "",
+        sslc_year: "",
+        sslc_grade: "",
+        sslc_additional_info: ""
       }
     ]
   });
 
   // Handle input changes for main fields (like username, small_bio, etc.)
-  const handleInputChange = (e) => {
+  const handleInputChange = (e, inputValue) => {
     const { name, value } = e.target;
-    setResumeData({
-      ...resumeData,
-      [name]: value
+  
+    setResumeData(prevState => {
+      switch(inputValue) {
+        case 'education':
+          console.log(name);
+          // Assuming name is a field in the education object (e.g., "hsc_name", "sslc_name")
+          const updatedEducation = { ...prevState.education[0] }; // Make a copy of the first education object
+          updatedEducation[name] = value; // Update the specific field based on `name`
+          
+          return {
+            ...prevState,
+            education: [updatedEducation] // Return the updated education
+          };
+        
+        default:
+          return {
+            ...prevState,
+            [name]: value // For other fields, just update them
+          };
+      }
     });
   };
+  
 
   // Handle input changes for Ph.D. education fields
   const handlePhdInputChange = (e, phdIndex) => {
@@ -114,6 +158,12 @@ const ResumeForm = () => {
       case 'pg_degree':
         updatedEducation[0].pg_degree[Index][name] = value;
         break;
+      case 'ug_degree':
+        updatedEducation[0].ug_degree[Index][name] = value;
+        break;
+      case 'diploma':
+        updatedEducation[0].diploma[Index][name] = value;
+        break;
       default:
         console.log("Default"); 
         break;
@@ -148,6 +198,24 @@ const ResumeForm = () => {
           pg_degree_additional_info: ""
         });
         break;
+      case 'ug_degree':
+        updatedEducation[0].ug_degree.push({
+          ug_degree_name: "",
+          ug_degree_university: "",
+          ug_degree_year: "",
+          ug_degree_cgpa: "",
+          ug_degree_additional_info: ""
+          });
+          break;
+      case 'diploma':
+        updatedEducation[0].diploma.push({
+          diploma_name: "",
+          diploma_university: "",
+          diploma_year: "",
+          diploma_cgpa: "",
+          diploma_additional_info: ""
+          });
+          break;
       default:
         console.log("Default");   
         break;
@@ -188,7 +256,7 @@ const ResumeForm = () => {
             type="text"
             name="username"
             value={resumeData.username}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your name"
             required
           />
@@ -199,7 +267,7 @@ const ResumeForm = () => {
             type="text"
             name="small_bio"
             value={resumeData.small_bio}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Developer | Designer | Freelancer"
             required
           />
@@ -210,7 +278,7 @@ const ResumeForm = () => {
             type="text"
             name="phone_number"
             value={resumeData.phone_number}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your phone number"
             required
           />
@@ -221,7 +289,7 @@ const ResumeForm = () => {
             type="email"
             name="emailid"
             value={resumeData.emailid}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your email"
             required
           />
@@ -232,7 +300,7 @@ const ResumeForm = () => {
             type="text"
             name="location"
             value={resumeData.location}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your location"
             required
           />
@@ -243,7 +311,7 @@ const ResumeForm = () => {
             type="text"
             name="linkedin"
             value={resumeData.linkedin}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your LinkedIn username"
             required
           />
@@ -254,7 +322,7 @@ const ResumeForm = () => {
             type="url"
             name="linkedinurl"
             value={resumeData.linkedinurl}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your LinkedIn URL"
             required
           />
@@ -265,7 +333,7 @@ const ResumeForm = () => {
             type="text"
             name="github"
             value={resumeData.github}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your GitHub username"
             required
           />
@@ -276,7 +344,7 @@ const ResumeForm = () => {
             type="url"
             name="githuburl"
             value={resumeData.githuburl}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your GitHub URL"
             required
           />
@@ -287,7 +355,7 @@ const ResumeForm = () => {
             type="text"
             name="customlink"
             value={resumeData.customlink}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter custom link"
             required
           />
@@ -298,7 +366,7 @@ const ResumeForm = () => {
             type="url"
             name="customlinkurl"
             value={resumeData.customlinkurl}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter custom link URL"
             required
           />
@@ -308,7 +376,7 @@ const ResumeForm = () => {
           <textarea
             name="summary"
             value={resumeData.summary}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, 'default')}
             placeholder="Enter your summary"
             required
           />
@@ -438,6 +506,223 @@ const ResumeForm = () => {
           ))}
           <button type="button" onClick={(e) => handleAddEducation('pg_degree', e)}>Add PG</button>
 
+          <h3>UG Details</h3>
+          {resumeData.education[0].ug_degree.map((ug_degree, index) => (
+            <div key={index} className="ug-entry">
+              <div>
+                <label>UG. Name:</label>
+                <input
+                  type="text"
+                  name="ug_degree_name"
+                  value={ug_degree.ug_degree_name}
+                  onChange={(e) => handleEducationInputChange(e, index, 'ug_degree')}
+                  placeholder="UG Name"
+                  required
+                />
+              </div>
+              <div>
+                <label>UG University:</label>
+                <input
+                  type="text"
+                  name="ug_degree_university"
+                  value={ug_degree.ug_degree_university}
+                  onChange={(e) => handleEducationInputChange(e, index, 'ug_degree')}
+                  placeholder="University Name"
+                  required
+                />
+              </div>
+              <div>
+                <label>Ug. Year:</label>
+                <input
+                  type="text"
+                  name="ug_degree_year"
+                  value={ug_degree.ug_degree_year}
+                  onChange={(e) => handleEducationInputChange(e, index, 'ug_degree')}
+                  placeholder="Year of Study"
+                  required
+                />
+              </div>
+              <div>
+                <label>Ug CGPA:</label>
+                <input
+                  type="text"
+                  name="ug_degree_cgpa"
+                  value={ug_degree.ug_degree_cgpa}
+                  onChange={(e) => handleEducationInputChange(e, index, 'ug_degree')}
+                  placeholder="CGPA"
+                  required
+                />
+              </div>
+              <div>
+                <label>Ug Additional Info:</label>
+                <textarea
+                  name="ug_additional_info"
+                  value={ug_degree.ug_additional_info}
+                  onChange={(e) => handleEducationInputChange(e, index, 'ug_degree')}
+                  placeholder="Additional Info"
+                  required
+                />
+              </div>
+            </div>
+          ))}
+          <button type="button" onClick={(e) => handleAddEducation('ug_degree', e)}>Add UG</button>
+
+          <h3>Diploma Details</h3>
+          {resumeData.education[0].diploma.map((diploma, index) => (
+            <div key={index} className="diploma-entry">
+              <div>
+                <label>Diploma Name:</label>
+                <input
+                  type="text"
+                  name="diploma_name"
+                  value={diploma.diploma_name}
+                  onChange={(e) => handleEducationInputChange(e, index, 'diploma')}
+                  placeholder="Diploma Name"
+                  required
+                />
+              </div>
+              <div>
+                <label>Diploma University:</label>
+                <input
+                  type="text"
+                  name="diploma_university"
+                  value={diploma.diploma_university}
+                  onChange={(e) => handleEducationInputChange(e, index, 'diploma')}
+                  placeholder="University Name"
+                  required
+                />
+              </div>
+              <div>
+                <label>Diploma Year:</label>
+                <input
+                  type="text"
+                  name="diploma_year"
+                  value={diploma.diploma_year}
+                  onChange={(e) => handleEducationInputChange(e, index, 'diploma')}
+                  placeholder="Year of Study"
+                  required
+                />
+              </div>
+              <div>
+                <label>Diploma CGPA:</label>
+                <input
+                  type="text"
+                  name="diploma_cgpa"
+                  value={diploma.diploma_cgpa}
+                  onChange={(e) => handleEducationInputChange(e, index, 'diploma')}
+                  placeholder="CGPA"
+                  required
+                />
+              </div>
+              <div>
+                <label>Diploma Additional Info:</label>
+                <textarea
+                  name="diploma_additional_info"
+                  value={diploma.diploma_additional_info}
+                  onChange={(e) => handleEducationInputChange(e, index, 'diploma')}
+                  placeholder="Additional Info"
+                  required
+                />
+              </div>
+            </div>
+          ))}
+          <button type="button" onClick={(e) => handleAddEducation('diploma', e)}>Add Diploma</button>
+
+          <div>
+          <label>HSC Name:</label>
+          <input
+            type="text"
+            name="hsc_name"
+            value={resumeData.hsc_name}
+            onChange={(e) => handleInputChange(e, 'education')}
+            placeholder="Enter your school name"
+            required
+          />
+        </div>
+
+        <div>
+          <label>HSC Year:</label>
+          <input
+            type="text"
+            name="hsc_year"
+            value={resumeData.hsc_year}
+            onChange={(e) => handleInputChange(e, 'education')}
+            placeholder="Enter your school year"
+            required
+          />
+        </div>
+
+        <div>
+          <label>HSC Grade:</label>
+          <input
+            type="text"
+            name="hsc_grade"
+            value={resumeData.hsc_grade}
+            onChange={(e) => handleInputChange(e, 'education')}
+            placeholder="Enter your school grade"
+            required
+          />
+        </div>
+
+        <div>
+          <label>HSC Additional Info:</label>
+          <input
+            type="text"
+            name="hsc_additional_info"
+            value={resumeData.hsc_additional_info}
+            onChange={(e) => handleInputChange(e, 'education')}
+            placeholder="Enter hsc additional info"
+            required
+          />
+        </div>
+
+        <div>
+          <label>SSLC Name:</label>
+          <input
+            type="text"
+            name="sslc_name"
+            value={resumeData.sslc_name}
+            onChange={(e) => handleInputChange(e, 'education')}
+            placeholder="Enter your school name"
+            required
+          />
+        </div>
+
+        <div>
+          <label>SSLC Year:</label>
+          <input
+            type="text"
+            name="sslc_year"
+            value={resumeData.sslc_year}
+            onChange={(e) => handleInputChange(e, 'education')}
+            placeholder="Enter your school year"
+            required
+          />
+        </div>
+
+        <div>
+          <label>SSLC Grade:</label>
+          <input
+            type="text"
+            name="sslc_grade"
+            value={resumeData.sslc_grade}
+            onChange={(e) => handleInputChange(e, 'education')}
+            placeholder="Enter your school grade"
+            required
+          />
+        </div>
+
+        <div>
+          <label>SSLC Additional Info:</label>
+          <input
+            type="text"
+            name="sslc_additional_info"
+            value={resumeData.sslc_additional_info}
+            onChange={(e) => handleInputChange(e, 'education')}
+            placeholder="Enter sslc additional info"
+            required
+          />
+        </div>
 
         </div>
 
