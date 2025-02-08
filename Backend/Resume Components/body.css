@@ -73,7 +73,8 @@ li {
 }
 
 #linkedinlink,
-#githublink {
+#githublink,
+#custombiolink {
 	text-decoration: none;
 	color: rgb(0, 121, 172);
 }

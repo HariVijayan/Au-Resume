@@ -25,7 +25,16 @@ const ResumeForm = () => {
             phd_exp: "",
             phd_additional_info: ""
           }
-        ]
+        ],
+        pg_degree: [
+          {
+            pg_degree_name: "",
+            pg_degree_university: "",
+            pg_degree_year: "",
+            pg_degree_cgpa: "",
+            pg_degree_additional_info: ""
+          }
+        ],
       }
     ]
   });
@@ -61,6 +70,89 @@ const ResumeForm = () => {
       phd_exp: "",
       phd_additional_info: ""
     });
+    setResumeData({
+      ...resumeData,
+      education: updatedEducation
+    });
+  };
+
+  const handlePgInputChange = (e, pgIndex) => {
+    const { name, value } = e.target;
+    const updatedEducation = [...resumeData.education];
+    updatedEducation[0].pg_degree[pgIndex][name] = value; // Update the phd field at the given index
+
+    setResumeData({
+      ...resumeData,
+      education: updatedEducation
+    });
+  };
+
+  // Handle adding a new Ph.D. education div
+  const handleAddPg = () => {
+    const updatedEducation = [...resumeData.education];
+    updatedEducation[0].pg_degree.push({
+      pg_degree_name: "",
+      pg_degree_university: "",
+      pg_degree_year: "",
+      pg_degree_cgpa: "",
+      pg_degree_additional_info: ""
+    });
+    setResumeData({
+      ...resumeData,
+      education: updatedEducation
+    });
+  };
+
+  const handleEducationInputChange = (e, Index, educationValue) => {
+    console.log("change:", educationValue);
+    const { name, value } = e.target;
+    const updatedEducation = [...resumeData.education];
+    switch(educationValue) {
+      case 'phd':
+        updatedEducation[0].phd[Index][name] = value;
+        break;
+      case 'pg_degree':
+        updatedEducation[0].pg_degree[Index][name] = value;
+        break;
+      default:
+        console.log("Default"); 
+        break;
+    }
+    setResumeData({
+      ...resumeData,
+      education: updatedEducation
+    });
+  };
+
+  // Handle adding a new Ph.D. education div
+  const handleAddEducation = (educationValue, e) => {
+    e.preventDefault(); 
+    console.log("Add:", educationValue);
+    const updatedEducation = [...resumeData.education];
+    switch(educationValue) {
+      case 'phd':
+        updatedEducation[0].phd.push({
+          phd_name: "",
+          phd_university: "",
+          phd_year: "",
+          phd_exp: "",
+          phd_additional_info: ""
+        });
+        break;
+      case 'pg_degree':
+        updatedEducation[0].pg_degree.push({
+          pg_degree_name: "",
+          pg_degree_university: "",
+          pg_degree_year: "",
+          pg_degree_cgpa: "",
+          pg_degree_additional_info: ""
+        });
+        break;
+      default:
+        console.log("Default");   
+        break;
+      }
+    
     setResumeData({
       ...resumeData,
       education: updatedEducation
@@ -233,7 +325,7 @@ const ResumeForm = () => {
                   type="text"
                   name="phd_name"
                   value={phd.phd_name}
-                  onChange={(e) => handlePhdInputChange(e, index)}
+                  onChange={(e) => handleEducationInputChange(e, index, 'phd')}
                   placeholder="Ph.D. Name"
                   required
                 />
@@ -244,7 +336,7 @@ const ResumeForm = () => {
                   type="text"
                   name="phd_university"
                   value={phd.phd_university}
-                  onChange={(e) => handlePhdInputChange(e, index)}
+                  onChange={(e) => handleEducationInputChange(e, index, 'phd')}
                   placeholder="University Name"
                   required
                 />
@@ -255,7 +347,7 @@ const ResumeForm = () => {
                   type="text"
                   name="phd_year"
                   value={phd.phd_year}
-                  onChange={(e) => handlePhdInputChange(e, index)}
+                  onChange={(e) => handleEducationInputChange(e, index, 'phd')}
                   placeholder="Year of Study"
                   required
                 />
@@ -266,7 +358,7 @@ const ResumeForm = () => {
                   type="text"
                   name="phd_exp"
                   value={phd.phd_exp}
-                  onChange={(e) => handlePhdInputChange(e, index)}
+                  onChange={(e) => handleEducationInputChange(e, index, 'phd')}
                   placeholder="Expertise"
                   required
                 />
@@ -276,16 +368,77 @@ const ResumeForm = () => {
                 <textarea
                   name="phd_additional_info"
                   value={phd.phd_additional_info}
-                  onChange={(e) => handlePhdInputChange(e, index)}
+                  onChange={(e) => handleEducationInputChange(e, index, 'phd')}
                   placeholder="Additional Info"
                   required
                 />
               </div>
             </div>
           ))}
-          <button type="button" onClick={handleAddPhd}>
-            Add More Ph.D. Details
-          </button>
+          <button type="button" onClick={(e) => handleAddEducation('phd', e)}>Add Phd</button>
+
+          <h3>PG Details</h3>
+          {resumeData.education[0].pg_degree.map((pg_degree, index) => (
+            <div key={index} className="pg-entry">
+              <div>
+                <label>PG. Name:</label>
+                <input
+                  type="text"
+                  name="pg_degree_name"
+                  value={pg_degree.pg_degree_name}
+                  onChange={(e) => handleEducationInputChange(e, index, 'pg_degree')}
+                  placeholder="PG Name"
+                  required
+                />
+              </div>
+              <div>
+                <label>PG University:</label>
+                <input
+                  type="text"
+                  name="pg_degree_university"
+                  value={pg_degree.pg_degree_university}
+                  onChange={(e) => handleEducationInputChange(e, index, 'pg_degree')}
+                  placeholder="University Name"
+                  required
+                />
+              </div>
+              <div>
+                <label>Pg. Year:</label>
+                <input
+                  type="text"
+                  name="pg_degree_year"
+                  value={pg_degree.pg_degree_year}
+                  onChange={(e) => handleEducationInputChange(e, index, 'pg_degree')}
+                  placeholder="Year of Study"
+                  required
+                />
+              </div>
+              <div>
+                <label>Pg CGPA:</label>
+                <input
+                  type="text"
+                  name="pg_degree_cgpa"
+                  value={pg_degree.pg_degree_cgpa}
+                  onChange={(e) => handleEducationInputChange(e, index, 'pg_degree')}
+                  placeholder="CGPA"
+                  required
+                />
+              </div>
+              <div>
+                <label>Pg Additional Info:</label>
+                <textarea
+                  name="pg_additional_info"
+                  value={pg_degree.pg_additional_info}
+                  onChange={(e) => handleEducationInputChange(e, index, 'pg_degree')}
+                  placeholder="Additional Info"
+                  required
+                />
+              </div>
+            </div>
+          ))}
+          <button type="button" onClick={(e) => handleAddEducation('pg_degree', e)}>Add PG</button>
+
+
         </div>
 
         <button type="submit">Submit</button>

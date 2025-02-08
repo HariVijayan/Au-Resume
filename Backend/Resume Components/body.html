@@ -11,7 +11,7 @@
             <h2 id="name">{{username}}</h2>
             <h3 id="smallbio">{{small_bio}}</h3>
          </div>
-         <p id="p-contactinfo">{{phone_number}} | {{emailid}} | {{location}} | <a id ="linkedinlink" href="{{linkedinlink}}">{{linkedin}}</a> | <a id ="githublink" href="{{githublink}}">{{github}}</a></p>
+         <p id="p-contactinfo">{{phone_number}} | {{emailid}} | {{location}} | <a id ="linkedinlink" href="{{linkedinurl}}">{{linkedin}}</a> | <a id ="githublink" href="{{githuburl}}">{{github}}</a>{{#if customlink}} | <a id="custombiolink" href="{{customlinkurl}}">{{customlink}}</a>{{/if}}</p>
       </div>
       <div id="summary" class="main_div">
          {{#if summary}}
@@ -105,22 +105,26 @@
             </div>
          </div>
          {{/each}}
+         {{#if hsc_name.length}}
          <h3 id="h3-xiischool" class="school_name_heading">HSC</h3>
          <div id="hsc" class="school_main_div">
             <div id="hsctableft" class="school_sub_div">
                <h3 id="h3-xiischoolname" class="school_name">{{hsc_name}}</h3>
-               <p id="p-xiischoolgrade" class="school_grade">{{hsc_grade}}&nbsp;({{hsc_additional_info}})</p>
+               <p id="p-xiischoolgrade" class="school_grade">{{hsc_grade}}{{#if hsc_additional_info.length}}&nbsp;({{hsc_additional_info}}){{/if}}</p>
             </div>
             <p id="p-xiischoolyear" class="school_period">{{hsc_year}}</p>
          </div>
+         {{/if}}
+         {{#if sslc_name.length}}
          <h3 id="h3-xschool" class="school_name_heading">SSLC</h3>
          <div id="sslc" class="school_main_div">
             <div id="hsctableft" class="school_sub_div">
                <h3 id="h3-xschoolname" class="school_name">{{sslc_name}}</h3>
-               <p id="p-xschoolgrade" class="school_grade">{{sslc_grade}}&nbsp;({{sslc_additional_info}})</p>
+               <p id="p-xschoolgrade" class="school_grade">{{sslc_grade}}{{#if sslc_additional_info.length}}&nbsp;({{sslc_additional_info}}){{/if}}</p>
             </div>
             <p id="p-xschoolyear" class="school_period">{{sslc_year}}</p>
          </div>
+         {{/if}}
          {{/each}}
          {{/if}}
       </div>

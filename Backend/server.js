@@ -27,6 +27,8 @@ async function compileTemplate(templatePath, data) {
 app.post('/generate-pdf', async (req, res) => {
    const resumeData = req.body;
 
+   //console.log(resumeData);
+
    let templatePath = path.join(__dirname, '/Resume Components/body.html');
    let templateFile = fs.readFileSync(templatePath, 'utf8');
 
@@ -51,7 +53,6 @@ app.post('/generate-pdf', async (req, res) => {
 
    footerFile = footerFile.replace('<img id="aulogo" src=""', `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`);
 
-   
    let date_time = new Date();
 
    let date = ("0" + date_time.getDate()).slice(-2);
