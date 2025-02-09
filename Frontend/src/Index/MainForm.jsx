@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "./Components/Header/BioSummary.jsx";
 import Education from "./Components/Education/EducationMain.jsx";
 import axios from "axios";
+import Experience from "./Components/Experience/ExperienceMain.jsx";
 const MainForm = () => {
   const [resumeData, setResumeData] = useState({
     username: "",
@@ -64,6 +65,30 @@ const MainForm = () => {
         sslc_additional_info: "",
       },
     ],
+    experience: [
+      {
+        style1: [
+          {
+            experience_company: "",
+            experience_location: "",
+            experience_year: "",
+            experience_designation: "",
+            experience_team: "",
+            experience_roles: []
+          }
+        ],
+        style2: [
+          {
+          experience_company: "",
+          experience_location: "",
+          experience_year: "",
+          experience_designation: "",
+          experience_team: "",
+          experience_description: ""
+          }
+        ]
+      }
+    ],
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,6 +113,7 @@ const MainForm = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <Header resumeData={resumeData} setResumeData={setResumeData} />
+        <Experience resumeData={resumeData} setResumeData={setResumeData} />
         <Education resumeData={resumeData} setResumeData={setResumeData} />
         <button type="submit">Submit</button>
       </form>

@@ -1,0 +1,112 @@
+{
+  "username": "John Doe",
+  "small_bio": "Developer|Designer|Freelancer",
+  "phone_number": "+91 9090909099",
+  "emailid": "john@gmail.com",
+  "location": "Chennai, India",
+  "linkedin": "linkedin.com/John",
+  "linkedinurl": "https://www.linkedin.com/John",
+  "github": "github.com/John",
+  "githuburl": "https://www.github.com/John",
+  "customlink": "www.myportfolio.com",
+  "customlinkurl": "https://www.myportfolio.com",
+  "summary": "summary",
+  "education": [
+    {
+      "phd": [
+        {
+          "phd_name": "Ph.D in Network Security",
+          "phd_university": "Princeton University",
+          "phd_year": "2024 - 2029",
+          "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
+          "phd_additional_info": "assa"
+        }
+      ],
+      "pg_degree": [
+        {
+          "pg_degree_name": "Master of Computer Applications",
+          "pg_degree_university": "Princeton University",
+          "pg_degree_year": "2022 - 2024",
+          "pg_degree_cgpa": "CGPA: 9.5",
+          "pg_degree_additional_info": "",
+          "pg_additional_info": "hgghj"
+        }
+      ],
+      "ug_degree": [
+        {
+          "ug_degree_name": "B.Sc. Computer Science",
+          "ug_degree_university": "Princeton University",
+          "ug_degree_year": "2019 - 2022",
+          "ug_degree_cgpa": "CGPA: 8.7",
+          "ug_degree_additional_info": "",
+          "ug_additional_info": "jhbbjhjhb"
+        }
+      ],
+      "diploma": [
+        {
+          "diploma_name": "Diploma in Technology",
+          "diploma_university": "Princeton University",
+          "diploma_year": "2017 - 2019",
+          "diploma_cgpa": "CGPA: 9.52",
+          "diploma_additional_info": "jvhvhh"
+        }
+      ],
+      "hsc_name": "Don Bosco School",
+      "hsc_year": "2015 - 2017",
+      "hsc_grade": "Grade: 68.0",
+      "hsc_additional_info": "State Board",
+      "sslc_name": "Don Bosco School",
+      "sslc_year": "2014 - 2015",
+      "sslc_grade": "Grade: 68.0",
+      "sslc_additional_info": "State Board"
+    }
+  ],
+  "experience": [
+    {
+      "style1": [
+        {
+          "experience_company": "Zoho",
+          "experience_location": "Bangalore, India",
+          "experience_year": "2019 - 2020",
+          "experience_designation": "Software Engineer",
+          "experience_team": "Operations Security",
+          "experience_roles": [
+            "Developed Security Management Portal",
+            "feruhberhbbher",
+            "ubhrbhuehbe"
+          ]
+        },
+        {
+          "experience_company": "Zoho",
+          "experience_location": "Bangalore, India",
+          "experience_year": "2019 - 2020",
+          "experience_designation": "Software Engineer",
+          "experience_team": "Operations Security",
+          "experience_roles": [
+            "Developed Security Management Portal",
+            "bdfjhfvnjfvj",
+            "bhecbjhejhbdcjhb"
+          ]
+        }
+      ],
+      "style2": [
+        {
+          "experience_company": "Zoho Corporation",
+          "experience_location": "Chennai, India",
+          "experience_year": "2024 - 2025",
+          "experience_designation": "Support Analyst",
+          "experience_team": "Client Support",
+          "experience_description": "Worked for 1 year."
+        },
+        {
+          "experience_company": "Zoho Corporation",
+          "experience_location": "Chennai, India",
+          "experience_year": "2024 - 2025",
+          "experience_designation": "Support Analyst",
+          "experience_team": "Client Support",
+          "experience_description": "Worked for 1 year."
+        }
+      ]
+    }
+  ]
+}

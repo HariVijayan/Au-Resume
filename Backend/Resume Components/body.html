@@ -22,7 +22,8 @@
       <div id="experience" class="main_div">
          {{#if experience.length}}
          <h2 id="h2-experience">EXPERIENCE</h2>
-         {{#each experience}}
+      {{#each experience}}
+         {{#each style1}}
          <div class="experience_main_div">
             <div id="experiencetab1" class="experience_sub_div1">
                <div id="experiencecompanyinfo">
@@ -51,6 +52,38 @@
             </div>
          </div>
          {{/each}}
+
+         {{#each style2}}
+         <div class="experience_main_div">
+            <div id="experiencetab1" class="experience_sub_div1">
+               <div id="experiencecompanyinfo">
+                  <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}}</h3>
+                  <p id="p-experiencelocation" class="experience_location">{{experience_location}}</p>
+               </div>
+               <p id="p-experienceyear" class="experience_period">{{experience_year}}</p>
+            </div>
+            <div id="experiencetab2" class="experience_sub_div2">
+               <p id="p-experiencedesignation" class="experience_designation">{{experience_designation}}</p>
+               {{#if experience_team}}
+               <p id="p-experienceteamname" class="experience_custom_field">&nbsp;in {{experience_team}}</p>
+               {{/if}}
+            </div>
+            <div id="experiencetab3" class="experience_sub_div3">
+               {{#if experience_description}}
+               <p id="p-experiencedescription">{{experience_description}}</p>
+               {{else}}
+               <h3 id="h3-experiencerole">Roles : </h3>
+               <ul id="ul-experienceroles">
+                  {{#each experience_roles}}
+                  <li>{{this}}</li>
+                  {{/each}}
+               </ul>
+               {{/if}}
+            </div>
+         </div>
+         {{/each}}
+
+      {{/each}}
          {{/if}}
       </div>
       <div id="education" class="main_div">

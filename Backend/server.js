@@ -43,6 +43,10 @@ app.post('/generate-pdf', async (req, res) => {
    const htmlBodyOutputPath = path.join(__dirname, '/Output/Body.html');
    fs.writeFileSync(htmlBodyOutputPath, pdfBody);
 
+   const resumeDataOutput = path.join(__dirname, '/Output/Resume Data.txt');
+   const resumeDataString = JSON.stringify(resumeData, null, 2);
+   fs.writeFileSync(resumeDataOutput, resumeDataString);
+
    const headerPath = path.join(__dirname, '/Resume Components/header.html');
    const footerPath = path.join(__dirname, '/Resume Components/footer.html');
    const headerFile = fs.readFileSync(headerPath, 'utf8');
