@@ -10,7 +10,7 @@
   "githuburl": "https://www.github.com/John",
   "customlink": "www.myportfolio.com",
   "customlinkurl": "https://www.myportfolio.com",
-  "summary": "summary",
+  "summary": "sasasa",
   "education": [
     {
       "phd": [
@@ -19,7 +19,7 @@
           "phd_university": "Princeton University",
           "phd_year": "2024 - 2029",
           "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
-          "phd_additional_info": "assa"
+          "phd_additional_info": "saas"
         }
       ],
       "pg_degree": [
@@ -29,7 +29,7 @@
           "pg_degree_year": "2022 - 2024",
           "pg_degree_cgpa": "CGPA: 9.5",
           "pg_degree_additional_info": "",
-          "pg_additional_info": "hgghj"
+          "pg_additional_info": "assasa"
         }
       ],
       "ug_degree": [
@@ -39,7 +39,7 @@
           "ug_degree_year": "2019 - 2022",
           "ug_degree_cgpa": "CGPA: 8.7",
           "ug_degree_additional_info": "",
-          "ug_additional_info": "jhbbjhjhb"
+          "ug_additional_info": "assasa"
         }
       ],
       "diploma": [
@@ -47,8 +47,8 @@
           "diploma_name": "Diploma in Technology",
           "diploma_university": "Princeton University",
           "diploma_year": "2017 - 2019",
-          "diploma_cgpa": "CGPA: 9.52",
-          "diploma_additional_info": "jvhvhh"
+          "diploma_cgpa": "CGPA: 9.5",
+          "diploma_additional_info": "assaas"
         }
       ],
       "hsc_name": "Don Bosco School",
@@ -65,48 +65,46 @@
     {
       "style1": [
         {
-          "experience_company": "Zoho",
-          "experience_location": "Bangalore, India",
-          "experience_year": "2019 - 2020",
-          "experience_designation": "Software Engineer",
-          "experience_team": "Operations Security",
+          "experience_company": "Amazon India",
+          "experience_location": "Bangalore",
+          "experience_year": "2022 - Present",
+          "experience_designation": "Software Developer",
+          "experience_team": "Cloud Deployment",
           "experience_roles": [
-            "Developed Security Management Portal",
-            "feruhberhbbher",
-            "ubhrbhuehbe"
-          ]
-        },
-        {
-          "experience_company": "Zoho",
-          "experience_location": "Bangalore, India",
-          "experience_year": "2019 - 2020",
-          "experience_designation": "Software Engineer",
-          "experience_team": "Operations Security",
-          "experience_roles": [
-            "Developed Security Management Portal",
-            "bdfjhfvnjfvj",
-            "bhecbjhejhbdcjhb"
+            "Developed and maintained the company website using modern JavaScript frameworks"
           ]
         }
       ],
       "style2": [
         {
-          "experience_company": "Zoho Corporation",
-          "experience_location": "Chennai, India",
-          "experience_year": "2024 - 2025",
-          "experience_designation": "Support Analyst",
-          "experience_team": "Client Support",
-          "experience_description": "Worked for 1 year."
-        },
-        {
-          "experience_company": "Zoho Corporation",
-          "experience_location": "Chennai, India",
-          "experience_year": "2024 - 2025",
-          "experience_designation": "Support Analyst",
-          "experience_team": "Client Support",
-          "experience_description": "Worked for 1 year."
+          "experience_company": "ABCD Corp,",
+          "experience_location": "Hyderabad",
+          "experience_year": "2023 - Present",
+          "experience_designation": "Software Developer",
+          "experience_team": "Ops",
+          "experience_description": "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies."
         }
       ]
     }
-  ]
+  ],
+  "projects": {
+    "project1": {
+      "project_name": "Project 1",
+      "project_link": "https://github.com/John/Project1",
+      "project_description": "Developed and maintained the company website with advanced features like authentication, user profiles, and data management.",
+      "project_tech": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+    },
+    "project2": {
+      "project_name": "Project 1",
+      "project_link": "https://github.com/John/Project1",
+      "project_description": "Developed and maintained the company website with advanced features like authentication, user profiles, and data management.",
+      "project_tech": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+    },
+    "project3": {
+      "project_name": "Project 1",
+      "project_link": "https://github.com/John/Project1",
+      "project_description": "Developed and maintained the company website with advanced features like authentication, user profiles, and data management.",
+      "project_tech": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+    }
+  }
 }

@@ -183,31 +183,33 @@
          {{/if}}
       </div>
       <div id="projects" class="main_div">
-         {{#if projects.length}}
-         <h2 id="h2-projects">PROJECTS</h2>
-         {{#each projects}}
-         <div class="project_main_div">
-            <div id="projecttab1" class="project_sub_div1">
-               <h3 id="h3-projectname" class="project_name">{{project_name}}</h3>
-               {{#if project_link}}
-               <div id="projectlink">
-                  <h3 id="h3-projectlink">Code :&nbsp;</h3>
-                  <a id="p-projectlink" class="project_link" href="{{project_link}}">{{project_link}}</a>
+         {{#if projects}}
+           <h2 id="h2-projects">PROJECTS</h2>
+           {{#each projects}}
+             <div class="project_main_div">
+               <div id="projecttab1" class="project_sub_div1">
+                 <h3 id="h3-projectname" class="project_name">{{this.project_name}}</h3>
+                 {{#if this.project_link}}
+                   <div id="projectlink">
+                     <h3 id="h3-projectlink">Code :&nbsp;</h3>
+                     <a id="p-projectlink" class="project_link" href="{{this.project_link}}">{{this.project_link}}</a>
+                   </div>
+                 {{/if}}
                </div>
-               {{/if}}
-            </div>
-            <div id="projecttab2" class="project_sub_div2">
-               {{#if project_description}}
-               <p id="p-projectdescription" class="project_description">{{project_description}}</p>
-               {{/if}}
-               {{#if project_tech}}
-               <p id="p-projecttech" class="project_tech">Tech Stack: {{project_tech}}</p>
-               {{/if}}
-            </div>
-         </div>
-         {{/each}}
+               <div id="projecttab2" class="project_sub_div2">
+                 {{#if this.project_description}}
+                   <p id="p-projectdescription" class="project_description">{{this.project_description}}</p>
+                 {{/if}}
+                 {{#if this.project_tech}}
+                   <p id="p-projecttech" class="project_tech">Tech Stack: {{this.project_tech}}</p>
+                 {{/if}}
+               </div>
+             </div>
+           {{/each}}
          {{/if}}
-      </div>
+       </div>
+       
+       
       <div id="certifications" class="main_div">
          {{#if certifications.length}}
          <h2 id="h2-certification">CERTIFICATIONS</h2>

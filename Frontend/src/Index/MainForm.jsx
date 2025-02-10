@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import Header from "./Components/Header/BioSummary.jsx";
+import BioSummary from "./Components/Basic Details/BioSummary.jsx";
 import Education from "./Components/Education/EducationMain.jsx";
 import axios from "axios";
 import Experience from "./Components/Experience/ExperienceMain.jsx";
+import Project from "./Components/Project/Project.jsx";
 const MainForm = () => {
   const [resumeData, setResumeData] = useState({
     username: "",
@@ -89,9 +90,18 @@ const MainForm = () => {
         ]
       }
     ],
+    projects: {
+      project1: {
+        project_name: "",
+        project_link: "",
+        project_description: "",
+        project_tech: ""
+      }
+    },
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
+    localStorage.setItem(resumeData, JSON.stringify(resumeData));
     try {
       const response = await axios.post(
         "http://localhost:5000/generate-pdf",
@@ -112,9 +122,10 @@ const MainForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <Header resumeData={resumeData} setResumeData={setResumeData} />
+        <BioSummary resumeData={resumeData} setResumeData={setResumeData} />
         <Experience resumeData={resumeData} setResumeData={setResumeData} />
         <Education resumeData={resumeData} setResumeData={setResumeData} />
+        <Project resumeData={resumeData} setResumeData={setResumeData} />
         <button type="submit">Submit</button>
       </form>
     </div>
