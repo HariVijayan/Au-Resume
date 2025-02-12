@@ -3,7 +3,7 @@ import React from "react";
 const BioSummary = ({ resumeData, setResumeData }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
+    
     setResumeData((prevState) => {
       return {
         ...prevState,

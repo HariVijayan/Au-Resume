@@ -4,6 +4,9 @@ import Education from "./Components/Education/EducationMain.jsx";
 import axios from "axios";
 import Experience from "./Components/Experience/ExperienceMain.jsx";
 import Project from "./Components/Project/Project.jsx";
+import Skills from "./Components/Skills/SkillsMain.jsx";
+import Cerifications from "./Components/Certifications.jsx/CertificationsMain.jsx";
+import Language from "./Components/Language/Language.jsx";
 const MainForm = () => {
   const [resumeData, setResumeData] = useState({
     username: "",
@@ -98,7 +101,28 @@ const MainForm = () => {
         project_tech: ""
       }
     },
+    skills: {
+      style1: {
+        skillset: [""]
+      },
+      style2: {
+        skillset: ""
+      }
+    },
+    certification: {
+      style1: {
+        certificationset: [""]
+      },
+      style2: {
+        certificationset: ""
+      }
+    },
+    languages: [
+      ""
+    ]
   });
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     localStorage.setItem(resumeData, JSON.stringify(resumeData));
@@ -126,6 +150,9 @@ const MainForm = () => {
         <Experience resumeData={resumeData} setResumeData={setResumeData} />
         <Education resumeData={resumeData} setResumeData={setResumeData} />
         <Project resumeData={resumeData} setResumeData={setResumeData} />
+        <Skills resumeData={resumeData} setResumeData={setResumeData} />
+        <Cerifications resumeData={resumeData} setResumeData={setResumeData} />
+        <Language resumeData={resumeData} setResumeData={setResumeData} />
         <button type="submit">Submit</button>
       </form>
     </div>

@@ -2,7 +2,7 @@ import React from "react";
 import Style1 from './Style 1'
 import Style2 from './Style 2'
 
-const Experience = ({ resumeData, setResumeData }) => {
+const Skills = ({ resumeData, setResumeData }) => {
   return (
     <div>
       <Style1 resumeData={resumeData} setResumeData={setResumeData} />
@@ -11,4 +11,4 @@ const Experience = ({ resumeData, setResumeData }) => {
   );
 };
 
-export default Experience;
+export default Skills;
