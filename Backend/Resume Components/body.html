@@ -162,26 +162,27 @@
          {{/if}}
       </div>
       <div id="skills" class="main_div">
-         {{#if skills.length}}
-         <h2 id="h2-skills">SKILLS</h2>
-         {{#each skills}}
-         {{#if skillstyle1}}
-         <div id="skillsstyle1">
-            <ul id="ul-skillsstyle1">
-               {{#each skillset}}
-               <li>{{this}}</li>
-               {{/each}}
-            </ul>
-         </div>
+         {{#if skills}}
+           <h2 id="h2-skills">SKILLS</h2>
+           
+           {{#if skills.style1}} <!-- Check if style1 exists -->
+             <div id="skillsstyle1">
+               <ul id="ul-skillsstyle1">
+                 {{#each skills.style1.skillset}} <!-- Loop through style1's skillset array -->
+                   <li>{{this}}</li>
+                 {{/each}}
+               </ul>
+             </div>
+           {{/if}}
+       
+           {{#if skills.style2}} <!-- Check if style2 exists -->
+             <div id="skillsstyle2">
+               <p id="p-skillset">{{skills.style2.skillset}}</p> <!-- Display style2's skillset string -->
+             </div>
+           {{/if}}
          {{/if}}
-         {{#if skillstyle2}}
-         <div id="skillsstyle2">
-            <p id="p-skillset">{{skillset}}</p>
-         </div>
-         {{/if}}
-         {{/each}}
-         {{/if}}
-      </div>
+       </div>
+       
       <div id="projects" class="main_div">
          {{#if projects}}
            <h2 id="h2-projects">PROJECTS</h2>
@@ -211,24 +212,22 @@
        
        
       <div id="certifications" class="main_div">
-         {{#if certifications.length}}
+         {{#if certification}}
          <h2 id="h2-certification">CERTIFICATIONS</h2>
-         {{#each certifications}}
-         {{#if certificationstyle1}}
+         {{#if certification.style1}}
          <div id="certificationstyle1">
             <ul id="ul-certificationstyle1">
-               {{#each certificationset}}
+               {{#each certification.style1.certificationset}}
                <li>{{this}}</li>
                {{/each}}
             </ul>
          </div>
          {{/if}}
-         {{#if certificationstyle2}}
+         {{#if certification.style2}}
          <div id="certificationstyle2">
-            <p id="p-certificationset">{{certificationset}}</p>
+            <p id="p-certificationset">{{certification.style2.certificationset}}</p>
          </div>
          {{/if}}
-         {{/each}}
          {{/if}}
       </div>
       <div id="languages" class="main_div">
