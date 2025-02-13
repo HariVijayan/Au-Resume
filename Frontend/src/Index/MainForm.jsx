@@ -7,6 +7,7 @@ import Project from "./Components/Project/Project.jsx";
 import Skills from "./Components/Skills/SkillsMain.jsx";
 import Cerifications from "./Components/Certifications.jsx/CertificationsMain.jsx";
 import Language from "./Components/Language/Language.jsx";
+import CustomDiv from "./Components/Custom/CustomMain.jsx";
 const MainForm = () => {
   const [resumeData, setResumeData] = useState({
     username: "",
@@ -119,7 +120,22 @@ const MainForm = () => {
     },
     languages: [
       ""
-    ]
+    ],
+    customdiv:
+  [
+    {
+      customtitle: "",
+      customdivstyle1: true,
+      customlist: [""]
+    },
+    {
+      customtitle: "",
+      customdivstyle2: true,
+      customparagraph: ""
+    },
+
+  ]
+
   });
 
 
@@ -153,6 +169,7 @@ const MainForm = () => {
         <Skills resumeData={resumeData} setResumeData={setResumeData} />
         <Cerifications resumeData={resumeData} setResumeData={setResumeData} />
         <Language resumeData={resumeData} setResumeData={setResumeData} />
+        <CustomDiv resumeData={resumeData} setResumeData={setResumeData} />
         <button type="submit">Submit</button>
       </form>
     </div>

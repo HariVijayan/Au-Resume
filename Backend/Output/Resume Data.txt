@@ -10,7 +10,7 @@
   "githuburl": "https://www.github.com/John",
   "customlink": "www.myportfolio.com",
   "customlinkurl": "https://www.myportfolio.com",
-  "summary": "sasa",
+  "summary": "sdds",
   "education": [
     {
       "phd": [
@@ -19,7 +19,7 @@
           "phd_university": "Princeton University",
           "phd_year": "2024 - 2029",
           "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
-          "phd_additional_info": "assa"
+          "phd_additional_info": "dsds"
         }
       ],
       "pg_degree": [
@@ -29,7 +29,7 @@
           "pg_degree_year": "2022 - 2024",
           "pg_degree_cgpa": "CGPA: 9.5",
           "pg_degree_additional_info": "",
-          "pg_additional_info": "assa"
+          "pg_additional_info": "dsds"
         }
       ],
       "ug_degree": [
@@ -39,7 +39,7 @@
           "ug_degree_year": "2019 - 2022",
           "ug_degree_cgpa": "CGPA: 8.7",
           "ug_degree_additional_info": "",
-          "ug_additional_info": "sasa"
+          "ug_additional_info": "dsds"
         }
       ],
       "diploma": [
@@ -48,7 +48,7 @@
           "diploma_university": "Princeton University",
           "diploma_year": "2017 - 2019",
           "diploma_cgpa": "CGPA: 9.5",
-          "diploma_additional_info": "asas"
+          "diploma_additional_info": "dsds"
         }
       ],
       "hsc_name": "Don Bosco School",
@@ -124,5 +124,40 @@
   "languages": [
     "tamil",
     "english"
+  ],
+  "customdiv": [
+    {
+      "customtitle": "dsds",
+      "customdivstyle1": true,
+      "customlist": [
+        "sdds",
+        "sdsdsdds",
+        "dssdds",
+        "dssd"
+      ]
+    },
+    {
+      "customtitle": "dssd",
+      "customdivstyle2": true,
+      "customparagraph": "dsdssddddddddddddddddddddddddddddddddddddddddd"
+    },
+    {
+      "customtitle": "lkklk",
+      "customdivstyle1": true,
+      "customlist": [
+        "kjlkjkljlk",
+        "jlklkjlk",
+        "kljlkjlkj"
+      ],
+      "customlisttitle": "lkklk",
+      "customlistvalue": "kjlkjkljlk, jlklkjlk, kljlkjlkj"
+    },
+    {
+      "customtitle": "kllklklk",
+      "customdivstyle2": true,
+      "customparagraph": "jhjhjhjh",
+      "customparatitle": "kllklklk",
+      "custompara": "jhjhjhjh"
+    }
   ]
 }
