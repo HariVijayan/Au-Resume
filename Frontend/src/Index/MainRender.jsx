@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import MainForm from './MainForm'
 import './MainStyleSheet.css'
 
-createRoot(document.getElementById('dashboardbodywrapper')).render(
+createRoot(document.getElementById('dv-BodyWrapper')).render(
   <StrictMode>
     <MainForm />
   </StrictMode>,

@@ -36,9 +36,9 @@ const Project = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div>
+    <>
       {Object.keys(resumeData.projects).map((projectKey) => (
-        <div key={projectKey} id="style-1">
+        <div key={projectKey} id="dv-ProjectsWrapper" className="WrapperClass">
           <div>
             <label>Name:</label>
             <input
@@ -88,7 +88,7 @@ const Project = ({ resumeData, setResumeData }) => {
       <button type="button" onClick={handleAddProjects}>
         Add Project
       </button>
-    </div>
+    </>
   );
 };
 

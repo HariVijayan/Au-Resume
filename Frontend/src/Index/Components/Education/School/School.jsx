@@ -16,7 +16,7 @@ const School = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div>
+    <div id="dv-EducationSchool">
       <div>
         <label>HSC Name:</label>
         <input

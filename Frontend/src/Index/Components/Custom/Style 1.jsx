@@ -35,12 +35,12 @@ const Style1 = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div>
+    <>
       <h3>Custom Div - Style 1</h3>
       {resumeData.customdiv.map((div, index) => {
         if (div.customdivstyle1) {
           return (
-            <div key={index} id={`style-1-${index}`}>
+            <div key={index} id="dv-CustomDivStyle1">
               <div>
                 <label>Custom List Title:</label>
                 <input
@@ -71,7 +71,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
       <button type="button" onClick={handleAddCustomDiv}>
         Add Custom Div
       </button>
-    </div>
+    </>
   );
 };
 

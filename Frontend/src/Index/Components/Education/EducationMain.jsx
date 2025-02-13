@@ -7,7 +7,7 @@ import School from "./School/School.jsx";
 
 const Education = ({ resumeData, setResumeData }) => {
   return (
-    <div>
+    <div id="dv-EducationWrapper" className="WrapperClass">
       <Phd resumeData={resumeData} setResumeData={setResumeData} />
       <Pg resumeData={resumeData} setResumeData={setResumeData} />
       <Ug resumeData={resumeData} setResumeData={setResumeData} />

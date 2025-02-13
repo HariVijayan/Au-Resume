@@ -29,10 +29,10 @@ const Diploma = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div>
+    <>
       <h3>Diploma Details</h3>
       {resumeData.education[0].diploma.map((diploma, index) => (
-        <div key={index} className="diploma-entry">
+        <div key={index} id="dv-EducationDiploma">
           <div>
             <label>Diploma Name:</label>
             <input
@@ -92,7 +92,7 @@ const Diploma = ({ resumeData, setResumeData }) => {
       <button type="button" onClick={(e) => handleAddEducation(e)}>
         Add Diploma
       </button>
-    </div>
+    </>
   );
 };
 

@@ -29,10 +29,10 @@ const Pg = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div>
+    <>
       <h3>PG Details</h3>
       {resumeData.education[0].pg_degree.map((pg_degree, index) => (
-        <div key={index} className="pg-entry">
+        <div key={index} id="dv-EducationPg">
           <div>
             <label>PG. Name:</label>
             <input
@@ -92,7 +92,7 @@ const Pg = ({ resumeData, setResumeData }) => {
       <button type="button" onClick={(e) => handleAddEducation(e)}>
         Add PG
       </button>
-    </div>
+    </>
   );
 };
 

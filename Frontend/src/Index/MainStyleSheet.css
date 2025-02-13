@@ -6,10 +6,21 @@ body{
   margin: 0 auto;
 }
 
-#dashboardbodywrapper{
+#dv-BodyWrapper{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
+
+.WrapperClass{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-top: 2em;
+}
+

@@ -36,9 +36,9 @@ const Style1 = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div>
+    <>
       {resumeData.experience[0].style1.map((style1, index) => (
-        <div key={index} id="style-1">
+        <div key={index} id="dv-ExperienceStyle1">
           <div>
             <label>Company Name:</label>
             <input
@@ -110,7 +110,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
       <button type="button" onClick={(e) => handleAddExperience(e)}>
         Add Experience
       </button>
-    </div>
+    </>
   );
 };
 

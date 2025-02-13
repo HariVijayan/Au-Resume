@@ -8,6 +8,7 @@ import Skills from "./Components/Skills/SkillsMain.jsx";
 import Cerifications from "./Components/Certifications.jsx/CertificationsMain.jsx";
 import Language from "./Components/Language/Language.jsx";
 import CustomDiv from "./Components/Custom/CustomMain.jsx";
+
 const MainForm = () => {
   const [resumeData, setResumeData] = useState({
     username: "",
@@ -79,65 +80,72 @@ const MainForm = () => {
             experience_year: "",
             experience_designation: "",
             experience_team: "",
-            experience_roles: []
-          }
+            experience_roles: [],
+          },
         ],
         style2: [
           {
-          experience_company: "",
-          experience_location: "",
-          experience_year: "",
-          experience_designation: "",
-          experience_team: "",
-          experience_description: ""
-          }
-        ]
-      }
+            experience_company: "",
+            experience_location: "",
+            experience_year: "",
+            experience_designation: "",
+            experience_team: "",
+            experience_description: "",
+          },
+        ],
+      },
     ],
     projects: {
       project1: {
         project_name: "",
         project_link: "",
         project_description: "",
-        project_tech: ""
-      }
+        project_tech: "",
+      },
     },
     skills: {
       style1: {
-        skillset: [""]
+        skillset: [""],
       },
       style2: {
-        skillset: ""
-      }
+        skillset: "",
+      },
     },
     certification: {
       style1: {
-        certificationset: [""]
+        certificationset: [""],
       },
       style2: {
-        certificationset: ""
-      }
+        certificationset: "",
+      },
     },
-    languages: [
-      ""
+    languages: [""],
+    customdiv: [
+      {
+        customtitle: "",
+        customdivstyle1: true,
+        customlist: [""],
+      },
+      {
+        customtitle: "",
+        customdivstyle2: true,
+        customparagraph: "",
+      },
     ],
-    customdiv:
-  [
-    {
-      customtitle: "",
-      customdivstyle1: true,
-      customlist: [""]
-    },
-    {
-      customtitle: "",
-      customdivstyle2: true,
-      customparagraph: ""
-    },
-
-  ]
-
   });
 
+  const [activeSection, setActiveSection] = useState("BasicDetails");
+
+  const setContent = (section) => {
+    setActiveSection(section);
+    setButtons(section);
+  };
+
+  const [activeButtons, setActiveButtons] = useState("BasicDetails");
+
+  const setButtons = (buttonName) => {
+    setActiveButtons(buttonName);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -159,20 +167,120 @@ const MainForm = () => {
       console.error("Error generating PDF:", error);
     }
   };
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <BioSummary resumeData={resumeData} setResumeData={setResumeData} />
-        <Experience resumeData={resumeData} setResumeData={setResumeData} />
-        <Education resumeData={resumeData} setResumeData={setResumeData} />
-        <Project resumeData={resumeData} setResumeData={setResumeData} />
-        <Skills resumeData={resumeData} setResumeData={setResumeData} />
-        <Cerifications resumeData={resumeData} setResumeData={setResumeData} />
-        <Language resumeData={resumeData} setResumeData={setResumeData} />
-        <CustomDiv resumeData={resumeData} setResumeData={setResumeData} />
-        <button type="submit">Submit</button>
+    <>
+      <form id="MainForm" onSubmit={handleSubmit}>
+        {activeSection === "BasicDetails" && (
+          <BioSummary resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "BasicDetails" && (
+          <button type="button" onClick={() => setContent("Experience")}>
+            Experience
+          </button>
+        )}
+
+        {activeSection === "Experience" && (
+          <Experience resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "Experience" && (
+          <>
+            <button type="button" onClick={() => setContent("BasicDetails")}>
+              Basic Details
+            </button>
+            <button type="button" onClick={() => setContent("Education")}>
+              Education
+            </button>
+          </>
+        )}
+
+        {activeSection === "Education" && (
+          <Education resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "Education" && (
+          <>
+            <button type="button" onClick={() => setContent("Experience")}>
+              Experience
+            </button>
+            <button type="button" onClick={() => setContent("Projects")}>
+              Projects
+            </button>
+          </>
+        )}
+
+        {activeSection === "Projects" && (
+          <Project resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "Projects" && (
+          <>
+            <button type="button" onClick={() => setContent("Education")}>
+              Education
+            </button>
+            <button type="button" onClick={() => setContent("Skills")}>
+              Skills
+            </button>
+          </>
+        )}
+
+        {activeSection === "Skills" && (
+          <Skills resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "Skills" && (
+          <>
+            <button type="button" onClick={() => setContent("Projects")}>
+              Projects
+            </button>
+            <button type="button" onClick={() => setContent("Certifications")}>
+              Certifications
+            </button>
+          </>
+        )}
+
+        {activeSection === "Certifications" && (
+          <Cerifications
+            resumeData={resumeData}
+            setResumeData={setResumeData}
+          />
+        )}
+        {activeButtons === "Certifications" && (
+          <>
+            <button type="button" onClick={() => setContent("Skills")}>
+              Skills
+            </button>
+            <button type="button" onClick={() => setContent("Languages")}>
+              Languages
+            </button>
+          </>
+        )}
+
+        {activeSection === "Languages" && (
+          <Language resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "Languages" && (
+          <>
+            <button type="button" onClick={() => setContent("Certifications")}>
+              Certifications
+            </button>
+            <button type="button" onClick={() => setContent("CustomDiv")}>
+              Custom Input
+            </button>
+          </>
+        )}
+
+        {activeSection === "CustomDiv" && (
+          <CustomDiv resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "CustomDiv" && (
+          <>
+            <button type="button" onClick={() => setContent("Languages")}>
+              Languages
+            </button>
+            <button type="submit">Submit</button>
+          </>
+        )}
       </form>
-    </div>
+    </>
   );
 };
+
 export default MainForm;

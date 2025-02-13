@@ -15,8 +15,7 @@ const Style2 = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div>
-      <div id="style-2">
+      <div id="dv-CertificationStyle2">
         <div>
         <label>Certification Set:</label>
           <input
@@ -29,7 +28,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
           />
         </div>
       </div>
-    </div>
   );
 };
 

@@ -13,8 +13,7 @@ const BioSummary = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div>
-      <h1>Resume Form</h1>
+    <div id="dv-BasicDetailsWrapper" className="WrapperClass">
       <div>
         <label>Username:</label>
         <input

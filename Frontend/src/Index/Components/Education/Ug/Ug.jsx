@@ -31,10 +31,10 @@ const Ug = ({ resumeData, setResumeData }) => {
       };
 
     return (
-        <div>
+        <>
          <h3>UG Details</h3>
          {resumeData.education[0].ug_degree.map((ug_degree, index) => (
-         <div key={index} className="ug-entry">
+         <div key={index} id="dv-EducationUg">
             <div>
                <label>UG. Name:</label>
                <input
@@ -92,7 +92,7 @@ const Ug = ({ resumeData, setResumeData }) => {
          </div>
          ))}
          <button type="button" onClick={(e) => handleAddEducation(e)}>Add UG</button>
-        </div>
+        </>
     );
 };
 

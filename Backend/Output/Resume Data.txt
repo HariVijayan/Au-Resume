@@ -1,16 +1,16 @@
 {
-  "username": "John Doe",
-  "small_bio": "Developer|Designer|Freelancer",
-  "phone_number": "+91 9090909099",
-  "emailid": "john@gmail.com",
-  "location": "Chennai, India",
-  "linkedin": "linkedin.com/John",
+  "username": "sddssd",
+  "small_bio": "sddsds",
+  "phone_number": "sdds",
+  "emailid": "dsds@gmail.com",
+  "location": "sdds",
+  "linkedin": "dssd",
   "linkedinurl": "https://www.linkedin.com/John",
-  "github": "github.com/John",
+  "github": "sdds",
   "githuburl": "https://www.github.com/John",
-  "customlink": "www.myportfolio.com",
+  "customlink": "sdds",
   "customlinkurl": "https://www.myportfolio.com",
-  "summary": "sdds",
+  "summary": "addsa",
   "education": [
     {
       "phd": [
@@ -19,7 +19,7 @@
           "phd_university": "Princeton University",
           "phd_year": "2024 - 2029",
           "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
-          "phd_additional_info": "dsds"
+          "phd_additional_info": "assa"
         }
       ],
       "pg_degree": [
@@ -29,7 +29,7 @@
           "pg_degree_year": "2022 - 2024",
           "pg_degree_cgpa": "CGPA: 9.5",
           "pg_degree_additional_info": "",
-          "pg_additional_info": "dsds"
+          "pg_additional_info": "assa"
         }
       ],
       "ug_degree": [
@@ -39,7 +39,7 @@
           "ug_degree_year": "2019 - 2022",
           "ug_degree_cgpa": "CGPA: 8.7",
           "ug_degree_additional_info": "",
-          "ug_additional_info": "dsds"
+          "ug_additional_info": "assa"
         }
       ],
       "diploma": [
@@ -48,7 +48,7 @@
           "diploma_university": "Princeton University",
           "diploma_year": "2017 - 2019",
           "diploma_cgpa": "CGPA: 9.5",
-          "diploma_additional_info": "dsds"
+          "diploma_additional_info": "asas"
         }
       ],
       "hsc_name": "Don Bosco School",
@@ -66,7 +66,7 @@
       "style1": [
         {
           "experience_company": "Amazon India",
-          "experience_location": "Bangalore",
+          "experience_location": "Chennai, India",
           "experience_year": "2022 - Present",
           "experience_designation": "Software Developer",
           "experience_team": "Cloud Deployment",
@@ -78,7 +78,7 @@
       "style2": [
         {
           "experience_company": "ABCD Corp,",
-          "experience_location": "Hyderabad",
+          "experience_location": "Bangalore",
           "experience_year": "2023 - Present",
           "experience_designation": "Software Developer",
           "experience_team": "Ops",
@@ -91,7 +91,7 @@
     "project1": {
       "project_name": "Project 1",
       "project_link": "https://github.com/John/Project1",
-      "project_description": "Developed and maintained the company website with advanced features like authentication, user profiles, and data management.",
+      "project_description": "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.",
       "project_tech": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
     }
   },
@@ -130,34 +130,17 @@
       "customtitle": "dsds",
       "customdivstyle1": true,
       "customlist": [
-        "sdds",
-        "sdsdsdds",
-        "dssdds",
-        "dssd"
-      ]
+        "sdds"
+      ],
+      "customlisttitle": "dsds",
+      "customlistvalue": "sdds"
     },
     {
       "customtitle": "dssd",
       "customdivstyle2": true,
-      "customparagraph": "dsdssddddddddddddddddddddddddddddddddddddddddd"
-    },
-    {
-      "customtitle": "lkklk",
-      "customdivstyle1": true,
-      "customlist": [
-        "kjlkjkljlk",
-        "jlklkjlk",
-        "kljlkjlkj"
-      ],
-      "customlisttitle": "lkklk",
-      "customlistvalue": "kjlkjkljlk, jlklkjlk, kljlkjlkj"
-    },
-    {
-      "customtitle": "kllklklk",
-      "customdivstyle2": true,
-      "customparagraph": "jhjhjhjh",
-      "customparatitle": "kllklklk",
-      "custompara": "jhjhjhjh"
+      "customparagraph": "dsds",
+      "customparatitle": "dssd",
+      "custompara": "dsds"
     }
   ]
 }
