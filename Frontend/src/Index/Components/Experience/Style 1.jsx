@@ -38,8 +38,8 @@ const Style1 = ({ resumeData, setResumeData }) => {
   return (
     <>
       {resumeData.experience[0].style1.map((style1, index) => (
-        <div key={index} id="dv-ExperienceStyle1">
-          <div>
+        <div key={index} id="dv-ExperienceStyle1" className="SubWrapper">
+          <div id="dv-ExperienceCompanyName" className="InputWrapper">
             <label>Company Name:</label>
             <input
               type="text"
@@ -50,7 +50,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-ExperienceLocation" className="InputWrapper">
             <label>Location:</label>
             <input
               type="text"
@@ -61,7 +61,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-ExperiencePeriod" className="InputWrapper">
             <label>Period:</label>
             <input
               type="text"
@@ -72,7 +72,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-ExperienceDesignation" className="InputWrapper">
             <label>Designation:</label>
             <input
               type="text"
@@ -83,7 +83,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-ExperienceTeamName" className="InputWrapper">
             <label>Team Name:</label>
             <input
               type="text"
@@ -94,7 +94,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-ExperienceRoles" className="InputWrapper">
             <label>Roles:</label>
             <input
               type="text"

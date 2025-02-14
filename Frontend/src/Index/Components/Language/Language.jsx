@@ -15,8 +15,7 @@ const Language = ({ resumeData, setResumeData }) => {
 
   return (
     <div id="dv-LanguagesWrapper" className="WrapperClass">
-      <h3>Languages Known</h3>
-      <div>
+      <div id="dv-LanguagesSet" className="InputWrapper">
         <label>Languages:</label>
         <input
           type="text"

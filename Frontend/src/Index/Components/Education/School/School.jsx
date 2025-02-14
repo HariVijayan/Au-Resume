@@ -16,8 +16,8 @@ const School = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <div id="dv-EducationSchool">
-      <div>
+    <div id="dv-EducationSchoolWrapper" className="WrapperClass">
+      <div id="dv-EducationHscName" className="InputWrapper">
         <label>HSC Name:</label>
         <input
           type="text"
@@ -28,7 +28,7 @@ const School = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-EducationHscYear" className="InputWrapper">
         <label>HSC Year:</label>
         <input
           type="text"
@@ -39,7 +39,7 @@ const School = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-EducationHscGrade" className="InputWrapper">
         <label>HSC Grade:</label>
         <input
           type="text"
@@ -50,7 +50,7 @@ const School = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-EducationHscAdditionalInfo" className="InputWrapper">
         <label>HSC Additional Info:</label>
         <input
           type="text"
@@ -61,7 +61,7 @@ const School = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-EducationSslcName" className="InputWrapper">
         <label>SSLC Name:</label>
         <input
           type="text"
@@ -72,7 +72,7 @@ const School = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-EducationSslcYear" className="InputWrapper">
         <label>SSLC Year:</label>
         <input
           type="text"
@@ -83,7 +83,7 @@ const School = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-EducationSslcGrade" className="InputWrapper">
         <label>SSLC Grade:</label>
         <input
           type="text"
@@ -94,7 +94,7 @@ const School = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-EducationSslcAdditionalInfo" className="InputWrapper">
         <label>SSLC Additional Info:</label>
         <input
           type="text"

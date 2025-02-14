@@ -36,12 +36,11 @@ const Style1 = ({ resumeData, setResumeData }) => {
 
   return (
     <>
-      <h3>Custom Div - Style 1</h3>
       {resumeData.customdiv.map((div, index) => {
         if (div.customdivstyle1) {
           return (
-            <div key={index} id="dv-CustomDivStyle1">
-              <div>
+            <div key={index} id="dv-CustomDivStyle1" className="SubWrapper">
+              <div id="dv-CustomDivStyle1Title" className="InputWrapper">
                 <label>Custom List Title:</label>
                 <input
                   type="text"
@@ -52,7 +51,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
                   required
                 />
               </div>
-              <div>
+              <div id="dv-CustomDivStyle1List" className="InputWrapper">
                 <label>Custom List Values:</label>
                 <input
                   type="text"

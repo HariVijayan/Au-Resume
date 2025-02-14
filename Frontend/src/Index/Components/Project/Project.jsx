@@ -36,10 +36,10 @@ const Project = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <>
+    <div id="dv-ProjectsWrapper" className="WrapperClass">
       {Object.keys(resumeData.projects).map((projectKey) => (
-        <div key={projectKey} id="dv-ProjectsWrapper" className="WrapperClass">
-          <div>
+        <div key={projectKey} id="dv-Projects" className="SubWrapper">
+          <div id="dv-ProjectName" className="InputWrapper">
             <label>Name:</label>
             <input
               type="text"
@@ -50,7 +50,7 @@ const Project = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-ProjectLink" className="InputWrapper">
             <label>Hosted Link:</label>
             <input
               type="text"
@@ -61,7 +61,7 @@ const Project = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-ProjectDescription" className="InputWrapper">
             <label>Description:</label>
             <input
               type="text"
@@ -72,7 +72,7 @@ const Project = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-ProjectTech" className="InputWrapper">
             <label>Tech Stack:</label>
             <input
               type="text"
@@ -88,7 +88,7 @@ const Project = ({ resumeData, setResumeData }) => {
       <button type="button" onClick={handleAddProjects}>
         Add Project
       </button>
-    </>
+    </div>
   );
 };
 

@@ -29,11 +29,10 @@ const Pg = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <>
-      <h3>PG Details</h3>
+    <div id="dv-EducationPgWrapper" className="WrapperClass">
       {resumeData.education[0].pg_degree.map((pg_degree, index) => (
-        <div key={index} id="dv-EducationPg">
-          <div>
+        <div key={index} id="dv-EducationPg" className="SubWrapper">
+          <div id="dv-EducationPgName" className="InputWrapper">
             <label>PG. Name:</label>
             <input
               type="text"
@@ -44,7 +43,7 @@ const Pg = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-EducationPgUniversity" className="InputWrapper">
             <label>PG University:</label>
             <input
               type="text"
@@ -55,7 +54,7 @@ const Pg = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-EducationPgYear" className="InputWrapper">
             <label>Pg. Year:</label>
             <input
               type="text"
@@ -66,7 +65,7 @@ const Pg = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-EducationPgCgpa" className="InputWrapper">
             <label>Pg CGPA:</label>
             <input
               type="text"
@@ -77,7 +76,7 @@ const Pg = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-EducationPgAdditionalInfo" className="InputWrapper">
             <label>Pg Additional Info:</label>
             <textarea
               name="pg_additional_info"
@@ -92,7 +91,7 @@ const Pg = ({ resumeData, setResumeData }) => {
       <button type="button" onClick={(e) => handleAddEducation(e)}>
         Add PG
       </button>
-    </>
+    </div>
   );
 };
 

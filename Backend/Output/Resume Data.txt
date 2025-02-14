@@ -1,16 +1,16 @@
 {
-  "username": "sddssd",
-  "small_bio": "sddsds",
-  "phone_number": "sdds",
-  "emailid": "dsds@gmail.com",
-  "location": "sdds",
-  "linkedin": "dssd",
+  "username": "John Doe",
+  "small_bio": "Developer|Designer|Freelancer",
+  "phone_number": "+91 9090909099",
+  "emailid": "john@gmail.com",
+  "location": "Chennai, India",
+  "linkedin": "linkedin.com/John",
   "linkedinurl": "https://www.linkedin.com/John",
-  "github": "sdds",
+  "github": "github.com/John",
   "githuburl": "https://www.github.com/John",
-  "customlink": "sdds",
+  "customlink": "www.myportfolio.com",
   "customlinkurl": "https://www.myportfolio.com",
-  "summary": "addsa",
+  "summary": "Summary",
   "education": [
     {
       "phd": [
@@ -19,7 +19,7 @@
           "phd_university": "Princeton University",
           "phd_year": "2024 - 2029",
           "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
-          "phd_additional_info": "assa"
+          "phd_additional_info": "Addl"
         }
       ],
       "pg_degree": [
@@ -29,7 +29,7 @@
           "pg_degree_year": "2022 - 2024",
           "pg_degree_cgpa": "CGPA: 9.5",
           "pg_degree_additional_info": "",
-          "pg_additional_info": "assa"
+          "pg_additional_info": "Addl"
         }
       ],
       "ug_degree": [
@@ -39,7 +39,7 @@
           "ug_degree_year": "2019 - 2022",
           "ug_degree_cgpa": "CGPA: 8.7",
           "ug_degree_additional_info": "",
-          "ug_additional_info": "assa"
+          "ug_additional_info": "Addl"
         }
       ],
       "diploma": [
@@ -48,7 +48,7 @@
           "diploma_university": "Princeton University",
           "diploma_year": "2017 - 2019",
           "diploma_cgpa": "CGPA: 9.5",
-          "diploma_additional_info": "asas"
+          "diploma_additional_info": "Addl"
         }
       ],
       "hsc_name": "Don Bosco School",
@@ -65,24 +65,25 @@
     {
       "style1": [
         {
-          "experience_company": "Amazon India",
-          "experience_location": "Chennai, India",
+          "experience_company": "Amazon India,",
+          "experience_location": "Bangalore",
           "experience_year": "2022 - Present",
           "experience_designation": "Software Developer",
           "experience_team": "Cloud Deployment",
           "experience_roles": [
-            "Developed and maintained the company website using modern JavaScript frameworks"
+            "Developed and maintained the company website using modern JavaScript frameworks",
+            "Collaborated with cross-functional teams to deploy cloud solutions and improve scalability"
           ]
         }
       ],
       "style2": [
         {
-          "experience_company": "ABCD Corp,",
-          "experience_location": "Bangalore",
-          "experience_year": "2023 - Present",
-          "experience_designation": "Software Developer",
-          "experience_team": "Ops",
-          "experience_description": "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies."
+          "experience_company": "Zoho Corporation",
+          "experience_location": "Chennai",
+          "experience_year": "2019 - 2022",
+          "experience_designation": "Software Engineer",
+          "experience_team": "Operations Security",
+          "experience_description": "Worked for 3 years. Developed security management portal"
         }
       ]
     }
@@ -91,56 +92,56 @@
     "project1": {
       "project_name": "Project 1",
       "project_link": "https://github.com/John/Project1",
-      "project_description": "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies.",
+      "project_description": "Developed and maintained the company website with advanced features like authentication, user profiles, and data management.",
       "project_tech": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
     }
   },
   "skills": {
     "style1": {
       "skillset": [
-        "sdds",
-        "sdds",
-        "sdds",
-        "sdds",
-        "dssd"
+        "Web Development",
+        "Cloud Deployment",
+        "Machine Learning"
       ]
     },
     "style2": {
-      "skillset": "sdds, sdsdds, dssd, sdds"
+      "skillset": ""
     }
   },
   "certification": {
     "style1": {
       "certificationset": [
-        "egrf",
-        "fafdadsaf",
-        "sfgsgfsgf"
+        "AWS Certified Developer",
+        "Google Cloud Certified (udemy.com/certificate/ghvsgv212)",
+        "Machine Learning Expert"
       ]
     },
     "style2": {
-      "certificationset": "egrf, fafdadsaf, sfgsgfsgf"
+      "certificationset": ""
     }
   },
   "languages": [
-    "tamil",
-    "english"
+    "Tamil",
+    "English"
   ],
   "customdiv": [
     {
-      "customtitle": "dsds",
+      "customtitle": "Custom Title 1",
       "customdivstyle1": true,
       "customlist": [
-        "sdds"
+        "Custom Point 1",
+        "Custom Point2",
+        "Custom Point3"
       ],
-      "customlisttitle": "dsds",
-      "customlistvalue": "sdds"
+      "customlisttitle": "Custom Title 1",
+      "customlistvalue": "Custom Point 1, Custom Point2, Custom Point3"
     },
     {
-      "customtitle": "dssd",
+      "customtitle": "Custom Title 2",
       "customdivstyle2": true,
-      "customparagraph": "dsds",
-      "customparatitle": "dssd",
-      "custompara": "dsds"
+      "customparagraph": "Custom Point 1, Custom Point2, Custom Point3",
+      "customparatitle": "Custom Title 2",
+      "custompara": "Custom Point 1, Custom Point2, Custom Point3"
     }
   ]
 }

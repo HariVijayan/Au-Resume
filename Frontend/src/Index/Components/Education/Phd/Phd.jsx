@@ -29,11 +29,10 @@ const Phd = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <>
-      <h3>Education - Ph.D. Details</h3>
+    <div id="dv-EducationPhdWrapper" className="WrapperClass">
       {resumeData.education[0].phd.map((phd, index) => (
-        <div key={index} id="dv-EducationPhd">
-          <div>
+        <div key={index} id="dv-EducationPhd" className="SubWrapper">
+          <div id="dv-EducationPhdName" className="InputWrapper">
             <label>Ph.D. Name:</label>
             <input
               type="text"
@@ -44,7 +43,7 @@ const Phd = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-EducationPhdUniversity" className="InputWrapper">
             <label>Ph.D. University:</label>
             <input
               type="text"
@@ -55,7 +54,7 @@ const Phd = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-EducationPhdYear" className="InputWrapper">
             <label>Ph.D. Year:</label>
             <input
               type="text"
@@ -66,7 +65,7 @@ const Phd = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-EducationPhdExpertise" className="InputWrapper">
             <label>Ph.D. Expertise:</label>
             <input
               type="text"
@@ -77,7 +76,7 @@ const Phd = ({ resumeData, setResumeData }) => {
               required
             />
           </div>
-          <div>
+          <div id="dv-EducationPhdAdditionalInfo" className="InputWrapper">
             <label>Ph.D. Additional Info:</label>
             <textarea
               name="phd_additional_info"
@@ -92,7 +91,7 @@ const Phd = ({ resumeData, setResumeData }) => {
       <button type="button" onClick={(e) => handleAddEducation(e)}>
         Add Phd
       </button>
-    </>
+    </div>
   );
 };
 

@@ -31,11 +31,10 @@ const Ug = ({ resumeData, setResumeData }) => {
       };
 
     return (
-        <>
-         <h3>UG Details</h3>
+        <div id="dv-EducationUgWrapper" className="WrapperClass">
          {resumeData.education[0].ug_degree.map((ug_degree, index) => (
-         <div key={index} id="dv-EducationUg">
-            <div>
+         <div key={index} id="dv-EducationUg" className="SubWrapper">
+            <div id="dv-EducationUgName" className="InputWrapper">
                <label>UG. Name:</label>
                <input
                   type="text"
@@ -46,7 +45,7 @@ const Ug = ({ resumeData, setResumeData }) => {
                required
                />
             </div>
-            <div>
+            <div id="dv-EducationUgUniversity" className="InputWrapper">
                <label>UG University:</label>
                <input
                   type="text"
@@ -57,7 +56,7 @@ const Ug = ({ resumeData, setResumeData }) => {
                required
                />
             </div>
-            <div>
+            <div id="dv-EducationUgYear" className="InputWrapper">
                <label>Ug. Year:</label>
                <input
                   type="text"
@@ -68,7 +67,7 @@ const Ug = ({ resumeData, setResumeData }) => {
                required
                />
             </div>
-            <div>
+            <div id="dv-EducationUgCgpa" className="InputWrapper">
                <label>Ug CGPA:</label>
                <input
                   type="text"
@@ -79,7 +78,7 @@ const Ug = ({ resumeData, setResumeData }) => {
                required
                />
             </div>
-            <div>
+            <div id="dv-EducationUgAdditionalInfo" className="InputWrapper">
                <label>Ug Additional Info:</label>
                <textarea
                   name="ug_additional_info"
@@ -92,7 +91,7 @@ const Ug = ({ resumeData, setResumeData }) => {
          </div>
          ))}
          <button type="button" onClick={(e) => handleAddEducation(e)}>Add UG</button>
-        </>
+        </div>
     );
 };
 

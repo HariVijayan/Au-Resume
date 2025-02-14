@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import BioSummary from "./Components/Basic Details/BioSummary.jsx";
-import Education from "./Components/Education/EducationMain.jsx";
 import axios from "axios";
+import BioSummary from "./Components/Basic Details/BioSummary.jsx";
+import EducationPhd from "./Components/Education/Phd/Phd.jsx";
+import EducationPg from "./Components/Education/Pg/Pg.jsx";
+import EducationUg from "./Components/Education/Ug/Ug.jsx";
+import EducationDiploma from "./Components/Education/Diploma/Diploma.jsx";
+import EducationSchool from "./Components/Education/School/School.jsx";
 import Experience from "./Components/Experience/ExperienceMain.jsx";
 import Project from "./Components/Project/Project.jsx";
 import Skills from "./Components/Skills/SkillsMain.jsx";
@@ -175,65 +179,123 @@ const MainForm = () => {
           <BioSummary resumeData={resumeData} setResumeData={setResumeData} />
         )}
         {activeButtons === "BasicDetails" && (
+          <div id="dv-BasicDetailsButtons" className="NavigationButtons">
           <button type="button" onClick={() => setContent("Experience")}>
             Experience
           </button>
+          </div>
         )}
 
         {activeSection === "Experience" && (
           <Experience resumeData={resumeData} setResumeData={setResumeData} />
         )}
         {activeButtons === "Experience" && (
-          <>
+          <div id="dv-ExperienceButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("BasicDetails")}>
               Basic Details
             </button>
-            <button type="button" onClick={() => setContent("Education")}>
-              Education
+            <button type="button" onClick={() => setContent("EducationPhd")}>
+              Ph.D
             </button>
-          </>
+          </div>
         )}
 
-        {activeSection === "Education" && (
-          <Education resumeData={resumeData} setResumeData={setResumeData} />
+        {activeSection === "EducationPhd" && (
+          <EducationPhd resumeData={resumeData} setResumeData={setResumeData} />
         )}
-        {activeButtons === "Education" && (
-          <>
+        {activeButtons === "EducationPhd" && (
+          <div id="dv-EducationPhdButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Experience")}>
               Experience
+            </button>
+            <button type="button" onClick={() => setContent("EducationPg")}>
+              Post Graduate
+            </button>
+          </div>
+        )}
+
+        {activeSection === "EducationPg" && (
+          <EducationPg resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "EducationPg" && (
+          <div id="dv-EducationPgButtons" className="NavigationButtons">
+            <button type="button" onClick={() => setContent("EducationPhd")}>
+              Ph.D
+            </button>
+            <button type="button" onClick={() => setContent("EducationUg")}>
+              Under Graduate
+            </button>
+          </div>
+        )}
+
+        {activeSection === "EducationUg" && (
+          <EducationUg resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "EducationUg" && (
+          <div id="dv-EducationUgButtons" className="NavigationButtons">
+            <button type="button" onClick={() => setContent("EducationPg")}>
+              Post Graduate
+            </button>
+            <button type="button" onClick={() => setContent("EducationDiploma")}>
+              Diploma
+            </button>
+          </div>
+        )}
+
+        {activeSection === "EducationDiploma" && (
+          <EducationDiploma resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "EducationDiploma" && (
+          <div id="dv-EducationDiplomaButtons" className="NavigationButtons">
+            <button type="button" onClick={() => setContent("EducationUg")}>
+              Under Graduate
+            </button>
+            <button type="button" onClick={() => setContent("EducationSchool")}>
+              School
+            </button>
+          </div>
+        )}
+
+        {activeSection === "EducationSchool" && (
+          <EducationSchool resumeData={resumeData} setResumeData={setResumeData} />
+        )}
+        {activeButtons === "EducationSchool" && (
+          <div id="dv-EducationSchoolButtons" className="NavigationButtons">
+            <button type="button" onClick={() => setContent("EducationDiploma")}>
+              Diploma
             </button>
             <button type="button" onClick={() => setContent("Projects")}>
               Projects
             </button>
-          </>
+          </div>
         )}
 
         {activeSection === "Projects" && (
           <Project resumeData={resumeData} setResumeData={setResumeData} />
         )}
         {activeButtons === "Projects" && (
-          <>
-            <button type="button" onClick={() => setContent("Education")}>
-              Education
+          <div id="dv-ProjectsButtons" className="NavigationButtons">
+            <button type="button" onClick={() => setContent("EducationSchool")}>
+              School
             </button>
             <button type="button" onClick={() => setContent("Skills")}>
               Skills
             </button>
-          </>
+          </div>
         )}
 
         {activeSection === "Skills" && (
           <Skills resumeData={resumeData} setResumeData={setResumeData} />
         )}
         {activeButtons === "Skills" && (
-          <>
+          <div id="dv-SkillsButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Projects")}>
               Projects
             </button>
             <button type="button" onClick={() => setContent("Certifications")}>
               Certifications
             </button>
-          </>
+          </div>
         )}
 
         {activeSection === "Certifications" && (
@@ -243,40 +305,40 @@ const MainForm = () => {
           />
         )}
         {activeButtons === "Certifications" && (
-          <>
+          <div id="dv-CertificationsButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Skills")}>
               Skills
             </button>
             <button type="button" onClick={() => setContent("Languages")}>
               Languages
             </button>
-          </>
+          </div>
         )}
 
         {activeSection === "Languages" && (
           <Language resumeData={resumeData} setResumeData={setResumeData} />
         )}
         {activeButtons === "Languages" && (
-          <>
+          <div id="dv-LanguagesButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Certifications")}>
               Certifications
             </button>
             <button type="button" onClick={() => setContent("CustomDiv")}>
               Custom Input
             </button>
-          </>
+          </div>
         )}
 
         {activeSection === "CustomDiv" && (
           <CustomDiv resumeData={resumeData} setResumeData={setResumeData} />
         )}
         {activeButtons === "CustomDiv" && (
-          <>
+          <div id="dv-CustomDivButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Languages")}>
               Languages
             </button>
             <button type="submit">Submit</button>
-          </>
+          </div>
         )}
       </form>
     </>

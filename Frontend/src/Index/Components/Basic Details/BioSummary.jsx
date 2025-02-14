@@ -14,7 +14,7 @@ const BioSummary = ({ resumeData, setResumeData }) => {
 
   return (
     <div id="dv-BasicDetailsWrapper" className="WrapperClass">
-      <div>
+      <div id="dv-BasicDetailsUsername" className="InputWrapper">
         <label>Username:</label>
         <input
           type="text"
@@ -25,7 +25,7 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsBio" className="InputWrapper">
         <label>Small Bio:</label>
         <input
           type="text"
@@ -33,10 +33,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.small_bio}
           onChange={(e) => handleInputChange(e)}
           placeholder="Developer | Designer | Freelancer"
-          required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsPhoneNumber" className="InputWrapper">
         <label>Phone Number:</label>
         <input
           type="text"
@@ -47,7 +46,7 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsEmail" className="InputWrapper">
         <label>Email ID:</label>
         <input
           type="email"
@@ -58,7 +57,7 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsLocation" className="InputWrapper">
         <label>Location:</label>
         <input
           type="text"
@@ -66,10 +65,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.location}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your location"
-          required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsLinkedIn" className="InputWrapper">
         <label>LinkedIn Username:</label>
         <input
           type="text"
@@ -77,10 +75,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.linkedin}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your LinkedIn username"
-          required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsLinkedInUrl" className="InputWrapper">
         <label>LinkedIn URL:</label>
         <input
           type="url"
@@ -88,10 +85,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.linkedinurl}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your LinkedIn URL"
-          required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsGithub" className="InputWrapper">
         <label>GitHub Username:</label>
         <input
           type="text"
@@ -99,10 +95,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.github}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your GitHub username"
-          required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsGithubUrl" className="InputWrapper">
         <label>GitHub URL:</label>
         <input
           type="url"
@@ -110,10 +105,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.githuburl}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your GitHub URL"
-          required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsCustomLink" className="InputWrapper">
         <label>Custom Link (e.g., Portfolio):</label>
         <input
           type="text"
@@ -121,10 +115,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.customlink}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter custom link"
-          required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsCustomLinkUrl" className="InputWrapper">
         <label>Custom Link URL:</label>
         <input
           type="url"
@@ -132,10 +125,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.customlinkurl}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter custom link URL"
-          required
         />
       </div>
-      <div>
+      <div id="dv-BasicDetailsSummary" className="InputWrapper">
         <label>Summary:</label>
         <textarea
           name="summary"
