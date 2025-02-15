@@ -17,6 +17,9 @@ const School = ({ resumeData, setResumeData }) => {
 
   return (
     <div id="dv-EducationSchoolWrapper" className="WrapperClass">
+      <div id="dv-EducationSchoolHeader" className="EducationHeader">
+      <h3>Education Details - School</h3>
+      </div>
       <div id="dv-EducationHscName" className="InputWrapper">
         <label>HSC Name:</label>
         <input

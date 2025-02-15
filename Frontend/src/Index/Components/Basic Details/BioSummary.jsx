@@ -14,6 +14,9 @@ const BioSummary = ({ resumeData, setResumeData }) => {
 
   return (
     <div id="dv-BasicDetailsWrapper" className="WrapperClass">
+      <div id="dv-BasicDetailsHeader" className="BasicDetailsHeader">
+      <h3>Basic Details</h3>
+      </div>
       <div id="dv-BasicDetailsUsername" className="InputWrapper">
         <label>Username:</label>
         <input

@@ -30,6 +30,12 @@ const Diploma = ({ resumeData, setResumeData }) => {
 
   return (
     <div id="dv-EducationDiplomaWrapper" className="WrapperClass">
+      <div id="dv-EducationDiplomaHeader" className="EducationHeader">
+      <h3>Education Details - Diploma</h3>
+      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddEducationButton">
+        Add Diploma
+      </button>
+      </div>
       {resumeData.education[0].diploma.map((diploma, index) => (
         <div key={index} id="dv-EducationDiploma" className="SubWrapper">
           <div id="dv-EducationDiplomaName" className="InputWrapper">
@@ -88,9 +94,6 @@ const Diploma = ({ resumeData, setResumeData }) => {
           </div>
         </div>
       ))}
-      <button type="button" onClick={(e) => handleAddEducation(e)}>
-        Add Diploma
-      </button>
     </div>
   );
 };

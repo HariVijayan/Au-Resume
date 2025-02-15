@@ -32,6 +32,12 @@ const Ug = ({ resumeData, setResumeData }) => {
 
     return (
         <div id="dv-EducationUgWrapper" className="WrapperClass">
+         <div id="dv-EducationUgHeader" className="EducationHeader">
+      <h3>Education Details - Ug</h3>
+      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddEducationButton">
+        Add Ug
+      </button>
+      </div>
          {resumeData.education[0].ug_degree.map((ug_degree, index) => (
          <div key={index} id="dv-EducationUg" className="SubWrapper">
             <div id="dv-EducationUgName" className="InputWrapper">
@@ -90,7 +96,6 @@ const Ug = ({ resumeData, setResumeData }) => {
             </div>
          </div>
          ))}
-         <button type="button" onClick={(e) => handleAddEducation(e)}>Add UG</button>
         </div>
     );
 };

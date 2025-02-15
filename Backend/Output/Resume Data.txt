@@ -1,64 +1,62 @@
 {
-  "username": "John Doe",
-  "small_bio": "Developer|Designer|Freelancer",
-  "phone_number": "+91 9090909099",
-  "emailid": "john@gmail.com",
-  "location": "Chennai, India",
-  "linkedin": "linkedin.com/John",
-  "linkedinurl": "https://www.linkedin.com/John",
-  "github": "github.com/John",
-  "githuburl": "https://www.github.com/John",
-  "customlink": "www.myportfolio.com",
-  "customlinkurl": "https://www.myportfolio.com",
-  "summary": "Summary",
+  "username": "",
+  "small_bio": "",
+  "phone_number": "",
+  "emailid": "",
+  "location": "",
+  "linkedin": "",
+  "linkedinurl": "",
+  "github": "",
+  "githuburl": "",
+  "customlink": "",
+  "customlinkurl": "",
+  "summary": "",
   "education": [
     {
       "phd": [
         {
-          "phd_name": "Ph.D in Network Security",
-          "phd_university": "Princeton University",
-          "phd_year": "2024 - 2029",
-          "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
-          "phd_additional_info": "Addl"
+          "phd_name": "",
+          "phd_university": "",
+          "phd_year": "",
+          "phd_exp": "",
+          "phd_additional_info": ""
         }
       ],
       "pg_degree": [
         {
-          "pg_degree_name": "Master of Computer Applications",
-          "pg_degree_university": "Princeton University",
-          "pg_degree_year": "2022 - 2024",
-          "pg_degree_cgpa": "CGPA: 9.5",
-          "pg_degree_additional_info": "",
-          "pg_additional_info": "Addl"
+          "pg_degree_name": "",
+          "pg_degree_university": "",
+          "pg_degree_year": "",
+          "pg_degree_cgpa": "",
+          "pg_degree_additional_info": ""
         }
       ],
       "ug_degree": [
         {
-          "ug_degree_name": "B.Sc. Computer Science",
-          "ug_degree_university": "Princeton University",
-          "ug_degree_year": "2019 - 2022",
-          "ug_degree_cgpa": "CGPA: 8.7",
-          "ug_degree_additional_info": "",
-          "ug_additional_info": "Addl"
+          "ug_degree_name": "",
+          "ug_degree_university": "",
+          "ug_degree_year": "",
+          "ug_degree_cgpa": "",
+          "ug_degree_additional_info": ""
         }
       ],
       "diploma": [
         {
-          "diploma_name": "Diploma in Technology",
-          "diploma_university": "Princeton University",
-          "diploma_year": "2017 - 2019",
-          "diploma_cgpa": "CGPA: 9.5",
-          "diploma_additional_info": "Addl"
+          "diploma_name": "",
+          "diploma_university": "",
+          "diploma_year": "",
+          "diploma_cgpa": "",
+          "diploma_additional_info": ""
         }
       ],
-      "hsc_name": "Don Bosco School",
-      "hsc_year": "2015 - 2017",
-      "hsc_grade": "Grade: 68.0",
-      "hsc_additional_info": "State Board",
-      "sslc_name": "Don Bosco School",
-      "sslc_year": "2014 - 2015",
-      "sslc_grade": "Grade: 68.0",
-      "sslc_additional_info": "State Board"
+      "hsc_name": "",
+      "hsc_year": "",
+      "hsc_grade": "",
+      "hsc_additional_info": "",
+      "sslc_name": "",
+      "sslc_year": "",
+      "sslc_grade": "",
+      "sslc_additional_info": ""
     }
   ],
   "experience": [
@@ -74,11 +72,30 @@
             "Developed and maintained the company website using modern JavaScript frameworks",
             "Collaborated with cross-functional teams to deploy cloud solutions and improve scalability"
           ]
+        },
+        {
+          "experience_company": "Zoho Corporation",
+          "experience_location": "Chennai",
+          "experience_year": "2019 - 2022",
+          "experience_designation": "Software Engineer",
+          "experience_team": "Operations Security",
+          "experience_roles": [
+            "Developed and maintained the company website using modern JavaScript frameworks",
+            "Collaborated with cross-functional teams to deploy cloud solutions and improve scalability"
+          ]
         }
       ],
       "style2": [
         {
-          "experience_company": "Zoho Corporation",
+          "experience_company": "Zoho Corporation,",
+          "experience_location": "Bangalore",
+          "experience_year": "2019 - 2022",
+          "experience_designation": "Software Engineer",
+          "experience_team": "Operations Security",
+          "experience_description": "Worked for 3 years. Developed security management portal"
+        },
+        {
+          "experience_company": "Zoho Corporation,",
           "experience_location": "Chennai",
           "experience_year": "2019 - 2022",
           "experience_designation": "Software Engineer",
@@ -90,18 +107,16 @@
   ],
   "projects": {
     "project1": {
-      "project_name": "Project 1",
-      "project_link": "https://github.com/John/Project1",
-      "project_description": "Developed and maintained the company website with advanced features like authentication, user profiles, and data management.",
-      "project_tech": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+      "project_name": "",
+      "project_link": "",
+      "project_description": "",
+      "project_tech": ""
     }
   },
   "skills": {
     "style1": {
       "skillset": [
-        "Web Development",
-        "Cloud Deployment",
-        "Machine Learning"
+        ""
       ]
     },
     "style2": {
@@ -111,9 +126,7 @@
   "certification": {
     "style1": {
       "certificationset": [
-        "AWS Certified Developer",
-        "Google Cloud Certified (udemy.com/certificate/ghvsgv212)",
-        "Machine Learning Expert"
+        ""
       ]
     },
     "style2": {
@@ -121,8 +134,7 @@
     }
   },
   "languages": [
-    "Tamil",
-    "English"
+    ""
   ],
   "customdiv": [
     {

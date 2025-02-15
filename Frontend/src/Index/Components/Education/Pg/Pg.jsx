@@ -30,6 +30,12 @@ const Pg = ({ resumeData, setResumeData }) => {
 
   return (
     <div id="dv-EducationPgWrapper" className="WrapperClass">
+      <div id="dv-EducationPgHeader" className="EducationHeader">
+      <h3>Education Details - Pg</h3>
+      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddEducationButton">
+        Add Pg
+      </button>
+      </div>
       {resumeData.education[0].pg_degree.map((pg_degree, index) => (
         <div key={index} id="dv-EducationPg" className="SubWrapper">
           <div id="dv-EducationPgName" className="InputWrapper">
@@ -88,9 +94,6 @@ const Pg = ({ resumeData, setResumeData }) => {
           </div>
         </div>
       ))}
-      <button type="button" onClick={(e) => handleAddEducation(e)}>
-        Add PG
-      </button>
     </div>
   );
 };

@@ -19,21 +19,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
     });
   };
 
-  const handleAddCustomDiv = (e) => {
-    e.preventDefault();
-    const updatedCustomDivs = [...resumeData.customdiv];
-    updatedCustomDivs.push({
-      customtitle: "",
-      customdivstyle2: true,
-      customparagraph: "",
-    });
-
-    setResumeData({
-      ...resumeData,
-      customdiv: updatedCustomDivs,
-    });
-  };
-
   return (
     <>
       {resumeData.customdiv.map((div, index) => {
@@ -67,9 +52,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
         }
         return null;
       })}
-      <button type="button" onClick={handleAddCustomDiv}>
-        Add Custom Div
-      </button>
     </>
   );
 };

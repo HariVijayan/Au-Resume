@@ -11,24 +11,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
     });
   };
 
-  const handleAddExperience = (e) => {
-    e.preventDefault();
-    const updatedExperience = [...resumeData.experience];
-    updatedExperience[0].style2.push({
-      experience_company: "",
-      experience_location: "",
-      experience_year: "",
-      experience_designation: "",
-      experience_team: "",
-      experience_description: "",
-    });
-
-    setResumeData({
-      ...resumeData,
-      experience: updatedExperience,
-    });
-  };
-
   return (
     <>
       {resumeData.experience[0].style2.map((style2, index) => (
@@ -101,10 +83,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
           </div>
         </div>
       ))}
-
-      <button type="button" onClick={(e) => handleAddExperience(e)}>
-        Add Experience
-      </button>
     </>
   );
 };

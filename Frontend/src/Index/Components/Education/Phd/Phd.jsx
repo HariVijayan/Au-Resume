@@ -30,6 +30,12 @@ const Phd = ({ resumeData, setResumeData }) => {
 
   return (
     <div id="dv-EducationPhdWrapper" className="WrapperClass">
+      <div id="dv-EducationPhdHeader" className="EducationHeader">
+      <h3>Education Details - Ph.D</h3>
+      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddEducationButton">
+        Add Phd
+      </button>
+      </div>
       {resumeData.education[0].phd.map((phd, index) => (
         <div key={index} id="dv-EducationPhd" className="SubWrapper">
           <div id="dv-EducationPhdName" className="InputWrapper">
@@ -88,9 +94,6 @@ const Phd = ({ resumeData, setResumeData }) => {
           </div>
         </div>
       ))}
-      <button type="button" onClick={(e) => handleAddEducation(e)}>
-        Add Phd
-      </button>
     </div>
   );
 };
