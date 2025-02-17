@@ -46,7 +46,6 @@ const Pg = ({ resumeData, setResumeData }) => {
               value={pg_degree.pg_degree_name}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="PG Name"
-              required
             />
           </div>
           <div id="dv-EducationPgUniversity" className="InputWrapper">
@@ -57,7 +56,6 @@ const Pg = ({ resumeData, setResumeData }) => {
               value={pg_degree.pg_degree_university}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="University Name"
-              required
             />
           </div>
           <div id="dv-EducationPgYear" className="InputWrapper">
@@ -68,7 +66,6 @@ const Pg = ({ resumeData, setResumeData }) => {
               value={pg_degree.pg_degree_year}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Year of Study"
-              required
             />
           </div>
           <div id="dv-EducationPgCgpa" className="InputWrapper">
@@ -79,7 +76,6 @@ const Pg = ({ resumeData, setResumeData }) => {
               value={pg_degree.pg_degree_cgpa}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="CGPA"
-              required
             />
           </div>
           <div id="dv-EducationPgAdditionalInfo" className="InputWrapper">
@@ -89,7 +85,6 @@ const Pg = ({ resumeData, setResumeData }) => {
               value={pg_degree.pg_additional_info}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Additional Info"
-              required
             />
           </div>
         </div>

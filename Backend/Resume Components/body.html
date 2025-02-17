@@ -165,19 +165,19 @@
          {{#if skills}}
            <h2 id="h2-skills">SKILLS</h2>
            
-           {{#if skills.style1}} <!-- Check if style1 exists -->
+           {{#if skills.style1}} 
              <div id="skillsstyle1">
                <ul id="ul-skillsstyle1">
-                 {{#each skills.style1.skillset}} <!-- Loop through style1's skillset array -->
+                 {{#each skills.style1.skillset}} 
                    <li>{{this}}</li>
                  {{/each}}
                </ul>
              </div>
            {{/if}}
        
-           {{#if skills.style2}} <!-- Check if style2 exists -->
+           {{#if skills.style2}} 
              <div id="skillsstyle2">
-               <p id="p-skillset">{{skills.style2.skillset}}</p> <!-- Display style2's skillset string -->
+               <p id="p-skillset">{{skills.style2.skillset}}</p>
              </div>
            {{/if}}
          {{/if}}

@@ -33,7 +33,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
                   value={div.customtitle}
                   onChange={(e) => handleInputChange(e, index)}
                   placeholder="Title"
-                  required
                 />
               </div>
               <div id="dv-CustomDivStyle2Paragraph" className="InputWrapper">
@@ -44,7 +43,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
                   value={div.customparagraph}
                   onChange={(e) => handleInputChange(e, index)}
                   placeholder="Some Paragraph"
-                  required
                 />
               </div>
             </div>

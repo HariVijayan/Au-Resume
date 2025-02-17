@@ -46,7 +46,6 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.phone_number}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your phone number"
-          required
         />
       </div>
       <div id="dv-BasicDetailsEmail" className="InputWrapper">
@@ -57,7 +56,6 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.emailid}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your email"
-          required
         />
       </div>
       <div id="dv-BasicDetailsLocation" className="InputWrapper">
@@ -137,7 +135,6 @@ const BioSummary = ({ resumeData, setResumeData }) => {
           value={resumeData.summary}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your summary"
-          required
         />
       </div>
     </div>

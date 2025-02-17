@@ -29,7 +29,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
               value={style1.experience_company}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Zoho Corporation"
-              required
             />
           </div>
           <div id="dv-ExperienceLocation" className="InputWrapper">
@@ -40,7 +39,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
               value={style1.experience_location}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Chennai, India"
-              required
             />
           </div>
           <div id="dv-ExperiencePeriod" className="InputWrapper">
@@ -51,7 +49,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
               value={style1.experience_year}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="2019 - 2020"
-              required
             />
           </div>
           <div id="dv-ExperienceDesignation" className="InputWrapper">
@@ -62,7 +59,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
               value={style1.experience_designation}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Software Engineer"
-              required
             />
           </div>
           <div id="dv-ExperienceTeamName" className="InputWrapper">
@@ -73,7 +69,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
               value={style1.experience_team}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Operations Security"
-              required
             />
           </div>
           <div id="dv-ExperienceRoles" className="InputWrapper">
@@ -84,7 +79,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
               value={style1.experience_roles}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Developed Security management dashboard"
-              required
             />
           </div>
         </div>

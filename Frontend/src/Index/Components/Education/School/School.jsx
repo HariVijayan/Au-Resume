@@ -28,7 +28,6 @@ const School = ({ resumeData, setResumeData }) => {
           value={resumeData.hsc_name}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your school name"
-          required
         />
       </div>
       <div id="dv-EducationHscYear" className="InputWrapper">
@@ -39,7 +38,6 @@ const School = ({ resumeData, setResumeData }) => {
           value={resumeData.hsc_year}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your school year"
-          required
         />
       </div>
       <div id="dv-EducationHscGrade" className="InputWrapper">
@@ -50,7 +48,6 @@ const School = ({ resumeData, setResumeData }) => {
           value={resumeData.hsc_grade}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your school grade"
-          required
         />
       </div>
       <div id="dv-EducationHscAdditionalInfo" className="InputWrapper">
@@ -61,7 +58,6 @@ const School = ({ resumeData, setResumeData }) => {
           value={resumeData.hsc_additional_info}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter hsc additional info"
-          required
         />
       </div>
       <div id="dv-EducationSslcName" className="InputWrapper">
@@ -72,7 +68,6 @@ const School = ({ resumeData, setResumeData }) => {
           value={resumeData.sslc_name}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your school name"
-          required
         />
       </div>
       <div id="dv-EducationSslcYear" className="InputWrapper">
@@ -83,7 +78,6 @@ const School = ({ resumeData, setResumeData }) => {
           value={resumeData.sslc_year}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your school year"
-          required
         />
       </div>
       <div id="dv-EducationSslcGrade" className="InputWrapper">
@@ -94,7 +88,6 @@ const School = ({ resumeData, setResumeData }) => {
           value={resumeData.sslc_grade}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter your school grade"
-          required
         />
       </div>
       <div id="dv-EducationSslcAdditionalInfo" className="InputWrapper">
@@ -105,7 +98,6 @@ const School = ({ resumeData, setResumeData }) => {
           value={resumeData.sslc_additional_info}
           onChange={(e) => handleInputChange(e)}
           placeholder="Enter sslc additional info"
-          required
         />
       </div>
     </div>

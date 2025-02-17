@@ -24,7 +24,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
             value={resumeData.certification.style2.certificationset}
             onChange={handleInputChange}
             placeholder="Comma Separated Values"
-            required
           />
         </div>
       </div>

@@ -48,7 +48,6 @@ const Ug = ({ resumeData, setResumeData }) => {
                   value={ug_degree.ug_degree_name}
                   onChange={(e) => handleEducationInputChange(e, index)}
                placeholder="UG Name"
-               required
                />
             </div>
             <div id="dv-EducationUgUniversity" className="InputWrapper">
@@ -59,7 +58,6 @@ const Ug = ({ resumeData, setResumeData }) => {
                   value={ug_degree.ug_degree_university}
                   onChange={(e) => handleEducationInputChange(e, index)}
                placeholder="University Name"
-               required
                />
             </div>
             <div id="dv-EducationUgYear" className="InputWrapper">
@@ -70,7 +68,6 @@ const Ug = ({ resumeData, setResumeData }) => {
                   value={ug_degree.ug_degree_year}
                   onChange={(e) => handleEducationInputChange(e, index)}
                placeholder="Year of Study"
-               required
                />
             </div>
             <div id="dv-EducationUgCgpa" className="InputWrapper">
@@ -81,7 +78,6 @@ const Ug = ({ resumeData, setResumeData }) => {
                   value={ug_degree.ug_degree_cgpa}
                   onChange={(e) => handleEducationInputChange(e, index)}
                placeholder="CGPA"
-               required
                />
             </div>
             <div id="dv-EducationUgAdditionalInfo" className="InputWrapper">
@@ -91,7 +87,6 @@ const Ug = ({ resumeData, setResumeData }) => {
                   value={ug_degree.ug_additional_info}
                   onChange={(e) => handleEducationInputChange(e, index)}
                placeholder="Additional Info"
-               required
                />
             </div>
          </div>

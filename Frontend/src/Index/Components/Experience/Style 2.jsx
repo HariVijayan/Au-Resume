@@ -23,7 +23,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
               value={style2.experience_company}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Zoho Corporation"
-              required
             />
           </div>
           <div id="dv-ExperienceLocation" className="InputWrapper">
@@ -34,7 +33,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
               value={style2.experience_location}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Chennai, India"
-              required
             />
           </div>
           <div id="dv-ExperiencePeriod" className="InputWrapper">
@@ -45,7 +43,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
               value={style2.experience_year}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="2019 - 2020"
-              required
             />
           </div>
           <div id="dv-ExperienceDesignation" className="InputWrapper">
@@ -56,7 +53,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
               value={style2.experience_designation}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Software Engineer"
-              required
             />
           </div>
           <div id="dv-ExperienceTeamName" className="InputWrapper">
@@ -67,7 +63,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
               value={style2.experience_team}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Operations Security"
-              required
             />
           </div>
           <div id="dv-ExperienceDescription" className="InputWrapper">
@@ -78,7 +73,6 @@ const Style2 = ({ resumeData, setResumeData }) => {
               value={style2.experience_description}
               onChange={(e) => handleInputChange(e, index)}
               placeholder="Worked for 3 years. Developed and managed the security management dashboard."
-              required
             />
           </div>
         </div>

@@ -46,7 +46,6 @@ const Phd = ({ resumeData, setResumeData }) => {
               value={phd.phd_name}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Ph.D. Name"
-              required
             />
           </div>
           <div id="dv-EducationPhdUniversity" className="InputWrapper">
@@ -57,7 +56,6 @@ const Phd = ({ resumeData, setResumeData }) => {
               value={phd.phd_university}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="University Name"
-              required
             />
           </div>
           <div id="dv-EducationPhdYear" className="InputWrapper">
@@ -68,7 +66,6 @@ const Phd = ({ resumeData, setResumeData }) => {
               value={phd.phd_year}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Year of Study"
-              required
             />
           </div>
           <div id="dv-EducationPhdExpertise" className="InputWrapper">
@@ -79,7 +76,6 @@ const Phd = ({ resumeData, setResumeData }) => {
               value={phd.phd_exp}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Expertise"
-              required
             />
           </div>
           <div id="dv-EducationPhdAdditionalInfo" className="InputWrapper">
@@ -89,7 +85,6 @@ const Phd = ({ resumeData, setResumeData }) => {
               value={phd.phd_additional_info}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Additional Info"
-              required
             />
           </div>
         </div>

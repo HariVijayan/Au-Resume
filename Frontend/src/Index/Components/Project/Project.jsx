@@ -53,7 +53,6 @@ const Project = ({ resumeData, setResumeData }) => {
               value={resumeData.projects[projectKey].project_name}
               onChange={(e) => handleInputChange(e, projectKey)}
               placeholder="Blog Website"
-              required
             />
           </div>
           <div id="dv-ProjectLink" className="InputWrapper">
@@ -64,7 +63,6 @@ const Project = ({ resumeData, setResumeData }) => {
               value={resumeData.projects[projectKey].project_link}
               onChange={(e) => handleInputChange(e, projectKey)}
               placeholder="github.com/BotUser/Demo"
-              required
             />
           </div>
           <div id="dv-ProjectDescription" className="InputWrapper">
@@ -75,7 +73,6 @@ const Project = ({ resumeData, setResumeData }) => {
               value={resumeData.projects[projectKey].project_description}
               onChange={(e) => handleInputChange(e, projectKey)}
               placeholder="Some random project"
-              required
             />
           </div>
           <div id="dv-ProjectTech" className="InputWrapper">
@@ -86,7 +83,6 @@ const Project = ({ resumeData, setResumeData }) => {
               value={resumeData.projects[projectKey].project_tech}
               onChange={(e) => handleInputChange(e, projectKey)}
               placeholder="HTML, CSS, JavaScript"
-              required
             />
           </div>
         </div>

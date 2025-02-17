@@ -46,7 +46,6 @@ const Diploma = ({ resumeData, setResumeData }) => {
               value={diploma.diploma_name}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Diploma Name"
-              required
             />
           </div>
           <div id="dv-EducationDiplomaUniversity" className="InputWrapper">
@@ -57,7 +56,6 @@ const Diploma = ({ resumeData, setResumeData }) => {
               value={diploma.diploma_university}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="University Name"
-              required
             />
           </div>
           <div id="dv-EducationDiplomaYear" className="InputWrapper">
@@ -68,7 +66,6 @@ const Diploma = ({ resumeData, setResumeData }) => {
               value={diploma.diploma_year}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Year of Study"
-              required
             />
           </div>
           <div id="dv-EducationDiplomaCgpa" className="InputWrapper">
@@ -79,7 +76,6 @@ const Diploma = ({ resumeData, setResumeData }) => {
               value={diploma.diploma_cgpa}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="CGPA"
-              required
             />
           </div>
           <div id="dv-EducationDiplomaAdditionalInfo" className="InputWrapper">
@@ -89,7 +85,6 @@ const Diploma = ({ resumeData, setResumeData }) => {
               value={diploma.diploma_additional_info}
               onChange={(e) => handleEducationInputChange(e, index)}
               placeholder="Additional Info"
-              required
             />
           </div>
         </div>

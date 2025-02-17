@@ -33,7 +33,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
                   value={div.customtitle}
                   onChange={(e) => handleInputChange(e, index)}
                   placeholder="Comma Separated Values"
-                  required
                 />
               </div>
               <div id="dv-CustomDivStyle1List" className="InputWrapper">
@@ -44,7 +43,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
                   value={div.customlist.join(", ")}
                   onChange={(e) => handleInputChange(e, index)}
                   placeholder="Comma Separated Values"
-                  required
                 />
               </div>
             </div>

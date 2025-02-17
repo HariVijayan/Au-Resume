@@ -26,7 +26,6 @@ const Language = ({ resumeData, setResumeData }) => {
           value={resumeData.languages.join(", ")}
           onChange={(e) => handleInputChange(e)}
           placeholder="Tamil, English"
-          required
         />
       </div>
     </div>
