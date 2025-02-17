@@ -34,7 +34,7 @@ const Ug = ({ resumeData, setResumeData }) => {
         <div id="dv-EducationUgWrapper" className="WrapperClass">
          <div id="dv-EducationUgHeader" className="EducationHeader">
       <h3>Education Details - Ug</h3>
-      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddEducationButton">
+      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddInputButtons">
         Add Ug
       </button>
       </div>

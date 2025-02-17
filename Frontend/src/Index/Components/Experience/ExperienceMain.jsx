@@ -43,7 +43,7 @@ const Experience = ({ resumeData, setResumeData }) => {
     <div id="dv-ExperienceWrapper" className="WrapperClass">
       <div id="dv-ExperienceStyle1Header" className="ExperienceHeader">
       <h3>Experience - Style 1</h3>
-      <button type="button" onClick={(e) => handleAddExperienceStyle1(e)} className="AddExperienceButton">
+      <button type="button" onClick={(e) => handleAddExperienceStyle1(e)} className="AddInputButtons">
         Add Experience
       </button>
       </div>
@@ -51,7 +51,7 @@ const Experience = ({ resumeData, setResumeData }) => {
 
       <div id="dv-ExperienceStyle2Header" className="ExperienceHeader">
       <h3>Experience - Style 2</h3>
-      <button type="button" onClick={(e) => handleAddExperienceStyle2(e)} className="AddExperienceButton">
+      <button type="button" onClick={(e) => handleAddExperienceStyle2(e)} className="AddInputButtons">
         Add Experience
       </button>
       </div>

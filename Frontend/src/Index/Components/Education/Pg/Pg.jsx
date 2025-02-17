@@ -32,7 +32,7 @@ const Pg = ({ resumeData, setResumeData }) => {
     <div id="dv-EducationPgWrapper" className="WrapperClass">
       <div id="dv-EducationPgHeader" className="EducationHeader">
       <h3>Education Details - Pg</h3>
-      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddEducationButton">
+      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddInputButtons">
         Add Pg
       </button>
       </div>

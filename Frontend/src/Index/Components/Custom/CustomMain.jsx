@@ -37,7 +37,7 @@ const CustomDiv = ({ resumeData, setResumeData }) => {
     <div id="dv-CustomDivWrapper" className="WrapperClass">
       <div id="dv-CustomDivStyle1Header" className="CustomDivHeader">
       <h3>Custom Field - Style 1</h3>
-      <button type="button" onClick={handleAddCustomDivStyle1} className="AddCustomDivButton">
+      <button type="button" onClick={handleAddCustomDivStyle1} className="AddInputButtons">
         Add Custom Field
       </button>
       </div>
@@ -46,7 +46,7 @@ const CustomDiv = ({ resumeData, setResumeData }) => {
       
       <div id="dv-CustomDivStyle2Header" className="CustomDivHeader">
       <h3>Custom Field - Style 2</h3>
-      <button type="button" onClick={handleAddCustomDivStyle2} className="AddCustomDivButton">
+      <button type="button" onClick={handleAddCustomDivStyle2} className="AddInputButtons">
         Add Custom Field
       </button>
       </div>

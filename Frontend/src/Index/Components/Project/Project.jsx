@@ -39,7 +39,7 @@ const Project = ({ resumeData, setResumeData }) => {
     <div id="dv-ProjectsWrapper" className="WrapperClass">
       <div id="dv-ProjectsHeader" className="ProjectHeader">
       <h3>Project Details</h3>
-      <button type="button" onClick={handleAddProjects} className="AddProjectButton">
+      <button type="button" onClick={handleAddProjects} className="AddInputButtons">
         Add Project
       </button>
       </div>

@@ -32,7 +32,7 @@ const Phd = ({ resumeData, setResumeData }) => {
     <div id="dv-EducationPhdWrapper" className="WrapperClass">
       <div id="dv-EducationPhdHeader" className="EducationHeader">
       <h3>Education Details - Ph.D</h3>
-      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddEducationButton">
+      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddInputButtons">
         Add Phd
       </button>
       </div>

@@ -32,7 +32,7 @@ const Diploma = ({ resumeData, setResumeData }) => {
     <div id="dv-EducationDiplomaWrapper" className="WrapperClass">
       <div id="dv-EducationDiplomaHeader" className="EducationHeader">
       <h3>Education Details - Diploma</h3>
-      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddEducationButton">
+      <button type="button" onClick={(e) => handleAddEducation(e)} className="AddInputButtons">
         Add Diploma
       </button>
       </div>
