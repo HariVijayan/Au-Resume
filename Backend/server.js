@@ -14,18 +14,42 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 5000;
 
+Handlebars.registerHelper("or", function () {
+   return Array.prototype.slice.call(arguments, 0, -1).some(Boolean);
+});
+
 app.use(cors());
 
 app.use(express.json());
 
-async function compileTemplate(templatePath, data) {
-   const templateHtml = fs.readFileSync(templatePath, 'utf8');
-   const template = Handlebars.compile(templateHtml);
-   return template(data);
+function removeEmptyValues(obj) {
+   if (Array.isArray(obj)) {
+       const filteredArray = obj
+           .map(removeEmptyValues) // Recursively clean array items
+           .filter(item => item !== null); // Remove null entries
+       return filteredArray.length > 0 ? filteredArray : null;
+   } else if (typeof obj === "object" && obj !== null) {
+       let newObj = {};
+       for (let key in obj) {
+           const cleanedValue = removeEmptyValues(obj[key]);
+
+           // Only add non-null values to the object
+           if (cleanedValue !== null) {
+               newObj[key] = cleanedValue;
+           }
+       }
+
+       // If the object only has boolean flags (like customdivstyle1), remove it
+       const hasOnlyBooleans = Object.values(newObj).every(val => typeof val === "boolean");
+
+       return Object.keys(newObj).length > 0 && !hasOnlyBooleans ? newObj : null;
+   } else {
+       return obj === "" ? null : obj; // Remove empty strings
+   }
 }
 
 app.post('/generate-pdf', async (req, res) => {
-   const resumeData = req.body;
+   const resumeData = removeEmptyValues(req.body);
 
    //console.log(resumeData);
 
@@ -117,3 +141,5 @@ app.post('/generate-pdf', async (req, res) => {
 app.listen(port, () => {
    console.log(`Server running at http://localhost:${port}`);
 });
+
+
