@@ -92,7 +92,6 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
 app.post('/generate-pdf', async (req, res) => {
   const resumeData = removeEmptyValues(req.body);
 
-  // Template and CSS paths
   const templatePath = '/Resume Components/body.html';
   const templateCssPath = '/Resume Components/body.css';
   const headerFooterPaths = generateHeaderFooterPaths();
@@ -103,19 +102,16 @@ app.post('/generate-pdf', async (req, res) => {
   let footerFile = readFileSync(headerFooterPaths.footerPath);
   const auLogoFile = readFileSync(headerFooterPaths.auLogoBase64Path);
 
-  // Replace CSS and AU logo in the footer
   let compiledTemplate = compileTemplate(templateFile.replace('<style></style>', `<style>${cssFile}</style>`), resumeData);
   footerFile = footerFile.replace('<img id="aulogo" src=""', `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`);
 
   const timestamp = getCurrentTimestamp();
   footerFile = generateFooter(footerFile, timestamp);
 
-  // Write Output Files
   writeFileSync('/Output/Body.html', compiledTemplate);
   writeFileSync('/Output/Resume Data.txt', JSON.stringify(resumeData, null, 2));
   writeFileSync('/Output/Footer.html', footerFile);
 
-  // Generate PDF
   const pdfBuffer = await generatePdf(compiledTemplate, headerFile, footerFile);
 
   res.type('application/pdf');
