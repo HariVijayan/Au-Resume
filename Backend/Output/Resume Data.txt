@@ -1,12 +1,1 @@
-{
-  "skills": {
-    "style2": {
-      "skillset": "Web Development, Cloud Deployment, Machine Learning"
-    }
-  },
-  "certification": {
-    "style2": {
-      "certificationset": "AWS Certified Developer, Google Cloud Certified (udemy.com/certificate/ghvsgv212), Machine Learning Expert"
-    }
-  }
-}
+null

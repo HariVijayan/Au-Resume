@@ -253,3 +253,13 @@ textarea {
   align-items: center;
   width: 100%;
 }
+
+#dv-ExperienceStyle1{
+  background-color: black;
+  color: white;
+}
+
+#dv-ExperienceStyle2{
+  background-color: red;
+  color: black;
+}
