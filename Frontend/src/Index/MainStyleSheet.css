@@ -102,7 +102,7 @@ textarea {
   background-color: #357ae8;  
 }
 
-.AddInputButtons {
+.AddInputButtons, .ListInputButton, .ParaInputButton {
   font-family: inherit;
   font-size: 16px;
   padding: 12px 20px;
@@ -115,12 +115,12 @@ textarea {
   transition: background-color 0.3s ease;
 }
 
-.AddInputButtons:focus {
+.AddInputButtons, .ListInputButton, .ParaInputButton:focus {
   background-color: #4D4D4D; 
   outline: none; 
 }
 
-.AddInputButtons:hover {
+.AddInputButtons, .ListInputButton, .ParaInputButton:hover {
   background-color: #4D4D4D;  
 }
 

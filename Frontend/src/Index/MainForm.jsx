@@ -109,7 +109,7 @@ const MainForm = () => {
     },
     skills: {
       style1: {
-        skillset: [""],
+        skillset: [],
       },
       style2: {
         skillset: "",
@@ -117,18 +117,18 @@ const MainForm = () => {
     },
     certification: {
       style1: {
-        certificationset: [""],
+        certificationset: [],
       },
       style2: {
         certificationset: "",
       },
     },
-    languages: [""],
+    languages: [],
     customdiv: [
       {
         customtitle: "",
         customdivstyle1: true,
-        customlist: [""],
+        customlist: [],
       },
       {
         customtitle: "",

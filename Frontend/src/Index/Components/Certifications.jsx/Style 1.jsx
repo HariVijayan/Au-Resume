@@ -16,7 +16,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
   return (
       <div id="dv-CertificationStyle1" className="SubWrapper">
         <div id="dv-CertificationStyle1CertificationSet" className="InputWrapper">
-          <label>Certification Set:</label>
+          <label>Certification List:</label>
           <input
             type="text"
             name="certificationset"

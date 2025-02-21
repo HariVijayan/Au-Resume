@@ -17,7 +17,7 @@ const Style2 = ({ resumeData, setResumeData }) => {
   return (
       <div id="dv-SkillsStyle2" className="SubWrapper">
         <div id="dv-SkillsStyle2SkillSet" className="InputWrapper">
-          <label>Skill Set:</label>
+          <label>Skills Para:</label>
           <input
             type="text"
             name="skillset"
