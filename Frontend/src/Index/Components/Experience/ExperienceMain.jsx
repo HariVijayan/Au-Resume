@@ -6,11 +6,9 @@ const Experience = ({ resumeData, setResumeData }) => {
   const [experienceType, setExperienceType] = useState("Default");
   const [renderedStyles, setRenderedStyles] = useState([]);
 
-  // Track whether the style has been added already
   const [hasStyle1Rendered, setHasStyle1Rendered] = useState(false);
   const [hasStyle2Rendered, setHasStyle2Rendered] = useState(false);
 
-  // Handle changing between Style1 and Style2
   const setExperience = (type) => {
     let updatedStyles = [...renderedStyles];
     if (type === "Style1") {
@@ -19,7 +17,6 @@ const Experience = ({ resumeData, setResumeData }) => {
         setExperienceType("Style1");
         setHasStyle1Rendered(true);
       } else {
-        // Add new experience entry to Style1
         updatedStyles.push("Style1");
         handleAddExperienceStyle1();
       }
@@ -29,7 +26,6 @@ const Experience = ({ resumeData, setResumeData }) => {
         setExperienceType("Style2");
         setHasStyle2Rendered(true);
       } else {
-        // Add new experience entry to Style2
         updatedStyles.push("Style2");
         handleAddExperienceStyle2();
       }
@@ -37,7 +33,6 @@ const Experience = ({ resumeData, setResumeData }) => {
     setRenderedStyles(updatedStyles);
   };
 
-  // Add a new experience entry to Style1
   const handleAddExperienceStyle1 = () => {
     const updatedExperience = [...resumeData.experience];
     updatedExperience[0].style1.push({
@@ -55,7 +50,6 @@ const Experience = ({ resumeData, setResumeData }) => {
     });
   };
 
-  // Add a new experience entry to Style2
   const handleAddExperienceStyle2 = () => {
     const updatedExperience = [...resumeData.experience];
     updatedExperience[0].style2.push({
@@ -96,7 +90,6 @@ const Experience = ({ resumeData, setResumeData }) => {
 
       {experienceType === "Default" && <p>Please select an experience type to begin.</p>}
 
-      {/* Conditionally render the styles */}
       {renderedStyles.includes("Style1") && (
         <Style1 resumeData={resumeData} setResumeData={setResumeData} />
       )}

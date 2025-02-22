@@ -4,20 +4,23 @@ const Style1 = ({ resumeData, setResumeData }) => {
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const updatedCustomDivs = [...resumeData.customdiv];
-
+  
     if (name === "customlistvalue") {
       updatedCustomDivs[index].customlist = value.split(",").map(role => role.trim());
-    } else if (name === "customlisttitle") {
+
+      const { customlistvalue, ...restOfDiv } = updatedCustomDivs[index];
+      updatedCustomDivs[index] = restOfDiv;
+    } else if (name === "customtitle") {
       updatedCustomDivs[index].customtitle = value;
+    } else {
+      updatedCustomDivs[index] = { ...updatedCustomDivs[index], [name]: value };
     }
-
-    updatedCustomDivs[index] = { ...updatedCustomDivs[index], [name]: value };
-
     setResumeData({
       ...resumeData,
       customdiv: updatedCustomDivs,
     });
   };
+  
 
   return (
     <>
@@ -29,7 +32,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
                 <label>Custom List Title:</label>
                 <input
                   type="text"
-                  name="customlisttitle"
+                  name="customtitle"
                   value={div.customtitle}
                   onChange={(e) => handleInputChange(e, index)}
                   placeholder="Comma Separated Values"

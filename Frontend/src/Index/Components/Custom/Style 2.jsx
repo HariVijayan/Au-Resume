@@ -29,7 +29,7 @@ const Style2 = ({ resumeData, setResumeData }) => {
                 <label>Custom Title:</label>
                 <input
                   type="text"
-                  name="customparatitle"
+                  name="customtitle"
                   value={div.customtitle}
                   onChange={(e) => handleInputChange(e, index)}
                   placeholder="Title"
@@ -39,7 +39,7 @@ const Style2 = ({ resumeData, setResumeData }) => {
                 <label>Custom Paragraph:</label>
                 <input
                   type="text"
-                  name="custompara"
+                  name="customparagraph"
                   value={div.customparagraph}
                   onChange={(e) => handleInputChange(e, index)}
                   placeholder="Some Paragraph"
