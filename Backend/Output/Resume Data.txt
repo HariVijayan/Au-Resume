@@ -1,1 +1,14 @@
-null
+{
+  "username": "John Doe",
+  "small_bio": "Developer | Designer | Freelancer",
+  "phone_number": "+91 9090909099",
+  "emailid": "john@gmail.com",
+  "location": "Chennai, India",
+  "linkedin": "linkedin.com/John",
+  "linkedinurl": "https://www.linkedin.com/John",
+  "github": "github.com/John",
+  "githuburl": "https://www.github.com/John",
+  "customlink": "www.myportfolio.com",
+  "customlinkurl": "https://www.myportfolio.com",
+  "summary": "important"
+}

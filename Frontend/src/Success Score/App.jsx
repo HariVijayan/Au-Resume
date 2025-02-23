@@ -39,6 +39,37 @@ function App() {
     }
   };
 
+  const [file, setFile] = useState(null);
+  const [extractedText, setExtractedText] = useState('');
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    if (!file) {
+      alert('Please select a file!');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('pdf', file);
+
+    try {
+      const response = await axios.post('http://localhost:8000/upload/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      // Set the extracted text to state to display it
+      setExtractedText(response.data.text);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Error uploading file');
+    }
+  };
+
   return (
     <div className="App" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1>Cosine Similarity Calculator</h1>
@@ -85,6 +116,20 @@ function App() {
       )}
 
       <a href='index.html'>Back</a>
+      
+      <div>
+      <h1>Upload a PDF</h1>
+      <input type="file" accept=".pdf" onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload</button>
+
+      {extractedText && (
+        <div>
+          <h2>Extracted Text:</h2>
+          <p>{extractedText}</p>
+        </div>
+      )}
+    </div>
+
     </div>
   );
 }
