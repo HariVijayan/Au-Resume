@@ -1,0 +1,29 @@
+{
+    "match_score": 30.0,
+    "matched_entities": {
+        "experience": {
+            "resume": "10",
+            "job_description": "4",
+            "similarity": 1.0
+        }
+    },
+    "unmatched_entities": {
+        "skills": {
+            "resume": [],
+            "job_description": [
+                "AWS"
+            ],
+            "similarity": 0.0
+        },
+        "education": {
+            "resume": [],
+            "job_description": [],
+            "similarity": 0.0
+        },
+        "certifications": {
+            "resume": [],
+            "job_description": [],
+            "similarity": 0.0
+        }
+    }
+}

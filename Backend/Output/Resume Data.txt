@@ -10,5 +10,51 @@
   "githuburl": "https://www.github.com/John",
   "customlink": "www.myportfolio.com",
   "customlinkurl": "https://www.myportfolio.com",
-  "summary": "important"
+  "summary": "5 years in software development",
+  "education": [
+    {
+      "ug_degree": [
+        {
+          "ug_degree_name": "B.Sc. Computer Science",
+          "ug_degree_university": "Princeton University",
+          "ug_degree_year": "2019 - 2022",
+          "ug_degree_cgpa": "CGPA: 8.7",
+          "ug_additional_info": "Distinction grade"
+        }
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "style1": [
+        {
+          "experience_company": "Zoho Corporation,",
+          "experience_location": "Bangalore",
+          "experience_year": "2022 - Present",
+          "experience_designation": "Software Developer",
+          "experience_team": "Cloud Deployment",
+          "experience_roles": [
+            "5 years in software development"
+          ]
+        }
+      ]
+    }
+  ],
+  "skills": {
+    "style1": {
+      "skillset": [
+        "Python",
+        "Java",
+        "AWS",
+        "Docker"
+      ]
+    }
+  },
+  "certification": {
+    "style1": {
+      "certificationset": [
+        "AWS Certified Solutions Architect"
+      ]
+    }
+  }
 }

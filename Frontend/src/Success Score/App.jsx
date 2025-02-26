@@ -2,45 +2,17 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function App() {
-  // State variables to hold the input values and result
   const [document, setDocument] = useState('');
-  const [queryString, setQueryString] = useState('');
   const [similarity, setSimilarity] = useState(null);
   const [error, setError] = useState('');
+  const [matchedEntities, setMatchedEntities] = useState(null);
+  const [unmatchedEntities, setUnmatchedEntities] = useState(null);
 
-  // Handle change in document input
   const handleDocumentChange = (event) => {
     setDocument(event.target.value);
   };
 
-  // Handle change in query string input
-  const handleQueryStringChange = (event) => {
-    setQueryString(event.target.value);
-  };
-
-  // Function to send the request to the FastAPI backend
-  const calculateSimilarity = async () => {
-    // Clear previous error message
-    setError('');
-
-    try {
-      // Send POST request to FastAPI backend
-      const response = await axios.post('http://localhost:8000/calculate_similarity/', {
-        document: document,
-        query_string: queryString
-      });
-
-      // Get the similarity percentage from the response and set it in state
-      setSimilarity(response.data.similarity_percentage);
-    } catch (err) {
-      // If any error occurs, set error message
-      setError('Error calculating similarity. Please try again.');
-      console.error(err);
-    }
-  };
-
   const [file, setFile] = useState(null);
-  const [extractedText, setExtractedText] = useState('');
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -54,6 +26,7 @@ function App() {
 
     const formData = new FormData();
     formData.append('pdf', file);
+    formData.append('job_description', document);
 
     try {
       const response = await axios.post('http://localhost:8000/upload/', formData, {
@@ -62,8 +35,11 @@ function App() {
         },
       });
 
-      // Set the extracted text to state to display it
-      setExtractedText(response.data.text);
+      console.log(response.data);
+
+      setSimilarity(response.data.match_score);
+      setMatchedEntities(response.data.matched_entities);
+      setUnmatchedEntities(response.data.unmatched_entities);
     } catch (error) {
       console.error('Error uploading file:', error);
       alert('Error uploading file');
@@ -71,66 +47,93 @@ function App() {
   };
 
   return (
-    <div className="App" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Cosine Similarity Calculator</h1>
+    <>
+      <h1>Resume Success Score Profiler</h1>
 
       <div style={{ marginBottom: '10px' }}>
         <label>
-          <strong>Document:</strong>
+          <strong>Job Description:</strong>
           <textarea
             value={document}
             onChange={handleDocumentChange}
-            placeholder="Enter document text here"
+            placeholder="Enter JD"
             rows="5"
             cols="50"
           />
         </label>
       </div>
 
-      <div style={{ marginBottom: '10px' }}>
-        <label>
-          <strong>Query String:</strong>
-          <input
-            type="text"
-            value={queryString}
-            onChange={handleQueryStringChange}
-            placeholder="Enter query string"
-            style={{ width: '50%', padding: '5px' }}
-          />
-        </label>
-      </div>
-
-      <button
-        onClick={calculateSimilarity}
-        style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
-      >
-        Calculate Similarity
-      </button>
-
       {error && <p style={{ color: 'red' }}>{error}</p>}
       
-      {similarity !== null && (
+      <div>
+        <h1>Upload a PDF</h1>
+        <input type="file" accept=".pdf" onChange={handleFileChange} />
+        <button onClick={handleUpload}>Upload</button>
+
+        {similarity !== null && (
         <div style={{ marginTop: '20px' }}>
           <h3>Similarity Percentage: {similarity}</h3>
         </div>
       )}
 
+        {matchedEntities && (
+          <div>
+            <h2>Matched Entities:</h2>
+            {Object.keys(matchedEntities).map((entity) => (
+              <div key={entity}>
+                <strong>{entity.charAt(0).toUpperCase() + entity.slice(1)}:</strong>
+                
+                <p>Resume: 
+  {matchedEntities[entity]?.resume
+    ? (Array.isArray(matchedEntities[entity].resume) 
+        ? matchedEntities[entity].resume.join(', ') 
+        : matchedEntities[entity].resume)
+    : 'No matching skills'}
+</p>
+
+
+                <p>Job Description: 
+                {Array.isArray(matchedEntities[entity]?.job_description)
+                    ? matchedEntities[entity].job_description.join(', ')
+                    : matchedEntities[entity]?.job_description || 'No matching job description found'}
+                </p>
+
+                <p>Similarity: {Array.isArray(matchedEntities[entity]?.similarity) || 'N/A'}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {unmatchedEntities && (
+          <div>
+            <h2>Unmatched Entities:</h2>
+            {Object.keys(unmatchedEntities).map((entity) => (
+              <div key={entity}>
+                <strong>{entity.charAt(0).toUpperCase() + entity.slice(1)}:</strong>
+                
+                <p>Resume: 
+  {unmatchedEntities[entity]?.resume
+    ? (Array.isArray(unmatchedEntities[entity].resume) 
+        ? unmatchedEntities[entity].resume.join(', ') 
+        : unmatchedEntities[entity].resume)
+    : 'No matching skills'}
+</p>
+
+
+                <p>Job Description: 
+                  {Array.isArray(unmatchedEntities[entity]?.job_description)
+                    ? unmatchedEntities[entity].job_description.join(', ')
+                    : unmatchedEntities[entity]?.job_description || 'No matching job description found'}
+                </p>
+
+                <p>Similarity: {Array.isArray(unmatchedEntities[entity]?.similarity) || 'N/A'}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
       <a href='index.html'>Back</a>
-      
-      <div>
-      <h1>Upload a PDF</h1>
-      <input type="file" accept=".pdf" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
-
-      {extractedText && (
-        <div>
-          <h2>Extracted Text:</h2>
-          <p>{extractedText}</p>
-        </div>
-      )}
-    </div>
-
-    </div>
+    </>
   );
 }
 
