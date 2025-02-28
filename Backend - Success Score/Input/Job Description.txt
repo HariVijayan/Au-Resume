@@ -1,6 +1,1 @@
-Looking for a DevOps Engineer with experience in CI/CD, Terraform, and Kubernetes.
-
-Must have expertise in AWS and infrastructure automation.
-
-Knowledge of scripting languages like Bash or Python is required.
-
+We are looking for a Full Stack Developer with expertise in web technologies. The candidate should have at least 3 years of experience in software development and cloud deployment. The role involves building scalable applications using JavaScript frameworks and cloud services. Responsibilities include maintaining company websites, developing security management portals, and collaborating with cross-functional teams to deploy cloud solutions. Preferred qualifications include a Bachelor's or Master's degree in Computer Science, Artificial Intelligence, or a related field, with research experience in Networking, Security, or Machine Learning. Required skills include JavaScript, Web Development, Cloud Deployment, and Machine Learning. Candidates with AWS Certified Developer, Google Cloud Certified, or Machine Learning Expert certifications will be given preference. The position requires fluency in English.

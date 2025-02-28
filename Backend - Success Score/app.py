@@ -10,10 +10,13 @@ import PyPDF2
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Load NLP models
 nlp = spacy.load("en_core_web_sm")
 word2vec = api.load("word2vec-google-news-300")  # Google's pre-trained Word2Vec
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 app = FastAPI()
 app.add_middleware(
@@ -61,7 +64,7 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
 
         match_score, matched_entities, unmatched_entities = compute_weighted_score(resume_entities, job_description_entities)
 
-        save_debug_output("Success Score.json", {
+        save_output_json("Success Score.json", {
             "match_score": match_score,
             "matched_entities": matched_entities,
             "unmatched_entities": unmatched_entities
@@ -73,7 +76,7 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
         logger.error("Error processing file: %s", str(e))
         return JSONResponse(status_code=500, content={"error": str(e)})
 
-def save_debug_output(filename, data, debug_dir):
+def save_output_json(filename, data, debug_dir):
     """Saves intermediate processing results to a JSON file for debugging."""
     os.makedirs(debug_dir, exist_ok=True)
     file_path = os.path.join(debug_dir, filename)
@@ -132,28 +135,48 @@ def extract_resume(text: str):
         next_sections = sections[i + 1:]
         extracted_data[section.lower()] = extract_resume_section(text, section, next_sections)
     
-    save_debug_output("Entity List.json", extracted_data, "Output/Resume")
+    save_output_json("Entity List.json", extracted_data, "Output/Resume")
     return extracted_data
 
 def compute_weighted_score(resume_entities, job_description_entities):
-    """Computes weighted score with improved matching."""
+    """Computes weighted score using SBERT cosine similarity."""
     weights = {"skills": 0.5, "experience": 0.3, "education": 0.15, "certifications": 0.05}
     total_score = 0.0
     matched_entities = {}
     unmatched_entities = {}
 
     for key, weight in weights.items():
-        similarity = 1.0 if resume_entities[key] == job_description_entities[key] else 0.0
-        total_score += weight * similarity
-        (matched_entities if similarity > 0.5 else unmatched_entities)[key] = {
-            "resume": resume_entities[key],
-            "job_description": job_description_entities[key],
-            "similarity": float(similarity)
-        }
+        # Handle missing sections gracefully
+        resume_text = resume_entities.get(key, "None")
+        jd_text = job_description_entities.get(key, "None")
+
+        # Encode text directly without list wrapping (avoids 3D array issue)
+        embedding1 = model.encode(resume_text)
+        embedding2 = model.encode(jd_text)
+
+        # Check if embeddings are not empty
+        if embedding1.size > 0 and embedding2.size > 0:
+            # Compute cosine similarity
+            similarity = cosine_similarity(embedding1.reshape(1, -1), embedding2.reshape(1, -1))[0][0]  # Ensure 2D arrays
+
+            total_score += weight * similarity
+            (matched_entities if similarity > 0.05 else unmatched_entities)[key] = {
+                "resume": resume_text,
+                "job_description": jd_text,
+                "similarity": round(float(similarity), 4)  # Round for readability
+            }
+        else:
+            unmatched_entities[key] = {
+                "resume": resume_text,
+                "job_description": jd_text,
+                "similarity": 0.0
+            }
 
     final_score = round(float(total_score * 100), 2)
-
     return final_score, matched_entities, unmatched_entities
+
+
+
 
 # --- Job Description Entity Extraction Methods ---
 
@@ -184,11 +207,11 @@ def extract_jd(text: str):
         "certifications": list(set(certifications)),
     }
 
-    save_debug_output("Entity List.json", entities, "Output/JD")
+    save_output_json("Entity List.json", entities, "Output/JD")
     return entities
 
 def extract_jd_experience(text: str):
     matches = re.findall(r"(\d+)\s*(?:years?|months?)", text, re.IGNORECASE)
     years = sum(int(m) / 12 if "month" in text.lower() else int(m) for m in matches) if matches else 0
-    save_debug_output("Experience.json", {"matches": matches, "computed_years": years}, "Output/JD")
+    save_output_json("Experience.json", {"matches": matches, "computed_years": years}, "Output/JD")
     return round(years, 1)
