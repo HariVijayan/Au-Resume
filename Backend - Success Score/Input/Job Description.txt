@@ -1,0 +1,6 @@
+Looking for a DevOps Engineer with experience in CI/CD, Terraform, and Kubernetes.
+
+Must have expertise in AWS and infrastructure automation.
+
+Knowledge of scripting languages like Bash or Python is required.
+

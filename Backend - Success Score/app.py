@@ -27,11 +27,54 @@ app.add_middleware(
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# --- Current Processing Methods (Optimized) ---
+@app.post("/getMatchScore/")
+async def process_frontend_request(pdf: UploadFile = File(...), job_description: str = Form(...)):
+    """Handles file upload, extracts text, processes resume, and computes match score."""
+    logger.info("Received file: %s", pdf.filename)
+    
+    try:
+        os.makedirs("Input", exist_ok=True)
+        input_directory = "Input/"
 
-def save_debug_output(filename, data):
+        with open(input_directory + f"{pdf.filename}", "wb") as pdf_file:
+            shutil.copyfileobj(pdf.file, pdf_file)
+
+        with open(input_directory + "Job Description.txt", "w") as text_file:
+            text_file.write(job_description)
+
+        pdf_reader = PyPDF2.PdfReader(pdf.file)
+        text = "".join([page.extract_text() for page in pdf_reader.pages if page.extract_text()])
+
+        resume_output_directory = "Output/Resume/"
+
+        with open(resume_output_directory + "Extracted Text.txt", "w") as text_file:
+            text_file.write(text)
+
+        text = remove_resume_timestamp(text)
+        text = normalize_resume_text(text)
+        
+        with open(resume_output_directory + "Cleaned Text.txt", "w") as text_file:
+            text_file.write(text)
+
+        resume_entities = extract_resume(text)
+        job_description_entities = extract_jd(job_description)
+
+        match_score, matched_entities, unmatched_entities = compute_weighted_score(resume_entities, job_description_entities)
+
+        save_debug_output("Success Score.json", {
+            "match_score": match_score,
+            "matched_entities": matched_entities,
+            "unmatched_entities": unmatched_entities
+        }, "Output")
+
+        return {"match_score": f"{match_score}%", "matched_entities": matched_entities, "unmatched_entities": unmatched_entities}
+    
+    except Exception as e:
+        logger.error("Error processing file: %s", str(e))
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+def save_debug_output(filename, data, debug_dir):
     """Saves intermediate processing results to a JSON file for debugging."""
-    debug_dir = "debug_outputs"
     os.makedirs(debug_dir, exist_ok=True)
     file_path = os.path.join(debug_dir, filename)
 
@@ -47,13 +90,16 @@ def save_debug_output(filename, data):
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, default=convert_numpy)
 
-def remove_timestamp(text: str):
+# --- Resume Entity Extraction Methods ---        
+
+def remove_resume_timestamp(text: str):
     """Removes timestamp and page numbers from the extracted text."""
     pattern = r"Developed by the Department of IST\. Generated at \d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2} Page \d+ of \d+"
     return re.sub(pattern, '', text).strip()
 
-def normalize_text(text: str):
+def normalize_resume_text(text: str):
     """Cleans up extracted text by fixing spacing issues and removing unnecessary sections."""
+    text = re.sub(r'\s+', ' ', text)
     text = text.replace("SUMMAR Y", "SUMMARY")
     text = text.replace("EXPERIENCE ", "EXPERIENCE")
     text = text.replace("EDUCA TION", "EDUCATION")
@@ -61,13 +107,12 @@ def normalize_text(text: str):
     text = text.replace("LANGU AGE PR OFICIENCY", "LANGUAGE PROFICIENCY")
     return text.strip()
 
-def extract_section(text: str, section_name: str, next_section_names: list):
+def extract_resume_section(text: str, section_name: str, next_section_names: list):
     """Extracts text for a given section dynamically until the next uppercase header."""
     start_index = text.find(section_name)
     if start_index == -1:
         return "Not Found"
     
-    # Find end index using the next section names
     end_index = len(text)
     for next_section in next_section_names:
         next_start = text.find(next_section, start_index + len(section_name))
@@ -78,20 +123,17 @@ def extract_section(text: str, section_name: str, next_section_names: list):
     section_text = text[start_index + len(section_name):end_index].strip()
     return section_text
 
-def extract_all_sections(text: str):
+def extract_resume(text: str):
     """Extracts all relevant sections dynamically."""
     sections = ["SUMMARY", "EXPERIENCE", "EDUCATION", "SKILLS", "PROJECTS", "CERTIFICATIONS", "LANGUAGE PROFICIENCY"]
     extracted_data = {}
     
     for i, section in enumerate(sections):
         next_sections = sections[i + 1:]
-        extracted_data[section.lower()] = extract_section(text, section, next_sections)
+        extracted_data[section.lower()] = extract_resume_section(text, section, next_sections)
     
-    # Saving the cleaned sections to a JSON file for debugging
-    save_debug_output("resume_entities.json", extracted_data)
+    save_debug_output("Entity List.json", extracted_data, "Output/Resume")
     return extracted_data
-
-
 
 def compute_weighted_score(resume_entities, job_description_entities):
     """Computes weighted score with improved matching."""
@@ -110,77 +152,23 @@ def compute_weighted_score(resume_entities, job_description_entities):
         }
 
     final_score = round(float(total_score * 100), 2)
-    save_debug_output("compute_weighted_score.json", {
-        "final_score": final_score,
-        "matched_entities": matched_entities,
-        "unmatched_entities": unmatched_entities
-    })
 
     return final_score, matched_entities, unmatched_entities
 
-@app.post("/upload/")
-async def upload_file(pdf: UploadFile = File(...), job_description: str = Form(...)):
-    """Handles file upload, extracts text, processes resume, and computes match score."""
-    logger.info("Received file: %s", pdf.filename)
-    
-    try:
-        file_location = f"uploads/{pdf.filename}"
-        os.makedirs("uploads", exist_ok=True)
-        with open(file_location, "wb") as f:
-            shutil.copyfileobj(pdf.file, f)
+# --- Job Description Entity Extraction Methods ---
 
-        with open(file_location, "rb") as f:
-            pdf_reader = PyPDF2.PdfReader(f)
-            text = "".join([page.extract_text() for page in pdf_reader.pages if page.extract_text()])
-
-        save_debug_output("resume_extracted_text.json", {"resume_text": text})
-
-        # Process and extract relevant sections
-        text = remove_timestamp(text)
-        text = normalize_text(text)
-        save_debug_output("resume_cleaned_text.json", {"cleaned_text": text})
-        resume_entities = extract_all_sections(text)
-        job_description_entities = previous_method(job_description)
-
-        match_score, matched_entities, unmatched_entities = compute_weighted_score(resume_entities, job_description_entities)
-
-        save_debug_output("final_output.json", {
-            "match_score": match_score,
-            "matched_entities": matched_entities,
-            "unmatched_entities": unmatched_entities
-        })
-
-        return {"match_score": f"{match_score}%", "matched_entities": matched_entities, "unmatched_entities": unmatched_entities}
-    
-    except Exception as e:
-        logger.error("Error processing file: %s", str(e))
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-
-# --- Previous Methods (Grouped Below) ---
-
-def extract_experience(text: str):
-    """Extracts years of experience from the resume and logs intermediate results."""
-    matches = re.findall(r"(\d+)\s*(?:years?|months?)", text, re.IGNORECASE)
-    years = sum(int(m) / 12 if "month" in text.lower() else int(m) for m in matches) if matches else 0
-    save_debug_output("jd_experience.json", {"matches": matches, "computed_years": years})
-    return round(years, 1)
-
-EXCLUDED_PHRASES = {"Developed by the Department of IST.", "Generated at", "Page"}
 TECH_SKILLS = {"Java", "Python", "JavaScript", "React", "Node.js", "Spring", "SQL", "AWS", "Docker", "Kubernetes"}
 
-def previous_method(text: str):
+def extract_jd(text: str):
     """Extracts structured data using Named Entity Recognition (NER)."""
     doc = nlp(text)
     skills = set()
-    experience = extract_experience(text)
+    experience = extract_jd_experience(text)
     education = []
     certifications = []
 
     for ent in doc.ents:
         clean_text = ent.text.strip()
-        if any(excluded in clean_text for excluded in EXCLUDED_PHRASES):
-            continue
         
         if ent.label_ in ["ORG", "PRODUCT"] and clean_text in TECH_SKILLS:
             skills.add(clean_text)
@@ -196,5 +184,11 @@ def previous_method(text: str):
         "certifications": list(set(certifications)),
     }
 
-    save_debug_output("jd_entities.json", entities)
+    save_debug_output("Entity List.json", entities, "Output/JD")
     return entities
+
+def extract_jd_experience(text: str):
+    matches = re.findall(r"(\d+)\s*(?:years?|months?)", text, re.IGNORECASE)
+    years = sum(int(m) / 12 if "month" in text.lower() else int(m) for m in matches) if matches else 0
+    save_debug_output("Experience.json", {"matches": matches, "computed_years": years}, "Output/JD")
+    return round(years, 1)
