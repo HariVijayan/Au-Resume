@@ -10,18 +10,81 @@
   "githuburl": "https://www.github.com/John",
   "customlink": "www.myportfolio.com",
   "customlinkurl": "https://www.myportfolio.com",
-  "summary": "5 years in software development",
+  "summary": "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies. I specialize in building scalable web applications using modern frameworks and cloud technologies.",
   "education": [
     {
+      "phd": [
+        {
+          "phd_name": "Ph.D in Network Security",
+          "phd_university": "Anna University",
+          "phd_year": "2024 - 2029",
+          "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
+          "phd_additional_info": "Widely Accepted Research"
+        },
+        {
+          "phd_name": "Ph.D in Artificial Intelligence",
+          "phd_university": "Anna University",
+          "phd_year": "2024 - 2029",
+          "phd_exp": "Expertise: LLM, Machine Learning, Deep Learning",
+          "phd_additional_info": "Best Research Award"
+        }
+      ],
+      "pg_degree": [
+        {
+          "pg_degree_name": "Master of Computer Applications",
+          "pg_degree_university": "Princeton University",
+          "pg_degree_year": "2022 - 2024",
+          "pg_degree_cgpa": "CGPA: 9.5",
+          "pg_additional_info": "Distinction Grade"
+        },
+        {
+          "pg_degree_name": "Master of Business Administration",
+          "pg_degree_university": "Anna University",
+          "pg_degree_year": "2022 - 2024",
+          "pg_degree_cgpa": "CGPA: 9.5",
+          "pg_additional_info": "Distinction Grade"
+        }
+      ],
       "ug_degree": [
         {
           "ug_degree_name": "B.Sc. Computer Science",
           "ug_degree_university": "Princeton University",
           "ug_degree_year": "2019 - 2022",
           "ug_degree_cgpa": "CGPA: 8.7",
-          "ug_additional_info": "Distinction grade"
+          "ug_additional_info": "Distinction Grade"
+        },
+        {
+          "ug_degree_name": "Bachelor of Business Administration",
+          "ug_degree_university": "Anna University",
+          "ug_degree_year": "2019 - 2022",
+          "ug_degree_cgpa": "CGPA: 8.7",
+          "ug_additional_info": "Distinction Grade"
         }
-      ]
+      ],
+      "diploma": [
+        {
+          "diploma_name": "Diploma in Technology",
+          "diploma_university": "Princeton University",
+          "diploma_year": "2017 - 2019",
+          "diploma_cgpa": "CGPA: 9.5",
+          "diploma_additional_info": "Distinction Grade"
+        },
+        {
+          "diploma_name": "Diploma in IT Equipments",
+          "diploma_university": "Anna University",
+          "diploma_year": "2017 - 2019",
+          "diploma_cgpa": "CGPA: 9.5",
+          "diploma_additional_info": "Distinction Grade"
+        }
+      ],
+      "hsc_name": "Don Bosco School",
+      "hsc_year": "2015 - 2017",
+      "hsc_grade": "Grade: 68.0",
+      "hsc_additional_info": "State Board",
+      "sslc_name": "Don Bosco School",
+      "sslc_year": "2014 - 2015",
+      "sslc_grade": "Grade: 68.0",
+      "sslc_additional_info": "State Board"
     }
   ],
   "experience": [
@@ -34,27 +97,57 @@
           "experience_designation": "Software Developer",
           "experience_team": "Cloud Deployment",
           "experience_roles": [
-            "5 years in software development"
+            "Developed and maintained the company website using modern JavaScript frameworks",
+            "Collaborated with cross-functional teams to deploy cloud solutions and improve scalability"
           ]
+        }
+      ],
+      "style2": [
+        {
+          "experience_company": "Amazon India,",
+          "experience_location": "Chennai, India",
+          "experience_year": "2019 - 2022",
+          "experience_designation": "Software Developer",
+          "experience_team": "Cloud Deployment",
+          "experience_description": "Worked for 3 years. Developed security management portal"
         }
       ]
     }
   ],
+  "projects": {
+    "project1": {
+      "project_name": "Project 1",
+      "project_link": "https://github.com/John/Project1",
+      "project_description": "A simple implementation of a blog website",
+      "project_tech": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+    },
+    "project2": {
+      "project_name": "Project 2",
+      "project_link": "https://github.com/John/Project2",
+      "project_description": "A simple implementation of a pdf conversion tool",
+      "project_tech": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+    }
+  },
   "skills": {
     "style1": {
       "skillset": [
-        "Python",
-        "Java",
-        "AWS",
-        "Docker"
+        "Web Development",
+        "Cloud Deployment",
+        "Machine Learning"
       ]
     }
   },
   "certification": {
     "style1": {
       "certificationset": [
-        "AWS Certified Solutions Architect"
+        "AWS Certified Developer",
+        "Google Cloud Certified (udemy.com/certificate/ghvsgv212)",
+        "Machine Learning Expert"
       ]
     }
-  }
+  },
+  "languages": [
+    "Tamil",
+    "English"
+  ]
 }

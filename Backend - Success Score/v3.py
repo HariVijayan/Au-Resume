@@ -27,7 +27,15 @@ app.add_middleware(
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# --- Current Processing Methods (Optimized) ---
+# Predefined skills list
+TECH_SKILLS = {"Java", "Python", "JavaScript", "React", "Node.js", "Spring", "SQL", "AWS", "Docker", "Kubernetes"}
+
+# Define words/phrases to exclude from processing
+EXCLUDED_PHRASES = {
+    ""
+}
+
+# --- Helper Functions ---
 
 def save_debug_output(filename, data):
     """Saves intermediate processing results to a JSON file for debugging."""
@@ -35,6 +43,7 @@ def save_debug_output(filename, data):
     os.makedirs(debug_dir, exist_ok=True)
     file_path = os.path.join(debug_dir, filename)
 
+    # Convert NumPy types to native Python types before saving
     def convert_numpy(obj):
         if isinstance(obj, np.ndarray):
             return obj.tolist()  
@@ -47,127 +56,20 @@ def save_debug_output(filename, data):
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, default=convert_numpy)
 
-def remove_timestamp(text: str):
-    """Removes timestamp and page numbers from the extracted text."""
-    pattern = r"Developed by the Department of IST\. Generated at \d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2} Page \d+ of \d+"
-    return re.sub(pattern, '', text).strip()
 
-def normalize_text(text: str):
-    """Cleans up extracted text by fixing spacing issues and removing unnecessary sections."""
-    text = text.replace("SUMMAR Y", "SUMMARY")
-    text = text.replace("EXPERIENCE ", "EXPERIENCE")
-    text = text.replace("EDUCA TION", "EDUCATION")
-    text = text.replace("CERTIFICA TIONS", "CERTIFICATIONS")
-    text = text.replace("LANGU AGE PR OFICIENCY", "LANGUAGE PROFICIENCY")
-    return text.strip()
-
-def extract_section(text: str, section_name: str, next_section_names: list):
-    """Extracts text for a given section dynamically until the next uppercase header."""
-    start_index = text.find(section_name)
-    if start_index == -1:
-        return "Not Found"
-    
-    # Find end index using the next section names
-    end_index = len(text)
-    for next_section in next_section_names:
-        next_start = text.find(next_section, start_index + len(section_name))
-        if next_start != -1:
-            end_index = next_start
-            break
-            
-    section_text = text[start_index + len(section_name):end_index].strip()
-    return section_text
-
-def extract_all_sections(text: str):
-    """Extracts all relevant sections dynamically."""
-    sections = ["SUMMARY", "EXPERIENCE", "EDUCATION", "SKILLS", "PROJECTS", "CERTIFICATIONS", "LANGUAGE PROFICIENCY"]
-    extracted_data = {}
-    
-    for i, section in enumerate(sections):
-        next_sections = sections[i + 1:]
-        extracted_data[section.lower()] = extract_section(text, section, next_sections)
-    
-    # Saving the cleaned sections to a JSON file for debugging
-    save_debug_output("resume_entities.json", extracted_data)
-    return extracted_data
-
-
-
-def compute_weighted_score(resume_entities, job_description_entities):
-    """Computes weighted score with improved matching."""
-    weights = {"skills": 0.5, "experience": 0.3, "education": 0.15, "certifications": 0.05}
-    total_score = 0.0
-    matched_entities = {}
-    unmatched_entities = {}
-
-    for key, weight in weights.items():
-        similarity = 1.0 if resume_entities[key] == job_description_entities[key] else 0.0
-        total_score += weight * similarity
-        (matched_entities if similarity > 0.5 else unmatched_entities)[key] = {
-            "resume": resume_entities[key],
-            "job_description": job_description_entities[key],
-            "similarity": float(similarity)
-        }
-
-    final_score = round(float(total_score * 100), 2)
-    save_debug_output("compute_weighted_score.json", {
-        "final_score": final_score,
-        "matched_entities": matched_entities,
-        "unmatched_entities": unmatched_entities
-    })
-
-    return final_score, matched_entities, unmatched_entities
-
-@app.post("/upload/")
-async def upload_file(pdf: UploadFile = File(...), job_description: str = Form(...)):
-    """Handles file upload, extracts text, processes resume, and computes match score."""
-    logger.info("Received file: %s", pdf.filename)
-    
-    try:
-        file_location = f"uploads/{pdf.filename}"
-        os.makedirs("uploads", exist_ok=True)
-        with open(file_location, "wb") as f:
-            shutil.copyfileobj(pdf.file, f)
-
-        with open(file_location, "rb") as f:
-            pdf_reader = PyPDF2.PdfReader(f)
-            text = "".join([page.extract_text() for page in pdf_reader.pages if page.extract_text()])
-
-        save_debug_output("resume_extracted_text.json", {"resume_text": text})
-
-        # Process and extract relevant sections
-        text = remove_timestamp(text)
-        text = normalize_text(text)
-        save_debug_output("resume_cleaned_text.json", {"cleaned_text": text})
-        resume_entities = extract_all_sections(text)
-        job_description_entities = previous_method(job_description)
-
-        match_score, matched_entities, unmatched_entities = compute_weighted_score(resume_entities, job_description_entities)
-
-        save_debug_output("final_output.json", {
-            "match_score": match_score,
-            "matched_entities": matched_entities,
-            "unmatched_entities": unmatched_entities
-        })
-
-        return {"match_score": f"{match_score}%", "matched_entities": matched_entities, "unmatched_entities": unmatched_entities}
-    
-    except Exception as e:
-        logger.error("Error processing file: %s", str(e))
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-
-# --- Previous Methods (Grouped Below) ---
+def remove_excluded_phrases(text: str):
+    """Removes all excluded phrases from the text before processing."""
+    for phrase in EXCLUDED_PHRASES:
+        text = text.replace(phrase, "")
+    save_debug_output("cleaned_text.json", {"cleaned_resume_text": text})
+    return text
 
 def extract_experience(text: str):
-    """Extracts years of experience from the resume and logs intermediate results."""
+    """Extracts years of experience from the resume."""
     matches = re.findall(r"(\d+)\s*(?:years?|months?)", text, re.IGNORECASE)
     years = sum(int(m) / 12 if "month" in text.lower() else int(m) for m in matches) if matches else 0
-    save_debug_output("jd_experience.json", {"matches": matches, "computed_years": years})
+    save_debug_output("extract_experience.json", {"matches": matches, "computed_years": years})
     return round(years, 1)
-
-EXCLUDED_PHRASES = {"Developed by the Department of IST.", "Generated at", "Page"}
-TECH_SKILLS = {"Java", "Python", "JavaScript", "React", "Node.js", "Spring", "SQL", "AWS", "Docker", "Kubernetes"}
 
 def previous_method(text: str):
     """Extracts structured data using Named Entity Recognition (NER)."""
@@ -179,6 +81,7 @@ def previous_method(text: str):
 
     for ent in doc.ents:
         clean_text = ent.text.strip()
+
         if any(excluded in clean_text for excluded in EXCLUDED_PHRASES):
             continue
         
@@ -196,5 +99,112 @@ def previous_method(text: str):
         "certifications": list(set(certifications)),
     }
 
-    save_debug_output("jd_entities.json", entities)
+    save_debug_output("extract_entities_ner.json", entities)
     return entities
+
+def remove_timestamp(text: str):
+    """Removes timestamp and page numbers from the extracted text."""
+    pattern = r"Developed by the Department of IST\. Generated at \d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2} Page \d+ of \d+"
+    updated_text = re.sub(pattern, '', text)
+    return updated_text.strip()
+
+def normalize_text(text: str):
+    """Cleans up extracted text by fixing spacing issues."""
+    text = re.sub(r'\s+', ' ', text)  # Replace multiple spaces/newlines with a single space
+    text = text.replace("SUMMAR Y", "SUMMARY")
+    text = text.replace("EDUCA TION", "EDUCATION")
+    text = text.replace("CERTIFICA TIONS", "CERTIFICATIONS")
+    text = text.replace("LANGU AGE PR OFICIENCY", "LANGUAGE PROFICIENCY")
+    return text.strip()
+
+def newer_method(text: str):
+    """Extracts structured data using section-based parsing with improved regex."""
+
+    sections = {
+        "summary": r"SUMMARY(.*?)EXPERIENCE",
+        "experience": r"EXPERIENCE(.*?)EDUCATION",
+        "education": r"EDUCATION(.*?)SKILLS",
+        "skills": r"SKILLS(.*?)CERTIFICATIONS",
+        "certifications": r"CERTIFICATIONS(.*?)LANGUAGE PROFICIENCY"
+    }
+    
+    extracted_data = {}
+
+    for key, pattern in sections.items():
+        match = re.search(pattern, text, re.DOTALL | re.IGNORECASE)
+        extracted_data[key] = match.group(1).strip() if match else "Not Found"
+
+    save_debug_output("extract_entities_regex.json", extracted_data)
+    return extracted_data
+
+def compute_weighted_score(resume_entities, job_description_entities):
+    """Computes weighted score with improved matching."""
+    weights = {"skills": 0.5, "experience": 0.3, "education": 0.15, "certifications": 0.05}
+    total_score = 0.0
+    matched_entities = {}
+    unmatched_entities = {}
+
+    for key, weight in weights.items():
+        similarity = 0.0
+        if key == "experience":
+            try:
+                resume_exp = float(resume_entities["experience"]) if resume_entities["experience"] else 0.0
+                job_exp = extract_experience(job_description_entities["experience"])
+                similarity = 1.0 if resume_exp >= job_exp else resume_exp / job_exp if job_exp > 0 else 0.0
+            except ValueError:
+                resume_exp, job_exp = 0.0, 0.0  
+        else:
+            similarity = 1.0 if resume_entities[key] == job_description_entities[key] else 0.0
+
+        total_score += weight * similarity
+        (matched_entities if similarity > 0.5 else unmatched_entities)[key] = {
+            "resume": resume_entities[key],
+            "job_description": job_description_entities[key],
+            "similarity": float(similarity)
+        }
+
+    final_score = round(float(total_score * 100), 2)
+    save_debug_output("compute_weighted_score.json", {
+        "final_score": final_score,
+        "matched_entities": matched_entities,
+        "unmatched_entities": unmatched_entities
+    })
+
+    return final_score, matched_entities, unmatched_entities
+
+@app.post("/upload/")
+async def upload_file(pdf: UploadFile = File(...), job_description: str = Form(...), method: str = Form("newer")):
+    """Handles file upload, extracts text, processes resume, and computes match score."""
+    logger.info("Received file: %s", pdf.filename)
+    
+    try:
+        file_location = f"uploads/{pdf.filename}"
+        os.makedirs("uploads", exist_ok=True)
+        with open(file_location, "wb") as f:
+            shutil.copyfileobj(pdf.file, f)
+
+        with open(file_location, "rb") as f:
+            pdf_reader = PyPDF2.PdfReader(f)
+            text = "".join([page.extract_text() for page in pdf_reader.pages if page.extract_text()])
+
+        save_debug_output("extracted_resume_text.json", {"resume_text": text})
+        text = remove_timestamp(text)
+        text = normalize_text(text)
+        text = remove_excluded_phrases(text)
+
+        resume_entities = newer_method(text) if method == "newer" else previous_method(text)
+        job_description_entities = newer_method(job_description) if method == "newer" else previous_method(job_description)
+
+        match_score, matched_entities, unmatched_entities = compute_weighted_score(resume_entities, job_description_entities)
+
+        save_debug_output("final_output.json", {
+            "match_score": match_score,
+            "matched_entities": matched_entities,
+            "unmatched_entities": unmatched_entities
+        })
+
+        return {"match_score": f"{match_score}%", "matched_entities": matched_entities, "unmatched_entities": unmatched_entities}
+    
+    except Exception as e:
+        logger.error("Error processing file: %s", str(e))
+        return JSONResponse(status_code=500, content={"error": str(e)})
