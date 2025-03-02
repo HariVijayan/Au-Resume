@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BioSummary from "./Components/Basic Details/BioSummary.jsx";
 import EducationPhd from "./Components/Education/Phd/Phd.jsx";
@@ -12,6 +12,7 @@ import Skills from "./Components/Skills/SkillsMain.jsx";
 import Cerifications from "./Components/Certifications.jsx/CertificationsMain.jsx";
 import Language from "./Components/Language/Language.jsx";
 import CustomDiv from "./Components/Custom/CustomMain.jsx";
+import PreviewPdf from "./PreviewPdf.jsx";
 
 const MainForm = () => {
   const [resumeData, setResumeData] = useState({
@@ -172,8 +173,34 @@ const MainForm = () => {
     }
   };
 
+  const [pdfUrl, setPdfUrl] = useState('');
+
+  // Function to send request to the backend and fetch the PDF
+  const fetchPdf = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/generate-pdf",
+        resumeData,
+        {
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(blob);
+      setPdfUrl(pdfUrl);  // Set the PDF URL to be used by the IframeComponent
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (resumeData) {
+      fetchPdf();
+    }
+  }, [resumeData]);
+
   return (
-    <>
+    <div id="dv-MainFormAndPreview">
       <form id="MainForm" onSubmit={handleSubmit}>
         {activeSection === "BasicDetails" && (
           <BioSummary resumeData={resumeData} setResumeData={setResumeData} />
@@ -341,7 +368,8 @@ const MainForm = () => {
           </div>
         )}
       </form>
-    </>
+      {pdfUrl && <PreviewPdf pdfUrl={pdfUrl} />}
+    </div>
   );
 };
 
