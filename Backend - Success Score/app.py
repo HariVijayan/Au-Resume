@@ -1,6 +1,7 @@
 import re
 import json
 import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import logging
 import shutil
 import numpy as np
@@ -55,6 +56,7 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
 
         text = remove_resume_timestamp(text)
         text = normalize_resume_text(text)
+        text = merge_broken_words(text)
         
         with open(resume_output_directory + "Cleaned Text.txt", "w") as text_file:
             text_file.write(text)
@@ -93,7 +95,59 @@ def save_output_json(filename, data, debug_dir):
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, default=convert_numpy)
 
-# --- Resume Entity Extraction Methods ---        
+# --- Resume Entity Extraction Methods ---      
+
+import nltk
+from nltk.corpus import words
+
+# Define the path where the word list will be stored
+nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
+
+# Check if the word list is already downloaded
+if not os.path.exists(os.path.join(nltk_data_path, 'corpora', 'words.zip')):
+    # If not, download the words corpus and store it locally
+    nltk.download('words', download_dir=nltk_data_path)
+
+# Add the local nltk_data path to the NLTK data path
+nltk.data.path.append(nltk_data_path)
+
+# Create a set of valid words for quick lookup
+valid_words = set(words.words())
+
+def is_meaningful_word(word):
+    # Check if the word is in the set of valid English words
+    return word.lower() in valid_words
+
+def merge_broken_words(paragraph):
+    # Split the paragraph into words
+    words_list = paragraph.split(" ")
+    
+    # Create a new list to hold the processed words
+    result = []
+    
+    # Iterate through each word
+    i = 0
+    while i < len(words_list) - 1:  # We need to check pairs of adjacent words
+        left_word = words_list[i]
+        right_word = words_list[i + 1]
+        
+        # Merge left and right words and check if the combined word is meaningful
+        combined = left_word + right_word
+        if is_meaningful_word(combined):
+            # If it's a meaningful word, replace both words with the combined word
+            result.append(combined)
+            i += 2  # Skip the next word because it's already merged
+        else:
+            # Otherwise, keep the left word and continue with the next word
+            result.append(left_word)
+            i += 1
+    
+    # If there's a leftover word after the loop (last word), append it
+    if i < len(words_list):
+        result.append(words_list[i])
+    
+    # Join the list of words back into a single string
+    return " ".join(result)  
 
 def remove_resume_timestamp(text: str):
     """Removes timestamp and page numbers from the extracted text."""
@@ -150,7 +204,7 @@ model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 def compute_weighted_score(resume_entities, job_description_entities):
     """Computes weighted score using SBERT cosine similarity with size-matched embeddings."""
-    weights = {"skills": 0.5, "experience": 0.3, "education": 0.15, "certifications": 0.05}
+    weights = {"skills": 0.45, "experience": 0.2, "education": 0.25, "certifications": 0.05}
     total_score = 0.0
     matched_entities = {}
     unmatched_entities = {}

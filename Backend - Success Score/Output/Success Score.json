@@ -1,10 +1,10 @@
 {
-    "match_score": 40.74,
+    "match_score": 46.16,
     "matched_entities": {
         "skills": {
             "resume": "Web Development Cloud Deployment Machine Learning",
-            "job_description": "cloud services javascript frameworks web technologies javascript involves expertise using frameworks scalable applications looking a full stack developer",
-            "similarity": 0.5731
+            "job_description": "looking cloud services web technologies scalable applications involves a full stack developer javascript using frameworks javascript frameworks expertise",
+            "similarity": 0.6047
         },
         "experience": {
             "resume": "Zoho Corporation, Bangalore 2022 - Present Software Developer in Cloud Deployment Roles : Developed and maintained the company website using modern JavaScript frameworks Collaborated with cross-functional teams to deploy cloud solutions and improve scalability Amazon India, Chennai, India 2019 - 2022 Software Developer in Cloud Deployment Worked for 3 years. Developed security management portal",
@@ -12,14 +12,14 @@
             "similarity": 0.0548
         },
         "education": {
-            "resume": "Ph.D in Netw ork Secur ity 2024 - 2029 Anna UniversityExpertise: Networking, Security, Machine Learning, Hash Algorithms (Widely Accepted R esearch) Ph.D in Ar tificial Int elligence 2024 - 2029 Anna University Expertise: LLM, Machine Learning, Deep Learning (Best R esearch A ward) Mast er of Comput er Applications 2022 - 2024 Princeton University CGPA: 9.5 (Distinction Grade) Mast er of Business Administration 2022 - 2024 Anna University CGPA: 9.5 (Distinction Grade) B.Sc. Comput er Science 2019 - 2022 Princeton University CGPA: 8.7 (Distinction Grade) Bachelor o f Business Administration 2019 - 2022 Anna University CGPA: 8.7 (Distinction Grade) Diploma in T echnology 2017 - 2019 Princeton University CGPA: 9.5 (Distinction Grade) Diploma in IT Equipments 2017 - 2019 Anna University CGPA: 9.5 (Distinction Grade) HSC Don Bosco School Grade: 68.0 (S tate Board) 2015 - 2017 SSLC Don Bosco School Grade: 68.0 (S tate Board) 2014 - 2015",
-            "job_description": "fluency english networking, security machine learning requires fluency master's degree security research experience artificial intelligence computer science, artificial intelligence a bachelor a related field include bachelor bachelor computer science",
-            "similarity": 0.4723
+            "resume": "Ph.D in Network Security 2024 - 2029 Anna UniversityExpertise: Networking, Security, Machine Learning, Hash Algorithms (Widely Accepted R esearch) Ph.D in Artificial Intelligence 2024 - 2029 Anna University Expertise: LLM, Machine Learning, Deep Learning (Best Research A ward) Master of Computer Applications 2022 - 2024 Princeton University CGPA: 9.5 (Distinction Grade) Master of Business Administration 2022 - 2024 Anna University CGPA: 9.5 (Distinction Grade) B.Sc. Computer Science 2019 - 2022 Princeton University CGPA: 8.7 (Distinction Grade) Bachelor of Business Administration 2019 - 2022 Anna University CGPA: 8.7 (Distinction Grade) Diploma in Technology 2017 - 2019 Princeton University CGPA: 9.5 (Distinction Grade) Diploma in IT Equipments 2017 - 2019 Anna University CGPA: 9.5 (Distinction Grade) HSC Don Bosco School Grade: 68.0 (S tate Board) 2015 - 2017 SSLC Don Bosco School Grade: 68.0 (S tate Board) 2014 - 2015",
+            "job_description": "a bachelor requires fluency include bachelor bachelor a related field computer science, artificial intelligence research experience master's degree networking, security computer science machine learning artificial intelligence english",
+            "similarity": 0.5801
         },
         "certifications": {
             "resume": "AWS Certified Developer Google Cloud Certified (udemy.com/certificate/ghvsgv212) Machine Learning Expert",
-            "job_description": "preference javascript cross-functional teams responsibilities software development cloud deployment at least 3 years experience required skills the candidate cloud certified have years aws certified developer machine learning expert certifications web development include google cloud certified cloud solutions given preference include javascript company websites",
-            "similarity": 0.6704
+            "job_description": "company websites required skills include javascript preference cloud deployment machine learning expert at least 3 years cross-functional teams machine learning expert certifications experience cloud solutions cloud certified responsibilities the candidate web development have years software development aws certified developer google cloud certified given preference",
+            "similarity": 0.671
         }
     },
     "unmatched_entities": {}
