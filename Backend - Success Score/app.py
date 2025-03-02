@@ -138,79 +138,180 @@ def extract_resume(text: str):
     save_output_json("Entity List.json", extracted_data, "Output/Resume")
     return extracted_data
 
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Load SBERT model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
 def compute_weighted_score(resume_entities, job_description_entities):
-    """Computes weighted score using SBERT cosine similarity."""
+    """Computes weighted score using SBERT cosine similarity with size-matched embeddings."""
     weights = {"skills": 0.5, "experience": 0.3, "education": 0.15, "certifications": 0.05}
     total_score = 0.0
     matched_entities = {}
     unmatched_entities = {}
 
     for key, weight in weights.items():
-        # Handle missing sections gracefully
         resume_text = resume_entities.get(key, "None")
         jd_text = job_description_entities.get(key, "None")
 
-        # Encode text directly without list wrapping (avoids 3D array issue)
-        embedding1 = model.encode(resume_text)
-        embedding2 = model.encode(jd_text)
+        # Handle lists in JD (convert to single string)
+        if isinstance(jd_text, list):
+            jd_text = " ".join(jd_text) if jd_text else "None"
 
-        # Check if embeddings are not empty
-        if embedding1.size > 0 and embedding2.size > 0:
-            # Compute cosine similarity
-            similarity = cosine_similarity(embedding1.reshape(1, -1), embedding2.reshape(1, -1))[0][0]  # Ensure 2D arrays
+        # Encode text with same SBERT model and ensure all embeddings are 384D
+        embedding1 = model.encode(resume_text, normalize_embeddings=True)
+        embedding2 = model.encode(jd_text, normalize_embeddings=True)
 
-            total_score += weight * similarity
-            (matched_entities if similarity > 0.05 else unmatched_entities)[key] = {
-                "resume": resume_text,
-                "job_description": jd_text,
-                "similarity": round(float(similarity), 4)  # Round for readability
-            }
-        else:
-            unmatched_entities[key] = {
-                "resume": resume_text,
-                "job_description": jd_text,
-                "similarity": 0.0
-            }
+        # Ensure both embeddings are 1D vectors
+        if len(embedding2.shape) > 1:
+            embedding2 = np.mean(embedding2, axis=0)  # Average embeddings if multi-sentence
+
+        # Compute similarity
+        similarity = cosine_similarity([embedding1], [embedding2])[0][0] if embedding1.shape == embedding2.shape else 0.0
+
+        if embedding1.shape != embedding2.shape:
+            logger.error(f"Embedding size mismatch: {key} (Resume: {embedding1.shape}, JD: {embedding2.shape})")
+
+        total_score += weight * similarity
+        (matched_entities if similarity > 0.05 else unmatched_entities)[key] = {
+            "resume": resume_text,
+            "job_description": jd_text,
+            "similarity": round(float(similarity), 4)
+        }
 
     final_score = round(float(total_score * 100), 2)
     return final_score, matched_entities, unmatched_entities
-
-
 
 
 # --- Job Description Entity Extraction Methods ---
 
 TECH_SKILLS = {"Java", "Python", "JavaScript", "React", "Node.js", "Spring", "SQL", "AWS", "Docker", "Kubernetes"}
 
-def extract_jd(text: str):
-    """Extracts structured data using Named Entity Recognition (NER)."""
-    doc = nlp(text)
-    skills = set()
-    experience = extract_jd_experience(text)
-    education = []
-    certifications = []
+from collections import defaultdict
 
+
+# Predefined Queries (Improved)
+skill_queries = [
+    "List all required technical and soft skills mentioned in the job description.",
+    "Identify programming languages, frameworks, cloud platforms, and technologies required for this role.",
+    "Extract soft skills like teamwork, problem-solving, and leadership from the job description."
+]
+
+education_queries = [
+    "What academic qualifications are mentioned in the job description?",
+    "Extract all references to degrees, fields of study, and university education.",
+    "Identify preferred or required degrees such as Bachelor's, Master's, or Ph.D."
+]
+
+certification_queries = [
+    "List all professional certifications explicitly mentioned in the job description.",
+    "Identify cloud, security, and AI certifications required for this role.",
+    "Extract any mention of industry-recognized certifications like AWS, Google Cloud, or CISSP."
+]
+
+# Stopwords to remove generic, unhelpful terms
+STOPWORDS = {"the position", "candidates", "at least", "we are looking for", "the role", "preferred qualifications"}
+
+# Encode Queries
+skill_embeddings = model.encode(skill_queries)
+education_embeddings = model.encode(education_queries)
+certification_embeddings = model.encode(certification_queries)
+
+def extract_key_phrases(sentence: str):
+    """Extracts key phrases using NER and dependency parsing."""
+    doc = nlp(sentence)
+    key_phrases = set()
+
+    # Extract Named Entities
     for ent in doc.ents:
-        clean_text = ent.text.strip()
-        
-        if ent.label_ in ["ORG", "PRODUCT"] and clean_text in TECH_SKILLS:
-            skills.add(clean_text)
-        elif ent.label_ in ["EDUCATION", "DEGREE"]:
-            education.append(clean_text)
-        elif ent.label_ in ["CERTIFICATION", "AWARD"]:
-            certifications.append(clean_text)
+        key_phrases.add(ent.text)
 
+    # Extract Noun Chunks (as a fallback)
+    for chunk in doc.noun_chunks:
+        key_phrases.add(chunk.text)
+
+    # Extract Verb Phrases (For skill-related phrases like "developed microservices")
+    for token in doc:
+        if token.pos_ == "VERB" and token.dep_ in {"ROOT", "acl"}:
+            phrase = " ".join([token.text] + [child.text for child in token.rights if child.pos_ in {"NOUN", "PROPN"}])
+            key_phrases.add(phrase)
+
+    return key_phrases
+
+def get_best_category(sentence, category_queries, category_embeddings):
+    """Finds the most relevant query for the sentence."""
+    sentence_embedding = model.encode(sentence)
+    similarities = cosine_similarity([sentence_embedding], category_embeddings)[0]
+    best_match_idx = similarities.argmax()
+    return similarities[best_match_idx], category_queries[best_match_idx]
+
+def filter_stopwords(phrases):
+    """Removes generic, non-informative phrases."""
+    return {phrase for phrase in phrases if phrase.lower() not in STOPWORDS}
+
+def refine_entities(entities):
+    """Cleans up extracted entities by merging related terms and removing duplicates."""
+    refined = defaultdict(set)
+
+    for category, terms in entities.items():
+        for term in terms:
+            cleaned_term = term.lower().strip()
+            if any(cleaned_term in existing for existing in refined[category]):
+                continue  # Skip near-duplicates
+            refined[category].add(cleaned_term)
+
+    return {key: list(value) for key, value in refined.items()}
+
+def extract_jd(text: str):
+    """Extracts structured data from the job description using SBERT-based semantic classification."""
+    doc = nlp(text)
+    sentences = [sent.text for sent in doc.sents]
+
+    skills, education, certifications = set(), set(), set()
+    experience = extract_jd_experience(text)
+
+    # Process Each Sentence in JD
+    for sentence in sentences:
+        # Compute Similarity Scores
+        skill_score, _ = get_best_category(sentence, skill_queries, skill_embeddings)
+        education_score, _ = get_best_category(sentence, education_queries, education_embeddings)
+        certification_score, _ = get_best_category(sentence, certification_queries, certification_embeddings)
+
+        # Extract key phrases from sentence
+        extracted_terms = extract_key_phrases(sentence)
+        extracted_terms = filter_stopwords(extracted_terms)
+
+        # Classify Sentence Based on Highest Similarity
+        max_score = max(skill_score, education_score, certification_score)
+
+        if max_score == skill_score:
+            skills.update(extracted_terms)
+        elif max_score == education_score:
+            education.update(extracted_terms)
+        elif max_score == certification_score:
+            certifications.update(extracted_terms)
+
+    # Final Structured Output
     entities = {
         "skills": list(skills),
         "experience": str(experience),
-        "education": list(set(education)),
-        "certifications": list(set(certifications)),
+        "education": list(education),
+        "certifications": list(certifications),
     }
+
+    # Refine entities before returning
+    entities = refine_entities(entities)
 
     save_output_json("Entity List.json", entities, "Output/JD")
     return entities
 
 def extract_jd_experience(text: str):
+    """Extracts years of experience from the job description."""
     matches = re.findall(r"(\d+)\s*(?:years?|months?)", text, re.IGNORECASE)
     years = sum(int(m) / 12 if "month" in text.lower() else int(m) for m in matches) if matches else 0
     save_output_json("Experience.json", {"matches": matches, "computed_years": years}, "Output/JD")
