@@ -1,1 +1,61 @@
-null
+{
+  "username": "John Doe",
+  "small_bio": "Developer | Designer | Freelancer",
+  "phone_number": "+91 9090909099",
+  "emailid": "john@gmail.com",
+  "location": "Bangalore",
+  "linkedin": "linkedin.com/John",
+  "linkedinurl": "https://www.linkedin.com/John",
+  "github": "github.com/John",
+  "githuburl": "https://www.github.com/John",
+  "customlink": "www.myportfolio.com",
+  "customlinkurl": "https://www.myportfolio.com",
+  "summary": "dggg",
+  "education": [
+    {
+      "phd": [
+        {
+          "phd_name": "Ph.D in Network Security 1",
+          "phd_university": "Anna University",
+          "phd_year": "2024 - 2029",
+          "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
+          "phd_additional_info": "cvvvc"
+        },
+        {
+          "phd_name": "Ph.D in Artificial Intelligence",
+          "phd_university": "Anna University",
+          "phd_year": "2024 - 2029",
+          "phd_exp": "Expertise: LLM, Machine Learning, Deep Learning",
+          "phd_additional_info": "vcvccv"
+        }
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "style1": [
+        {
+          "experience_company": "Zoho Corporation,",
+          "experience_location": "Bangalore",
+          "experience_year": "2022 - Present",
+          "experience_designation": "Software Developer",
+          "experience_team": "Cloud Deployment",
+          "experience_roles": [
+            "Developed and maintained the company website using modern JavaScript frameworks",
+            "Collaborated with cross-functional teams to deploy cloud solutions and improve scalability"
+          ]
+        }
+      ],
+      "style2": [
+        {
+          "experience_company": "Amazon India,",
+          "experience_location": "Chennai, India",
+          "experience_year": "2019 - 2022",
+          "experience_designation": "Software Developer",
+          "experience_team": "Cloud Deployment",
+          "experience_description": "Worked for 3 years. Developed security management portal"
+        }
+      ]
+    }
+  ]
+}
