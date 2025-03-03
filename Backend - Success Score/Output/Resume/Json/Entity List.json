@@ -1,11 +1,9 @@
 {
-    "SUMMARY": "I ama full stack developer with 3 years of experience in web development. I have worked on multiple\nprojects and have a good understanding of web technologies. I specialize in building scalable web\napplications using modern frameworks and cloud technologies.",
-    "EXPERIENCE": "Zoho Corporation, Bangalore 2022 - Present\nSoftware Developer in Cloud Deployment\nRoles :\nDeveloped and maintained the company website using modern JavaScript frameworks\nCollaborated with cross-functional teams to deploy cloud solutions and improve scalability\nAmazon India, Chennai, India 2019 - 2022\nSoftware Developer in Cloud Deployment\nWorked for 3 years. Developed security management portal",
-    "EDUCATION": "Ph.D in Network Security 2024 - 2029\nAnna UniversityExpertise: Networking, Security, Machine Learning, Hash\nAlgorithms(Widely Accepted R esearch)\nPh.D in Artificial Intelligence 2024 - 2029\nAnna University Expertise: LLM, Machine Learning, Deep Learning(Best Research A ward)\nMast er of Computer Applications 2022 - 2024\nPrinceton University CGPA: 9.5(Distinction Grade)\nMast er of Business Administration 2022 - 2024\nAnna University CGPA: 9.5(Distinction Grade)\nB.Sc. Computer Science 2019 - 2022\nPrinceton University CGPA: 8.7(Distinction Grade)\nBachelor of Business Administration 2019 - 2022\nAnna University CGPA: 8.7(Distinction Grade)\nDiploma in Technology 2017 - 2019\nPrinceton University CGPA: 9.5(Distinction Grade)\nDiploma in IT Equipments 2017 - 2019\nAnna University CGPA: 9.5(Distinction Grade)",
+    "SUMMARY": "I ama full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies. I specialize in building scalable web applications using modern frameworks and cloud technologies.",
+    "EDUCATION": "Ph.D in Network Security 1 2024 - 2029 Anna UniversityExpertise: Networking, Security, Machine Learning, Hash Algorithms(Widely Accepted R eseach) Mast er of Computer Applications 2022 - 2024 Princeton University CGPA: 9.5(Distinction Grade) B.Sc. Computer Science 2019 - 2022 Princeton University CGPA: 8.7(Distinction Grade) Diploma in Technology 2017 - 2019 Princeton University CGPA: 9.5(Distinction Grade)",
     "HSC": "Don Bosco School Grade: 68.0(S tate Board) 2015 - 2017",
     "SSLC": "Don Bosco School Grade: 68.0(S tate Board) 2014 - 2015",
-    "SKILLS": "Web Development\nCloud Deployment\nMachine Learning",
-    "PROJECTS": "Project 1 Link : https://github.com/John/Project1\nA simple implementation of a blog website\nTech S tack: HTML, CSS, JavaScript, R eactJS, NodeJS, MongoDB\nProject 2 Link : https://github.com/John/Project2\nA simple implementation of a pdf conversion tool\nTech S tack: HTML, CSS, JavaScript, R eactJS, NodeJS, MongoDB",
-    "CERTIFICATIONS": "AWS Certified Developer\nGoogle Cloud Certified (udemy.com/certificate/ghvsgv212)\nMachine Learning Expert",
-    "LANGUAGE PROFICIENCY": "Tamil\nEnglish"
+    "SKILLS": "Web Development Cloud Deployment Machine Learning",
+    "CERTIFICATIONS": "AWS Certified Developer Google Cloud Certified (udemy.com/certificate/ghvsgv212) Machine Learning Expert",
+    "LANGUAGE PROFICIENCY": "Tamil English"
 }
