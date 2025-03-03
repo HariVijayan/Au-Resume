@@ -1,0 +1,26 @@
+{
+    "match_score": 46.88,
+    "matched_entities": {
+        "SKILLS": {
+            "resume": "Web Development\nCloud Deployment\nMachine Learning",
+            "job_description": "scalable applications looking cloud services expertise javascript frameworks involves using frameworks we web technologies a full stack developer",
+            "similarity": 0.6057
+        },
+        "EXPERIENCE": {
+            "resume": "Zoho Corporation, Bangalore 2022 - Present\nSoftware Developer in Cloud Deployment\nRoles :\nDeveloped and maintained the company website using modern JavaScript frameworks\nCollaborated with cross-functional teams to deploy cloud solutions and improve scalability\nAmazon India, Chennai, India 2019 - 2022\nSoftware Developer in Cloud Deployment\nWorked for 3 years. Developed security management portal",
+            "job_description": "3",
+            "similarity": 0.0548
+        },
+        "EDUCATION": {
+            "resume": "Ph.D in Network Security 2024 - 2029\nAnna UniversityExpertise: Networking, Security, Machine Learning, Hash\nAlgorithms(Widely Accepted R esearch)\nPh.D in Artificial Intelligence 2024 - 2029\nAnna University Expertise: LLM, Machine Learning, Deep Learning(Best Research A ward)\nMast er of Computer Applications 2022 - 2024\nPrinceton University CGPA: 9.5(Distinction Grade)\nMast er of Business Administration 2022 - 2024\nAnna University CGPA: 9.5(Distinction Grade)\nB.Sc. Computer Science 2019 - 2022\nPrinceton University CGPA: 8.7(Distinction Grade)\nBachelor of Business Administration 2019 - 2022\nAnna University CGPA: 8.7(Distinction Grade)\nDiploma in Technology 2017 - 2019\nPrinceton University CGPA: 9.5(Distinction Grade)\nDiploma in IT Equipments 2017 - 2019\nAnna University CGPA: 9.5(Distinction Grade)",
+            "job_description": "networking, security include bachelor fluency english bachelor requires fluency computer science, artificial intelligence a bachelor computer science machine learning research experience master's degree a related field",
+            "similarity": 0.607
+        },
+        "CERTIFICATIONS": {
+            "resume": "AWS Certified Developer\nGoogle Cloud Certified (udemy.com/certificate/ghvsgv212)\nMachine Learning Expert",
+            "job_description": "responsibilities preference cloud solutions experience include javascript at least 3 years google cloud certified given preference have years machine learning expert certifications aws certified developer cloud certified cross-functional teams cloud deployment web development software development required skills the candidate company websites",
+            "similarity": 0.6697
+        }
+    },
+    "unmatched_entities": {}
+}

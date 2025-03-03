@@ -10,27 +10,6 @@
   "githuburl": "https://www.github.com/John",
   "customlink": "www.myportfolio.com",
   "customlinkurl": "https://www.myportfolio.com",
-  "summary": "dggg",
-  "education": [
-    {
-      "phd": [
-        {
-          "phd_name": "Ph.D in Network Security 1",
-          "phd_university": "Anna University",
-          "phd_year": "2024 - 2029",
-          "phd_exp": "Expertise: Networking, Security, Machine Learning, Hash Algorithms",
-          "phd_additional_info": "cvvvc"
-        },
-        {
-          "phd_name": "Ph.D in Artificial Intelligence",
-          "phd_university": "Anna University",
-          "phd_year": "2024 - 2029",
-          "phd_exp": "Expertise: LLM, Machine Learning, Deep Learning",
-          "phd_additional_info": "vcvccv"
-        }
-      ]
-    }
-  ],
   "experience": [
     {
       "style1": [
