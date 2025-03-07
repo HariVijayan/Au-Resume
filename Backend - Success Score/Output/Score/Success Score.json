@@ -1,25 +1,25 @@
 {
-    "match_score": 53.18,
+    "match_score": 47.85,
     "matched_entities": {
         "SKILLS": {
             "resume": "Web Development Cloud Deployment Machine Learning",
-            "job_description": "looking a full stack developer scalable applications involves web technologies javascript frameworks cloud services using frameworks expertise",
-            "similarity": 0.6151
+            "job_description": "using frameworks javascript frameworks web technologies expertise looking a full stack developer cloud services involves scalable applications",
+            "similarity": 0.612
         },
         "EXPERIENCE": {
-            "resume": "None",
+            "resume": "Zoho Corporation, Bangalore 2022 - Present Software Developer in Cloud Deployment Roles : Developed and maintained the company website using modern JavaScript frameworks Collaborated with cross-functional teams to deploy cloud solutions and improve scalability Amazon India, Chennai, India 2019 - 2022 Software Developer in Cloud Deployment Worked for 3 years. Developed security management portal",
             "job_description": "3",
-            "similarity": 0.3576
+            "similarity": 0.0548
         },
         "EDUCATION": {
-            "resume": "Ph.D in Network Security 1 2024 - 2029 Anna UniversityExpertise: Networking, Security, Machine Learning, Hash Algorithms(Widely Accepted R eseach) Mast er of Computer Applications 2022 - 2024 Princeton University CGPA: 9.5(Distinction Grade) B.Sc. Computer Science 2019 - 2022 Princeton University CGPA: 8.7(Distinction Grade) Diploma in Technology 2017 - 2019 Princeton University CGPA: 9.5(Distinction Grade)",
-            "job_description": "include bachelor machine learning master's degree requires fluency english computer science, artificial intelligence a bachelor computer science networking, security a related field research experience",
-            "similarity": 0.5796
+            "resume": "Ph.D in Network Security 2024 - 2029 Anna UniversityExpertise: Networking, Security, Machine Learning, Hash Algorithms(Widely Accepted R esearch) Ph.D in Artificial Intelligence 2024 - 2029 Anna University Expertise: LLM, Machine Learning, Deep Learning(Best Research A ward) Mast er of Computer Applications 2022 - 2024 Princeton University CGPA: 9.5(Distinction Grade) Mast er of Business Administration 2022 - 2024 Anna University CGPA: 9.5(Distinction Grade) B.Sc. Computer Science 2019 - 2022 Princeton University CGPA: 8.7(Distinction Grade) Bachelor of Business Administration 2019 - 2022 Anna University CGPA: 8.7(Distinction Grade) Diploma in Technology 2017 - 2019 Princeton University CGPA: 9.5(Distinction Grade) Diploma in IT Equipments 2017 - 2019 Anna University CGPA: 9.5(Distinction Grade)",
+            "job_description": "a related field master's degree english computer science, artificial intelligence networking, security research experience requires fluency include bachelor machine learning a bachelor bachelor",
+            "similarity": 0.6113
         },
         "CERTIFICATIONS": {
             "resume": "AWS Certified Developer Google Cloud Certified (udemy.com/certificate/ghvsgv212) Machine Learning Expert",
-            "job_description": "cloud deployment aws certified developer experience machine learning expert certifications cloud certified software development the candidate include have years given preference at least 3 years cross-functional teams cloud solutions web development responsibilities javascript required skills company websites google cloud certified include javascript",
-            "similarity": 0.7713
+            "job_description": "responsibilities include have years the candidate aws certified developer at least 3 years google cloud certified experience cloud deployment given preference include javascript web development preference cloud solutions company websites software development cross-functional teams machine learning machine learning expert certifications required skills",
+            "similarity": 0.7865
         }
     },
     "unmatched_entities": {}

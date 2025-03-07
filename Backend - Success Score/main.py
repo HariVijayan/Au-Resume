@@ -10,8 +10,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-from Processing.Resume.resume import remove_resume_timestamp, normalize_resume_text, merge_broken_words, extract_resume
-from Processing.Job_Description.jd import extract_jd
+from Processing.Resume.resume import ProcessResume
+from Processing.Job_Description.jd import ProcessJD
+
+resumeClass = ProcessResume()
+jdClass = ProcessJD()
 
 app = FastAPI()
 app.add_middleware(
@@ -51,24 +54,24 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
 
         resume_output_directory = "Output/Resume/Text/"
 
-        save_output_json("resume extracted text.json", {"resume_text": text}, "Output/Resume/Json")
+        save_output_json("Extracted Text.json", {"resume_text": text}, "Output/Resume/Json")
 
         with open(resume_output_directory + "Extracted Text.txt", "w") as text_file:
             text_file.write(text)
 
-        text = remove_resume_timestamp(text)
-        text = normalize_resume_text(text)
-        text = merge_broken_words(text)
+        text = resumeClass.remove_resume_timestamp(text)
+        text = resumeClass.normalize_resume_text(text)
+        text = resumeClass.merge_broken_words(text)
         
         with open(resume_output_directory + "Cleaned Text.txt", "w") as text_file:
             text_file.write(text)
 
-        save_output_json("resume cleaned text.json", {"resume_text": text}, "Output/Resume/Json")
+        save_output_json("Cleaned Text.json", {"resume_text": text}, "Output/Resume/Json")
 
-        resume_entities = extract_resume(text)
+        resume_entities = resumeClass.extract_resume(text)
         save_output_json("Entity List.json", resume_entities, "Output/Resume/Json")
 
-        job_description_entities = extract_jd(job_description)
+        job_description_entities = jdClass.extract_jd(job_description)
         save_output_json("Entity List.json", job_description_entities, "Output/JD")
 
         match_score, matched_entities, unmatched_entities = compute_weighted_score(resume_entities, job_description_entities)

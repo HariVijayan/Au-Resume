@@ -1,122 +1,130 @@
 import re
 import os
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import spacy
 import gensim.downloader as api
 from sklearn.metrics.pairwise import cosine_similarity
 from collections import defaultdict
 from sentence_transformers import SentenceTransformer
 
-nlp = spacy.load("en_core_web_sm")
-word2vec = api.load("word2vec-google-news-300")  
-model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+class ProcessJD:
+    def __init__(self):
+        # Set up environment and models
+        os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+        
+        # Load spaCy model for NLP
+        self.nlp = spacy.load("en_core_web_sm")
+        
+        # Load pre-trained models for word2vec and sentence embeddings
+        self.word2vec = api.load("word2vec-google-news-300")  
+        self.model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
+        # Define skill, education, and certification queries
+        self.TECH_SKILLS = {"Java", "Python", "JavaScript", "React", "Node.js", "Spring", "SQL", "AWS", "Docker", "Kubernetes"}
+        
+        self.skill_queries = [
+            "List all required technical and soft skills mentioned in the job description.",
+            "Identify programming languages, frameworks, cloud platforms, and technologies required for this role.",
+            "Extract soft skills like teamwork, problem-solving, and leadership from the job description."
+        ]
+        
+        self.education_queries = [
+            "What academic qualifications are mentioned in the job description?",
+            "Extract all references to degrees, fields of study, and university education.",
+            "Identify preferred or required degrees such as Bachelor's, Master's, or Ph.D."
+        ]
+        
+        self.certification_queries = [
+            "List all professional certifications explicitly mentioned in the job description.",
+            "Identify cloud, security, and AI certifications required for this role.",
+            "Extract any mention of industry-recognized certifications like AWS, Google Cloud, or CISSP."
+        ]
+        
+        self.STOPWORDS = {"the position", "candidates", "at least", "we are looking for", "the role", "preferred qualifications"}
 
-TECH_SKILLS = {"Java", "Python", "JavaScript", "React", "Node.js", "Spring", "SQL", "AWS", "Docker", "Kubernetes"}
+        # Precompute embeddings for queries
+        self.skill_embeddings = self.model.encode(self.skill_queries)
+        self.education_embeddings = self.model.encode(self.education_queries)
+        self.certification_embeddings = self.model.encode(self.certification_queries)
 
-skill_queries = [
-    "List all required technical and soft skills mentioned in the job description.",
-    "Identify programming languages, frameworks, cloud platforms, and technologies required for this role.",
-    "Extract soft skills like teamwork, problem-solving, and leadership from the job description."
-]
+    def extract_key_phrases(self, sentence: str):
+        """Extracts key phrases using NER and dependency parsing."""
+        doc = self.nlp(sentence)
+        key_phrases = set()
 
-education_queries = [
-    "What academic qualifications are mentioned in the job description?",
-    "Extract all references to degrees, fields of study, and university education.",
-    "Identify preferred or required degrees such as Bachelor's, Master's, or Ph.D."
-]
+        for ent in doc.ents:
+            key_phrases.add(ent.text)
 
-certification_queries = [
-    "List all professional certifications explicitly mentioned in the job description.",
-    "Identify cloud, security, and AI certifications required for this role.",
-    "Extract any mention of industry-recognized certifications like AWS, Google Cloud, or CISSP."
-]
+        for chunk in doc.noun_chunks:
+            key_phrases.add(chunk.text)
 
-STOPWORDS = {"the position", "candidates", "at least", "we are looking for", "the role", "preferred qualifications"}
+        for token in doc:
+            if token.pos_ == "VERB" and token.dep_ in {"ROOT", "acl"}:
+                phrase = " ".join([token.text] + [child.text for child in token.rights if child.pos_ in {"NOUN", "PROPN"}])
+                key_phrases.add(phrase)
 
-skill_embeddings = model.encode(skill_queries)
-education_embeddings = model.encode(education_queries)
-certification_embeddings = model.encode(certification_queries)
+        return key_phrases
 
-def extract_key_phrases(sentence: str):
-    """Extracts key phrases using NER and dependency parsing."""
-    doc = nlp(sentence)
-    key_phrases = set()
+    def get_best_category(self, sentence, category_queries, category_embeddings):
+        """Finds the most relevant query for the sentence."""
+        sentence_embedding = self.model.encode(sentence)
+        similarities = cosine_similarity([sentence_embedding], category_embeddings)[0]
+        best_match_idx = similarities.argmax()
+        return similarities[best_match_idx], category_queries[best_match_idx]
 
-    for ent in doc.ents:
-        key_phrases.add(ent.text)
+    def filter_stopwords(self, phrases):
+        """Removes generic, non-informative phrases."""
+        return {phrase for phrase in phrases if phrase.lower() not in self.STOPWORDS}
 
-    for chunk in doc.noun_chunks:
-        key_phrases.add(chunk.text)
+    def refine_entities(self, entities):
+        """Cleans up extracted entities by merging related terms and removing duplicates."""
+        refined = defaultdict(set)
 
-    for token in doc:
-        if token.pos_ == "VERB" and token.dep_ in {"ROOT", "acl"}:
-            phrase = " ".join([token.text] + [child.text for child in token.rights if child.pos_ in {"NOUN", "PROPN"}])
-            key_phrases.add(phrase)
+        for category, terms in entities.items():
+            for term in terms:
+                cleaned_term = term.lower().strip()
+                if any(cleaned_term in existing for existing in refined[category]):
+                    continue  # Skip near-duplicates
+                refined[category].add(cleaned_term)
 
-    return key_phrases
+        return {key: list(value) for key, value in refined.items()}
 
-def get_best_category(sentence, category_queries, category_embeddings):
-    """Finds the most relevant query for the sentence."""
-    sentence_embedding = model.encode(sentence)
-    similarities = cosine_similarity([sentence_embedding], category_embeddings)[0]
-    best_match_idx = similarities.argmax()
-    return similarities[best_match_idx], category_queries[best_match_idx]
+    def extract_jd_experience(self, text: str):
+        """Extracts years of experience from the job description."""
+        matches = re.findall(r"(\d+)\s*(?:years?|months?)", text, re.IGNORECASE)
+        years = sum(int(m) / 12 if "month" in text.lower() else int(m) for m in matches) if matches else 0
+        return round(years, 1)
 
-def filter_stopwords(phrases):
-    """Removes generic, non-informative phrases."""
-    return {phrase for phrase in phrases if phrase.lower() not in STOPWORDS}
+    def extract_jd(self, text: str):
+        """Extracts structured data from the job description using SBERT-based semantic classification."""
+        doc = self.nlp(text)
+        sentences = [sent.text for sent in doc.sents]
 
-def refine_entities(entities):
-    """Cleans up extracted entities by merging related terms and removing duplicates."""
-    refined = defaultdict(set)
+        skills, education, certifications = set(), set(), set()
+        experience = self.extract_jd_experience(text)
 
-    for category, terms in entities.items():
-        for term in terms:
-            cleaned_term = term.lower().strip()
-            if any(cleaned_term in existing for existing in refined[category]):
-                continue  # Skip near-duplicates
-            refined[category].add(cleaned_term)
+        for sentence in sentences:
+            skill_score, _ = self.get_best_category(sentence, self.skill_queries, self.skill_embeddings)
+            education_score, _ = self.get_best_category(sentence, self.education_queries, self.education_embeddings)
+            certification_score, _ = self.get_best_category(sentence, self.certification_queries, self.certification_embeddings)
 
-    return {key: list(value) for key, value in refined.items()}
+            extracted_terms = self.extract_key_phrases(sentence)
+            extracted_terms = self.filter_stopwords(extracted_terms)
 
-def extract_jd(text: str):
-    """Extracts structured data from the job description using SBERT-based semantic classification."""
-    doc = nlp(text)
-    sentences = [sent.text for sent in doc.sents]
+            max_score = max(skill_score, education_score, certification_score)
 
-    skills, education, certifications = set(), set(), set()
-    experience = extract_jd_experience(text)
+            if max_score == skill_score:
+                skills.update(extracted_terms)
+            elif max_score == education_score:
+                education.update(extracted_terms)
+            elif max_score == certification_score:
+                certifications.update(extracted_terms)
 
-    for sentence in sentences:
-        skill_score, _ = get_best_category(sentence, skill_queries, skill_embeddings)
-        education_score, _ = get_best_category(sentence, education_queries, education_embeddings)
-        certification_score, _ = get_best_category(sentence, certification_queries, certification_embeddings)
+        entities = {
+            "SKILLS": list(skills),
+            "EXPERIENCE": str(experience),
+            "EDUCATION": list(education),
+            "CERTIFICATIONS": list(certifications),
+        }
 
-        extracted_terms = extract_key_phrases(sentence)
-        extracted_terms = filter_stopwords(extracted_terms)
-
-        max_score = max(skill_score, education_score, certification_score)
-
-        if max_score == skill_score:
-            skills.update(extracted_terms)
-        elif max_score == education_score:
-            education.update(extracted_terms)
-        elif max_score == certification_score:
-            certifications.update(extracted_terms)
-
-    entities = {
-        "SKILLS": list(skills),
-        "EXPERIENCE": str(experience),
-        "EDUCATION": list(education),
-        "CERTIFICATIONS": list(certifications),
-    }
-
-    entities = refine_entities(entities)
-    return entities
-
-def extract_jd_experience(text: str):
-    """Extracts years of experience from the job description."""
-    matches = re.findall(r"(\d+)\s*(?:years?|months?)", text, re.IGNORECASE)
-    years = sum(int(m) / 12 if "month" in text.lower() else int(m) for m in matches) if matches else 0
-    return round(years, 1)
+        entities = self.refine_entities(entities)
+        return entities
