@@ -38,9 +38,6 @@ function App() {
           },
         }
       );
-
-      console.log(response.data);
-
       setSimilarity(response.data.match_score);
       setMatchedEntities(response.data.matched_entities);
       setUnmatchedEntities(response.data.unmatched_entities);

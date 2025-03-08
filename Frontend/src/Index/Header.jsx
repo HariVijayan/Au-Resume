@@ -9,6 +9,7 @@ const Header = () => {
         <h1 id="h1-HeaderTitle">AU Resume Builder</h1>
         <h3 id="h3-HeaderDept">Department of IST</h3>
         <a href="success.html">Success</a>
+        <a href="role_ss.html">Role</a>
       </div>
     </>
   );
