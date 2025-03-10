@@ -8,9 +8,10 @@ import numpy as np
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
 from Processing.Resume.resume import ProcessResume
+from Processing.ML.test import JobFitPredictor
+
+jobSSClass = JobFitPredictor()
 
 resumeClass = ProcessResume()
 
@@ -44,9 +45,9 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_role: str = 
         pdf_reader = PyPDF2.PdfReader(pdf.file)
         text = "".join([page.extract_text() for page in pdf_reader.pages if page.extract_text()])
 
-        resume_output_directory = "Output/Resume/Text/"
+        resume_output_directory = "Output/Text/"
 
-        save_output_json("Extracted Text.json", {"resume_text": text}, "Output/Resume/Json")
+        save_output_json("Extracted Text.json", {"resume_text": text}, "Output/Json")
 
         with open(resume_output_directory + "Extracted Text.txt", "w") as text_file:
             text_file.write(text)
@@ -58,12 +59,15 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_role: str = 
         with open(resume_output_directory + "Cleaned Text.txt", "w") as text_file:
             text_file.write(text)
 
-        save_output_json("Cleaned Text.json", {"resume_text": text}, "Output/Resume/Json")
+        save_output_json("Cleaned Text.json", {"resume_text": text}, "Output/Json")
 
         resume_entities = resumeClass.extract_resume(text)
-        save_output_json("Entity List.json", resume_entities, "Output/Resume/Json")
+        save_output_json("Entity List.json", resume_entities, "Output/Json")
 
-        return "Hi"
+        svc_pred = jobSSClass.predict_job_fit_stacked(resume_entities, job_role)
+
+        print(svc_pred)
+        
     
     except Exception as e:
         logger.error("Error processing file: %s", str(e))

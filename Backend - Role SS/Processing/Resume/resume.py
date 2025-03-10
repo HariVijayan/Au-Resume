@@ -90,4 +90,10 @@ class ProcessResume:
             new_value = value.replace("\n", " ")
             extracted_data[key] = new_value
 
+        extracted_data['Skills'] = extracted_data.pop("SKILLS")
+        extracted_data['Certifications'] = extracted_data.pop("CERTIFICATIONS")
+        extracted_data['Education'] = extracted_data.pop("EDUCATION")
+        extracted_data['Experience (Years)'] = extracted_data.pop("EXPERIENCE")
+
+        extracted_data['Experience (Years)'] = 3
         return extracted_data
