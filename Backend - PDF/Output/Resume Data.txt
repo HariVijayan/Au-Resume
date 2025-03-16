@@ -9,5 +9,6 @@
   "github": "github.com/John",
   "githuburl": "https://www.github.com/John",
   "customlink": "www.myportfolio.com",
-  "customlinkurl": "https://www.myportfolio.com"
+  "customlinkurl": "https://www.myportfolio.com",
+  "summary": "Summary"
 }

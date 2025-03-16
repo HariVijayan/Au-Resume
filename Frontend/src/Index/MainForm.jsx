@@ -9,7 +9,7 @@ import EducationSchool from "./Components/Education/School/School.jsx";
 import Experience from "./Components/Experience/ExperienceMain.jsx";
 import Project from "./Components/Project/Project.jsx";
 import Skills from "./Components/Skills/SkillsMain.jsx";
-import Cerifications from "./Components/Certifications.jsx/CertificationsMain.jsx";
+import Cerifications from "./Components/Certifications/CertificationsMain.jsx";
 import Language from "./Components/Language/Language.jsx";
 import CustomDiv from "./Components/Custom/CustomMain.jsx";
 import PreviewPdf from "./PreviewPdf.jsx";
@@ -182,7 +182,7 @@ const MainForm = () => {
         {activeButtons === "BasicDetails" && (
           <div id="dv-BasicDetailsButtons" className="NavigationButtons">
           <button type="button" onClick={() => setContent("Experience")} className="RightNavigationButtons">
-            Experience {'>>'}
+            Experience <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
           </button>
           </div>
         )}
@@ -193,10 +193,10 @@ const MainForm = () => {
         {activeButtons === "Experience" && (
           <div id="dv-ExperienceButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("BasicDetails")} className="LeftNavigationButtons">
-            {'<<'} Basic Details
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Basic Details
             </button>
             <button type="button" onClick={() => setContent("EducationPhd")} className="RightNavigationButtons">
-              Ph.D {'>>'}
+              Ph.D <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -207,10 +207,10 @@ const MainForm = () => {
         {activeButtons === "EducationPhd" && (
           <div id="dv-EducationPhdButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Experience")} className="LeftNavigationButtons">
-            {'<<'} Experience
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Experience
             </button>
             <button type="button" onClick={() => setContent("EducationPg")} className="RightNavigationButtons">
-              Post Graduate {'>>'}
+              Post Graduate <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -221,10 +221,10 @@ const MainForm = () => {
         {activeButtons === "EducationPg" && (
           <div id="dv-EducationPgButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("EducationPhd")} className="LeftNavigationButtons">
-            {'<<'} Ph.D
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Ph.D
             </button>
             <button type="button" onClick={() => setContent("EducationUg")} className="RightNavigationButtons">
-              Under Graduate {'>>'}
+              Under Graduate <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -235,10 +235,10 @@ const MainForm = () => {
         {activeButtons === "EducationUg" && (
           <div id="dv-EducationUgButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("EducationPg")} className="LeftNavigationButtons">
-            {'<<'} Post Graduate
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Post Graduate
             </button>
             <button type="button" onClick={() => setContent("EducationDiploma")} className="RightNavigationButtons">
-              Diploma {'>>'}
+              Diploma <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -249,10 +249,10 @@ const MainForm = () => {
         {activeButtons === "EducationDiploma" && (
           <div id="dv-EducationDiplomaButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("EducationUg")} className="LeftNavigationButtons">
-            {'<<'} Under Graduate
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Under Graduate
             </button>
             <button type="button" onClick={() => setContent("EducationSchool")} className="RightNavigationButtons">
-              School {'>>'}
+              School <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -263,10 +263,10 @@ const MainForm = () => {
         {activeButtons === "EducationSchool" && (
           <div id="dv-EducationSchoolButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("EducationDiploma")} className="LeftNavigationButtons">
-            {'<<'} Diploma
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Diploma
             </button>
             <button type="button" onClick={() => setContent("Projects")} className="RightNavigationButtons">
-              Projects {'>>'}
+              Projects <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -277,10 +277,10 @@ const MainForm = () => {
         {activeButtons === "Projects" && (
           <div id="dv-ProjectsButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("EducationSchool")} className="LeftNavigationButtons">
-            {'<<'} School
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> School
             </button>
             <button type="button" onClick={() => setContent("Skills")} className="RightNavigationButtons">
-              Skills {'>>'}
+              Skills <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -291,10 +291,10 @@ const MainForm = () => {
         {activeButtons === "Skills" && (
           <div id="dv-SkillsButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Projects")} className="LeftNavigationButtons">
-            {'<<'} Projects
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Projects
             </button>
             <button type="button" onClick={() => setContent("Certifications")} className="RightNavigationButtons">
-              Certifications {'>>'}
+              Certifications <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -308,10 +308,10 @@ const MainForm = () => {
         {activeButtons === "Certifications" && (
           <div id="dv-CertificationsButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Skills")} className="LeftNavigationButtons">
-            {'<<'} Skills
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Skills
             </button>
             <button type="button" onClick={() => setContent("Languages")} className="RightNavigationButtons">
-              Languages {'>>'}
+              Languages <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -322,10 +322,10 @@ const MainForm = () => {
         {activeButtons === "Languages" && (
           <div id="dv-LanguagesButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Certifications")} className="LeftNavigationButtons">
-            {'<<'} Certifications
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Certifications
             </button>
             <button type="button" onClick={() => setContent("CustomDiv")} className="RightNavigationButtons">
-              Custom Input {'>>'}
+              Custom Input <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>
             </button>
           </div>
         )}
@@ -336,9 +336,9 @@ const MainForm = () => {
         {activeButtons === "CustomDiv" && (
           <div id="dv-CustomDivButtons" className="NavigationButtons">
             <button type="button" onClick={() => setContent("Languages")} className="LeftNavigationButtons">
-            {'<<'} Languages
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg> Languages
             </button>
-            <button type="submit" className="RightNavigationButtons">Submit {'>>'}</button>
+            <button type="submit" className="RightNavigationButtons">Submit <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
           </div>
         )}
       </form>

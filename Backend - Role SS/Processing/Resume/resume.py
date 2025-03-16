@@ -5,20 +5,15 @@ from nltk.corpus import words
 
 class ProcessResume:
     def __init__(self, nltk_data_path=None):
-        # Set default nltk data path if not provided
         self.nltk_data_path = nltk_data_path or os.path.join(os.getcwd(), 'nltk_data')
         
-        # Download the words corpus if it doesn't exist
         if not os.path.exists(os.path.join(self.nltk_data_path, 'corpora', 'words.zip')):
             nltk.download('words', download_dir=self.nltk_data_path)
         
-        # Add the nltk data path to nltk's data path
         nltk.data.path.append(self.nltk_data_path)
         
-        # Initialize the set of valid words
         self.valid_words = set(words.words())
         
-        # Disable oneDNN optimizations for TensorFlow
         os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
     def remove_resume_timestamp(self, text: str):
@@ -85,7 +80,6 @@ class ProcessResume:
         if current_key:
             extracted_data[current_key] = current_value.strip()
         
-        # Normalize the extracted values (convert multiline to single-line)
         for key, value in extracted_data.items():
             new_value = value.replace("\n", " ")
             extracted_data[key] = new_value

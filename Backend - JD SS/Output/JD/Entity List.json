@@ -1,51 +1,48 @@
 {
     "SKILLS": [
-        "using frameworks",
-        "javascript frameworks",
         "a full stack developer",
-        "looking",
-        "scalable applications",
+        "we",
         "cloud services",
+        "looking",
         "involves",
         "expertise",
-        "web technologies"
+        "web technologies",
+        "using frameworks",
+        "javascript frameworks",
+        "scalable applications"
     ],
     "EXPERIENCE": [
         "3"
     ],
     "EDUCATION": [
-        "a related field",
-        "computer science, artificial intelligence",
-        "networking",
-        "research experience",
-        "networking, security",
-        "include bachelor",
-        "a bachelor",
         "english",
-        "requires fluency",
-        "security",
+        "a related field",
+        "networking, security",
+        "machine learning",
         "master's degree",
-        "machine learning"
+        "requires fluency",
+        "a bachelor",
+        "include bachelor",
+        "research experience",
+        "computer science, artificial intelligence"
     ],
     "CERTIFICATIONS": [
-        "cross-functional teams",
-        "software development",
-        "required skills",
         "at least 3 years",
-        "the candidate",
-        "javascript",
-        "cloud deployment",
-        "responsibilities",
+        "cross-functional teams",
         "cloud solutions",
-        "google cloud certified",
-        "aws certified developer",
-        "include javascript",
         "have years",
-        "experience",
-        "company websites",
         "machine learning expert certifications",
-        "web development",
+        "aws certified developer",
         "given preference",
-        "machine learning expert"
+        "responsibilities",
+        "required skills",
+        "company websites",
+        "software development",
+        "google cloud certified",
+        "cloud deployment",
+        "web development",
+        "experience",
+        "include javascript",
+        "the candidate"
     ]
 }

@@ -33,9 +33,9 @@ const Ug = ({ resumeData, setResumeData }) => {
     return (
         <div id="dv-EducationUgWrapper" className="WrapperClass">
          <div id="dv-EducationUgHeader" className="EducationHeader">
-      <h3>Education Details - Ug</h3>
+      <h3>Education Details - Ug<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z"/></svg></h3>
       <button type="button" onClick={(e) => handleAddEducation(e)} className="AddInputButtons">
-        Add Ug
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg> Add Ug
       </button>
       </div>
          {resumeData.education[0].ug_degree.map((ug_degree, index) => (

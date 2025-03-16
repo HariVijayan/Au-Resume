@@ -65,13 +65,13 @@ const CustomDiv = ({ resumeData, setResumeData }) => {
   return (
     <div id="dv-CustomDivWrapper" className="WrapperClass">
       <div id="dv-CustomDivStyle1Header" className="CustomDivHeader">
-      <h3>Custom Input</h3>
+      <h3>Custom Input <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-240h80v-120h120v-80H520v-120h-80v120H320v80h120v120ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg></h3>
         <button
           type="button"
           onClick={() => setCustomDiv("Style1")}
           className="ListInputButton"
         >
-          List Type
+         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M360-200v-80h480v80H360Zm0-240v-80h480v80H360Zm0-240v-80h480v80H360ZM200-160q-33 0-56.5-23.5T120-240q0-33 23.5-56.5T200-320q33 0 56.5 23.5T280-240q0 33-23.5 56.5T200-160Zm0-240q-33 0-56.5-23.5T120-480q0-33 23.5-56.5T200-560q33 0 56.5 23.5T280-480q0 33-23.5 56.5T200-400Zm0-240q-33 0-56.5-23.5T120-720q0-33 23.5-56.5T200-800q33 0 56.5 23.5T280-720q0 33-23.5 56.5T200-640Z"/></svg> List Type
         </button>
 
         <button
@@ -79,7 +79,7 @@ const CustomDiv = ({ resumeData, setResumeData }) => {
           onClick={() => setCustomDiv("Style2")}
           className="ParaInputButton"
         >
-          Para Type
+         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z"/></svg> Para Type
         </button>
       </div>
 

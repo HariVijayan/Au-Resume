@@ -8,17 +8,13 @@ from sentence_transformers import SentenceTransformer
 
 class ProcessJD:
     def __init__(self):
-        # Set up environment and models
         os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
         
-        # Load spaCy model for NLP
         self.nlp = spacy.load("en_core_web_sm")
         
-        # Load pre-trained models for word2vec and sentence embeddings
         self.word2vec = api.load("word2vec-google-news-300")  
         self.model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
-        # Define skill, education, and certification queries
         self.TECH_SKILLS = {"Java", "Python", "JavaScript", "React", "Node.js", "Spring", "SQL", "AWS", "Docker", "Kubernetes"}
         
         self.skill_queries = [
@@ -41,7 +37,6 @@ class ProcessJD:
         
         self.STOPWORDS = {"the position", "candidates", "at least", "we are looking for", "the role", "preferred qualifications"}
 
-        # Precompute embeddings for queries
         self.skill_embeddings = self.model.encode(self.skill_queries)
         self.education_embeddings = self.model.encode(self.education_queries)
         self.certification_embeddings = self.model.encode(self.certification_queries)
@@ -83,7 +78,7 @@ class ProcessJD:
             for term in terms:
                 cleaned_term = term.lower().strip()
                 if any(cleaned_term in existing for existing in refined[category]):
-                    continue  # Skip near-duplicates
+                    continue  
                 refined[category].add(cleaned_term)
 
         return {key: list(value) for key, value in refined.items()}

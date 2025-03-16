@@ -26,11 +26,17 @@ class PredictionAppender(BaseEstimator, TransformerMixin):
         return np.hstack((X, predictions.reshape(-1, 1)))
 
 def preprocess_data(df):
-    """Placeholder for your data preprocessing function."""
-    # Replace this with your actual preprocessing steps
-    # Example: Filling NaNs, lowercasing text, etc.
-    df = df.fillna('')  # Example: Fill NaNs with empty strings
+    """
+    Preprocesses a pandas DataFrame by handling NaN values.
+    """
+    for column in df.columns:
+        if pd.api.types.is_numeric_dtype(df[column]):
+            median_val = df[column].median()
+            df[column].fillna(median_val, inplace=True)
+        else:
+            df[column].fillna("", inplace=True)
     return df
+
 
 # Load Dataset
 try:
@@ -41,15 +47,12 @@ except FileNotFoundError:
 
 df = preprocess_data(df.copy())
 
-# Drop columns that are not required for training
 df = df.drop(columns=["Type", "Source"])
 
-# Inspect Job Fit Score
 print(f"Min Job Fit Score: {df['Job Fit Score'].min()}")
 print(f"Max Job Fit Score: {df['Job Fit Score'].max()}")
 
-# Corrected binning: Use percentiles or evenly spaced bins
-bins = [40, 60, 80, 100]  # Example: Evenly spaced bins
+bins = [40, 60, 80, 100]  
 labels = ["Low Fit", "Moderate Fit", "High Fit"]
 
 try:
@@ -64,7 +67,6 @@ except ValueError as e:
     print("Problematic Job Fit Scores:", df[df["Job Fit Category"].isnull()]["Job Fit Score"].unique())
     exit()
 
-# List of all unique job roles
 job_roles = df["Job Role"].unique()
 
 def create_preprocessor():
@@ -91,7 +93,6 @@ for job_role in job_roles:
     preprocessor = create_preprocessor()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Label Encoding
     le = LabelEncoder()
     y_train = le.fit_transform(y_train)
     y_test = le.transform(y_test)
@@ -99,7 +100,6 @@ for job_role in job_roles:
     X_train_transformed = preprocessor.fit_transform(X_train)
     X_test_transformed = preprocessor.transform(X_test)
 
-    # Convert sparse matrices to dense arrays if needed
     if sparse.issparse(X_train_transformed):
         X_train_transformed = X_train_transformed.toarray()
     if sparse.issparse(X_test_transformed):
@@ -116,23 +116,18 @@ for job_role in job_roles:
     print(f"Transformed test data shape for job role '{job_role}': {X_test_transformed.shape}")
     print(f"y_train data type: {type(y_train)}")
 
-    # Train LinearSVC
     svc_model = LinearSVC()
     svc_model.fit(X_train_transformed, y_train)
 
-    # Append LinearSVC predictions to training data for XGBoost
     xgb_train_data = PredictionAppender(svc_model).transform(X_train_transformed)
     xgb_test_data = PredictionAppender(svc_model).transform(X_test_transformed)
 
-    # Train XGBoost
     xgb_model = XGBClassifier()
     xgb_model.fit(xgb_train_data, y_train)
 
-    # Append XGBoost predictions to training data for KNN
     knn_train_data = PredictionAppender(xgb_model).transform(xgb_train_data)
     knn_test_data = PredictionAppender(xgb_model).transform(xgb_test_data)
 
-    # Train KNN
     knn_model = KNeighborsClassifier(n_neighbors=1)
     knn_model.fit(knn_train_data, y_train)
 
