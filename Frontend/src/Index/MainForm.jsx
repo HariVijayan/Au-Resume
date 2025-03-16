@@ -1,5 +1,6 @@
 import React, { useState} from "react";
 import axios from "axios";
+import Template from "./Components/Templates/Template.jsx";
 import BioSummary from "./Components/Basic Details/BioSummary.jsx";
 import EducationPhd from "./Components/Education/Phd/Phd.jsx";
 import EducationPg from "./Components/Education/Pg/Pg.jsx";
@@ -139,14 +140,16 @@ const MainForm = () => {
     ],
   });
 
-  const [activeSection, setActiveSection] = useState("BasicDetails");
+  const [activeSection, setActiveSection] = useState("TemplateChoosing");
+
+  const [template, setTemplate] = useState("Template 1");
 
   const setContent = (section) => {
     setActiveSection(section);
     setButtons(section);
   };
 
-  const [activeButtons, setActiveButtons] = useState("BasicDetails");
+  const [activeButtons, setActiveButtons] = useState("");
 
   const setButtons = (buttonName) => {
     setActiveButtons(buttonName);
@@ -155,11 +158,18 @@ const MainForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     localStorage.setItem(resumeData, JSON.stringify(resumeData));
+    const formData = {
+      resumeData, 
+      template, 
+    };
     try {
       const response = await axios.post(
         "http://localhost:5000/generate-pdf",
-        resumeData,
+        formData,
         {
+          headers: {
+            'Content-Type': 'application/json',
+          },
           responseType: "arraybuffer",
         }
       );
@@ -176,6 +186,10 @@ const MainForm = () => {
   return (
     <div id="dv-MainFormAndPreview">
       <form id="MainForm" onSubmit={handleSubmit}>
+        {activeSection === "TemplateChoosing" && (
+          <Template setActiveSection={setActiveSection} setTemplate={setTemplate} setActiveButtons={setActiveButtons}/>
+        )}
+
         {activeSection === "BasicDetails" && (
           <BioSummary resumeData={resumeData} setResumeData={setResumeData} />
         )}
@@ -342,7 +356,9 @@ const MainForm = () => {
           </div>
         )}
       </form>
-      <PreviewPdf resumeData={resumeData}/>
+      {activeSection != "TemplateChoosing" && (
+          <PreviewPdf resumeData={resumeData}/>
+      )}
     </div>
   );
 };

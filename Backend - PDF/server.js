@@ -90,7 +90,8 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
 };
 
 app.post('/generate-pdf', async (req, res) => {
-  const resumeData = removeEmptyValues(req.body);
+  let {resumeData, template} = req.body;
+  resumeData = removeEmptyValues(resumeData);
 
   const templatePath = '/Resume Components/body.html';
   const templateCssPath = '/Resume Components/body.css';

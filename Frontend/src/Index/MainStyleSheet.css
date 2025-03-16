@@ -31,7 +31,7 @@ body button{
 .Sidebar {
   width: 60px;
   height: 100vh;
-  border-radius: 0px 16px 0px 0px;
+  border-radius: 0px 16px 16px 0px;
   background-color: #377dff;
   color: white;
   position: sticky;
@@ -224,6 +224,14 @@ textarea {
     height: 100%;
 }
 
+#dv-TemplatesWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
 #dv-HeaderWrapper{
   display: flex;
   justify-content: space-around;
@@ -242,7 +250,7 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: 95%;
   min-height: 80vh; 
   flex-grow: 1; 
 }
@@ -252,7 +260,7 @@ textarea {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 40%;
+  width: 50%;
   max-height: 100%;
 }
 
