@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const PreviewPdf = ({ resumeData }) => {
+const PreviewPdf = ({ resumeData, templateType }) => {
   const [pdfUrl, setPdfUrl] = useState('');
   const [isPreviewClicked, setIsPreviewClicked] = useState(false);  
 
   const fetchPdf = async () => {
+    const formData = {
+      resumeData, 
+      templateType, 
+    };
     try {
       const response = await axios.post(
         "http://localhost:5000/generate-pdf",
-        resumeData,
+        formData,
         {
+          headers: {
+            'Content-Type': 'application/json',
+          },
           responseType: "arraybuffer",
         }
       );

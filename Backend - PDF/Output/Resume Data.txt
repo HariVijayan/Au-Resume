@@ -1,9 +1,9 @@
 {
   "username": "John Doe",
   "small_bio": "Developer | Designer | Freelancer",
-  "phone_number": "+91 9090909099",
+  "phone_number": "+91 9876543210",
   "emailid": "john@gmail.com",
-  "location": "Bangalore",
+  "location": "Chennai, India",
   "linkedin": "linkedin.com/John",
   "linkedinurl": "https://www.linkedin.com/John",
   "github": "github.com/John",

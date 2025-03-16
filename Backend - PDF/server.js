@@ -58,9 +58,9 @@ const generateFooter = (footerFile, timestamp) => {
                             `<p>Developed by the Department of IST. Generated at ${timestamp}</p>`);
 };
 
-const generateHeaderFooterPaths = () => ({
-  headerPath: '/Resume Components/header.html',
-  footerPath: '/Resume Components/footer.html',
+const generateHeaderFooterPaths = (templateType) => ({
+  headerPath: '/Templates/' + templateType + '/header.html',
+  footerPath: '/Templates/' + templateType + '/footer.html',
   auLogoBase64Path: '/Images/Base64 Values/Au Logo.txt',
 });
 
@@ -90,12 +90,15 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
 };
 
 app.post('/generate-pdf', async (req, res) => {
-  let {resumeData, template} = req.body;
+  let {resumeData, templateType} = req.body;
   resumeData = removeEmptyValues(resumeData);
 
-  const templatePath = '/Resume Components/body.html';
-  const templateCssPath = '/Resume Components/body.css';
-  const headerFooterPaths = generateHeaderFooterPaths();
+  if(templateType!="Template 1"){
+    templateType = "Template 1" //Dummy code to modify if template values are different. If new templates are to be added, remove if condition.
+  }
+  const templatePath = '/Templates/' + templateType + '/body.html';
+  const templateCssPath = '/Templates/' + templateType + '/body.css';
+  const headerFooterPaths = generateHeaderFooterPaths(templateType);
 
   const templateFile = readFileSync(templatePath);
   const cssFile = readFileSync(templateCssPath);

@@ -107,7 +107,7 @@
             </div>
             <div id="phdtab2" class="education_sub_div2">
                <p id="p-phduni" class="education_university">{{phd_university}}</p>
-               <p id="p-phdexp" class="education_custom_field">{{phd_exp}}&nbsp;({{phd_additional_info}})</p>
+               <p id="p-phdexp" class="education_custom_field">{{phd_exp}}&nbsp;{{#if phd_additional_info.length}}({{phd_additional_info}}){{/if}}</p>
             </div>
          </div>
          {{/each}}
@@ -119,7 +119,7 @@
             </div>
             <div id="pgdegreetab2" class="education_sub_div2">
                <p id="p-pgdegreeuni" class="education_university">{{pg_degree_university}}</p>
-               <p id="p-pgdegreecgpa" class="education_custom_field">{{pg_degree_cgpa}}&nbsp;({{pg_additional_info}})</p>
+               <p id="p-pgdegreecgpa" class="education_custom_field">{{pg_degree_cgpa}}&nbsp;{{#if pg_additional_info.length}}({{pg_additional_info}}){{/if}}</p>
             </div>
          </div>
          {{/each}}
@@ -131,7 +131,7 @@
             </div>
             <div id="ugdegreetab2" class="education_sub_div2">
                <p id="p-ugdegreeuni" class="education_university">{{ug_degree_university}}</p>
-               <p id="p-ugdegreecgpa" class="education_custom_field">{{ug_degree_cgpa}}&nbsp;({{ug_additional_info}})</p>
+               <p id="p-ugdegreecgpa" class="education_custom_field">{{ug_degree_cgpa}}&nbsp;{{#if ug_additional_info.length}}({{ug_additional_info}}){{/if}}</p>
             </div>
          </div>
          {{/each}}
@@ -143,7 +143,7 @@
             </div>
             <div id="diplomatab2" class="education_sub_div2">
                <p id="p-diplomauni" class="education_university">{{diploma_university}}</p>
-               <p id="p-diplomacgpa" class="education_custom_field">{{diploma_cgpa}}&nbsp;({{diploma_additional_info}})</p>
+               <p id="p-diplomacgpa" class="education_custom_field">{{diploma_cgpa}}&nbsp;{{#if diploma_additional_info.length}}({{diploma_additional_info}}){{/if}}</p>
             </div>
          </div>
          {{/each}}

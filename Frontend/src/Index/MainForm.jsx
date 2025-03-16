@@ -142,7 +142,7 @@ const MainForm = () => {
 
   const [activeSection, setActiveSection] = useState("TemplateChoosing");
 
-  const [template, setTemplate] = useState("Template 1");
+  const [templateType, setTemplate] = useState("Template 1");
 
   const setContent = (section) => {
     setActiveSection(section);
@@ -160,7 +160,7 @@ const MainForm = () => {
     localStorage.setItem(resumeData, JSON.stringify(resumeData));
     const formData = {
       resumeData, 
-      template, 
+      templateType, 
     };
     try {
       const response = await axios.post(
@@ -184,12 +184,13 @@ const MainForm = () => {
   };
 
   return (
+    <>
+    {activeSection === "TemplateChoosing" && (
+          <Template setActiveSection={setActiveSection} setTemplate={setTemplate} setActiveButtons={setActiveButtons}/>
+    )}
+    {activeSection != "TemplateChoosing" && (
     <div id="dv-MainFormAndPreview">
       <form id="MainForm" onSubmit={handleSubmit}>
-        {activeSection === "TemplateChoosing" && (
-          <Template setActiveSection={setActiveSection} setTemplate={setTemplate} setActiveButtons={setActiveButtons}/>
-        )}
-
         {activeSection === "BasicDetails" && (
           <BioSummary resumeData={resumeData} setResumeData={setResumeData} />
         )}
@@ -357,9 +358,11 @@ const MainForm = () => {
         )}
       </form>
       {activeSection != "TemplateChoosing" && (
-          <PreviewPdf resumeData={resumeData}/>
+          <PreviewPdf resumeData={resumeData} templateType={templateType}/>
       )}
     </div>
+    )}
+    </>
   );
 };
 
