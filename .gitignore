@@ -1,0 +1,5 @@
+.env 
+Backend/node_modules/
+Backend - JD SS/__pycache__
+Backend - Role SS/__pycache__
+Frontend/node_modules/
