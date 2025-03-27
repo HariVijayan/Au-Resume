@@ -1,14 +1,15 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './Login.jsx';
-import Register from './Register.jsx';
-import Otp from './NewRegisterOtp.jsx';
-import ForgotPassword from './ForgotPassword';
-import VerifyPasswordOtp from './VerifyPasswordOtp';
-import ResetPassword from './ResetPassword';
+import Login from './Components/Login/Login.jsx';
+import Register from './Components/Register/Register.jsx';
+import Otp from './Components/Register/VerifyOtp.jsx';
+import ForgotPassword from './Components/Forgot_Password/ForgotPassword.jsx';
+import VerifyPasswordOtp from './Components/Forgot_Password/VerifyOtp.jsx';
+import ResetPassword from './Components/Forgot_Password/ResetPassword.jsx';
+import './MainStyleSheet.css'
 
-createRoot(document.getElementById('dv-BodyWrapper')).render(
+createRoot(document.getElementById('dv-AuthenticationWrapper')).render(
   <StrictMode>
     <Router>
       <Routes>

@@ -95,7 +95,7 @@ const Register = () => {
     };
 
     return (
-        <div>
+        <div id="dv-RegisterWrapper" className='columnFstartCenter'>
             <h2>Register</h2>
             <form onSubmit={handleRegister}>
                 <input 
@@ -168,7 +168,7 @@ const Register = () => {
                     ))}
                 </select>
 
-                <button type="submit">Register</button>
+                <button type="submit" disabled={!branch}>Register</button>
             </form>
             {message && <p>{message}</p>}
         </div>

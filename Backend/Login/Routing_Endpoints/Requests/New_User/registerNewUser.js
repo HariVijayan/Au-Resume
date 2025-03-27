@@ -57,9 +57,6 @@ const formatISTTimestamp = (date) => {
 router.post('/register', async (req, res) => {
     const { email, password, registerNumber, department, courseType, programme, branch } = req.body;
 
-    console.log(process.env.EMAIL_USER);
-    console.log(process.env.EMAIL_PASS);
-
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -67,8 +64,6 @@ router.post('/register', async (req, res) => {
             pass: process.env.EMAIL_PASS
         }
     });
-
-    console.log(transporter);
 
     try {
         const existingUser = await User.findOne({ email });

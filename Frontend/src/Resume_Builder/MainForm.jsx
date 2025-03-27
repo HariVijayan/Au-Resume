@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Template from "./Components/Templates/Template.jsx";
 import BioSummary from "./Components/Basic Details/BioSummary.jsx";
