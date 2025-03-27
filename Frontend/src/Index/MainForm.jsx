@@ -164,7 +164,7 @@ const MainForm = () => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:5000/generate-pdf",
+        "http://localhost:5000/Pdf/generateResume",
         formData,
         {
           headers: {

@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
@@ -9,13 +8,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
-const port = 5000;
+const router = express.Router();
 
 Handlebars.registerHelper("or", (...args) => args.some(Boolean));
-
-app.use(cors());
-app.use(express.json());
 
 const readFileSync = (filePath) => fs.readFileSync(path.join(__dirname, filePath), 'utf8');
 const writeFileSync = (filePath, data) => fs.writeFileSync(path.join(__dirname, filePath), data);
@@ -59,9 +54,9 @@ const generateFooter = (footerFile, timestamp) => {
 };
 
 const generateHeaderFooterPaths = (templateType) => ({
-  headerPath: '/Templates/' + templateType + '/header.html',
-  footerPath: '/Templates/' + templateType + '/footer.html',
-  auLogoBase64Path: '/Images/Base64 Values/Au Logo.txt',
+  headerPath: '../Templates/' + templateType + '/header.html',
+  footerPath: '../Templates/' + templateType + '/footer.html',
+  auLogoBase64Path: '../Images/Base64 Values/Au Logo.txt',
 });
 
 const compileTemplate = (templateFile, resumeData) => {
@@ -75,7 +70,7 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
   await page.setContent(htmlContent, { waitUntil: 'load' });
 
   const pdfBuffer = await page.pdf({
-    path: 'Output/Resume Output.pdf',
+    path: './Pdf/Output/Resume Output.pdf',
     format: 'A4',
     printBackground: true,
     margin: { top: '15mm', bottom: '20mm', left: '15mm', right: '15mm' },
@@ -84,20 +79,21 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
     footerTemplate: footerFile,
   });
 
-  await page.screenshot({ path: 'Output/ScreenShot.png', fullPage: true });
+  await page.screenshot({ path: './Pdf/Output/Screenshot.png', fullPage: true });
   await browser.close();
   return pdfBuffer;
 };
 
-app.post('/generate-pdf', async (req, res) => {
+router.post('/generateResume', async (req, res) => {
   let {resumeData, templateType} = req.body;
   resumeData = removeEmptyValues(resumeData);
 
   if(templateType!="Template 1"){
     templateType = "Template 1" //Dummy code to modify if template values are different. If new templates are to be added, remove if condition.
   }
-  const templatePath = '/Templates/' + templateType + '/body.html';
-  const templateCssPath = '/Templates/' + templateType + '/body.css';
+  const templatePath = '../Templates/' + templateType + '/body.html';
+  const templateCssPath = '../Templates/' + templateType + '/body.css';
+
   const headerFooterPaths = generateHeaderFooterPaths(templateType);
 
   const templateFile = readFileSync(templatePath);
@@ -112,9 +108,9 @@ app.post('/generate-pdf', async (req, res) => {
   const timestamp = getCurrentTimestamp();
   footerFile = generateFooter(footerFile, timestamp);
 
-  writeFileSync('/Output/Body.html', compiledTemplate);
-  writeFileSync('/Output/Resume Data.txt', JSON.stringify(resumeData, null, 2));
-  writeFileSync('/Output/Footer.html', footerFile);
+  writeFileSync('../Output/Body.html', compiledTemplate);
+  writeFileSync('../Output/Resume Data.txt', JSON.stringify(resumeData, null, 2));
+  writeFileSync('../Output/Footer.html', footerFile);
 
   const pdfBuffer = await generatePdf(compiledTemplate, headerFile, footerFile);
 
@@ -122,6 +118,4 @@ app.post('/generate-pdf', async (req, res) => {
   res.end(pdfBuffer, 'binary');
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+export default router;
