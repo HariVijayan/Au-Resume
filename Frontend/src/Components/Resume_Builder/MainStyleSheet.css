@@ -27,100 +27,6 @@ body button{
   align-items: center;
 }
 
-.Sidebar {
-  width: 60px;
-  height: 100vh;
-  border-radius: 0px 16px 16px 0px;
-  background-color: #377dff;
-  color: white;
-  position: sticky;
-  top: 0;
-  align-self: start;
-  transition: 300ms ease-in-out;
-  overflow: hidden;
-  text-wrap: nowrap;
-  padding-top: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.Sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.Sidebar li {
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.Sidebar svg{
-  fill: white;
-}
-
-.Sidebar li span {
-  display: none;
-}
-
-#cx-sidebar:checked + .Sidebar li span {
-  display: inline;
-}
-
-.Sidebar a{
-  text-decoration: none;
-  color: white;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.SidebarIcon {
-  margin-left: auto;
-  padding: 1em;
-  border: none;
-  border-radius: .5em;
-  background: none;
-  cursor: pointer;
-  margin-bottom: 20vh;
-  svg{
-    transition: rotate 150ms ease;
-  }
-}
-
-#cx-sidebar:checked + .Sidebar {
-  width: 250px;
-}
-
-#cx-sidebar:checked + .Sidebar ul li {
-  text-align: left;
-  padding-left: 20px;
-}
-
-#cx-sidebar {
-  display: none;
-}
-
-#h3-HeaderDept{
-  font-weight: normal;
-}
-
-::-webkit-input-placeholder {
-  font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-}
-
-:-ms-input-placeholder {
-  font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-}
-
-:-moz-placeholder {
-  font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-}
-
-::-moz-placeholder {
-  font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-}
-
 input[type="text"], input[type="email"], input[type="url"], textarea {
   font-size: 16px;
   padding: 10px;
@@ -285,6 +191,7 @@ textarea {
   align-items: center;
   width: 50%;
   max-height: 100%;
+  min-height: 100%;
 }
 
 #dv-PreviewWrapper {
@@ -299,7 +206,7 @@ textarea {
 .WrapperClass {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
   flex-grow: 1; 
