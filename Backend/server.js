@@ -10,9 +10,9 @@ import verifyOtpNewUser from './Login/Routing_Endpoints/Otp/Verify_Otp/newRegist
 import verifyOtp from './Login/Routing_Endpoints/Otp/Verify_Otp/verifyOtp.js';
 import login from './Login/Routing_Endpoints/Authentication/Login/login.js';
 import logout from './Login/Routing_Endpoints/Authentication/Logout/logout.js';
+import checkAccess from './Login/Routing_Endpoints/Requests/Check_Access/checkAccess.js';
 import registerNewUser from './Login/Routing_Endpoints/Requests/New_User/registerNewUser.js';
 import passwordReset from './Login/Routing_Endpoints/Requests/Password_Reset/passwordReset.js';
-import newRefreshToken from './Login/Routing_Endpoints/Requests/Refresh_Token/refreshToken.js';
 import mongoose from 'mongoose';
 
 const app = express();
@@ -51,7 +51,7 @@ app.use('/createUser', registerNewUser);
 
 app.use('/userRequest', passwordReset);
 
-app.use('/tokenRequest', newRefreshToken);
+app.use('/verifySession',checkAccess);
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))

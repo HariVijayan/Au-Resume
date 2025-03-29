@@ -26,16 +26,16 @@ const formatISTTimestamp = (date) => {
     }).format(date).replace(',', '');
 };
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
-
 router.post('/password-reset-otp', async (req, res) => {
     const { email } = req.body;
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
 
     try {
         const user = await User.findOne({ email });

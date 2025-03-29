@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema({
   lockUntil: { type: Date, default: null },  // Original Date for logic
   lockUntilFormatted: { type: String, default: null },  // Readable IST
   createdAt: { type: Date, default: Date.now },
-  createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) }
+  createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
+  secretKey: { type: String, required: true },
 });
 
 

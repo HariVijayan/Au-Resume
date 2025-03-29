@@ -22,7 +22,8 @@ const PendingUserSchema = new mongoose.Schema({
     programme: { type: String, required: true},
     branch: { type: String, required: true},
     createdAt: { type: Date, default: Date.now },
-    createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) }
+    createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
+    secretKey: { type: String, required: true },
 });
 
 export default mongoose.model('PendingUser', PendingUserSchema);

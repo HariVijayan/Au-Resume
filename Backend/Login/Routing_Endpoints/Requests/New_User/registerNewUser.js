@@ -81,7 +81,11 @@ router.post('/register', async (req, res) => {
 
         const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
 
-        const newUser = new PendingUser({ email, password: hashedPassword, registerNumber, department, courseType, programme, branch });
+        // Generate and hash secretKey
+        const secretKey = crypto.randomBytes(32).toString('hex');
+        const secretKeyHash = crypto.createHash('sha256').update(secretKey).digest('hex');
+
+        const newUser = new PendingUser({ email, password: hashedPassword, registerNumber, department, courseType, programme, branch, secretKey: secretKeyHash });
         await newUser.save();
 
         const lastOtp = await Otp.findOne({ email }).sort({ createdAt: -1 }).exec();

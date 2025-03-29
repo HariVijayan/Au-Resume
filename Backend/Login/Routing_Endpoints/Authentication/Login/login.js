@@ -22,6 +22,10 @@ const formatISTTimestamp = (date) => {
     }).format(date).replace(',', '');
 };
 
+const encryptEmail = (email, secretKey) => {
+    return crypto.createHmac('sha256', secretKey).update(email).digest('hex');
+};
+
 router.post('/login', async (req, res) => {
     const { email, password, rememberMe } = req.body;
 
@@ -60,45 +64,28 @@ router.post('/login', async (req, res) => {
         user.lockUntil = null;
         await user.save();
 
-        const accessToken = jwt.sign(
-            { userId: user._id, type: 'access' }, // Add a "type" field
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-        
-        const refreshToken = jwt.sign(
-            { email: user.email, type: 'refresh' },  // Now using email
-            process.env.JWT_REFRESH_SECRET,
-            { expiresIn: rememberMe ? '7d' : '1d' }
-        );
+        // Generate JWT Access Token
+        const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        // Generate Secure Refresh Token
+        const refreshToken = encryptEmail(user.email, user.secretKey);
+
+        await RefreshToken.deleteMany({ email: user.email }); // Clear old tokens
 
         const createdAt = new Date();
         const expiresAt = new Date(createdAt.getTime() + (rememberMe ? 7 : 1) * 24 * 60 * 60 * 1000);
-        
-        // Save refresh token in DB
+
         await RefreshToken.create({
             email: user.email,
             token: refreshToken,
-            createdAt: createdAt,  // Stored as Date object (for queries)
-            createdAtFormatted: formatISTTimestamp(createdAt),  // Human-readable
-            expiresAt: expiresAt,  // Stored as Date object (for queries)
-            expiresAtFormatted: formatISTTimestamp(expiresAt)  // Human-readable
+            createdAt: createdAt,
+            createdAtFormatted: formatISTTimestamp(createdAt),
+            expiresAt: expiresAt,
+            expiresAtFormatted: formatISTTimestamp(expiresAt),
         });
 
-        // Store tokens in HttpOnly, Secure cookies
-        res.cookie('accessToken', accessToken, {
-            httpOnly: true,
-            secure: true, // Only in HTTPS (disable for localhost testing)
-            sameSite: 'Strict',
-            maxAge: 60 * 60 * 1000, // 1 hour expiry
-        });
-
-        res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,
-            secure: true, // Only in HTTPS
-            sameSite: 'Strict',
-            maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000, // 7 days or 1 day
-        });
+        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: 60 * 60 * 1000 });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000 });
 
         res.json({ message: 'Login successful' });
 

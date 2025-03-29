@@ -30,6 +30,7 @@ router.post('/registration', async (req, res) => {
             courseType: pendingUser.courseType,
             programme: pendingUser.programme,
             branch: pendingUser.branch,
+            secretKey: pendingUser.secretKey,
         });
         await verifiedUser.save();
 
