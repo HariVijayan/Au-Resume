@@ -1,1 +1,5 @@
-null
+{
+  "username": "Hari Prasad",
+  "small_bio": "Developer",
+  "phone_number": "+91 9486448604"
+}

@@ -3,7 +3,10 @@ import puppeteer from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
 import Handlebars from 'handlebars';
+import jwt from 'jsonwebtoken';
 import { fileURLToPath } from 'url';
+import User from '../../Login/Database_Models/User.js';
+import ResumeDataDBModel from '../Database Models/resumeData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -86,6 +89,48 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
 
 router.post('/generateResume', async (req, res) => {
   let {resumeData, templateType} = req.body;
+  const accessToken = req.cookies.accessToken;
+  if (!accessToken) return res.status(401).json({ message: 'No token provided' });
+  
+  const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+  const user = await User.findById(decoded.userId);
+  if (!user) return res.status(403).json({ message: 'User not found' });
+
+  const login_email = user.email;
+
+  await ResumeDataDBModel.deleteMany({ login_email });
+  const resumeDataDBEntry = new ResumeDataDBModel({
+    login_email: login_email,
+    username: resumeData.username,
+    small_bio: resumeData.small_bio,
+    phone_number: resumeData.phone_number,
+    emailid: resumeData.emailid,
+    location: resumeData.location,
+    linkedin: resumeData.linkedin,
+    linkedinurl: resumeData.linkedinurl,
+    github: resumeData.github,
+    githuburl: resumeData.githuburl,
+    customlink: resumeData.customlink,
+    customlinkurl: resumeData.customlinkurl,
+    summary: resumeData.summary,
+  
+    education: resumeData.education,
+
+    experience: resumeData.experience,
+
+    projects: resumeData.projects,
+
+    skills: resumeData.skills,
+
+    certification: resumeData.certification,
+
+    languages: resumeData.languages,
+
+    customdiv: resumeData.customdiv,
+  });
+
+  await resumeDataDBEntry.save();
+
   resumeData = removeEmptyValues(resumeData);
 
   if(templateType!="Template 1"){

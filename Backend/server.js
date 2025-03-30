@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import pdfEndpoint from './Pdf/Routing_Endpoint/generatePdf.js';
 import firstTimeOtp from './Login/Routing_Endpoints/Otp/First_Time_Otp/passwordResetOtp.js';
@@ -25,14 +26,11 @@ app.use(cors({
 
 app.use(express.json());
 
-
-app.use('/Pdf', pdfEndpoint);
-
-import cookieParser from 'cookie-parser';
 app.use(cookieParser()); 
 
-
 //Routing
+app.use('/Pdf', pdfEndpoint);
+
 app.use('/getFirstOtp', firstTimeOtp);
 
 app.use('/resendOtp/newUser', resendOtpNewUser);
