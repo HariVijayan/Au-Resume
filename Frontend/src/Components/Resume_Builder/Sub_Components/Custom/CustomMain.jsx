@@ -80,7 +80,7 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:5000/Pdf/generateResume",
+        "http://localhost:5000/generate/Resume",
         formData,
         {
           withCredentials: true,

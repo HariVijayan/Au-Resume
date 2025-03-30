@@ -3,7 +3,8 @@ dotenv.config();
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import pdfEndpoint from './Pdf/Routing_Endpoint/generatePdf.js';
+import previousResume from './Pdf/Routing_Endpoint/getPreviousResume.js';
+import generateResume from './Pdf/Routing_Endpoint/generatePdf.js';
 import firstTimeOtp from './Login/Routing_Endpoints/Otp/First_Time_Otp/passwordResetOtp.js';
 import resendOtpNewUser from './Login/Routing_Endpoints/Otp/Resend_Otp/newRegistration.js';
 import resendOtp from './Login/Routing_Endpoints/Otp/Resend_Otp/resendOtp.js';
@@ -29,7 +30,9 @@ app.use(express.json());
 app.use(cookieParser()); 
 
 //Routing
-app.use('/Pdf', pdfEndpoint);
+app.use('/getPrevious', previousResume);
+
+app.use('/generate', generateResume);
 
 app.use('/getFirstOtp', firstTimeOtp);
 
@@ -51,9 +54,9 @@ app.use('/userRequest', passwordReset);
 
 app.use('/verifySession',checkAccess);
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.log('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

@@ -3,10 +3,7 @@ import puppeteer from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
 import Handlebars from 'handlebars';
-import jwt from 'jsonwebtoken';
 import { fileURLToPath } from 'url';
-import User from '../../Login/Database_Models/User.js';
-import ResumeDataDBModel from '../Database Models/resumeData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,28 +16,26 @@ const readFileSync = (filePath) => fs.readFileSync(path.join(__dirname, filePath
 const writeFileSync = (filePath, data) => fs.writeFileSync(path.join(__dirname, filePath), data);
 
 function removeEmptyValues(obj) {
-  if (Array.isArray(obj)) {
-      const filteredArray = obj
-          .map(removeEmptyValues)
-          .filter(item => item !== null); 
-      return filteredArray.length > 0 ? filteredArray : null;
-  } else if (typeof obj === "object" && obj !== null) {
-      let newObj = {};
-      for (let key in obj) {
-          if (key === "_id") continue; // Skip "_id" fields
-          const cleanedValue = removeEmptyValues(obj[key]);
-          if (cleanedValue !== null) {
-              newObj[key] = cleanedValue;
-          }
-      }
-      const hasOnlyBooleans = Object.values(newObj).every(val => typeof val === "boolean");
+   if (Array.isArray(obj)) {
+       const filteredArray = obj
+           .map(removeEmptyValues)
+           .filter(item => item !== null); 
+       return filteredArray.length > 0 ? filteredArray : null;
+   } else if (typeof obj === "object" && obj !== null) {
+       let newObj = {};
+       for (let key in obj) {
+           const cleanedValue = removeEmptyValues(obj[key]);
+           if (cleanedValue !== null) {
+               newObj[key] = cleanedValue;
+           }
+       }
+       const hasOnlyBooleans = Object.values(newObj).every(val => typeof val === "boolean");
 
-      return Object.keys(newObj).length > 0 && !hasOnlyBooleans ? newObj : null;
-  } else {
-      return obj === "" ? null : obj;
-  }
+       return Object.keys(newObj).length > 0 && !hasOnlyBooleans ? newObj : null;
+   } else {
+       return obj === "" ? null : obj;
+   }
 }
-
 
 const getCurrentTimestamp = () => {
   const date_time = new Date();
@@ -91,47 +86,6 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
 
 router.post('/Resume', async (req, res) => {
   let {resumeData, templateType} = req.body;
-  const accessToken = req.cookies.accessToken;
-  if (!accessToken) return res.status(401).json({ message: 'No token provided' });
-  
-  const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
-  const user = await User.findById(decoded.userId);
-  if (!user) return res.status(403).json({ message: 'User not found' });
-
-  const login_email = user.email;
-
-  await ResumeDataDBModel.deleteMany({ login_email });
-  const resumeDataDBEntry = new ResumeDataDBModel({
-    login_email: login_email,
-    username: resumeData.username,
-    small_bio: resumeData.small_bio,
-    phone_number: resumeData.phone_number,
-    emailid: resumeData.emailid,
-    location: resumeData.location,
-    linkedin: resumeData.linkedin,
-    linkedinurl: resumeData.linkedinurl,
-    github: resumeData.github,
-    githuburl: resumeData.githuburl,
-    customlink: resumeData.customlink,
-    customlinkurl: resumeData.customlinkurl,
-    summary: resumeData.summary,
-  
-    education: resumeData.education,
-
-    experience: resumeData.experience,
-
-    projects: resumeData.projects,
-
-    skills: resumeData.skills,
-
-    certification: resumeData.certification,
-
-    languages: resumeData.languages,
-
-    customdiv: resumeData.customdiv,
-  });
-
-  await resumeDataDBEntry.save();
 
   resumeData = removeEmptyValues(resumeData);
 
