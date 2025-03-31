@@ -16,25 +16,26 @@ const readFileSync = (filePath) => fs.readFileSync(path.join(__dirname, filePath
 const writeFileSync = (filePath, data) => fs.writeFileSync(path.join(__dirname, filePath), data);
 
 function removeEmptyValues(obj) {
-   if (Array.isArray(obj)) {
-       const filteredArray = obj
-           .map(removeEmptyValues)
-           .filter(item => item !== null); 
-       return filteredArray.length > 0 ? filteredArray : null;
-   } else if (typeof obj === "object" && obj !== null) {
-       let newObj = {};
-       for (let key in obj) {
-           const cleanedValue = removeEmptyValues(obj[key]);
-           if (cleanedValue !== null) {
-               newObj[key] = cleanedValue;
-           }
-       }
-       const hasOnlyBooleans = Object.values(newObj).every(val => typeof val === "boolean");
+  if (Array.isArray(obj)) {
+      const filteredArray = obj
+          .map(removeEmptyValues)
+          .filter(item => item !== null); 
+      return filteredArray.length > 0 ? filteredArray : null;
+  } else if (typeof obj === "object" && obj !== null) {
+      let newObj = {};
+      for (let key in obj) {
+          if (key === "_id") continue; // Skip "_id" fields
+          const cleanedValue = removeEmptyValues(obj[key]);
+          if (cleanedValue !== null) {
+              newObj[key] = cleanedValue;
+          }
+      }
+      const hasOnlyBooleans = Object.values(newObj).every(val => typeof val === "boolean");
 
-       return Object.keys(newObj).length > 0 && !hasOnlyBooleans ? newObj : null;
-   } else {
-       return obj === "" ? null : obj;
-   }
+      return Object.keys(newObj).length > 0 && !hasOnlyBooleans ? newObj : null;
+  } else {
+      return obj === "" ? null : obj;
+  }
 }
 
 const getCurrentTimestamp = () => {

@@ -12,7 +12,7 @@ const PreviewPdf = ({ resumeData, templateType }) => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:5000/generate/Resume",
+        "http://localhost:5000/preview/Resume",
         formData,
         {
           withCredentials: true,

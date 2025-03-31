@@ -2,6 +2,8 @@
   "login_email": "harijv0310@gmail.com",
   "username": "Hari",
   "small_bio": "Developer | Designer | Freelancer",
+  "phone_number": "+91 9486448604",
+  "emailid": "harijv0310@gmail.com",
   "summary": "fdddffd",
   "__v": 0
 }

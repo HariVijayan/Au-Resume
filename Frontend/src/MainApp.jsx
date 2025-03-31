@@ -249,7 +249,11 @@ function RouteWrapper() {
           element={
             <>
               {" "}
-              <Header /> <TemplateChoosing setTemplate={setTemplate} />{" "}
+              <Header />{" "}
+              <TemplateChoosing
+                setTemplate={setTemplate}
+                setResumeData={setResumeData}
+              />{" "}
             </>
           }
         />

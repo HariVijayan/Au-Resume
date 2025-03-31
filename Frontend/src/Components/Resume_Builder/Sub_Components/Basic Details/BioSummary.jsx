@@ -1,27 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const BioSummary = ({ resumeData, setResumeData, templateType }) => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchResumeData = async () => {
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/getPrevious/resume-details",
-          {},
-          { withCredentials: true }
-        );
-        setResumeData(response.data);
-      } catch (error) {
-        console.error("Error fetching resume details:", error);
-      }
-    };
-
-    fetchResumeData(); // Call the function only once when the component mounts
-  }, []); // Empty dependency array ensures this runs only on mount
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
