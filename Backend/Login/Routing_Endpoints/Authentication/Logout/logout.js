@@ -1,19 +1,21 @@
 import express from 'express';
-import RefreshToken from '../../../Database_Models/RefreshToken.js';
+import currentSession from '../../../Database_Models/currentSession.js';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
 router.post('/logout', async (req, res) => {
     try {
-        const refreshToken = req.cookies.refreshToken;
-        if (!refreshToken) return res.status(401).json({ message: 'No refresh token provided' });
+        const accessToken = req.cookies.accessToken;
+        if (!accessToken) return res.status(401).json({ message: 'No access token provided' });
 
-        await RefreshToken.deleteMany({ token: refreshToken });
+        const { userId, sessionId } = jwt.verify(accessToken, process.env.JWT_SECRET);
+
+        await currentSession.deleteOne({ userId, sessionId });
 
         res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'Strict' });
-        res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'Strict' });
 
-        res.json({ message: 'Logged out from all devices' });
+        res.json({ message: 'Logged out' });
 
     } catch (error) {
         console.error('Logout error:', error);

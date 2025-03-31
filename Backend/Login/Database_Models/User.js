@@ -22,12 +22,11 @@ const userSchema = new mongoose.Schema({
   courseType: { type: String, required: true},
   programme: { type: String, required: true},
   branch: { type: String, required: true},
-  failedLoginAttempts: { type: Number, default: 0 },
-  lockUntil: { type: Date, default: null },  // Original Date for logic
-  lockUntilFormatted: { type: String, default: null },  // Readable IST
   createdAt: { type: Date, default: Date.now },
   createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
-  secretKey: { type: String, required: true },
+  failedLoginAttempts: { type: Number, default: 0 },
+  lockUntil: { type: Date, default: null },
+  lockUntilFormatted: { type: String, default: null },
 });
 
 

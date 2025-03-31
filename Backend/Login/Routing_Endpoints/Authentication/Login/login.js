@@ -1,8 +1,9 @@
 import express from 'express';
 import User from '../../../Database_Models/User.js';
-import RefreshToken from '../../../Database_Models/RefreshToken.js';
+import currentSession from '../../../Database_Models/currentSession.js';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
@@ -22,10 +23,6 @@ const formatISTTimestamp = (date) => {
     }).format(date).replace(',', '');
 };
 
-const encryptEmail = (email, secretKey) => {
-    return crypto.createHmac('sha256', secretKey).update(email).digest('hex');
-};
-
 router.post('/login', async (req, res) => {
     const { email, password, rememberMe } = req.body;
 
@@ -36,7 +33,6 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'User dosen\'t exist.' });
         }
 
-        // Check if account is locked
         if (user.lockUntil && user.lockUntil > Date.now()) {
             const remainingLockTime = Math.ceil((user.lockUntil - Date.now()) / 60000);
             return res.status(403).json({ message: `Account locked. Try again in ${remainingLockTime} minutes.` });
@@ -47,7 +43,6 @@ router.post('/login', async (req, res) => {
         if (hashedInputPassword !== user.password) {
             user.failedLoginAttempts += 1;
 
-            // Lock account if max attempts exceeded
             if (user.failedLoginAttempts >= MAX_ATTEMPTS) {
                 user.lockUntil = new Date(Date.now() + LOCK_TIME);
                 user.lockUntilFormatted = formatISTTimestamp(user.lockUntil);
@@ -59,39 +54,35 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid email or password' });
         }
 
-        // Successful login → Reset failed attempts
         user.failedLoginAttempts = 0;
         user.lockUntil = null;
         await user.save();
 
-        // Generate JWT Access Token
-        const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        await currentSession.deleteMany({ userId: user._id });
 
-        // Generate Secure Refresh Token
-        const refreshToken = encryptEmail(user.email, user.secretKey);
-
-        await RefreshToken.deleteMany({ email: user.email }); // Clear old tokens
-
+        const sessionId = uuidv4();
         const createdAt = new Date();
-        const expiresAt = new Date(createdAt.getTime() + (rememberMe ? 7 : 1) * 24 * 60 * 60 * 1000);
+        const expiresAt = new Date(Date.now() + (rememberMe ? 2 : 1) * 24 * 60 * 60 * 1000);
 
-        await RefreshToken.create({
+        await currentSession.create({
+            userId: user._id,
             email: user.email,
-            token: refreshToken,
+            sessionId: sessionId,
             createdAt: createdAt,
             createdAtFormatted: formatISTTimestamp(createdAt),
             expiresAt: expiresAt,
             expiresAtFormatted: formatISTTimestamp(expiresAt),
         });
 
-        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: 60 * 60 * 1000 });
-        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000 });
+        const accessToken = jwt.sign({ userId: user._id, sessionId }, process.env.JWT_SECRET, { expiresIn: rememberMe ? '2d' : '1d' });
+
+        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: rememberMe ? 2 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000 });
 
         res.json({ message: 'Login successful' });
 
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ message: 'Server error', error: error.message });
+        res.status(500).json({ message: 'Server error' });
     }
 });
 

@@ -13,14 +13,14 @@ const formatISTTimestamp = (date) => {
     }).format(date).replace(',', '');
   };
 
-const refreshTokenSchema = new mongoose.Schema({
+const sessionSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     email: { type: String, required: true },
-    token: { type: String, required: true },
+    sessionId: { type: String, required: true, unique: true },
     createdAt: { type: Date, default: Date.now },
     createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
     expiresAt: { type: Date, required: true },
     expiresAtFormatted: { type: String, required: true }
 });
 
-
-export default mongoose.model('RefreshToken', refreshTokenSchema);
+export default mongoose.model('currentActiveSession', sessionSchema);

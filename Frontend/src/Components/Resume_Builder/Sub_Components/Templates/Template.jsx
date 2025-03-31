@@ -13,9 +13,13 @@ const Template = ({ setTemplate, setResumeData }) => {
         {},
         { withCredentials: true }
       );
+      if (response.status === 500) {
+        navigate("/resume-builder/bio-summary");
+      }
       setResumeData(response.data);
     } catch (error) {
       console.error("Error fetching resume details:", error);
+      navigate("/resume-builder/bio-summary");
     }
     navigate("/resume-builder/bio-summary");
   };
