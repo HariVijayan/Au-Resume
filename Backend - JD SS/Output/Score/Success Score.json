@@ -1,10 +1,10 @@
 {
-    "match_score": 48.34,
+    "match_score": 44.83,
     "matched_entities": {
         "SKILLS": {
             "resume": "Web Development Cloud Deployment Machine Learning",
-            "job_description": "a full stack developer we cloud services looking involves expertise web technologies using frameworks javascript frameworks scalable applications",
-            "similarity": 0.628
+            "job_description": "web technologies expertise scalable applications a full stack developer cloud services javascript frameworks javascript looking involves using frameworks",
+            "similarity": 0.5594
         },
         "EXPERIENCE": {
             "resume": "Zoho Corporation, Bangalore 2022 - Present Software Developer in Cloud Deployment Roles : Developed and maintained the company website using modern JavaScript frameworks Collaborated with cross-functional teams to deploy cloud solutions and improve scalability Amazon India, Chennai, India 2019 - 2022 Software Developer in Cloud Deployment Worked for 3 years. Developed security management portal",
@@ -13,13 +13,13 @@
         },
         "EDUCATION": {
             "resume": "Ph.D in Network Security 2024 - 2029 Anna UniversityExpertise: Networking, Security, Machine Learning, Hash Algorithms(Widely Accepted R esearch) Ph.D in Artificial Intelligence 2024 - 2029 Anna University Expertise: LLM, Machine Learning, Deep Learning(Best Research A ward) Mast er of Computer Applications 2022 - 2024 Princeton University CGPA: 9.5(Distinction Grade) Mast er of Business Administration 2022 - 2024 Anna University CGPA: 9.5(Distinction Grade) B.Sc. Computer Science 2019 - 2022 Princeton University CGPA: 8.7(Distinction Grade) Bachelor of Business Administration 2019 - 2022 Anna University CGPA: 8.7(Distinction Grade) Diploma in Technology 2017 - 2019 Princeton University CGPA: 9.5(Distinction Grade) Diploma in IT Equipments 2017 - 2019 Anna University CGPA: 9.5(Distinction Grade)",
-            "job_description": "english a related field networking, security machine learning master's degree requires fluency a bachelor include bachelor research experience computer science, artificial intelligence",
-            "similarity": 0.6116
+            "job_description": "networking networking, security fluency machine learning include bachelor artificial intelligence english a related field computer science research experience master's degree a bachelor requires fluency computer science, artificial intelligence",
+            "similarity": 0.6033
         },
         "CERTIFICATIONS": {
             "resume": "AWS Certified Developer Google Cloud Certified (udemy.com/certificate/ghvsgv212) Machine Learning Expert",
-            "job_description": "at least 3 years cross-functional teams cloud solutions have years machine learning expert certifications aws certified developer given preference responsibilities required skills company websites software development google cloud certified cloud deployment web development experience include javascript the candidate",
-            "similarity": 0.7386
+            "job_description": "software development include javascript machine learning expert certifications have years responsibilities given preference the candidate at least 3 years required skills aws certified developer machine learning expert cross-functional teams preference web development company websites google cloud certified cloud deployment experience cloud solutions",
+            "similarity": 0.6953
         }
     },
     "unmatched_entities": {}

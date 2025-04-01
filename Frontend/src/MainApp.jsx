@@ -29,9 +29,6 @@ import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
 import JdSuccessScore from "./Components/JD_SucessScore/App.jsx";
 import RoleSuccessScore from "./Components/Role_SuccessScore/App.jsx";
-import "./Components/Resume_Builder/MainStyleSheet.css";
-import "./Components/JD_SucessScore/MainStyleSheet.css";
-import "./Components/Role_SuccessScore/MainStyleSheet.css";
 
 function RouteWrapper() {
   const [templateType, setTemplate] = useState("Template 1");

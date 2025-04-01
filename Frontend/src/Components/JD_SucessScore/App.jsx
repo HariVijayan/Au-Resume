@@ -50,104 +50,110 @@ function App() {
 
   return (
     <>
-      <h1>Resume Success Score Profiler</h1>
+      <div id="dv-JdSSWrapper">
+        <h1>Resume Success Score Profiler</h1>
 
-      <div style={{ marginBottom: "10px" }}>
-        <label>
-          <strong>Job Description:</strong>
-          <textarea
-            value={document}
-            onChange={handleDocumentChange}
-            placeholder="Enter JD"
-            rows="5"
-            cols="50"
-          />
-        </label>
-      </div>
+        <div id="dv-JdSSInputWrapper">
+          <div id="dv-JdSSJdInputWrapper" className="InputWrapper">
+            <textarea
+              value={document}
+              onChange={handleDocumentChange}
+              placeholder=" "
+              id="tx-Jobdescription"
+            />
+            <label htmlFor="tx-Jobdescription" className="TextFieldLabel">
+              {" "}
+              Job Description{" "}
+            </label>
+          </div>
+          <div id="dv-JdSSResumeInputWrapper">
+            <label>Resume Pdf:</label>
+            <input type="file" accept=".pdf" onChange={handleFileChange} />
+            <button onClick={handleUpload}>Upload</button>
+          </div>
+        </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <div>
-        <h1>Upload a PDF</h1>
-        <input type="file" accept=".pdf" onChange={handleFileChange} />
-        <button onClick={handleUpload}>Upload</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
         {similarity !== null && (
-          <div style={{ marginTop: "20px" }}>
+          <div id="dv-JdSSMainSimilarity" style={{ marginTop: "20px" }}>
             <h3>Similarity Percentage: {similarity}</h3>
           </div>
         )}
 
-        {matchedEntities && (
-          <div>
-            <h2>Matched Entities:</h2>
-            {Object.keys(matchedEntities).map((entity) => (
-              <div key={entity}>
-                <strong>
-                  {entity.charAt(0).toUpperCase() + entity.slice(1)}:
-                </strong>
+        <div id="dv-JdSSResultsWrapper">
+          {matchedEntities && (
+            <div id="dv-JdSSMatchedEntitiesWrapper">
+              <h2>Matched Entities:</h2>
+              {Object.keys(matchedEntities).map((entity) => (
+                <div key={entity}>
+                  <strong>
+                    {entity.charAt(0).toUpperCase() + entity.slice(1)}:
+                  </strong>
 
-                <p>
-                  Resume:
-                  {matchedEntities[entity]?.resume
-                    ? Array.isArray(matchedEntities[entity].resume)
-                      ? matchedEntities[entity].resume.join(", ")
-                      : matchedEntities[entity].resume
-                    : "No matching skills"}
-                </p>
+                  <p>
+                    Resume:
+                    {matchedEntities[entity]?.resume
+                      ? Array.isArray(matchedEntities[entity].resume)
+                        ? matchedEntities[entity].resume.join(", ")
+                        : matchedEntities[entity].resume
+                      : "No matching skills"}
+                  </p>
 
-                <p>
-                  Job Description:
-                  {Array.isArray(matchedEntities[entity]?.job_description)
-                    ? matchedEntities[entity].job_description.join(", ")
-                    : matchedEntities[entity]?.job_description ||
-                      "No matching job description found"}
-                </p>
+                  <p>
+                    Job Description:
+                    {Array.isArray(matchedEntities[entity]?.job_description)
+                      ? matchedEntities[entity].job_description.join(", ")
+                      : matchedEntities[entity]?.job_description ||
+                        "No matching job description found"}
+                  </p>
 
-                <p>
-                  Similarity:{" "}
-                  {Array.isArray(matchedEntities[entity]?.similarity) || "N/A"}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+                  <p>
+                    Similarity:{" "}
+                    {Array.isArray(matchedEntities[entity]?.similarity) ||
+                      "N/A"}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
 
-        {unmatchedEntities && (
-          <div>
-            <h2>Unmatched Entities:</h2>
-            {Object.keys(unmatchedEntities).map((entity) => (
-              <div key={entity}>
-                <strong>
-                  {entity.charAt(0).toUpperCase() + entity.slice(1)}:
-                </strong>
+          {unmatchedEntities && (
+            <div id="dv-JdSSUnmatchedEntitiesWrapper">
+              <h2>Unmatched Entities:</h2>
+              {Object.keys(unmatchedEntities).map((entity) => (
+                <div key={entity}>
+                  <strong>
+                    {entity.charAt(0).toUpperCase() + entity.slice(1)}:
+                  </strong>
 
-                <p>
-                  Resume:
-                  {unmatchedEntities[entity]?.resume
-                    ? Array.isArray(unmatchedEntities[entity].resume)
-                      ? unmatchedEntities[entity].resume.join(", ")
-                      : unmatchedEntities[entity].resume
-                    : "No matching skills"}
-                </p>
+                  <p>
+                    Resume:
+                    {unmatchedEntities[entity]?.resume
+                      ? Array.isArray(unmatchedEntities[entity].resume)
+                        ? unmatchedEntities[entity].resume.join(", ")
+                        : unmatchedEntities[entity].resume
+                      : "No matching skills"}
+                  </p>
 
-                <p>
-                  Job Description:
-                  {Array.isArray(unmatchedEntities[entity]?.job_description)
-                    ? unmatchedEntities[entity].job_description.join(", ")
-                    : unmatchedEntities[entity]?.job_description ||
-                      "No matching job description found"}
-                </p>
+                  <p>
+                    Job Description:
+                    {Array.isArray(unmatchedEntities[entity]?.job_description)
+                      ? unmatchedEntities[entity].job_description.join(", ")
+                      : unmatchedEntities[entity]?.job_description ||
+                        "No matching job description found"}
+                  </p>
 
-                <p>
-                  Similarity:{" "}
-                  {Array.isArray(unmatchedEntities[entity]?.similarity) ||
-                    "N/A"}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+                  <p>
+                    Similarity:{" "}
+                    {Array.isArray(unmatchedEntities[entity]?.similarity) ||
+                      "N/A"}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
