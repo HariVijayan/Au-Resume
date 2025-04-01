@@ -15,18 +15,21 @@ const Style2 = ({ resumeData, setResumeData }) => {
   };
 
   return (
-      <div id="dv-CertificationStyle2" className="SubWrapper">
-        <div id="dv-CertificationStyle2CertificationSet" className="InputWrapper">
-        <label>Certification Para:</label>
-          <input
-            type="text"
-            name="certificationset"
-            value={resumeData.certification.style2.certificationset}
-            onChange={handleInputChange}
-            placeholder="Comma Separated Values"
-          />
-        </div>
+    <div id="dv-CertificationStyle2" className="SubWrapper">
+      <div id="dv-CertificationStyle2CertificationSet" className="InputWrapper">
+        <input
+          type="text"
+          id="in-rb_cer_para"
+          name="certificationset"
+          value={resumeData.certification.style2.certificationset}
+          onChange={handleInputChange}
+          placeholder=" "
+        />
+        <label htmlFor="in-rb_cer_para" className="TextFieldLabel">
+          Certification Para
+        </label>
       </div>
+    </div>
   );
 };
 

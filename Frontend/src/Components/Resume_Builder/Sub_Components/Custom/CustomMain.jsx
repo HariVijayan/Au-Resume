@@ -153,7 +153,7 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
           </div>
 
           {customDivType === "Default" && (
-            <p>Please select an experience type to begin.</p>
+            <p>Please select an custom input type to begin.</p>
           )}
 
           {renderedStyles.includes("Style1") && (

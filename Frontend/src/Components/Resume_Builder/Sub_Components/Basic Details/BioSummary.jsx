@@ -42,125 +42,173 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
               </svg>
             </h3>
           </div>
+
           <div id="dv-BasicDetailsUsername" className="InputWrapper">
-            <label>Username:</label>
             <input
               type="text"
+              id="in-rb_bd_name"
               name="username"
               value={resumeData.username}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your name"
+              placeholder=" "
               required
             />
+            <label htmlFor="in-rb_bd_name" className="TextFieldLabel">
+              Name
+            </label>
           </div>
+
           <div id="dv-BasicDetailsBio" className="InputWrapper">
-            <label>Small Bio:</label>
             <input
               type="text"
+              id="in-rb_bd_bio"
               name="small_bio"
               value={resumeData.small_bio}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Developer | Designer | Freelancer"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_bio" className="TextFieldLabel">
+              Bio
+            </label>
           </div>
-          <div id="dv-BasicDetailsPhoneNumber" className="InputWrapper">
-            <label>Phone Number:</label>
+
+          <div id="dv-BasicDetailsMobileNumber" className="InputWrapper">
             <input
               type="text"
+              id="in-rb_bd_mobile"
               name="phone_number"
               value={resumeData.phone_number}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your phone number"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_mobile" className="TextFieldLabel">
+              Mobile Number
+            </label>
           </div>
+
           <div id="dv-BasicDetailsEmail" className="InputWrapper">
-            <label>Email ID:</label>
             <input
               type="email"
+              id="in-rb_bd_email"
               name="emailid"
               value={resumeData.emailid}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your email"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_email" className="TextFieldLabel">
+              Email ID
+            </label>
           </div>
+
           <div id="dv-BasicDetailsLocation" className="InputWrapper">
-            <label>Location:</label>
             <input
               type="text"
+              id="in-rb_bd_location"
               name="location"
               value={resumeData.location}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your location"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_location" className="TextFieldLabel">
+              Location
+            </label>
           </div>
+
           <div id="dv-BasicDetailsLinkedIn" className="InputWrapper">
-            <label>LinkedIn Username:</label>
             <input
               type="text"
+              id="in-rb_bd_linkedin"
               name="linkedin"
               value={resumeData.linkedin}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your LinkedIn username"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_linkedin" className="TextFieldLabel">
+              LinkedIn Username
+            </label>
           </div>
+
           <div id="dv-BasicDetailsLinkedInUrl" className="InputWrapper">
-            <label>LinkedIn URL:</label>
             <input
               type="url"
+              id="in-rb_bd_linkedinurl"
               name="linkedinurl"
               value={resumeData.linkedinurl}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your LinkedIn URL"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_linkedinurl" className="TextFieldLabel">
+              LinkedIn URL
+            </label>
           </div>
+
           <div id="dv-BasicDetailsGithub" className="InputWrapper">
-            <label>GitHub Username:</label>
             <input
               type="text"
+              id="in-rb_bd_github"
               name="github"
               value={resumeData.github}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your GitHub username"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_github" className="TextFieldLabel">
+              GitHub Username
+            </label>
           </div>
+
           <div id="dv-BasicDetailsGithubUrl" className="InputWrapper">
-            <label>GitHub URL:</label>
             <input
               type="url"
+              id="in-rb_bd_githuburl"
               name="githuburl"
               value={resumeData.githuburl}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your GitHub URL"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_githuburl" className="TextFieldLabel">
+              GitHub URL
+            </label>
           </div>
+
           <div id="dv-BasicDetailsCustomLink" className="InputWrapper">
-            <label>Custom Link (e.g., Portfolio):</label>
             <input
               type="text"
+              id="in-rb_bd_customlink"
               name="customlink"
               value={resumeData.customlink}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter custom link"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_customlink" className="TextFieldLabel">
+              Custom Link
+            </label>
           </div>
+
           <div id="dv-BasicDetailsCustomLinkUrl" className="InputWrapper">
-            <label>Custom Link URL:</label>
             <input
               type="url"
+              id="in-rb_bd_customlinkurl"
               name="customlinkurl"
               value={resumeData.customlinkurl}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter custom link URL"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_customlinkurl" className="TextFieldLabel">
+              Custom Link URL
+            </label>
           </div>
+
           <div id="dv-BasicDetailsSummary" className="InputWrapper">
-            <label>Summary:</label>
             <textarea
               name="summary"
+              id="in-rb_bd_summary"
               value={resumeData.summary}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Enter your summary"
+              placeholder=" "
             />
+            <label htmlFor="in-rb_bd_summary" className="TextFieldLabel">
+              Summary
+            </label>
           </div>
         </div>
         <div id="dv-BasicDetailsButtons" className="NavigationButtons">

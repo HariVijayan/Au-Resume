@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function App() {
-  const [document, setDocument] = useState("");
+  const [jobRole, setJobRole] = useState("Software Engineer");
 
-  const handleDocumentChange = (event) => {
-    setDocument(event.target.value);
-  };
   const [file, setFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -21,7 +18,7 @@ function App() {
 
     const formData = new FormData();
     formData.append("pdf", file);
-    formData.append("job_role", document);
+    formData.append("job_role", jobRole);
 
     try {
       const response = await axios.post(
@@ -45,14 +42,40 @@ function App() {
       <h1>Resume Success Score Profiler</h1>
 
       <div style={{ marginBottom: "10px" }}>
-        <label>
-          <strong>Job Role:</strong>
-          <input
-            value={document}
-            onChange={handleDocumentChange}
-            placeholder="Enter Job Role"
-          />
-        </label>
+        <label>Job Role</label>
+        <select value={jobRole} onChange={(e) => setJobRole(e.target.value)}>
+          <option value="AI Engineer">AI Engineer</option>
+          <option value="Backend Developer">Backend Developer</option>
+          <option value="Blockchain Developer">Blockchain Developer</option>
+          <option value="Cloud Engineer">Cloud Engineer</option>
+          <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+          <option value="Data Analyst">Data Analyst</option>
+          <option value="Data Architect">Data Architect</option>
+          <option value="Data Scientist">Data Scientist</option>
+          <option value="Database Administrator">Database Administrator</option>
+          <option value="DevOps Engineer">DevOps Engineer</option>
+          <option value="Frontend Developer">Frontend Developer</option>
+          <option value="Game Developer">Game Developer</option>
+          <option value="IOT Engineer">IOT Engineer</option>
+          <option value="IT Support Specialist">IT Support Specialist</option>
+          <option value="Machine Learning Engineer">
+            Machine Learning Engineer
+          </option>
+          <option value="Mobile App Developer">Mobile App Developer</option>
+          <option value="Network Administrator">Network Administrator</option>
+          <option value="Product Manager (IT)">Product Manager (IT)</option>
+          <option value="Robotics Engineer">Robotics Engineer</option>
+          <option value="Security Engineer">Security Engineer</option>
+          <option value="SEO Specialist">SEO Specialist</option>
+          <option value="Software Architect">Software Architect</option>
+          <option value="Software Engineer">Software Engineer</option>
+          <option value="Software QA Engineer">Software QA Engineer</option>
+          <option value="System Administrator">System Administrator</option>
+          <option value="Virtual Reality Developer">
+            Virtual Reality Developer
+          </option>
+          <option value="Web Developer">Web Developer</option>
+        </select>
       </div>
 
       <div>

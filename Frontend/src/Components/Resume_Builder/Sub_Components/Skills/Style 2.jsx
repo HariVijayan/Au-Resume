@@ -15,18 +15,21 @@ const Style2 = ({ resumeData, setResumeData }) => {
   };
 
   return (
-      <div id="dv-SkillsStyle2" className="SubWrapper">
-        <div id="dv-SkillsStyle2SkillSet" className="InputWrapper">
-          <label>Skills Para:</label>
-          <input
-            type="text"
-            name="skillset"
-            value={resumeData.skills.style2.skillset}
-            onChange={handleInputChange}
-            placeholder="Comma Separated Values"
-          />
-        </div>
+    <div id="dv-SkillsStyle2" className="SubWrapper">
+      <div id="dv-SkillsStyle2SkillSet" className="InputWrapper">
+        <input
+          type="text"
+          name="skillset"
+          id="in-rb_skills_para"
+          value={resumeData.skills.style2.skillset}
+          onChange={handleInputChange}
+          placeholder=" "
+        />
+        <label htmlFor="in-rb_skills_para" className="TextFieldLabel">
+          Skills Para
+        </label>
       </div>
+    </div>
   );
 };
 

@@ -8,9 +8,23 @@ body {
 	justify-content: center;
 	align-items: center;
 	margin: 0 auto;
-	background: linear-gradient(90deg, #d9e6f2 0%, #ffffff 100%);
+	height: 100%;
+	background: white;
 	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-	overflow-y: auto;
+}
+
+body svg {
+	fill: black;
+	padding: 0px 3px;
+	height: 25px;
+	width: 25px;
+}
+
+body button {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 
 #dv-MainWrapper {
@@ -19,6 +33,34 @@ body {
 	height: 100%;
 	overflow: auto;
 }
+
+#dv-HeaderWrapper {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	min-height: 10vh;
+	flex-shrink: 0;
+}
+
+#img-HeaderImage {
+	height: 100px;
+	width: 100px;
+}
+
+#h3-HeaderDept {
+	font-weight: normal;
+}
+
+#dv-BodyWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
 
 .Sidebar {
 	width: 60px;
@@ -98,10 +140,6 @@ body {
 	display: none;
 }
 
-#h3-HeaderDept {
-	font-weight: normal;
-}
-
 ::-webkit-input-placeholder {
 	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
 }
@@ -122,421 +160,47 @@ body {
 	margin-bottom: 30vh;
 }
 
-.columnFstartCenter {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	width: 100%;
-}
-
-
-/* ===============Resume Builder===================*/
-
-html {
-	height: 100%;
-	overflow: auto;
-}
-
-body {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 auto;
-	height: 100%;
-	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-	overflow: auto;
-}
-
-body svg {
-	fill: black;
-	padding: 0px 3px;
-	height: 25px;
-	width: 25px;
-}
-
-body button {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="url"],
-textarea {
-	font-size: 16px;
-	padding: 10px;
-	border: 2px solid #dcdcdc;
-	border-radius: 8px;
-	outline: none;
-	transition: border-color 0.3s ease, box-shadow 0.3s ease;
-	width: 100%;
-	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-	margin-bottom: 0.5em;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="url"]:focus,
-textarea:focus {
-	border-color: #4287f5;
-	box-shadow: 0 0 5px rgba(66, 135, 245, 0.3);
-}
-
-textarea {
-	resize: vertical;
-	min-height: 150px;
-}
-
-.LeftNavigationButtons {
-	font-family: inherit;
-	font-size: 16px;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 8px;
-	cursor: pointer;
-	outline: none;
-	background-color: #04aa6d;
-	color: black;
-	transition: background-color 0.3s ease;
-}
-
-.LeftNavigationButtons:focus {
-	background-color: #049660;
-	outline: none;
-}
-
-.LeftNavigationButtons:hover {
-	background-color: #049660;
-}
-
-.RightNavigationButtons {
-	font-family: inherit;
-	font-size: 16px;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 8px;
-	cursor: pointer;
-	outline: none;
-	background-color: #4287f5;
-	color: black;
-	transition: background-color 0.3s ease;
-}
-
-.RightNavigationButtons:focus {
-	background-color: #4287f5;
-	outline: none;
-}
-
-.RightNavigationButtons:hover {
-	background-color: #357ae8;
-}
-
-.AddInputButtons,
-.ListInputButton,
-.ParaInputButton,
-.PreviewButton {
-	font-family: inherit;
-	font-size: 16px;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 8px;
-	cursor: pointer;
-	outline: none;
-	background-color: #555555;
-	color: white;
-	transition: background-color 0.3s ease;
-}
-
-.AddInputButtons,
-.ListInputButton,
-.ParaInputButton,
-.PreviewButton:focus {
-	background-color: #4D4D4D;
-	outline: none;
-}
-
-.AddInputButtons,
-.ListInputButton,
-.ParaInputButton,
-.PreviewButton:hover {
-	background-color: #4D4D4D;
-}
-
-.PreviewButton {
-	margin-top: 1em;
-}
-
-#dv-BodyWrapper {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-}
-
-#dv-TemplatesWrapper {
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-	min-height: 80vh;
-}
-
-#dv-TemplatesHeading {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-}
-
-#dv-TemplatesImages {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-}
-
-.TemplateImages {
-	height: 500px;
-	width: 350px;
-	border-radius: 25px 25px 25px 25px;
-	border: 3px solid #377dff;
-}
-
-#dv-HeaderWrapper {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	min-height: 10vh;
-	flex-shrink: 0;
-}
-
-#img-HeaderImage {
-	height: 100px;
-	width: 100px;
-}
-
-#dv-MainFormAndPreview {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 95%;
-	min-height: 80vh;
-	flex-grow: 1;
-}
-
-#dv-MainForm {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	width: 50%;
-	max-height: 100%;
-	min-height: 100%;
-}
-
-#dv-PreviewWrapper {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 40%;
-	max-height: 100%;
-}
-
-.WrapperClass {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	flex-grow: 1;
-	flex-shrink: 0;
-}
-
 .InputWrapper {
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	min-height: 40px;
-}
-
-.NavigationButtons {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	padding-bottom: 2em;
-}
-
-#dv-BasicDetailsButtons {
-	justify-content: right;
-}
-
-.SubWrapper {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	align-items: flex-start;
-	width: 100%;
-	margin: 1em 0em;
-	min-height: 200px;
-	overflow-y: auto;
-}
-
-.EducationHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-.ProjectHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-.CustomDivHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-.ExperienceHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-.BasicDetailsHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-.SkillsHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-.CertificationsHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-.LanguagesHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-
-/* ===============Jd Success Score===================*/
-
-html {
-	height: 100%;
-	overflow-y: auto;
-}
-
-body {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 auto;
-	background: linear-gradient(90deg, #d9e6f2 0%, #ffffff 100%);
-	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
-	overflow-y: auto;
-}
-
-#dv-JdSSWrapper {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 95%;
-	min-height: 80vh;
-	flex-grow: 1;
-	flex-direction: column;
-}
-
-#dv-JdSSInputWrapper {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-}
-
-#dv-JdSSMainSimilarity {
-	display: flex;
-	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
-}
-
-#dv-JdSSMatchedEntitiesWrapper {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	width: 40%;
-}
-
-#dv-JdSSUnmatchedEntitiesWrapper {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	width: 40%;
-}
-
-#dv-JdSSResultsWrapper {
-	display: flex;
-	justify-content: space-around;
-	align-items: flex-start;
-	width: 100%;
-}
-
-.InputWrapper {
 	position: relative;
-	width: 100%;
+	max-width: 50vw;
+	min-height: 40px;
+	margin-bottom: 1em;
 }
 
 input[type=text],
 input[type=number],
 input[type=email],
+input[type="url"],
+input[type="password"],
 textarea {
-	width: 100%;
-	padding: 12px 14px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
+	width: 50%;
+	padding: 12px;
+	border: 2px solid #ccc;
+	border-radius: 8px;
 	font-size: 1rem;
 	outline: none;
+	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
 	transition: border-color 0.3s ease-in-out;
+	margin-bottom: 0.5em;
 }
 
-input[type=text],
-input[type=number],
-input[type=email]:focus,
+/* Chrome, Safari, Edge, Opera - Remove Number Input Arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input:focus,
 textarea:focus {
 	border-color: #007bff;
 	/* Highlight color */
@@ -544,8 +208,8 @@ textarea:focus {
 
 .TextFieldLabel {
 	position: absolute;
-	top: 50%;
-	left: 14px;
+	top: 40%;
+	left: 2%;
 	transform: translateY(-50%);
 	font-size: 1rem;
 	color: rgba(0, 0, 0, 0.6);
@@ -555,19 +219,16 @@ textarea:focus {
 	padding: 0 4px;
 }
 
-input[type=text],
-input[type=number],
-input[type=email]:focus+.TextFieldLabel,
-input[type=text],
-input[type=number],
-input[type=email]:not(:placeholder-shown)+.TextFieldLabel,
-textarea:focus+.TextFieldLabel,
-textarea:not(:placeholder-shown)+.TextFieldLabel {
-	top: 0;
-	font-size: 0.8rem;
-	color: #007bff;
+input:focus + label,
+input:not(:placeholder-shown) + label,
+textarea:focus + label,
+textarea:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 0.8rem;
+    color: #007bff;
 }
 
-
-/* ===============Role Success Score===================*/
-
+textarea {
+	resize: vertical;
+	min-height: 150px;
+}

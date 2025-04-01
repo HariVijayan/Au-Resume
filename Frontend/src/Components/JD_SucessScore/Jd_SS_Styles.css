@@ -1,0 +1,49 @@
+#dv-JdSSWrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 95%;
+	min-height: 80vh;
+	flex-grow: 1;
+	flex-direction: column;
+}
+
+#dv-JdSSInputWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+#dv-JdSSMainSimilarity {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+}
+
+#dv-JdSSMatchedEntitiesWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 40%;
+}
+
+#dv-JdSSUnmatchedEntitiesWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 40%;
+}
+
+#dv-JdSSResultsWrapper {
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-start;
+	width: 100%;
+}
+

@@ -4,9 +4,11 @@ const Style1 = ({ resumeData, setResumeData }) => {
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const updatedCustomDivs = [...resumeData.customdiv];
-  
+
     if (name === "customlistvalue") {
-      updatedCustomDivs[index].customlist = value.split(",").map(role => role.trim());
+      updatedCustomDivs[index].customlist = value
+        .split(",")
+        .map((role) => role.trim());
 
       const { customlistvalue, ...restOfDiv } = updatedCustomDivs[index];
       updatedCustomDivs[index] = restOfDiv;
@@ -20,7 +22,6 @@ const Style1 = ({ resumeData, setResumeData }) => {
       customdiv: updatedCustomDivs,
     });
   };
-  
 
   return (
     <>
@@ -29,24 +30,30 @@ const Style1 = ({ resumeData, setResumeData }) => {
           return (
             <div key={index} id="dv-CustomDivStyle1" className="SubWrapper">
               <div id="dv-CustomDivStyle1Title" className="InputWrapper">
-                <label>Custom List Title:</label>
                 <input
                   type="text"
                   name="customtitle"
+                  id="in-rb_cusdiv_title"
                   value={div.customtitle}
                   onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Comma Separated Values"
+                  placeholder=" "
                 />
+                <label htmlFor="in-rb_cusdiv_title" className="TextFieldLabel">
+                  Custom Title
+                </label>
               </div>
               <div id="dv-CustomDivStyle1List" className="InputWrapper">
-                <label>Custom List Values:</label>
                 <input
                   type="text"
                   name="customlistvalue"
+                  id="in-rb_cusdiv_list"
                   value={div.customlist.join(", ")}
                   onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Comma Separated Values"
+                  placeholder=" "
                 />
+                <label htmlFor="in-rb_cusdiv_list" className="TextFieldLabel">
+                  Custom List
+                </label>
               </div>
             </div>
           );

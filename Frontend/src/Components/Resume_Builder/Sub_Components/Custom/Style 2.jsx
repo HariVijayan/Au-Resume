@@ -26,24 +26,30 @@ const Style2 = ({ resumeData, setResumeData }) => {
           return (
             <div key={index} id="dv-CustomDivStyle2" className="SubWrapper">
               <div id="dv-CustomDivStyle2Title" className="InputWrapper">
-                <label>Custom Title:</label>
                 <input
                   type="text"
                   name="customtitle"
+                  id="in-rb_cusdiv_title"
                   value={div.customtitle}
                   onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Title"
+                  placeholder=" "
                 />
+                <label htmlFor="in-rb_cusdiv_title" className="TextFieldLabel">
+                  Custom Title
+                </label>
               </div>
               <div id="dv-CustomDivStyle2Paragraph" className="InputWrapper">
-                <label>Custom Paragraph:</label>
                 <input
                   type="text"
                   name="customparagraph"
+                  id="in-rb_cusdiv_para"
                   value={div.customparagraph}
                   onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Some Paragraph"
+                  placeholder=" "
                 />
+                <label htmlFor="in-rb_cusdiv_para" className="TextFieldLabel">
+                  Custom Paragraph
+                </label>
               </div>
             </div>
           );
