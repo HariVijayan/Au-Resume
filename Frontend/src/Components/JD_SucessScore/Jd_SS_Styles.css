@@ -47,3 +47,72 @@
 	width: 100%;
 }
 
+.JDSSInputWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	position: relative;
+	max-width: 100vw;
+	min-height: 40px;
+	margin-bottom: 1em;
+}
+
+.JDSSTextFieldLabel {
+	position: absolute;
+	top: 40%;
+	left: 26%;
+	transform: translateY(-50%);
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.6);
+	pointer-events: none;
+	transition: all 0.2s ease-in-out;
+	background: white;
+	padding: 0 4px;
+}
+
+input[type="file"]{
+	opacity: 0;
+	display: none;
+}
+
+#dv-JdSSResumeInputWrapper{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin: 1em;
+}
+
+#lb-ResumeInput{
+	margin-right: 5px;
+}
+
+#bt-ResumeInput{
+	margin-left: 5px;
+}
+
+#dv-JDSSResumeNameWrapper{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin: 1em;
+}
+
+#sp-ResumeNameHeader{
+	margin-right: 5px;
+	display: none;
+}
+
+#sp-ResumeName{
+	margin-left: 5px;
+}
+
+#bt-SuccessScore{
+	margin-top: 1em;
+}
+
+#tx-Jobdescription{
+	min-height: 250px;
+}

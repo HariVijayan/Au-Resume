@@ -1,32 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+function clickFileInput() {
+  let fileInput = document.getElementById("in-jdssfile");
+  fileInput.click();
+}
+
 function App() {
-  const [document, setDocument] = useState("");
+  const [jdInput, setJdInput] = useState("");
   const [similarity, setSimilarity] = useState(null);
   const [error, setError] = useState("");
   const [matchedEntities, setMatchedEntities] = useState(null);
   const [unmatchedEntities, setUnmatchedEntities] = useState(null);
 
-  const handleDocumentChange = (event) => {
-    setDocument(event.target.value);
+  const setNewJdValue = (event) => {
+    setJdInput(event.target.value);
   };
 
-  const [file, setFile] = useState(null);
+  const [resumeInput, setResumeInput] = useState(null);
+  const [resumeName, setResumeName] = useState("");
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+  const setNewResumePdf = (event) => {
+    setResumeInput(event.target.files[0]);
+    displayFileName();
   };
 
-  const handleUpload = async () => {
-    if (!file) {
+  const displayFileName = () => {
+    let fileInput = document.getElementById("in-jdssfile");
+    let filename = fileInput.files[0].name;
+    setResumeName(filename);
+    let fileInputHeader = document.getElementById("sp-ResumeNameHeader");
+    fileInputHeader.style.display = "block";
+  };
+
+  const getSuccessScore = async () => {
+    if (!resumeInput) {
       alert("Please select a file!");
       return;
     }
 
     const formData = new FormData();
-    formData.append("pdf", file);
-    formData.append("job_description", document);
+    formData.append("pdf", resumeInput);
+    formData.append("job_description", jdInput);
 
     try {
       const response = await axios.post(
@@ -41,58 +56,85 @@ function App() {
       setSimilarity(response.data.match_score);
       setMatchedEntities(response.data.matched_entities);
       setUnmatchedEntities(response.data.unmatched_entities);
+      setError("");
     } catch (error) {
-      console.error("Error uploading file:", error);
-      setError(error);
-      alert("Error uploading file");
+      setError("Error uploading file");
     }
   };
 
   return (
     <>
       <div id="dv-JdSSWrapper">
-        <h1>Resume Success Score Profiler</h1>
+        <h1>
+          Get a success score for any Job Description based on your Resume
+        </h1>
 
         <div id="dv-JdSSInputWrapper">
-          <div id="dv-JdSSJdInputWrapper" className="InputWrapper">
+          <div id="dv-JdSSJdInputWrapper" className="JDSSInputWrapper">
             <textarea
-              value={document}
-              onChange={handleDocumentChange}
+              value={jdInput}
+              onChange={setNewJdValue}
               placeholder=" "
               id="tx-Jobdescription"
             />
-            <label htmlFor="tx-Jobdescription" className="TextFieldLabel">
+            <label htmlFor="tx-Jobdescription" className="JDSSTextFieldLabel">
               {" "}
               Job Description{" "}
             </label>
           </div>
           <div id="dv-JdSSResumeInputWrapper">
-            <label>Resume Pdf:</label>
-            <input type="file" accept=".pdf" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Upload</button>
+            <label id="lb-ResumeInput">Resume Pdf:</label>
+            <input
+              type="file"
+              id="in-jdssfile"
+              accept=".pdf"
+              onChange={setNewResumePdf}
+            />
+            <button
+              id="bt-ResumeInput"
+              onClick={clickFileInput}
+              className="ListInputButton"
+            >
+              Upload
+            </button>
           </div>
+          <div id="dv-JDSSResumeNameWrapper">
+            <span id="sp-ResumeNameHeader">Uploaded File Name: </span>
+            <span id="sp-ResumeName" style={{ color: "blue" }}>
+              {resumeName}
+            </span>
+          </div>
+          <button
+            onClick={getSuccessScore}
+            id="bt-SuccessScore"
+            className="ListInputButton"
+          >
+            Get Success Score
+          </button>
         </div>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {similarity !== null && (
           <div id="dv-JdSSMainSimilarity" style={{ marginTop: "20px" }}>
-            <h3>Similarity Percentage: {similarity}</h3>
+            <h3>Overall Success Score: {similarity}</h3>
           </div>
         )}
 
         <div id="dv-JdSSResultsWrapper">
           {matchedEntities && (
             <div id="dv-JdSSMatchedEntitiesWrapper">
-              <h2>Matched Entities:</h2>
+              <h2 style={{ textDecoration: "underline" }}>Matched Entities</h2>
               {Object.keys(matchedEntities).map((entity) => (
                 <div key={entity}>
-                  <strong>
-                    {entity.charAt(0).toUpperCase() + entity.slice(1)}:
-                  </strong>
+                  <p style={{ textDecoration: "underline" }}>
+                    <strong>
+                      {entity.charAt(0).toUpperCase() + entity.slice(1)}
+                    </strong>
+                  </p>
 
                   <p>
-                    Resume:
+                    <strong>Resume Input: </strong>
                     {matchedEntities[entity]?.resume
                       ? Array.isArray(matchedEntities[entity].resume)
                         ? matchedEntities[entity].resume.join(", ")
@@ -101,7 +143,7 @@ function App() {
                   </p>
 
                   <p>
-                    Job Description:
+                    <strong>JD Input: </strong>
                     {Array.isArray(matchedEntities[entity]?.job_description)
                       ? matchedEntities[entity].job_description.join(", ")
                       : matchedEntities[entity]?.job_description ||
@@ -109,9 +151,10 @@ function App() {
                   </p>
 
                   <p>
-                    Similarity:{" "}
-                    {Array.isArray(matchedEntities[entity]?.similarity) ||
-                      "N/A"}
+                    <strong>Similarity: </strong>
+                    {Array.isArray(matchedEntities[entity]?.similarity)
+                      ? matchedEntities[entity].similarity.join(", ")
+                      : matchedEntities[entity]?.similarity || "N/A"}
                   </p>
                 </div>
               ))}
@@ -120,15 +163,19 @@ function App() {
 
           {unmatchedEntities && (
             <div id="dv-JdSSUnmatchedEntitiesWrapper">
-              <h2>Unmatched Entities:</h2>
+              <h2 style={{ textDecoration: "underline" }}>
+                Unmatched Entities
+              </h2>
               {Object.keys(unmatchedEntities).map((entity) => (
                 <div key={entity}>
-                  <strong>
-                    {entity.charAt(0).toUpperCase() + entity.slice(1)}:
-                  </strong>
+                  <p style={{ textDecoration: "underline" }}>
+                    <strong>
+                      {entity.charAt(0).toUpperCase() + entity.slice(1)}
+                    </strong>
+                  </p>
 
                   <p>
-                    Resume:
+                    <strong>Resume Input: </strong>
                     {unmatchedEntities[entity]?.resume
                       ? Array.isArray(unmatchedEntities[entity].resume)
                         ? unmatchedEntities[entity].resume.join(", ")
@@ -137,7 +184,7 @@ function App() {
                   </p>
 
                   <p>
-                    Job Description:
+                    <strong>JD Input: </strong>
                     {Array.isArray(unmatchedEntities[entity]?.job_description)
                       ? unmatchedEntities[entity].job_description.join(", ")
                       : unmatchedEntities[entity]?.job_description ||
@@ -145,9 +192,10 @@ function App() {
                   </p>
 
                   <p>
-                    Similarity:{" "}
-                    {Array.isArray(unmatchedEntities[entity]?.similarity) ||
-                      "N/A"}
+                    <strong>Similarity: </strong>
+                    {Array.isArray(unmatchedEntities[entity]?.similarity)
+                      ? unmatchedEntities[entity].similarity.join(", ")
+                      : unmatchedEntities[entity]?.similarity || "N/A"}
                   </p>
                 </div>
               ))}

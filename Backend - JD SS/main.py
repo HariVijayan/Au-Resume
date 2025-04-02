@@ -134,11 +134,14 @@ def compute_weighted_score(resume_entities, job_description_entities):
             logger.error(f"Embedding size mismatch: {key} (Resume: {embedding1.shape}, JD: {embedding2.shape})")
 
         total_score += weight * similarity
-        (matched_entities if similarity > 0.05 else unmatched_entities)[key] = {
+        (matched_entities if similarity > 0.10 else unmatched_entities)[key] = {
             "resume": resume_text,
             "job_description": jd_text,
-            "similarity": round(float(similarity), 4)
+            "similarity": f"{round(float(similarity*100), 2)}%"
         }
 
     final_score = round(float(total_score * 100), 2)
     return final_score, matched_entities, unmatched_entities
+
+
+#uvicorn main:app --reload --port 8000
