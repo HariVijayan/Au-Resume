@@ -168,7 +168,7 @@ body button {
 	position: relative;
 	max-width: 50vw;
 	min-height: 40px;
-	margin-bottom: 1em;
+	margin-top: 1em;
 }
 
 input[type=text],
@@ -231,4 +231,73 @@ textarea:not(:placeholder-shown) + label {
 textarea {
 	resize: vertical;
 	min-height: 150px;
+}
+
+
+
+.dropdown-container {
+	position: relative;
+	width: 100%;
+	max-width: 300px;
+	margin-bottom: 20px;
+}
+
+select {
+	width: 100%;
+	padding: 12px 14px;
+	padding-right: 40px; /* Space for custom arrow */
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 1rem;
+	outline: none;
+	appearance: none; /* Hides default dropdown icon */
+	background: white;
+	cursor: pointer;
+	transition: border-color 0.3s ease-in-out;
+}
+
+select:focus {
+	border-color: #007bff;
+}
+
+/* Floating label */
+.DropDownLabel {
+	position: absolute;
+	top: 50%;
+	left: 14px;
+	transform: translateY(-50%);
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.6);
+	pointer-events: none;
+	transition: all 0.2s ease-in-out;
+	background: white;
+	padding: 0 4px;
+}
+
+select:focus + .DropDownLabel,
+select:not([value=""]) + .DropDownLabel {
+	top: 0;
+	font-size: 0.8rem;
+	color: #007bff;
+}
+
+/* Custom dropdown arrow */
+.dropdown-container::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	right: 14px;
+	transform: translateY(-50%);
+	width: 25px;
+	height: 25px;
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,0,0,0.6)"><path d="M7 10l5 5 5-5H7z"/></svg>');
+	background-size: contain;
+	background-repeat: no-repeat;
+	pointer-events: none; /* Prevents interaction */
+	transition: transform 0.2s ease-in-out;
+}
+
+/* Rotate arrow when dropdown is open */
+select:focus + .DropDownLabel + .dropdown-container::after {
+	transform: translateY(-50%) rotate(180deg);
 }

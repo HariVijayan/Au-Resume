@@ -35,7 +35,7 @@ function App() {
 
   const getSuccessScore = async () => {
     if (!resumeInput) {
-      alert("Please select a file!");
+      setError("Please select a file!");
       return;
     }
 
@@ -65,9 +65,7 @@ function App() {
   return (
     <>
       <div id="dv-JdSSWrapper">
-        <h1>
-          Get a success score for any Job Description based on your Resume
-        </h1>
+        <h1>JD based success score for your resume</h1>
 
         <div id="dv-JdSSInputWrapper">
           <div id="dv-JdSSJdInputWrapper" className="JDSSInputWrapper">
@@ -82,8 +80,8 @@ function App() {
               Job Description{" "}
             </label>
           </div>
+
           <div id="dv-JdSSResumeInputWrapper">
-            <label id="lb-ResumeInput">Resume Pdf:</label>
             <input
               type="file"
               id="in-jdssfile"
@@ -95,12 +93,13 @@ function App() {
               onClick={clickFileInput}
               className="ListInputButton"
             >
-              Upload
+              Upload Resume
             </button>
           </div>
+
           <div id="dv-JDSSResumeNameWrapper">
             <span id="sp-ResumeNameHeader">Uploaded File Name: </span>
-            <span id="sp-ResumeName" style={{ color: "blue" }}>
+            <span id="sp-ResumeName" style={{ color: "#377dff" }}>
               {resumeName}
             </span>
           </div>

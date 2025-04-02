@@ -426,24 +426,8 @@ function RouteWrapper() {
             </>
           }
         />
-        <Route
-          path="/success-score/jd"
-          element={
-            <>
-              {" "}
-              <Header /> <JdSuccessScore />{" "}
-            </>
-          }
-        />
-        <Route
-          path="/success-score/role"
-          element={
-            <>
-              {" "}
-              <Header /> <RoleSuccessScore />{" "}
-            </>
-          }
-        />
+        <Route path="/success-score/jd" element={<JdSuccessScore />} />
+        <Route path="/success-score/role" element={<RoleSuccessScore />} />
       </Routes>
     </>
   );

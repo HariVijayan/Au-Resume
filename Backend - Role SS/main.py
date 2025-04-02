@@ -66,7 +66,7 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_role: str = 
 
         svc_pred = jobSSClass.predict_job_fit_stacked(resume_entities, job_role)
 
-        print(svc_pred)
+        return {"success_score": svc_pred}
         
     
     except Exception as e:

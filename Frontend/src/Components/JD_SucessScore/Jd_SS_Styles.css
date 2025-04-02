@@ -84,14 +84,6 @@ input[type="file"]{
 	margin: 1em;
 }
 
-#lb-ResumeInput{
-	margin-right: 5px;
-}
-
-#bt-ResumeInput{
-	margin-left: 5px;
-}
-
 #dv-JDSSResumeNameWrapper{
 	display: flex;
 	justify-content: center;
