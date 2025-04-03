@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email; // Get email from state
@@ -14,10 +14,10 @@ const ResetPassword = () => {
     return <p>Error: No email provided. Please restart the process.</p>;
   }
 
-  const handleResetPassword = async (e) => {
+  const resetPassword = async (e) => {
     e.preventDefault();
     if (newPassword != confirmPassword) {
-      setMessage("Passwords doesn't match.");
+      setError("Passwords doesn't match.");
       return;
     }
     try {
@@ -25,45 +25,64 @@ const ResetPassword = () => {
         "http://localhost:5000/userRequest/reset-password",
         { email, newPassword }
       );
-      setMessage(response.data.message);
+      setError(response.data.message);
 
       navigate("/"); // Redirect to login page
     } catch (err) {
-      setMessage(err.response?.data?.message || "Password reset failed");
+      setError(err.response?.data?.message || "Password reset failed");
     }
   };
 
   return (
-    <div>
+    <div id="dv-RPWrapper" className="AuthenticationWrapper">
+      <div id="dv-RPLogoWrapper" className="LogoWrapper">
+        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
+        <p>Department of IST</p>
+      </div>
       <h2>Reset Password</h2>
-      <div id="dv-RPPassword" className="InputWrapper">
-        <input
-          type="password"
-          id="in-rp_password"
-          placeholder=" "
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-        />
-        <label htmlFor="in-rp_password" className="TextFieldLabel">
-          Password
-        </label>
+      <div className="AuthenticationDivWrapper">
+        <div id="dv-RPPassword" className="AuthenticationInputWrapper">
+          <input
+            type="password"
+            id="in-rp_password"
+            placeholder=" "
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+          />
+          <label
+            htmlFor="in-rp_password"
+            className="AuthenticationTextFieldLabel"
+          >
+            Password
+          </label>
+        </div>
       </div>
-      <div id="dv-RPConfirmPassword" className="InputWrapper">
-        <input
-          type="password"
-          id="in-rp_confirmpassword"
-          placeholder=" "
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-        <label htmlFor="in-rp_confirmpassword" className="TextFieldLabel">
-          Confirm Password
-        </label>
+
+      <div className="AuthenticationDivWrapper">
+        <div id="dv-RPConfirmPassword" className="AuthenticationInputWrapper">
+          <input
+            type="password"
+            id="in-rp_confirmpassword"
+            placeholder=" "
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <label
+            htmlFor="in-rp_confirmpassword"
+            className="AuthenticationTextFieldLabel"
+          >
+            Confirm Password
+          </label>
+        </div>
       </div>
-      <button onClick={handleResetPassword}>Reset Password</button>
-      {message && <p>{message}</p>}
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <button className="AuthenticationButton" onClick={resetPassword}>
+        Reset Password
+      </button>
     </div>
   );
 };
