@@ -35,10 +35,9 @@ const VerifyOTP = () => {
       setMessage(data.message);
 
       if (response.ok) {
-        alert("OTP Verified Successfully!");
         navigate("/reset-password", { state: { email } });
       } else {
-        alert("OTP Verification Failed!");
+        setMessage("OTP Verification Failed!");
       }
     } catch (error) {
       console.error("OTP verification error:", error);

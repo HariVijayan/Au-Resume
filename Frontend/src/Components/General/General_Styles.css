@@ -1,6 +1,6 @@
 .AuthenticationWrapper{
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     align-items: center;
     width: 60%;
 	min-height: 85vh;
@@ -154,7 +154,7 @@
     margin: 0.5em 0em;
 }
 
-.LoginInputWrapper {
+.AuthenticationInputWrapper {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -165,7 +165,7 @@
 	margin-top: 1em;
 }
 
-.LoginTextFieldLabel {
+.AuthenticationTextFieldLabel {
 	position: absolute;
 	top: 40%;
 	left: 25%;

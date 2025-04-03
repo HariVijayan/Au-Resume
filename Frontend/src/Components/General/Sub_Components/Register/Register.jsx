@@ -183,7 +183,7 @@ const Register = () => {
     navigate("/");
   };
 
-  const handleRegister = async (e) => {
+  const registerUser = async (e) => {
     e.preventDefault();
     if (password != confirmPassword) {
       setError("Passwords doesn't match.");
@@ -422,7 +422,7 @@ const Register = () => {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <button
-        onClick={handleRegister}
+        onClick={registerUser}
         disabled={!branch}
         className="AuthenticationButton"
       >

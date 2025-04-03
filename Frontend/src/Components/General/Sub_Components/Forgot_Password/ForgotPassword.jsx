@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleRequestOTP = async (e) => {
+  const getOtp = async (e) => {
     e.preventDefault();
 
     try {
@@ -15,32 +15,42 @@ const ForgotPassword = () => {
         "http://localhost:5000/getFirstOtp/password-reset-otp",
         { email }
       );
-      setMessage(response.data.message);
+      setError(response.data.message);
 
       navigate("/verify-password-otp", { state: { email } });
     } catch (err) {
-      setMessage(err.response?.data?.message || "Failed to send OTP");
+      setError(err.response?.data?.message || "Failed to send OTP");
     }
   };
 
   return (
-    <div>
-      <h2>Forgot Password</h2>
-      <div id="dv-ForgotPassword" className="InputWrapper">
-        <input
-          type="email"
-          id="in-fp_email"
-          placeholder=" "
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label htmlFor="in-fp_email" className="TextFieldLabel">
-          Email Id
-        </label>
+    <div id="dv-ForgotPasswordWrapper" className="AuthenticationWrapper">
+      <div id="dv-FPLogoWrapper" className="LogoWrapper">
+        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
+        <p>Department of IST</p>
       </div>
-      <button onClick={handleRequestOTP}>Send OTP</button>
-      {message && <p>{message}</p>}
+      <h2>Verify Email to reset password</h2>
+      <div className="AuthenticationDivWrapper">
+        <div id="dv-ForgotPassword" className="AuthenticationInputWrapper">
+          <input
+            type="email"
+            id="in-fp_email"
+            placeholder=" "
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <label htmlFor="in-fp_email" className="AuthenticationTextFieldLabel">
+            Email Id
+          </label>
+        </div>
+      </div>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <button className="AuthenticationButton" onClick={getOtp}>
+        Get Otp
+      </button>
     </div>
   );
 };

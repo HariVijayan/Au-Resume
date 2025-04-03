@@ -13,7 +13,7 @@ const Login = () => {
     navigate("/register");
   };
 
-  const handleSubmit = async (e) => {
+  const loginUser = async (e) => {
     e.preventDefault();
     try {
       await axios.post(
@@ -36,7 +36,7 @@ const Login = () => {
       <h2>Welcome Back!</h2>
 
       <div className="AuthenticationDivWrapper">
-        <div id="dv-LoginEmail" className="LoginInputWrapper">
+        <div id="dv-LoginEmail" className="AuthenticationInputWrapper">
           <input
             type="email"
             id="in-login_email"
@@ -45,13 +45,16 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <label htmlFor="in-login_email" className="LoginTextFieldLabel">
+          <label
+            htmlFor="in-login_email"
+            className="AuthenticationTextFieldLabel"
+          >
             Email Id
           </label>
         </div>
       </div>
       <div className="AuthenticationDivWrapper">
-        <div id="dv-LoginPassword" className="LoginInputWrapper">
+        <div id="dv-LoginPassword" className="AuthenticationInputWrapper">
           <input
             type="password"
             id="in-login_password"
@@ -60,7 +63,10 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label htmlFor="in-login_password" className="LoginTextFieldLabel">
+          <label
+            htmlFor="in-login_password"
+            className="AuthenticationTextFieldLabel"
+          >
             Password
           </label>
         </div>
@@ -71,7 +77,7 @@ const Login = () => {
         </p>
       </div>
       <div className="AuthenticationDivWrapper">
-        <div id="dv-LoginCheckbox" className="LoginInputWrapper">
+        <div id="dv-LoginCheckbox" className="AuthenticationInputWrapper">
           <span>Remember Me</span>
           <input
             type="checkbox"
@@ -84,7 +90,7 @@ const Login = () => {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <button className="AuthenticationButton" onClick={handleSubmit}>
+      <button className="AuthenticationButton" onClick={loginUser}>
         Login
       </button>
 
