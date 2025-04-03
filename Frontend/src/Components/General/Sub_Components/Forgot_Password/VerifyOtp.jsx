@@ -11,7 +11,7 @@ const VerifyOTP = () => {
   const email = location.state?.email;
 
   if (!email) {
-    return <p>No email provided. Please restart the process.</p>;
+    return <p>Please restart the process.</p>;
   }
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const VerifyOTP = () => {
         <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
         <p>Department of IST</p>
       </div>
-      <h2>Verify OTP</h2>
+      <h2>Verify Otp to change password</h2>
       <div className="AuthenticationDivWrapper">
         <div id="dv-ForgotPasswordOtp" className="AuthenticationInputWrapper">
           <input
@@ -96,10 +96,15 @@ const VerifyOTP = () => {
         </div>
       </div>
 
-      {isResendDisabled && <p>Wait {countdown} seconds to get another otp.</p>}
+      {isResendDisabled && (
+        <p>Wait {countdown} seconds to request another otp.</p>
+      )}
 
       {!isResendDisabled && (
-        <p onClick={resendOtp} style={{ color: "red", cursor: "pointer" }}>
+        <p
+          onClick={resendOtp}
+          style={{ color: "red", cursor: "pointer", padding: "20px" }}
+        >
           Resend Otp
         </p>
       )}

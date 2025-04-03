@@ -3,12 +3,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const VerifyOTP = () => {
   const [otp, setOtp] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [countdown, setCountdown] = useState(60); // Initial countdown time
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email || "";
+  const email = location.state?.email;
+
+  if (!email) {
+    return <p>Please restart the process.</p>;
+  }
 
   useEffect(() => {
     if (countdown > 0) {
@@ -19,7 +23,7 @@ const VerifyOTP = () => {
     }
   }, [countdown]);
 
-  const handleVerifyOTP = async (e) => {
+  const verifyOtp = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -32,21 +36,19 @@ const VerifyOTP = () => {
       );
 
       const data = await response.json();
-      setMessage(data.message);
+      setError(data.message);
 
       if (response.ok) {
-        alert("OTP Verified Successfully!");
         navigate("/"); // Redirect to login page
       } else {
-        alert("OTP Verification Failed!");
+        setError("OTP Verification Failed!");
       }
     } catch (error) {
-      console.error("OTP verification error:", error);
-      alert("OTP Verification Failed!");
+      setError("OTP Verification Failed!");
     }
   };
 
-  const handleResendOTP = async () => {
+  const resendOtp = async () => {
     try {
       const response = await fetch(
         "http://localhost:5000/resendOtp/newUser/registration",
@@ -58,44 +60,63 @@ const VerifyOTP = () => {
       );
 
       const data = await response.json();
-      setMessage(data.message);
+      setError(data.message);
 
       if (response.ok) {
         setCountdown(60); // Reset the countdown
         setIsResendDisabled(true);
       } else {
-        alert("Failed to resend OTP.");
+        setError("Failed to resend OTP.");
       }
     } catch (error) {
-      console.error("Resend OTP error:", error);
-      alert("Failed to resend OTP.");
+      setError("Failed to resend OTP.");
     }
   };
 
   return (
-    <div>
-      <h2>Verify OTP</h2>
-      <div id="dv-LoginCheckbox" className="InputWrapper">
-        <input
-          type="text"
-          id="in-register_otp"
-          placeholder=" "
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          required
-        />
-        <label htmlFor="in-register_otp" className="TextFieldLabel">
-          Otp
-        </label>
+    <div id="dv-RegisterOtpWrapper" className="AuthenticationWrapper">
+      <div id="dv-RegisterOtpLogoWrapper" className="LogoWrapper">
+        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
+        <p>Department of IST</p>
       </div>
-      <button onClick={handleVerifyOTP}>Verify</button>
+      <h2>Verify Otp to create account</h2>
+      <div className="AuthenticationDivWrapper">
+        <div id="dv-RegisterOtpCheckbox" className="AuthenticationInputWrapper">
+          <input
+            type="text"
+            id="in-register_otp"
+            placeholder=" "
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            required
+          />
+          <label
+            htmlFor="in-register_otp"
+            className="AuthenticationTextFieldLabel"
+          >
+            Otp
+          </label>
+        </div>
+      </div>
 
-      <p>Resend OTP in {countdown} seconds</p>
-      <button onClick={handleResendOTP} disabled={isResendDisabled}>
-        Resend OTP
+      {isResendDisabled && (
+        <p>Wait {countdown} seconds to request another otp.</p>
+      )}
+
+      {!isResendDisabled && (
+        <p
+          onClick={resendOtp}
+          style={{ color: "red", cursor: "pointer", padding: "20px" }}
+        >
+          Resend Otp
+        </p>
+      )}
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <button className="AuthenticationButton" onClick={verifyOtp}>
+        Verify Otp
       </button>
-
-      {message && <p>{message}</p>}
     </div>
   );
 };
