@@ -5,7 +5,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [department, setDept] = useState("Information Science and Technology");
   const [courseType, setCourseType] = useState("");
   const [programme, setProgramme] = useState("");
@@ -186,19 +186,19 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (password != confirmPassword) {
-      setMessage("Passwords don't match.");
+      setError("Passwords doesn't match.");
       return;
     }
     if (!courseType) {
-      setMessage("Choose your course type to continue.");
+      setError("Choose your course type to continue.");
       return;
     }
     if (!programme) {
-      setMessage("Select your programme to continue.");
+      setError("Select your programme to continue.");
       return;
     }
     if (!branch) {
-      setMessage("Select your branch to continue.");
+      setError("Select your branch to continue.");
       return;
     }
     try {
@@ -220,26 +220,24 @@ const Register = () => {
       );
 
       const data = await response.json();
-      setMessage(data.message);
+      setError(data.error);
 
       if (response.ok) {
         // Redirect to OTP verification page
         navigate("/verify-otp", { state: { email } });
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      setMessage("Registration failed");
+      setError("Registration failed");
     }
   };
 
   return (
-    <div id="dv-RegisterWrapper">
-      <div id="dv-RegisterLogoWrapper">
-        <img src="/Au Logo.png" id="img-registerlogo" alt="AU Logo"></img>
-        <h2>Create your new account</h2>
+    <div id="dv-RegisterWrapper" className="AuthenticationWrapper">
+      <div id="dv-RegisterLogoWrapper" className="LogoWrapper">
+        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
         <p>Department of IST</p>
       </div>
-
+      <h2>Create your account</h2>
       <div className="RegistrationDivWrapper">
         <div id="dv-RegisterEmail" className="RegisterInputWrapper">
           <input
@@ -421,16 +419,21 @@ const Register = () => {
         </div>
       </div>
 
-      <button onClick={handleRegister} disabled={!branch} id="bt-registeruser">
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <button
+        onClick={handleRegister}
+        disabled={!branch}
+        className="AuthenticationButton"
+      >
         Register
       </button>
       <p>
         Existing User?{" "}
-        <span onClick={navigateToLogin} id="sp-loginnav">
+        <span onClick={navigateToLogin} className="AuthenticationLink">
           Click here to login
         </span>
       </p>
-      {message && <p>{message}</p>}
     </div>
   );
 };

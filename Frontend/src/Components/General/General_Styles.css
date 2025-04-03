@@ -1,23 +1,29 @@
-#dv-RegisterWrapper{
+.AuthenticationWrapper{
     display: flex;
     justify-content: flex-start;
     align-items: center;
     width: 60%;
-	height: 80vh;
+	min-height: 85vh;
     flex-direction: column;
 	border-radius: 20px;
-  box-shadow: 2px 2px 10px 2px gray;
+  	box-shadow: 2px 2px 10px 2px gray;
+	overflow: auto;
+	margin: 10vh 0em;
 }
 
-#dv-RegisterLogoWrapper{
+.AuthenticationWrapper h2{
+	margin: 0.5em;
+}
+
+.LogoWrapper{
 	display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 90%;
-  margin-top: 2em;
+  margin-top: 20px;
 }
 
-#img-registerlogo{
+#img-aulogo{
 	height: 75px;
 	width: 75px;
 }
@@ -90,7 +96,7 @@
 }
 
 
-#bt-registeruser {
+.AuthenticationButton {
 	background-color: #377dff;
 	border: 0 solid #E5E7EB;
 	box-sizing: border-box;
@@ -113,13 +119,14 @@
 	user-select: none;
 	-webkit-user-select: none;
 	touch-action: manipulation;
+	margin-top: 0.5em;
   }
   
-  #bt-registeruser:focus {
+  .AuthenticationButton:focus {
 	outline: 0;
   }
   
-  #bt-registeruser:after {
+  .AuthenticationButton:after {
 	content: '';
 	position: absolute;
 	border: 1px solid #000000;
@@ -129,12 +136,71 @@
 	height: calc(100% - 1px);
   }
   
-  #bt-registeruser:hover:after {
+  .AuthenticationButton:hover:after {
 	bottom: 2px;
 	left: 2px;
   }
 
-  #sp-loginnav{
+  .AuthenticationLink{
 	color:#377dff;
 	cursor: pointer;
   }
+
+  .AuthenticationDivWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: 0.5em 0em;
+}
+
+.LoginInputWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	position: relative;
+	max-width: 50vw;
+	min-height: 40px;
+	margin-top: 1em;
+}
+
+.LoginTextFieldLabel {
+	position: absolute;
+	top: 40%;
+	left: 25%;
+	transform: translateY(-50%);
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.6);
+	pointer-events: none;
+	transition: all 0.2s ease-in-out;
+	background: white;
+	padding: 0 4px;
+}
+
+#dv-LoginCheckbox{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	max-width: 50vw;
+	min-height: 40px;
+	margin-top: 1em;
+}
+
+#dv-LoginForgotPassword{
+	width: 40%;
+}
+
+#p-forgotpass{
+	margin: 0;
+	text-align: right;
+	cursor: pointer;
+	width: fit-content;
+  	margin-left: auto;
+}
+
+#in-login_rememberme{
+	height: 20px;
+	width: 20px;
+}

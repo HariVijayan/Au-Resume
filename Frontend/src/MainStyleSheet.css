@@ -278,9 +278,6 @@ select:focus + .DropDownLabel,
 select:not([value=""]) + .DropDownLabel {
 	top: 0;
 	font-size: 0.8rem;
-}
-
-select:focus + .DropDownLabel{
 	color: #007bff;
 }
 

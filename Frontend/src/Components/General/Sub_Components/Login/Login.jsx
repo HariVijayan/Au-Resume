@@ -9,6 +9,10 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const navigateToRegister = () => {
+    navigate("/register");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -24,51 +28,71 @@ const Login = () => {
   };
 
   return (
-    <div id="dv-LoginWrapper">
-      <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <div id="dv-LoginEmail" className="InputWrapper">
-        <input
-          type="email"
-          id="in-login_email"
-          value={email}
-          placeholder=" "
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label htmlFor="in-login_email" className="TextFieldLabel">
-          Email Id
-        </label>
+    <div id="dv-LoginWrapper" className="AuthenticationWrapper">
+      <div id="dv-LoginLogoWrapper" className="LogoWrapper">
+        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
+        <p>Department of IST</p>
       </div>
-      <div id="dv-LoginPassword" className="InputWrapper">
-        <input
-          type="password"
-          id="in-login_password"
-          value={password}
-          placeholder=" "
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <label htmlFor="in-login_password" className="TextFieldLabel">
-          Password
-        </label>
+      <h2>Welcome Back!</h2>
+
+      <div className="AuthenticationDivWrapper">
+        <div id="dv-LoginEmail" className="LoginInputWrapper">
+          <input
+            type="email"
+            id="in-login_email"
+            value={email}
+            placeholder=" "
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <label htmlFor="in-login_email" className="LoginTextFieldLabel">
+            Email Id
+          </label>
+        </div>
       </div>
-      <div id="dv-LoginCheckbox" className="InputWrapper">
-        <input
-          type="checkbox"
-          id="in-login_rememberme"
-          checked={rememberMe}
-          onChange={(e) => setRememberMe(e.target.checked)}
-        />
-        <label htmlFor="in-login_rememberme" className="TextFieldLabel">
-          Remember Me
-        </label>
+      <div className="AuthenticationDivWrapper">
+        <div id="dv-LoginPassword" className="LoginInputWrapper">
+          <input
+            type="password"
+            id="in-login_password"
+            value={password}
+            placeholder=" "
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <label htmlFor="in-login_password" className="LoginTextFieldLabel">
+            Password
+          </label>
+        </div>
       </div>
-      <button onClick={handleSubmit}>Login</button>
-      <p>
-        <button onClick={() => navigate("/forgot-password")}>
+      <div id="dv-LoginForgotPassword">
+        <p onClick={() => navigate("/forgot-password")} id="p-forgotpass">
           Forgot Password?
-        </button>
+        </p>
+      </div>
+      <div className="AuthenticationDivWrapper">
+        <div id="dv-LoginCheckbox" className="LoginInputWrapper">
+          <span>Remember Me</span>
+          <input
+            type="checkbox"
+            id="in-login_rememberme"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
+        </div>
+      </div>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <button className="AuthenticationButton" onClick={handleSubmit}>
+        Login
+      </button>
+
+      <p>
+        New User?{" "}
+        <span onClick={navigateToRegister} className="AuthenticationLink">
+          Click here to register
+        </span>
       </p>
     </div>
   );

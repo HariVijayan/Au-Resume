@@ -17,7 +17,7 @@ const ResetPassword = () => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     if (newPassword != confirmPassword) {
-      setMessage("Passwords don't match.");
+      setMessage("Passwords doesn't match.");
       return;
     }
     try {
