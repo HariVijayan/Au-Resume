@@ -11,7 +11,7 @@ const ResetPassword = () => {
   const email = location.state?.email; // Get email from state
 
   if (!email) {
-    return <p>Error: No email provided. Please restart the process.</p>;
+    return <p>No email provided. Please restart the process.</p>;
   }
 
   const resetPassword = async (e) => {

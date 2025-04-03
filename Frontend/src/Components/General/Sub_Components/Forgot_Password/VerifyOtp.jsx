@@ -3,12 +3,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const VerifyOTP = () => {
   const [otp, setOtp] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [countdown, setCountdown] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email || "";
+  const email = location.state?.email;
+
+  if (!email) {
+    return <p>No email provided. Please restart the process.</p>;
+  }
 
   useEffect(() => {
     if (countdown > 0) {
@@ -19,7 +23,7 @@ const VerifyOTP = () => {
     }
   }, [countdown]);
 
-  const handleVerifyOTP = async (e) => {
+  const verifyOtp = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -32,20 +36,19 @@ const VerifyOTP = () => {
       );
 
       const data = await response.json();
-      setMessage(data.message);
+      setError(data.message);
 
       if (response.ok) {
         navigate("/reset-password", { state: { email } });
       } else {
-        setMessage("OTP Verification Failed!");
+        setError("OTP Verification Failed!");
       }
     } catch (error) {
-      console.error("OTP verification error:", error);
-      alert("OTP Verification Failed!");
+      setError("OTP Verification Failed!");
     }
   };
 
-  const handleResendOTP = async () => {
+  const resendOtp = async () => {
     try {
       const response = await fetch(
         "http://localhost:5000/resendOtp/existingUser/forgot-password",
@@ -57,44 +60,55 @@ const VerifyOTP = () => {
       );
 
       const data = await response.json();
-      setMessage(data.message);
+      setError(data.message);
 
       if (response.ok) {
         setCountdown(60);
         setIsResendDisabled(true);
       } else {
-        alert("Failed to resend OTP.");
+        setError("Failed to resend OTP.");
       }
     } catch (error) {
-      console.error("Resend OTP error:", error);
-      alert("Failed to resend OTP.");
+      setError("Failed to resend OTP.");
     }
   };
 
   return (
-    <div>
-      <h2>Verify OTP</h2>
-      <div id="dv-ForgotPasswordOtp" className="InputWrapper">
-        <input
-          type="text"
-          id="in-fp_otp"
-          placeholder=" "
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          required
-        />
-        <label htmlFor="in-fp_otp" className="TextFieldLabel">
-          Otp
-        </label>
+    <div id="dv-FPOtpWrapper" className="AuthenticationWrapper">
+      <div id="dv-FPOtpLogoWrapper" className="LogoWrapper">
+        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
+        <p>Department of IST</p>
       </div>
-      <button onClick={handleVerifyOTP}>Verify</button>
+      <h2>Verify OTP</h2>
+      <div className="AuthenticationDivWrapper">
+        <div id="dv-ForgotPasswordOtp" className="AuthenticationInputWrapper">
+          <input
+            type="text"
+            id="in-fp_otp"
+            placeholder=" "
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            required
+          />
+          <label htmlFor="in-fp_otp" className="AuthenticationTextFieldLabel">
+            Otp
+          </label>
+        </div>
+      </div>
 
-      <p>Resend OTP in {countdown} seconds</p>
-      <button onClick={handleResendOTP} disabled={isResendDisabled}>
-        Resend OTP
+      {isResendDisabled && <p>Wait {countdown} seconds to get another otp.</p>}
+
+      {!isResendDisabled && (
+        <p onClick={resendOtp} style={{ color: "red", cursor: "pointer" }}>
+          Resend Otp
+        </p>
+      )}
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <button className="AuthenticationButton" onClick={verifyOtp}>
+        Verify Otp
       </button>
-
-      {message && <p>{message}</p>}
     </div>
   );
 };
