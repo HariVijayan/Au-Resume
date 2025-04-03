@@ -7,7 +7,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import Header from "./Header.jsx";
+import Error404 from "./404Error.jsx";
 import Login from "./Components/General/Sub_Components/Login/Login.jsx";
 import Register from "./Components/General/Sub_Components/Register/Register.jsx";
 import Otp from "./Components/General/Sub_Components/Register/VerifyOtp.jsx";
@@ -180,46 +180,71 @@ function RouteWrapper() {
     "/success-score/role",
   ];
   const navigate = useNavigate();
-  const verifySession = async () => {
+  const verifySessionForProtectedRoutes = async () => {
     try {
       const response = await fetch(
         "http://localhost:5000/verifySession/check-access",
         {
           method: "POST",
-          credentials: "include", // Ensures cookies are sent
+          credentials: "include",
         }
       );
 
       if (!response.ok) {
         throw new Error("Session invalid");
       }
-
-      const data = await response.json();
-      console.log("Session verified:", data.message);
     } catch (error) {
       console.error("Session verification failed:", error);
-      navigate("/"); // Redirect to login if session is invalid
+      navigate("/");
+    }
+  };
+
+  const verifySessionForAuthenticationRoutes = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/verifySession/check-access",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        console.log("Valid session. Redirecting to dashboard.");
+        navigate("/resume-builder/template-choosing");
+      }
+    } catch (error) {
+      return;
     }
   };
 
   useEffect(() => {
-    const sidebarState = () => {
-      const element = document.querySelector(".Sidebar");
-      if (element) {
+    const setRouteBasedElements = () => {
+      const footer = document.getElementById("dv-FooterWrapper");
+      const sidebar = document.querySelector(".Sidebar");
+      if (footer) {
         if (protectedRoutes.includes(location.pathname)) {
-          element.style.display = "flex";
+          footer.style.display = "flex";
         } else {
-          element.style.display = "none";
+          footer.style.display = "none";
+        }
+      }
+      if (sidebar) {
+        if (protectedRoutes.includes(location.pathname)) {
+          sidebar.style.display = "flex";
+        } else {
+          sidebar.style.display = "none";
         }
       }
     };
 
     const checkAccessAndSetSidebar = async () => {
       if (protectedRoutes.includes(location.pathname)) {
-        await verifySession(); // Verify session before allowing protected routes
-        sidebarState();
+        await verifySessionForProtectedRoutes(); // Verify session before allowing protected routes
+        setRouteBasedElements();
       } else {
-        sidebarState();
+        await verifySessionForAuthenticationRoutes(); // Verify session for authentication routes
+        setRouteBasedElements();
       }
     };
 
@@ -239,6 +264,7 @@ function RouteWrapper() {
   return (
     <>
       <Routes>
+        <Route path="*" element={<Error404 />} />
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<Otp />} />
@@ -248,182 +274,130 @@ function RouteWrapper() {
         <Route
           path="/resume-builder/template-choosing"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <TemplateChoosing
-                setTemplate={setTemplate}
-                setResumeData={setResumeData}
-              />{" "}
-            </>
+            <TemplateChoosing
+              setTemplate={setTemplate}
+              setResumeData={setResumeData}
+            />
           }
         />
         <Route
           path="/resume-builder/bio-summary"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <BioSummary
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <BioSummary
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/experience"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <Experience
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <Experience
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/education/phd"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <EducationPhd
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <EducationPhd
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/education/pg"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <EducationPg
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <EducationPg
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/education/ug"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <EducationUg
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <EducationUg
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/education/diploma"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <EducationDiploma
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <EducationDiploma
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/education/school"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <EducationSchool
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <EducationSchool
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/projects"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <Projects
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <Projects
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/skills"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <Skills
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <Skills
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/certifications"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <Certifications
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <Certifications
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/languages-known"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <LanguagesKnown
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <LanguagesKnown
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route
           path="/resume-builder/custom-input"
           element={
-            <>
-              {" "}
-              <Header />{" "}
-              <CustomInput
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-                templateType={templateType}
-              />{" "}
-            </>
+            <CustomInput
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+              templateType={templateType}
+            />
           }
         />
         <Route path="/success-score/jd" element={<JdSuccessScore />} />

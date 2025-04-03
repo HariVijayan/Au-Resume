@@ -1,6 +1,7 @@
 html {
 	height: 100%;
 	overflow-y: auto;
+	margin: 0 auto;
 }
 
 body {
@@ -295,4 +296,23 @@ select:not([value=""]) + .DropDownLabel {
 	background-repeat: no-repeat;
 	pointer-events: none; /* Prevents interaction */
 	transition: transform 0.2s ease-in-out;
+}
+
+#dv-FooterWrapper {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	min-height: 5vh; 
+	background-color: #377dff;
+	color: white;
+	flex-shrink: 0; 
+	position: absolute;
+  bottom: 0;
+  }
+
+#img-FooterImage{
+	height: 35px;
+	width: 35px;
+	padding-right: 10px;
 }
