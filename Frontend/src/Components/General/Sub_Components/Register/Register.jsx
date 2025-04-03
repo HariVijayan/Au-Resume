@@ -179,6 +179,10 @@ const Register = () => {
     setBranch(e.target.value);
   };
 
+  const navigateToLogin = () => {
+    navigate("/");
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     if (password != confirmPassword) {
@@ -230,7 +234,11 @@ const Register = () => {
 
   return (
     <div id="dv-RegisterWrapper">
-      <h2>Register</h2>
+      <div id="dv-RegisterLogoWrapper">
+        <img src="/Au Logo.png" id="img-registerlogo" alt="AU Logo"></img>
+        <h2>Create your new account</h2>
+        <p>Department of IST</p>
+      </div>
 
       <div className="RegistrationDivWrapper">
         <div id="dv-RegisterEmail" className="RegisterInputWrapper">
@@ -241,7 +249,7 @@ const Register = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <label htmlFor="in-register_email" className="TextFieldLabel">
+          <label htmlFor="in-register_email" className="RegisterTextFieldLabel">
             Email
           </label>
         </div>
@@ -254,117 +262,128 @@ const Register = () => {
             onChange={(e) => setRegisterNumber(e.target.value)}
             required
           />
-          <label htmlFor="in-register_studentno" className="TextFieldLabel">
+          <label
+            htmlFor="in-register_studentno"
+            className="RegisterTextFieldLabel"
+          >
             Register Number
           </label>
         </div>
       </div>
 
       <div className="RegistrationDivWrapper">
-        <div id="dv-RegisterDept" className="RegisterDropDown">
-          <select
-            value={department}
-            id="se-Department"
-            onChange={(e) => setDept(e.target.value)}
-          >
-            <option value="Information Science and Technology">
-              Information Science and Technology
-            </option>
-            <option value="Biomedical Engineering">
-              Biomedical Engineering
-            </option>
-            <option value="Civil Engineering">Civil Engineering</option>
-            <option value="Computer Science and Engineering">
-              Computer Science and Engineering
-            </option>
-            <option value="Chemistry">
-              Electrical and Electronics Engineering
-            </option>
-            <option value="Electronics and Communication Engineering">
-              Electronics and Communication Engineering
-            </option>
-            <option value="English">English</option>
-            <option value="Geology">Geology</option>
-            <option value="Industrial Engineering">
-              Industrial Engineering
-            </option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="Manufacturing Engineering">
-              Manufacturing Engineering
-            </option>
-            <option value="Management Studies">Management Studies</option>
-            <option value="Mechanical Engineering">
-              Mechanical Engineering
-            </option>
-            <option value="Media Sciences">Media Sciences</option>
-            <option value="Medical Physics">Medical Physics</option>
-            <option value="Mining Engineering">Mining Engineering</option>
-            <option value="Physics">Physics</option>
-            <option value="Printing and Packaging Technology">
-              Priniting and Packaging Technology
-            </option>
-          </select>
-          <label htmlFor="se-Department" className="DropDownLabel">
-            Department
-          </label>
+        <div className="RegisterDropDownWrapper">
+          <div id="dv-RegisterDept" className="RegisterDropDown">
+            <select
+              value={department}
+              id="se-Department"
+              onChange={(e) => setDept(e.target.value)}
+            >
+              <option value="Information Science and Technology">
+                Information Science and Technology
+              </option>
+              <option value="Biomedical Engineering">
+                Biomedical Engineering
+              </option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Computer Science and Engineering">
+                Computer Science and Engineering
+              </option>
+              <option value="Chemistry">
+                Electrical and Electronics Engineering
+              </option>
+              <option value="Electronics and Communication Engineering">
+                Electronics and Communication Engineering
+              </option>
+              <option value="English">English</option>
+              <option value="Geology">Geology</option>
+              <option value="Industrial Engineering">
+                Industrial Engineering
+              </option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Manufacturing Engineering">
+                Manufacturing Engineering
+              </option>
+              <option value="Management Studies">Management Studies</option>
+              <option value="Mechanical Engineering">
+                Mechanical Engineering
+              </option>
+              <option value="Media Sciences">Media Sciences</option>
+              <option value="Medical Physics">Medical Physics</option>
+              <option value="Mining Engineering">Mining Engineering</option>
+              <option value="Physics">Physics</option>
+              <option value="Printing and Packaging Technology">
+                Priniting and Packaging Technology
+              </option>
+            </select>
+            <label htmlFor="se-Department" className="DropDownLabel">
+              Department
+            </label>
+          </div>
         </div>
 
-        <div id="dv-RegisterCourse" className="RegisterDropDown">
-          <select
-            value={courseType}
-            id="se-CourseType"
-            onChange={chooseCourseType}
-          >
-            <option value="">Choose course type</option>
-            {dropdownOptions.courseTypes.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="se-CourseType" className="DropDownLabel">
-            Course Type
-          </label>
+        <div className="RegisterDropDownWrapper">
+          <div id="dv-RegisterCourse" className="RegisterDropDown">
+            <select
+              value={courseType}
+              id="se-CourseType"
+              onChange={chooseCourseType}
+            >
+              <option value="">Choose course type</option>
+              {dropdownOptions.courseTypes.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="se-CourseType" className="DropDownLabel">
+              Course Type
+            </label>
+          </div>
         </div>
       </div>
 
       <div className="RegistrationDivWrapper">
-        <div id="dv-RegisterProgramme" className="RegisterDropDown">
-          <select
-            value={programme}
-            id="se-Programme"
-            onChange={chooseProgramme}
-            disabled={!courseType}
-          >
-            <option value="">Choose Programme</option>
-            {getProgrammesList().map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="se-Programme" className="DropDownLabel">
-            Programme
-          </label>
+        <div className="RegisterDropDownWrapper">
+          <div id="dv-RegisterProgramme" className="RegisterDropDown">
+            <select
+              value={programme}
+              id="se-Programme"
+              onChange={chooseProgramme}
+              disabled={!courseType}
+            >
+              <option value="">Choose Programme</option>
+              {getProgrammesList().map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="se-Programme" className="DropDownLabel">
+              Programme
+            </label>
+          </div>
         </div>
 
-        <div id="dv-RegisterBranch" className="RegisterDropDown">
-          <select
-            value={branch}
-            id="se-Branch"
-            onChange={chooseBranch}
-            disabled={!programme}
-          >
-            <option value="">Choose Branch</option>
-            {getBranchesList().map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="se-Branch" className="DropDownLabel">
-            Branch
-          </label>
+        <div className="RegisterDropDownWrapper">
+          <div id="dv-RegisterBranch" className="RegisterDropDown">
+            <select
+              value={branch}
+              id="se-Branch"
+              onChange={chooseBranch}
+              disabled={!programme}
+            >
+              <option value="">Choose Branch</option>
+              {getBranchesList().map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="se-Branch" className="DropDownLabel">
+              Branch
+            </label>
+          </div>
         </div>
       </div>
 
@@ -377,7 +396,10 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label htmlFor="in-register_password" className="TextFieldLabel">
+          <label
+            htmlFor="in-register_password"
+            className="RegisterTextFieldLabel"
+          >
             Password
           </label>
         </div>
@@ -392,16 +414,22 @@ const Register = () => {
           />
           <label
             htmlFor="in-register_confirmpassword"
-            className="TextFieldLabel"
+            className="RegisterTextFieldLabel"
           >
             Confirm Password
           </label>
         </div>
       </div>
 
-      <button onClick={handleRegister} disabled={!branch}>
+      <button onClick={handleRegister} disabled={!branch} id="bt-registeruser">
         Register
       </button>
+      <p>
+        Existing User?{" "}
+        <span onClick={navigateToLogin} id="sp-loginnav">
+          Click here to login
+        </span>
+      </p>
       {message && <p>{message}</p>}
     </div>
   );
