@@ -247,7 +247,7 @@ select {
 	padding: 12px 14px;
 	padding-right: 40px; /* Space for custom arrow */
 	border: 1px solid #ccc;
-	border-radius: 4px;
+	border-radius: 8px;
 	font-size: 1rem;
 	outline: none;
 	appearance: none; /* Hides default dropdown icon */
@@ -278,6 +278,9 @@ select:focus + .DropDownLabel,
 select:not([value=""]) + .DropDownLabel {
 	top: 0;
 	font-size: 0.8rem;
+}
+
+select:focus + .DropDownLabel{
 	color: #007bff;
 }
 
@@ -295,9 +298,4 @@ select:not([value=""]) + .DropDownLabel {
 	background-repeat: no-repeat;
 	pointer-events: none; /* Prevents interaction */
 	transition: transform 0.2s ease-in-out;
-}
-
-/* Rotate arrow when dropdown is open */
-select:focus + .DropDownLabel + .dropdown-container::after {
-	transform: translateY(-50%) rotate(180deg);
 }

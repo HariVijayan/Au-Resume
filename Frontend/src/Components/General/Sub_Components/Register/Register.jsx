@@ -232,128 +232,171 @@ const Register = () => {
     <div id="dv-RegisterWrapper">
       <h2>Register</h2>
 
-      <div id="dv-RegisterEmail" className="InputWrapper">
-        <input
-          type="email"
-          placeholder=" "
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label htmlFor="in-register_email" className="TextFieldLabel">
-          Email
-        </label>
+      <div className="RegistrationDivWrapper">
+        <div id="dv-RegisterEmail" className="RegisterInputWrapper">
+          <input
+            type="email"
+            placeholder=" "
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <label htmlFor="in-register_email" className="TextFieldLabel">
+            Email
+          </label>
+        </div>
+
+        <div id="dv-RegisterStudentNo" className="RegisterInputWrapper">
+          <input
+            type="number"
+            placeholder=" "
+            value={registerNumber}
+            onChange={(e) => setRegisterNumber(e.target.value)}
+            required
+          />
+          <label htmlFor="in-register_studentno" className="TextFieldLabel">
+            Register Number
+          </label>
+        </div>
       </div>
 
-      <div id="dv-RegisterPassword" className="InputWrapper">
-        <input
-          type="password"
-          placeholder=" "
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <label htmlFor="in-register_password" className="TextFieldLabel">
-          Password
-        </label>
-      </div>
-
-      <div id="dv-RegisterConfirmPassword" className="InputWrapper">
-        <input
-          type="password"
-          placeholder=" "
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-        <label htmlFor="in-register_confirmpassword" className="TextFieldLabel">
-          Confirm Password
-        </label>
-      </div>
-
-      <div id="dv-RegisterStudentNo" className="InputWrapper">
-        <input
-          type="number"
-          placeholder=" "
-          value={registerNumber}
-          onChange={(e) => setRegisterNumber(e.target.value)}
-          required
-        />
-        <label htmlFor="in-register_studentno" className="TextFieldLabel">
-          Register Number
-        </label>
-      </div>
-
-      <div id="dv-RegisterDept" className="InputWrapper">
-        <select value={department} onChange={(e) => setDept(e.target.value)}>
-          <option value="Information Science and Technology">
-            Information Science and Technology
-          </option>
-          <option value="Biomedical Engineering">Biomedical Engineering</option>
-          <option value="Civil Engineering">Civil Engineering</option>
-          <option value="Computer Science and Engineering">
-            Computer Science and Engineering
-          </option>
-          <option value="Chemistry">
-            Electrical and Electronics Engineering
-          </option>
-          <option value="Electronics and Communication Engineering">
-            Electronics and Communication Engineering
-          </option>
-          <option value="English">English</option>
-          <option value="Geology">Geology</option>
-          <option value="Industrial Engineering">Industrial Engineering</option>
-          <option value="Mathematics">Mathematics</option>
-          <option value="Manufacturing Engineering">
-            Manufacturing Engineering
-          </option>
-          <option value="Management Studies">Management Studies</option>
-          <option value="Mechanical Engineering">Mechanical Engineering</option>
-          <option value="Media Sciences">Media Sciences</option>
-          <option value="Medical Physics">Medical Physics</option>
-          <option value="Mining Engineering">Mining Engineering</option>
-          <option value="Physics">Physics</option>
-          <option value="Printing and Packaging Technology">
-            Priniting and Packaging Technology
-          </option>
-        </select>
-      </div>
-
-      <div id="dv-RegisterCourse" className="InputWrapper">
-        <select value={courseType} onChange={chooseCourseType}>
-          <option value="">Select an option</option>
-          {dropdownOptions.courseTypes.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
+      <div className="RegistrationDivWrapper">
+        <div id="dv-RegisterDept" className="RegisterDropDown">
+          <select
+            value={department}
+            id="se-Department"
+            onChange={(e) => setDept(e.target.value)}
+          >
+            <option value="Information Science and Technology">
+              Information Science and Technology
             </option>
-          ))}
-        </select>
+            <option value="Biomedical Engineering">
+              Biomedical Engineering
+            </option>
+            <option value="Civil Engineering">Civil Engineering</option>
+            <option value="Computer Science and Engineering">
+              Computer Science and Engineering
+            </option>
+            <option value="Chemistry">
+              Electrical and Electronics Engineering
+            </option>
+            <option value="Electronics and Communication Engineering">
+              Electronics and Communication Engineering
+            </option>
+            <option value="English">English</option>
+            <option value="Geology">Geology</option>
+            <option value="Industrial Engineering">
+              Industrial Engineering
+            </option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Manufacturing Engineering">
+              Manufacturing Engineering
+            </option>
+            <option value="Management Studies">Management Studies</option>
+            <option value="Mechanical Engineering">
+              Mechanical Engineering
+            </option>
+            <option value="Media Sciences">Media Sciences</option>
+            <option value="Medical Physics">Medical Physics</option>
+            <option value="Mining Engineering">Mining Engineering</option>
+            <option value="Physics">Physics</option>
+            <option value="Printing and Packaging Technology">
+              Priniting and Packaging Technology
+            </option>
+          </select>
+          <label htmlFor="se-Department" className="DropDownLabel">
+            Department
+          </label>
+        </div>
+
+        <div id="dv-RegisterCourse" className="RegisterDropDown">
+          <select
+            value={courseType}
+            id="se-CourseType"
+            onChange={chooseCourseType}
+          >
+            <option value="">Choose course type</option>
+            {dropdownOptions.courseTypes.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="se-CourseType" className="DropDownLabel">
+            Course Type
+          </label>
+        </div>
       </div>
 
-      <div id="dv-RegisterProgramme" className="InputWrapper">
-        <select
-          value={programme}
-          onChange={chooseProgramme}
-          disabled={!courseType}
-        >
-          <option value="">Select an option</option>
-          {getProgrammesList().map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+      <div className="RegistrationDivWrapper">
+        <div id="dv-RegisterProgramme" className="RegisterDropDown">
+          <select
+            value={programme}
+            id="se-Programme"
+            onChange={chooseProgramme}
+            disabled={!courseType}
+          >
+            <option value="">Choose Programme</option>
+            {getProgrammesList().map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="se-Programme" className="DropDownLabel">
+            Programme
+          </label>
+        </div>
+
+        <div id="dv-RegisterBranch" className="RegisterDropDown">
+          <select
+            value={branch}
+            id="se-Branch"
+            onChange={chooseBranch}
+            disabled={!programme}
+          >
+            <option value="">Choose Branch</option>
+            {getBranchesList().map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="se-Branch" className="DropDownLabel">
+            Branch
+          </label>
+        </div>
       </div>
 
-      <div id="dv-RegisterBranch" className="InputWrapper">
-        <select value={branch} onChange={chooseBranch} disabled={!programme}>
-          <option value="">Select an option</option>
-          {getBranchesList().map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+      <div className="RegistrationDivWrapper">
+        <div id="dv-RegisterPassword" className="RegisterInputWrapper">
+          <input
+            type="password"
+            placeholder=" "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <label htmlFor="in-register_password" className="TextFieldLabel">
+            Password
+          </label>
+        </div>
+
+        <div id="dv-RegisterConfirmPassword" className="RegisterInputWrapper">
+          <input
+            type="password"
+            placeholder=" "
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <label
+            htmlFor="in-register_confirmpassword"
+            className="TextFieldLabel"
+          >
+            Confirm Password
+          </label>
+        </div>
       </div>
 
       <button onClick={handleRegister} disabled={!branch}>
