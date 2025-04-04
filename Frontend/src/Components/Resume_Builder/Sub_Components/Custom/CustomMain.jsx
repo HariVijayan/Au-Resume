@@ -184,7 +184,7 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
           <button
             type="submit"
             onClick={() => handleSubmit()}
-            className="RightNavigationButtons"
+            className="SubmitButton"
           >
             Submit{" "}
             <svg

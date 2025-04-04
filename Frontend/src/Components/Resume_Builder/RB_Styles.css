@@ -1,80 +1,169 @@
-.LeftNavigationButtons {
-	font-family: inherit;
-	font-size: 16px;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 8px;
-	cursor: pointer;
-	outline: none;
-	background-color: #04aa6d;
-	color: black;
-	transition: background-color 0.3s ease;
+iframe{
+	margin-bottom: 2em;
 }
 
-.LeftNavigationButtons:focus {
-	background-color: #049660;
+#dv-MainFormAndPreview button {
+	appearance: none;
+	border-radius: 5px;
+	box-sizing: border-box;
+	cursor: pointer;
+	display: inline-block;
+	border: none;
+	font-size: 1rem;
+	line-height: normal;
+	margin: 0;
+	min-height: 60px;
+	min-width: 0;
 	outline: none;
+	padding: 0px 10px;
+	text-align: center;
+	text-decoration: none;
+	transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	width: 180px;
+	will-change: transform;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#dv-MainFormAndPreview button :disabled {
+	pointer-events: none;
+}
+
+#dv-MainFormAndPreview button :hover {
+	transform: translateY(-2px);
+}
+
+#dv-MainFormAndPreview button :active {
+	box-shadow: none;
+	transform: translateY(0);
+}
+
+#dv-MainFormAndPreview svg {
+	pointer-events: none;
+}
+
+.LeftNavigationButtons {
+	background-color: #555555;
+	color: white;
+}
+
+.LeftNavigationButtons svg {
+	padding: 3px;
+	fill: black;
+	border-radius: 50%;
+	margin-right: 10px;
+	background-color: white;
 }
 
 .LeftNavigationButtons:hover {
-	background-color: #049660;
+	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
 }
+
 
 .RightNavigationButtons {
-	font-family: inherit;
-	font-size: 16px;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 8px;
-	cursor: pointer;
-	outline: none;
-	background-color: #4287f5;
-	color: black;
-	transition: background-color 0.3s ease;
+	background-color: #555555;
+	color: white;
 }
 
-.RightNavigationButtons:focus {
-	background-color: #4287f5;
-	outline: none;
+.RightNavigationButtons svg {
+	padding: 3px;
+	fill: black;
+	border-radius: 50%;
+	margin-left: 10px;
+	background-color: white;
 }
 
 .RightNavigationButtons:hover {
-	background-color: #357ae8;
+	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
 }
 
-.AddInputButtons,
-.ListInputButton,
-.ParaInputButton,
 .PreviewButton {
-	font-family: inherit;
-	font-size: 16px;
-	padding: 12px 20px;
-	border: none;
-	border-radius: 8px;
-	cursor: pointer;
-	outline: none;
+	background-color: #5a67d8;
+	color: white;
+}
+
+.PreviewButton svg {
+	padding: 3px;
+	fill: black;
+	border-radius: 50%;
+	margin-right: 10px;
+	background-color: white;
+}
+
+.PreviewButton:hover {
+	box-shadow: rgba(90, 103, 216, 0.8) 0 8px 15px;
+}
+
+.ListInputButton {
 	background-color: #555555;
 	color: white;
-	transition: background-color 0.3s ease;
 }
 
-.AddInputButtons,
-.ListInputButton,
-.ParaInputButton,
-.PreviewButton:focus {
-	background-color: #4D4D4D;
-	outline: none;
+.ListInputButton svg {
+	padding: 3px;
+	fill: black;
+	border-radius: 50%;
+	margin-right: 10px;
+	background-color: white;
 }
 
-.AddInputButtons,
-.ListInputButton,
-.ParaInputButton,
-.PreviewButton:hover {
-	background-color: #4D4D4D;
+.ListInputButton:hover {
+	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
 }
 
-.PreviewButton {
-	margin-top: 1em;
+.AddInputButtons {
+	background-color: #377dff;
+	color: white;
+}
+
+.AddInputButtons svg {
+	padding: 3px;
+	fill: black;
+	border-radius: 50%;
+	margin-right: 10px;
+	background-color: white;
+}
+
+.AddInputButtons:hover {
+	box-shadow: rgba(55, 125, 255, 0.8) 0 8px 15px;
+}
+
+.ParaInputButton {
+	background-color: #555555;
+	color: white;
+}
+
+.ParaInputButton svg {
+	padding: 3px;
+	fill: black;
+	border-radius: 50%;
+	margin-right: 10px;
+	background-color: white;
+}
+
+.ParaInputButton:hover {
+	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
+}
+
+.SubmitButton {
+	background-color: #04aa6d;
+	color: white;
+}
+
+.SubmitButton svg {
+	padding: 3px;
+	fill: black;
+	border-radius: 50%;
+	margin-left: 10px;
+	background-color: white;
+}
+
+.SubmitButton:hover {
+	box-shadow: rgba(4, 150, 96, 0.8) 0 8px 15px;
 }
 
 #dv-TemplatesWrapper {
@@ -145,6 +234,7 @@
 	width: 100%;
 	flex-grow: 1;
 	flex-shrink: 0;
+	padding-bottom: 2em;
 }
 
 .NavigationButtons {
