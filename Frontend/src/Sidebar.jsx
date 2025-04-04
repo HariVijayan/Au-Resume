@@ -12,10 +12,12 @@ const Sidebar = () => {
         "http://localhost:5000/authenticateUser/logout",
         {},
         {
-          withCredentials: true, // Ensures cookies are sent
+          withCredentials: true,
         }
       );
 
+      localStorage.setItem("flagLogout", Date.now());
+      setTimeout(() => localStorage.removeItem("flagLogout"), 100);
       window.location.href = "/";
     } catch (error) {
       console.error("Logout failed:", error);

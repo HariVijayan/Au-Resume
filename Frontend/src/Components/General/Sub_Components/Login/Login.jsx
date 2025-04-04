@@ -19,8 +19,9 @@ const Login = () => {
       await axios.post(
         "http://localhost:5000/authenticateUser/login",
         { email, password, rememberMe },
-        { withCredentials: true } // Ensures cookies are included
+        { withCredentials: true }
       );
+      localStorage.removeItem("flagLogout");
       navigate("/resume-builder/template-choosing");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");

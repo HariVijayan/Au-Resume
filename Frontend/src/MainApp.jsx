@@ -35,6 +35,24 @@ import "./Components/JD_SucessScore/Jd_SS_Styles.css";
 import "./Components/Role_SuccessScore/Role_SS_Styles.css";
 
 function RouteWrapper() {
+  const forceMultiTabClosureOnLogout = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      const checkBrowserLocalStorage = (event) => {
+        if (event.key === "flagLogout") {
+          navigate("/", { replace: true });
+        }
+      };
+
+      window.addEventListener("storage", checkBrowserLocalStorage);
+      return () =>
+        window.removeEventListener("storage", checkBrowserLocalStorage);
+    }, [navigate]);
+  };
+
+  forceMultiTabClosureOnLogout();
+
   const [templateType, setTemplate] = useState("Template 1");
 
   const [resumeData, setResumeData] = useState({
