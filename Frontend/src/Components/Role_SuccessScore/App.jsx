@@ -48,11 +48,11 @@ function App() {
           },
         }
       );
-      console.log(response.data);
       setSuccessScore(response.data.success_score);
       setError("");
     } catch (error) {
-      setError("Error uploading file:");
+      setSuccessScore("");
+      setError("Error uploading file");
     }
   };
 
@@ -106,36 +106,55 @@ function App() {
             Job Role
           </label>
         </div>
+      </div>
 
-        <div id="dv-RoleSSResumeInputWrapper">
-          <input
-            type="file"
-            id="in-rolessfile"
-            accept=".pdf"
-            onChange={setNewResumePdf}
-          />
-          <button
-            id="bt-ResumeInput"
-            onClick={clickFileInput}
-            className="ListInputButton"
+      <div id="dv-RoleSSResumeInputWrapper">
+        <input
+          type="file"
+          id="in-rolessfile"
+          accept=".pdf"
+          onChange={setNewResumePdf}
+        />
+        <button
+          id="bt-ResumeInput"
+          onClick={clickFileInput}
+          className="AddInputButtons"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#e3e3e3"
           >
-            Upload Resume
-          </button>
-        </div>
+            <path d="M440-200h80v-167l64 64 56-57-160-160-160 160 57 56 63-63v167ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+          </svg>{" "}
+          Upload Resume
+        </button>
 
-        <div id="dv-RoleSSResumeNameWrapper">
-          <span id="sp-ResumeNameHeader">Uploaded File Name: </span>
-          <span id="sp-ResumeName" style={{ color: "#377dff" }}>
-            {resumeName}
-          </span>
-        </div>
         <button
           onClick={getSuccessScore}
           id="bt-SuccessScore"
-          className="ListInputButton"
+          className="SubmitButton"
         >
-          Get Success Score
+          Submit{" "}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#e3e3e3"
+          >
+            <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+          </svg>
         </button>
+      </div>
+
+      <div id="dv-RoleSSResumeNameWrapper">
+        <span id="sp-ResumeNameHeader">Uploaded File Name: </span>
+        <span id="sp-ResumeName" style={{ color: "#377dff" }}>
+          {resumeName}
+        </span>
       </div>
 
       {error && <p style={{ color: "red" }}>{error}</p>}

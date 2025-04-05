@@ -40,7 +40,10 @@ const Sidebar = () => {
           </svg>
         </label>
         <ul className="SidebarMainNav">
-          <li onClick={() => navigateTo("/resume-builder/template-choosing")}>
+          <li
+            onClick={() => navigateTo("/resume-builder/template-choosing")}
+            title="Resume Builder"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -52,7 +55,10 @@ const Sidebar = () => {
             </svg>
             <span>Resume Builder</span>
           </li>
-          <li onClick={() => navigateTo("/success-score/jd")}>
+          <li
+            onClick={() => navigateTo("/success-score/jd")}
+            title="JD Success Score"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -64,7 +70,10 @@ const Sidebar = () => {
             </svg>
             <span>JD Success Score</span>
           </li>
-          <li onClick={() => navigateTo("/success-score/role")}>
+          <li
+            onClick={() => navigateTo("/success-score/role")}
+            title="Role Success Score"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24px"

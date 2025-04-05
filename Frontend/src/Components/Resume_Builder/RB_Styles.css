@@ -2,7 +2,7 @@ iframe{
 	margin-bottom: 2em;
 }
 
-#dv-MainFormAndPreview button {
+#dv-BodyWrapper button {
 	appearance: none;
 	border-radius: 5px;
 	box-sizing: border-box;
@@ -29,20 +29,20 @@ iframe{
 	align-items: center;
 }
 
-#dv-MainFormAndPreview button :disabled {
+#dv-BodyWrapper button :disabled {
 	pointer-events: none;
 }
 
-#dv-MainFormAndPreview button :hover {
+#dv-BodyWrapper button :hover {
 	transform: translateY(-2px);
 }
 
-#dv-MainFormAndPreview button :active {
+#dv-BodyWrapper button :active {
 	box-shadow: none;
 	transform: translateY(0);
 }
 
-#dv-MainFormAndPreview svg {
+#dv-BodyWrapper svg {
 	pointer-events: none;
 }
 

@@ -1,20 +1,20 @@
 {
-    "match_score": 46.02,
+    "match_score": 49.23,
     "matched_entities": {
         "SKILLS": {
             "resume": "Web Development Cloud Deployment Machine Learning",
-            "job_description": "javascript scalable applications we javascript frameworks looking cloud services expertise a full stack developer using frameworks involves web technologies",
-            "similarity": "60.67%"
+            "job_description": "a full stack developer expertise cloud services using frameworks web technologies scalable applications involves looking javascript frameworks",
+            "similarity": "64.44%"
         },
         "EDUCATION": {
             "resume": "Ph.D in Network Security 2024 - 2029 Anna UniversityExpertise: Networking, Security, Machine Learning, Hash Algorithms(Widely Accepted R esearch) Ph.D in Artificial Intelligence 2024 - 2029 Anna University Expertise: LLM, Machine Learning, Deep Learning(Best Research A ward) Mast er of Computer Applications 2022 - 2024 Princeton University CGPA: 9.5(Distinction Grade) Mast er of Business Administration 2022 - 2024 Anna University CGPA: 9.5(Distinction Grade) B.Sc. Computer Science 2019 - 2022 Princeton University CGPA: 8.7(Distinction Grade) Bachelor of Business Administration 2019 - 2022 Anna University CGPA: 8.7(Distinction Grade) Diploma in Technology 2017 - 2019 Princeton University CGPA: 9.5(Distinction Grade) Diploma in IT Equipments 2017 - 2019 Anna University CGPA: 9.5(Distinction Grade)",
-            "job_description": "networking, security computer science, artificial intelligence a bachelor machine learning a related field requires fluency research experience english include bachelor master's degree",
-            "similarity": "56.02%"
+            "job_description": "a related field a bachelor fluency machine learning english networking, security research experience master's degree computer science, artificial intelligence artificial intelligence requires fluency include bachelor computer science",
+            "similarity": "61.91%"
         },
         "CERTIFICATIONS": {
             "resume": "AWS Certified Developer Google Cloud Certified (udemy.com/certificate/ghvsgv212) Machine Learning Expert",
-            "job_description": "at least 3 years machine learning company websites software development web development responsibilities aws certified developer the candidate given preference cloud deployment cross-functional teams experience cloud certified preference google cloud certified cloud solutions required skills have years machine learning expert certifications machine learning expert include javascript",
-            "similarity": "72.27%"
+            "job_description": "the candidate cloud solutions machine learning cross-functional teams preference cloud certified aws certified developer experience company websites responsibilities machine learning expert certifications include javascript cloud deployment have years machine learning expert google cloud certified software development web development required skills at least 3 years given preference",
+            "similarity": "73.25%"
         }
     },
     "unmatched_entities": {
