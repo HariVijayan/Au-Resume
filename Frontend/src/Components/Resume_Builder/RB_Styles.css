@@ -42,7 +42,7 @@ iframe{
 	transform: translateY(0);
 }
 
-#dv-BodyWrapper svg {
+.LeftNavigationButtons svg, .RightNavigationButtons svg, .PreviewButton svg, .ListInputButton svg, .AddInputButtons svg, .ParaInputButton svg, .SubmitButton svg {
 	pointer-events: none;
 }
 
@@ -195,7 +195,7 @@ iframe{
 	height: 500px;
 	width: 350px;
 	border-radius: 25px 25px 25px 25px;
-	border: 3px solid #377dff;
+	box-shadow: 10px 10px 10px 10px gray;
 }
 
 #dv-MainFormAndPreview {
@@ -314,4 +314,15 @@ iframe{
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
+}
+
+.InputInfoSvg{
+	margin-left: 5vw;
+	height: 30px;
+	width: 30px;
+	cursor: pointer;
+	fill: red;
+}
+
+.InputInfoDiv{
 }

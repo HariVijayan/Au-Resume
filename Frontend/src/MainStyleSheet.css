@@ -170,6 +170,7 @@ body button {
 	max-width: 50vw;
 	min-height: 40px;
 	margin-top: 1em;
+	margin-bottom: auto;
 }
 
 input[type=text],
