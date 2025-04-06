@@ -24,17 +24,24 @@ const Style2 = ({ resumeData, setResumeData }) => {
   return (
     <>
       {resumeData.experience[0].style2.map((style2, index) => (
-        <div key={index} id="dv-ExperienceStyle2" className="SubWrapper">
-          <div id="dv-ExperienceCompanyName" className="InputWrapper">
+        <div
+          key={index}
+          id={`dv-ExperienceParaCopy${index + 1}`}
+          className="SubWrapper"
+        >
+          <div id={`dv-EPCompanyNameCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_name"
+              id={`in-rb_ep_exp_name_copy${index + 1}`}
               name="experience_company"
               value={style2.experience_company}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_name" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_ep_exp_name_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Company Name
             </label>
             <svg
@@ -58,16 +65,19 @@ const Style2 = ({ resumeData, setResumeData }) => {
             </div>
           )}
 
-          <div id="dv-ExperienceLocation" className="InputWrapper">
+          <div id={`dv-EPLocationCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_location"
+              id={`in-rb_ep_exp_location_copy${index + 1}`}
               name="experience_location"
               value={style2.experience_location}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_location" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_ep_exp_location_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Location
             </label>
             <svg
@@ -91,16 +101,19 @@ const Style2 = ({ resumeData, setResumeData }) => {
             </div>
           )}
 
-          <div id="dv-ExperiencePeriod" className="InputWrapper">
+          <div id={`dv-EPPeriodCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_year"
+              id={`in-rb_ep_exp_year_copy${index + 1}`}
               name="experience_year"
               value={style2.experience_year}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_year" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_ep_exp_year_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Period
             </label>
             <svg
@@ -124,16 +137,19 @@ const Style2 = ({ resumeData, setResumeData }) => {
             </div>
           )}
 
-          <div id="dv-ExperienceDesignation" className="InputWrapper">
+          <div id={`dv-EPDesignationCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_desg"
+              id={`in-rb_ep_exp_desg_copy${index + 1}`}
               name="experience_designation"
               value={style2.experience_designation}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_desg" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_ep_exp_name_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Designation
             </label>
             <svg
@@ -157,16 +173,19 @@ const Style2 = ({ resumeData, setResumeData }) => {
             </div>
           )}
 
-          <div id="dv-ExperienceTeamName" className="InputWrapper">
+          <div id={`dv-EPTeamNameCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_team"
+              id={`in-rb_ep_exp_team_copy${index + 1}`}
               name="experience_team"
               value={style2.experience_team}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_team" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_ep_exp_name_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Team Name
             </label>
             <svg
@@ -190,16 +209,19 @@ const Style2 = ({ resumeData, setResumeData }) => {
             </div>
           )}
 
-          <div id="dv-ExperienceDescription" className="InputWrapper">
+          <div id={`dv-EPDescriptionCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_role"
+              id={`in-rb_ep_exp_desc_copy${index + 1}`}
               name="experience_description"
               value={style2.experience_description}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_role" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_ep_exp_role_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Description
             </label>
             <svg

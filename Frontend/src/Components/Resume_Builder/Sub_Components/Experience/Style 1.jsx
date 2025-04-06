@@ -32,21 +32,28 @@ const Style1 = ({ resumeData, setResumeData }) => {
   return (
     <>
       {resumeData.experience[0].style1.map((style1, index) => (
-        <div key={index} id="dv-ExperienceStyle1" className="SubWrapper">
-          <div id="dv-ExperienceCompanyName" className="InputWrapper">
+        <div
+          key={index}
+          id={`dv-ExperienceListCopy${index + 1}`}
+          className="SubWrapper"
+        >
+          <div id={`dv-ELCompanyNameCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_name"
+              id={`in-rb_el_exp_name_copy${index + 1}`}
               name="experience_company"
               value={style1.experience_company}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_name" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_el_exp_name_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Company Name
             </label>
             <svg
-              onClick={() => showOrHideInfoDiv(`Company Name${index}`)}
+              onClick={() => showOrHideInfoDiv(`Company Name${index + 1}`)}
               className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -58,27 +65,30 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </svg>
           </div>
 
-          {infoDiv === `Company Name${index}` && (
+          {infoDiv === `Company Name${index + 1}` && (
             <div className="InputInfoDiv">
               <div className="InputInfoText">
                 <p>Enter your company name</p>
               </div>
             </div>
           )}
-          <div id="dv-ExperienceLocation" className="InputWrapper">
+          <div id={`dv-ELLocationCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_location"
+              id={`in-rb_el_exp_location_copy${index + 1}`}
               name="experience_location"
               value={style1.experience_location}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_location" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_el_exp_location_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Location
             </label>
             <svg
-              onClick={() => showOrHideInfoDiv(`Work Location${index}`)}
+              onClick={() => showOrHideInfoDiv(`Work Location${index + 1}`)}
               className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -90,27 +100,30 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </svg>
           </div>
 
-          {infoDiv === `Work Location${index}` && (
+          {infoDiv === `Work Location${index + 1}` && (
             <div className="InputInfoDiv">
               <div className="InputInfoText">
                 <p>Enter your work location</p>
               </div>
             </div>
           )}
-          <div id="dv-ExperiencePeriod" className="InputWrapper">
+          <div id={`dv-ELPeriodCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_year"
+              id={`in-rb_el_exp_year_copy${index + 1}`}
               name="experience_year"
               value={style1.experience_year}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_year" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_el_exp_name_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Period
             </label>
             <svg
-              onClick={() => showOrHideInfoDiv(`Work Period${index}`)}
+              onClick={() => showOrHideInfoDiv(`Work Period${index + 1}`)}
               className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -122,27 +135,30 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </svg>
           </div>
 
-          {infoDiv === `Work Period${index}` && (
+          {infoDiv === `Work Period${index + 1}` && (
             <div className="InputInfoDiv">
               <div className="InputInfoText">
                 <p>Enter the period of this work experience</p>
               </div>
             </div>
           )}
-          <div id="dv-ExperienceDesignation" className="InputWrapper">
+          <div id={`dv-ELDesignationCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_desg"
+              id={`in-rb_el_exp_desg_copy${index + 1}`}
               name="experience_designation"
               value={style1.experience_designation}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_desg" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_el_exp_name_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Designation
             </label>
             <svg
-              onClick={() => showOrHideInfoDiv(`Designation${index}`)}
+              onClick={() => showOrHideInfoDiv(`Designation${index + 1}`)}
               className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -154,27 +170,30 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </svg>
           </div>
 
-          {infoDiv === `Designation${index}` && (
+          {infoDiv === `Designation${index + 1}` && (
             <div className="InputInfoDiv">
               <div className="InputInfoText">
                 <p>Enter the Designation which you held</p>
               </div>
             </div>
           )}
-          <div id="dv-ExperienceTeamName" className="InputWrapper">
+          <div id={`dv-ELTeamNameCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
-              id="in-rb_exp_team"
+              id={`in-rb_el_exp_team_copy${index + 1}`}
               name="experience_team"
               value={style1.experience_team}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_team" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_el_exp_team_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Team Name
             </label>
             <svg
-              onClick={() => showOrHideInfoDiv(`Team Name${index}`)}
+              onClick={() => showOrHideInfoDiv(`Team Name${index + 1}`)}
               className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -186,27 +205,30 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </svg>
           </div>
 
-          {infoDiv === `Team Name${index}` && (
+          {infoDiv === `Team Name${index + 1}` && (
             <div className="InputInfoDiv">
               <div className="InputInfoText">
                 <p>Enter your Team's name</p>
               </div>
             </div>
           )}
-          <div id="dv-ExperienceRoles" className="InputWrapper">
+          <div id={`dv-ELRolesCopy${index + 1}`} className="InputWrapper">
             <input
               type="text"
               name="experience_roles"
-              id="in-rb_exp_role"
+              id={`in-rb_el_exp_roles_copy${index + 1}`}
               value={style1.experience_roles}
               onChange={(e) => handleInputChange(e, index)}
               placeholder=" "
             />
-            <label htmlFor="in-rb_exp_role" className="TextFieldLabel">
+            <label
+              htmlFor={`in-rb_el_exp_roles_copy${index + 1}`}
+              className="TextFieldLabel"
+            >
               Roles
             </label>
             <svg
-              onClick={() => showOrHideInfoDiv(`Roles${index}`)}
+              onClick={() => showOrHideInfoDiv(`Roles${index + 1}`)}
               className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -218,7 +240,7 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </svg>
           </div>
 
-          {infoDiv === `Roles${index}` && (
+          {infoDiv === `Roles${index + 1}` && (
             <div className="InputInfoDiv">
               <div className="InputInfoText">
                 <p>Enter your Roles in the job as comma separated values</p>
