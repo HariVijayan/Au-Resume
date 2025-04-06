@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 
 const Project = ({ resumeData, setResumeData, templateType }) => {
   const navigate = useNavigate();
+
+  const [infoDiv, setInfoDiv] = useState("");
+
+  const showOrHideInfoDiv = (currentState) => {
+    if (infoDiv === currentState) {
+      setInfoDiv(" ");
+    } else {
+      setInfoDiv(currentState);
+    }
+  };
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -84,62 +94,182 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
             </button>
           </div>
           {Object.keys(resumeData.projects).map((projectKey) => (
-            <div key={projectKey} id="dv-Projects" className="SubWrapper">
-              <div id="dv-ProjectName" className="InputWrapper">
+            <div
+              key={projectKey}
+              id={`dv-ProjectCopy${projectKey.charAt(7)}`}
+              className="SubWrapper"
+            >
+              <div
+                id={`dv-ProjectNameCopy${projectKey.charAt(7)}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
-                  id="in-rb_projects_name"
+                  id={`in-rb_project_name_copy${projectKey.charAt(7)}`}
                   name="project_name"
                   value={resumeData.projects[projectKey].project_name}
                   onChange={(e) => handleInputChange(e, projectKey)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_projects_name" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_project_name_copy${projectKey.charAt(7)}`}
+                  className="TextFieldLabel"
+                >
                   Name
                 </label>
+                <svg
+                  onClick={() =>
+                    showOrHideInfoDiv(`Project Name${projectKey.charAt(7)}`)
+                  }
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
 
-              <div id="dv-ProjectLink" className="InputWrapper">
+              {infoDiv === `Project Name${projectKey.charAt(7)}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Enter your project name</p>
+                  </div>
+                </div>
+              )}
+
+              <div
+                id={`dv-ProjectLinkCopy${projectKey.charAt(7)}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
                   name="project_link"
-                  id="in-rb_projects_link"
+                  id={`in-rb_project_link_copy${projectKey.charAt(7)}`}
                   value={resumeData.projects[projectKey].project_link}
                   onChange={(e) => handleInputChange(e, projectKey)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_projects_link" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_project_link_copy${projectKey.charAt(7)}`}
+                  className="TextFieldLabel"
+                >
                   Link
                 </label>
+                <svg
+                  onClick={() =>
+                    showOrHideInfoDiv(`Project Link${projectKey.charAt(7)}`)
+                  }
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
 
-              <div id="dv-ProjectDescription" className="InputWrapper">
+              {infoDiv === `Project Link${projectKey.charAt(7)}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Enter your project's hosted link</p>
+                  </div>
+                </div>
+              )}
+
+              <div
+                id={`dv-ProjectDescCopy${projectKey.charAt(7)}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
                   name="project_description"
-                  id="in-rb_projects_desc"
+                  id={`in-rb_project_desc_copy${projectKey.charAt(7)}`}
                   value={resumeData.projects[projectKey].project_description}
                   onChange={(e) => handleInputChange(e, projectKey)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_projects_desc" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_project_desc_copy${projectKey.charAt(7)}`}
+                  className="TextFieldLabel"
+                >
                   Description
                 </label>
+                <svg
+                  onClick={() =>
+                    showOrHideInfoDiv(
+                      `Project Description${projectKey.charAt(7)}`
+                    )
+                  }
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
 
-              <div id="dv-ProjectTech" className="InputWrapper">
+              {infoDiv === `Project Description${projectKey.charAt(7)}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Enter the project's description</p>
+                  </div>
+                </div>
+              )}
+
+              <div
+                id={`dv-ProjectTechCopy${projectKey.charAt(7)}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
                   name="project_tech"
-                  id="in-rb_projects_tech"
+                  id={`in-rb_project_tech_copy${projectKey.charAt(7)}`}
                   value={resumeData.projects[projectKey].project_tech}
                   onChange={(e) => handleInputChange(e, projectKey)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_projects_tech" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_project_tech_copy${projectKey.charAt(7)}`}
+                  className="TextFieldLabel"
+                >
                   Tech Stack
                 </label>
+                <svg
+                  onClick={() =>
+                    showOrHideInfoDiv(`Project Tech${projectKey.charAt(7)}`)
+                  }
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
+
+              {infoDiv === `Project Tech${projectKey.charAt(7)}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Enter the project's tech stack</p>
+                  </div>
+                </div>
+              )}
+
+              {infoDiv === " " && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText"></div>
+                </div>
+              )}
             </div>
           ))}
         </div>

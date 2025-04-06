@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 
 const Phd = ({ resumeData, setResumeData, templateType }) => {
   const navigate = useNavigate();
+
+  const [infoDiv, setInfoDiv] = useState("");
+
+  const showOrHideInfoDiv = (currentState) => {
+    if (infoDiv === currentState) {
+      setInfoDiv(" ");
+    } else {
+      setInfoDiv(currentState);
+    }
+  };
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -75,72 +85,205 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
             </button>
           </div>
           {resumeData.education[0].phd.map((phd, index) => (
-            <div key={index} id="dv-EducationPhd" className="SubWrapper">
-              <div id="dv-EducationPhdName" className="InputWrapper">
+            <div
+              key={index}
+              id={`dv-EducationPhdCopy${index + 1}`}
+              className="SubWrapper"
+            >
+              <div
+                id={`dv-EduPhdNameCopy${index + 1}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
-                  id="in-rb_edu_phd_name"
+                  id={`in-rb_edu_phd_name${index + 1}`}
                   name="phd_name"
                   value={phd.phd_name}
                   onChange={(e) => handleEducationInputChange(e, index)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_edu_phd_name" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_edu_phd_name${index + 1}`}
+                  className="TextFieldLabel"
+                >
                   Name
                 </label>
+                <svg
+                  onClick={() => showOrHideInfoDiv(`Phd Name${index}`)}
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
-              <div id="dv-EducationPhdUniversity" className="InputWrapper">
+
+              {infoDiv === `Phd Name${index}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Enter degree name</p>
+                  </div>
+                </div>
+              )}
+
+              <div id={`dv-EduPhdUniCopy${index + 1}`} className="InputWrapper">
                 <input
                   type="text"
-                  id="in-rb_edu_phd_uni"
+                  id={`in-rb_edu_phd_uni${index + 1}`}
                   name="phd_university"
                   value={phd.phd_university}
                   onChange={(e) => handleEducationInputChange(e, index)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_edu_phd_uni" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_edu_phd_uni${index + 1}`}
+                  className="TextFieldLabel"
+                >
                   University
                 </label>
+                <svg
+                  onClick={() => showOrHideInfoDiv(`Phd University${index}`)}
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
-              <div id="dv-EducationPhdYear" className="InputWrapper">
+
+              {infoDiv === `Phd University${index}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Enter phd university</p>
+                  </div>
+                </div>
+              )}
+
+              <div
+                id={`dv-EduPhdYearCopy${index + 1}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
-                  id="in-rb_edu_phd_year"
+                  id={`in-rb_edu_phd_year${index + 1}`}
                   name="phd_year"
                   value={phd.phd_year}
                   onChange={(e) => handleEducationInputChange(e, index)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_edu_phd_year" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_edu_phd_year${index + 1}`}
+                  className="TextFieldLabel"
+                >
                   Year
                 </label>
+                <svg
+                  onClick={() => showOrHideInfoDiv(`Phd Period${index}`)}
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
-              <div id="dv-EducationPhdExpertise" className="InputWrapper">
+
+              {infoDiv === `Phd Period${index}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Enter period of phd</p>
+                  </div>
+                </div>
+              )}
+
+              <div id={`dv-EduPhdExpCopy${index + 1}`} className="InputWrapper">
                 <input
                   type="text"
-                  id="in-rb_edu_phd_exp"
+                  id={`in-rb_edu_phd_exp${index + 1}`}
                   name="phd_exp"
                   value={phd.phd_exp}
                   onChange={(e) => handleEducationInputChange(e, index)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_edu_phd_exp" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_edu_phd_exp${index + 1}`}
+                  className="TextFieldLabel"
+                >
                   Expertise
                 </label>
+                <svg
+                  onClick={() => showOrHideInfoDiv(`Phd Expertise${index}`)}
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
-              <div id="dv-EducationPhdAdditionalInfo" className="InputWrapper">
+
+              {infoDiv === `Phd Expertise${index}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Enter areas of expertise</p>
+                  </div>
+                </div>
+              )}
+
+              <div
+                id={`dv-EduPhdAddlCopy${index + 1}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
-                  id="in-rb_edu_phd_addl"
+                  id={`in-rb_edu_phd_addl${index + 1}`}
                   name="phd_additional_info"
                   value={phd.phd_additional_info}
                   onChange={(e) => handleEducationInputChange(e, index)}
                   placeholder=" "
                 />
-                <label htmlFor="in-rb_edu_phd_addl" className="TextFieldLabel">
+                <label
+                  htmlFor={`in-rb_edu_phd_addl${index + 1}`}
+                  className="TextFieldLabel"
+                >
                   Additional Info
                 </label>
+                <svg
+                  onClick={() => showOrHideInfoDiv(`Additional Info${index}`)}
+                  className="InputInfoSvg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
               </div>
+
+              {infoDiv === `Additional Info${index}` && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText">
+                    <p>Any other relevant important information</p>
+                  </div>
+                </div>
+              )}
+
+              {infoDiv === " " && (
+                <div className="InputInfoDiv">
+                  <div className="InputInfoText"></div>
+                </div>
+              )}
             </div>
           ))}
         </div>
