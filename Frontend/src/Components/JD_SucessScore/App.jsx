@@ -68,7 +68,25 @@ function App() {
   return (
     <>
       <div id="dv-JdSSWrapper">
-        <h1>JD based success score for your resume</h1>
+        <div id="dv-JdSSHeader" className="PageDetailsHeader">
+          <span className="JdSSHeaderText">
+            <span id="sp-jdssheading">Jd Success Score</span>
+            <svg
+              className="JdSSHeaderSvg"
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#e3e3e3"
+            >
+              <path d="M657-121 544-234l56-56 57 57 127-127 56 56-183 183Zm-537 1v-80h360v80H120Zm0-160v-80h360v80H120Zm0-160v-80h720v80H120Zm0-160v-80h720v80H120Zm0-160v-80h720v80H120Z" />
+            </svg>
+          </span>
+        </div>
+        <h4>
+          Get a success score by analysing how well your resume performs against
+          the provided job description.
+        </h4>
 
         <div id="dv-JdSSInputWrapper">
           <div id="dv-JdSSJdInputWrapper" className="JDSSInputWrapper">

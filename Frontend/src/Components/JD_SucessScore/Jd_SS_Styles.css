@@ -109,3 +109,20 @@ input[type="file"]{
 #tx-Jobdescription{
 	min-height: 250px;
 }
+
+#sp-jdssheading{
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #377dff;
+}
+
+.JdSSHeaderText{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 1em 0em;
+}
+
+.JdSSHeaderSvg{
+	padding-left: 5px;
+}

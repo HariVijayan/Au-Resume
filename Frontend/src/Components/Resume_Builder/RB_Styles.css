@@ -288,9 +288,49 @@ iframe{
 	width: 100%;
 }
 
-.BasicDetailsHeader {
+#sp-rbheading{
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #377dff;
+	cursor: pointer;
+}
+
+#sp-rbheading:hover{
+	text-decoration: underline;
+}
+
+.RBHeaderText{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 1em 0em;
+}
+
+.RBHeaderArrow{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.RBHeaderSvgWrapper{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.RBHeaderSvg{
+	padding-left: 5px;
+}
+
+.StyleChoosingButtons{
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.AddInputButton{
+	display: flex;
+	justify-content: flex-end;
 	align-items: center;
 	width: 100%;
 }
@@ -324,9 +364,19 @@ iframe{
 	fill: red;
 }
 
+.InputInfoSvg:hover{
+	background-color: #377dff;
+	fill: white;
+	border-radius: 50%;
+}
+
 .InputInfoDiv{
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
+}
+
+#dv-MainForm input, #dv-MainForm textarea{
+	width:70%;
 }

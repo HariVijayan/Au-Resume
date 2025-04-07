@@ -58,7 +58,25 @@ function App() {
 
   return (
     <div id="dv-RoleSSWrapper">
-      <h1>Role based success score for your resume</h1>
+      <div id="dv-RoleSSHeader" className="PageDetailsHeader">
+        <span className="RoleSSHeaderText">
+          <span id="sp-rolessheading">Role Fit Check</span>
+          <svg
+            className="RoleSSHeaderSvg"
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#e3e3e3"
+          >
+            <path d="M852-212 732-332l56-56 120 120-56 56ZM708-692l-56-56 120-120 56 56-120 120Zm-456 0L132-812l56-56 120 120-56 56ZM108-212l-56-56 120-120 56 56-120 120Zm246-75 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-361Z" />
+          </svg>
+        </span>
+      </div>
+      <h4>
+        Check job fit score by analysing how well your resume performs against
+        the role's historical requirements.
+      </h4>
 
       <div id="dv-RoleSSInputWrapper">
         <div id="dv-RoleInputWrapper" className="dropdown-container">

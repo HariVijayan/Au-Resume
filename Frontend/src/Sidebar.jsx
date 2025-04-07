@@ -72,7 +72,7 @@ const Sidebar = () => {
           </li>
           <li
             onClick={() => navigateTo("/success-score/role")}
-            title="Role Success Score"
+            title="Role Fit Check"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +83,7 @@ const Sidebar = () => {
             >
               <path d="M852-212 732-332l56-56 120 120-56 56ZM708-692l-56-56 120-120 56 56-120 120Zm-456 0L132-812l56-56 120 120-56 56ZM108-212l-56-56 120-120 56 56-120 120Zm246-75 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-361Z" />
             </svg>
-            <span>Role Success Score</span>
+            <span>Role Fit Check</span>
           </li>
         </ul>
         <ul className="SidebarLogout">

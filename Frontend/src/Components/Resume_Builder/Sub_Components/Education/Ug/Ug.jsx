@@ -53,11 +53,20 @@ const Ug = ({ resumeData, setResumeData, templateType }) => {
   return (
     <div id="dv-MainFormAndPreview">
       <div id="dv-MainForm">
-        <div id="dv-EducationUgWrapper" className="WrapperClass">
-          <div id="dv-EducationUgHeader" className="EducationHeader">
-            <h3>
-              Education Details - Ug
+        <div id="dv-EducationUgHeader" className="PageDetailsHeader">
+          <span className="RBHeaderText">
+            <span
+              id="sp-rbheading"
+              onClick={() => navigate("/resume-builder/template-choosing")}
+            >
+              Resume Builder
+            </span>
+            <div className="RBHeaderSvgWrapper">
+              <span className="RBHeaderArrow">{" > "}</span>Education Details
+              <span className="RBHeaderArrow">{" > "}</span>
+              Under Graduate
               <svg
+                className="RBHeaderSvg"
                 xmlns="http://www.w3.org/2000/svg"
                 height="24px"
                 viewBox="0 -960 960 960"
@@ -66,7 +75,11 @@ const Ug = ({ resumeData, setResumeData, templateType }) => {
               >
                 <path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" />
               </svg>
-            </h3>
+            </div>
+          </span>
+        </div>
+        <div id="dv-EducationUgWrapper" className="WrapperClass">
+          <div id="dv-EducationUgAddInput" className="AddInputButton">
             <button
               type="button"
               onClick={(e) => handleAddEducation(e)}

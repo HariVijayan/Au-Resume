@@ -40,11 +40,20 @@ const School = ({ resumeData, setResumeData, templateType }) => {
   return (
     <div id="dv-MainFormAndPreview">
       <div id="dv-MainForm">
-        <div id="dv-EducationSchoolWrapper" className="WrapperClass">
-          <div id="dv-EducationSchoolHeader" className="EducationHeader">
-            <h3>
-              Education Details - School
+        <div id="dv-EducationSchoolingHeader" className="PageDetailsHeader">
+          <span className="RBHeaderText">
+            <span
+              id="sp-rbheading"
+              onClick={() => navigate("/resume-builder/template-choosing")}
+            >
+              Resume Builder
+            </span>
+            <div className="RBHeaderSvgWrapper">
+              <span className="RBHeaderArrow">{" > "}</span>Education Details
+              <span className="RBHeaderArrow">{" > "}</span>
+              Schooling
               <svg
+                className="RBHeaderSvg"
                 xmlns="http://www.w3.org/2000/svg"
                 height="24px"
                 viewBox="0 -960 960 960"
@@ -53,8 +62,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               >
                 <path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" />
               </svg>
-            </h3>
-          </div>
+            </div>
+          </span>
+        </div>
+        <div id="dv-EducationSchoolWrapper" className="WrapperClass">
           <div id="dv-EducationHscName" className="InputWrapper">
             <input
               type="text"
