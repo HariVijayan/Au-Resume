@@ -1,143 +1,122 @@
 import pandas as pd
-import joblib
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import LinearSVC
-from xgboost import XGBClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.compose import ColumnTransformer
-import os
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
-from scipy import sparse
-from sklearn.base import BaseEstimator, TransformerMixin
+import joblib
+import os
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder, StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.svm import SVR, SVC
+from xgboost import XGBRegressor, XGBClassifier
+from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
+from sklearn.ensemble import StackingRegressor, StackingClassifier
+from sklearn.metrics import mean_squared_error, accuracy_score
+from imblearn.over_sampling import SMOTE
 
-# Custom Transformer to append predictions
-class PredictionAppender(BaseEstimator, TransformerMixin):
-    def __init__(self, model):
-        self.model = model
+# Base directory for saving models
+MODELS_DIR = "models"
+os.makedirs(MODELS_DIR, exist_ok=True)
 
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X):
-        predictions = self.model.predict(X)
-        return np.hstack((X, predictions.reshape(-1, 1)))
+def save_model_and_preprocessors(preprocessors, models, directory):
+    os.makedirs(directory, exist_ok=True)
+    for name, item in {**preprocessors, **models}.items():
+        joblib.dump(item, os.path.join(directory, f"{name}.pkl"))
 
 def preprocess_data(df):
-    """
-    Preprocesses a pandas DataFrame by handling NaN values.
-    """
-    for column in df.columns:
-        if pd.api.types.is_numeric_dtype(df[column]):
-            median_val = df[column].median()
-            df[column].fillna(median_val, inplace=True)
-        else:
-            df[column].fillna("", inplace=True)
-    return df
+    if 'Source' in df.columns:
+        df = df.drop(columns=['Source']).copy()
+
+    # Impute missing values
+    numerical_cols = df.select_dtypes(include=np.number).columns.tolist()
+    categorical_cols = df.select_dtypes(include='object').columns.tolist()
+
+    imputer_num = SimpleImputer(strategy='mean')
+    df[numerical_cols] = imputer_num.fit_transform(df[numerical_cols])
+
+    imputer_cat = SimpleImputer(strategy='most_frequent')
+    df[categorical_cols] = imputer_cat.fit_transform(df[categorical_cols])
+
+    # Process list fields correctly
+    df['Skills'] = df['Skills'].apply(lambda x: [i.strip() for i in str(x).split(',') if i.strip()])
+    df['Certifications'] = df['Certifications'].apply(lambda x: [i.strip() for i in str(x).split(',') if i.strip()])
+    df['NumSkills'] = df['Skills'].apply(len)
+    df['NumCerts'] = df['Certifications'].apply(len)
+
+    # Define preprocessors
+    preprocessors = {
+    'skills_encoder': MultiLabelBinarizer(),
+    'certs_encoder': MultiLabelBinarizer(),
+    'educ_encoder': OneHotEncoder(handle_unknown='ignore', sparse_output=False),
+    'role_encoder': OneHotEncoder(handle_unknown='ignore', sparse_output=False),
+    'scaler': StandardScaler()
+    }
 
 
-# Load Dataset
-try:
-    df = pd.read_excel("IT Final.xlsx")
-except FileNotFoundError:
-    print("Dataset file not found. Please check the path.")
-    exit()
+    # Fit encoders
+    skills_encoded = preprocessors['skills_encoder'].fit_transform(df['Skills'])
+    certs_encoded = preprocessors['certs_encoder'].fit_transform(df['Certifications'])
 
-df = preprocess_data(df.copy())
+    educ_encoded = preprocessors['educ_encoder'].fit_transform(pd.DataFrame(df['Education'], columns=['Education']))
+    role_encoded = preprocessors['role_encoder'].fit_transform(pd.DataFrame(df['Job Role'], columns=['Job Role']))
 
-df = df.drop(columns=["Type", "Source"])
+    num_features = df[['Experience (Years)', 'CGPA', 'NumSkills', 'NumCerts']]
+    numeric_scaled = preprocessors['scaler'].fit_transform(num_features)
 
-print(f"Min Job Fit Score: {df['Job Fit Score'].min()}")
-print(f"Max Job Fit Score: {df['Job Fit Score'].max()}")
+    # Stack all features
+    X_transformed = np.hstack([skills_encoded, certs_encoded, educ_encoded, role_encoded, numeric_scaled])
 
-bins = [40, 60, 80, 100]  
-labels = ["Low Fit", "Moderate Fit", "High Fit"]
+    # Targets
+    y_reg = df['Job Fit Score'].values
+    y_class = pd.cut(y_reg, bins=[0, 60, 80, 100], labels=[0, 1, 2]).astype(int)
 
-try:
-    df["Job Fit Category"] = pd.cut(
-        df["Job Fit Score"],
-        bins=bins,
-        labels=labels,
-        include_lowest=True
+    return X_transformed, y_reg, y_class, preprocessors
+
+def train_role_specific_models(role, df_role):
+    X, y_reg, y_class, preprocessors = preprocess_data(df_role)
+
+    smote = SMOTE(random_state=42)
+    X_resampled, y_class_resampled = smote.fit_resample(X, y_class)
+
+    resampled_indices = smote.fit_resample(np.arange(len(y_class)).reshape(-1, 1), y_class)[0].flatten()
+    y_reg_resampled = y_reg[resampled_indices]
+
+    X_train, X_test, y_train_reg, y_test_reg, y_train_class, y_test_class = train_test_split(
+        X_resampled, y_reg_resampled, y_class_resampled, test_size=0.2, random_state=42
     )
-except ValueError as e:
-    print(f"Error during pd.cut: {e}")
-    print("Problematic Job Fit Scores:", df[df["Job Fit Category"].isnull()]["Job Fit Score"].unique())
-    exit()
 
-job_roles = df["Job Role"].unique()
-
-def create_preprocessor():
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('skills', TfidfVectorizer(max_features=2000), 'Skills'),
-            ('education', TfidfVectorizer(max_features=1000), 'Education'),
-            ('certifications', TfidfVectorizer(max_features=1000), 'Certifications'),
-            ('experience', StandardScaler(), ['Experience (Years)'])
-        ],
-        remainder='passthrough'
+    stacked_reg = StackingRegressor(
+        estimators=[("svr", SVR()), ("xgb", XGBRegressor(random_state=42))],
+        final_estimator=KNeighborsRegressor()
     )
-    return preprocessor
+    stacked_reg.fit(X_train, y_train_reg)
+    mse = mean_squared_error(y_test_reg, stacked_reg.predict(X_test))
+    print(f"Job Role: {role}\nRegression Model Test MSE: {mse:.4f}")
 
-for job_role in job_roles:
-    job_role_df = df[df["Job Role"] == job_role].copy()
-    X = job_role_df[["Skills", "Education", "Certifications", "Experience (Years)"]]
-    y = job_role_df["Job Fit Category"]
+    stacked_clf = StackingClassifier(
+        estimators=[("svc", SVC()), ("xgbc", XGBClassifier(random_state=42))],
+        final_estimator=KNeighborsClassifier()
+    )
+    stacked_clf.fit(X_train, y_train_class)
+    accuracy = accuracy_score(y_test_class, stacked_clf.predict(X_test))
+    accuracy *= 100
+    accuracy = round(accuracy, 2)
+    print(f"Classification Model Test Accuracy: {accuracy}%")
 
-    if X.shape[0] == 0:
-        print(f"No data found for job role: {job_role}")
-        continue
+    model_dir = os.path.join(MODELS_DIR, role)
+    save_model_and_preprocessors(
+        preprocessors,
+        {'stacked_regressor': stacked_reg, 'stacked_classifier': stacked_clf},
+        model_dir
+    )
 
-    preprocessor = create_preprocessor()
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+def process_all_roles(df):
+    unique_roles = df['Job Role'].unique()
+    for role in unique_roles:
+        df_role = df[df['Job Role'] == role].copy()
+        if len(df_role) < 10:
+            print(f"Skipping {role} due to insufficient data.\n")
+            continue
+        train_role_specific_models(role, df_role)
 
-    le = LabelEncoder()
-    y_train = le.fit_transform(y_train)
-    y_test = le.transform(y_test)
-
-    X_train_transformed = preprocessor.fit_transform(X_train)
-    X_test_transformed = preprocessor.transform(X_test)
-
-    if sparse.issparse(X_train_transformed):
-        X_train_transformed = X_train_transformed.toarray()
-    if sparse.issparse(X_test_transformed):
-        X_test_transformed = X_test_transformed.toarray()
-
-    if np.isnan(X_train_transformed).any() or np.isnan(X_test_transformed).any():
-        print(f"NaNs found in transformed data for job role '{job_role}'.")
-        print("X_train_transformed nans:", np.isnan(X_train_transformed).sum())
-        print("X_test_transformed nans:", np.isnan(X_test_transformed).sum())
-        print("Column names after transformation:", preprocessor.get_feature_names_out())
-        continue
-
-    print(f"Transformed training data shape for job role '{job_role}': {X_train_transformed.shape}")
-    print(f"Transformed test data shape for job role '{job_role}': {X_test_transformed.shape}")
-    print(f"y_train data type: {type(y_train)}")
-
-    svc_model = LinearSVC()
-    svc_model.fit(X_train_transformed, y_train)
-
-    xgb_train_data = PredictionAppender(svc_model).transform(X_train_transformed)
-    xgb_test_data = PredictionAppender(svc_model).transform(X_test_transformed)
-
-    xgb_model = XGBClassifier()
-    xgb_model.fit(xgb_train_data, y_train)
-
-    knn_train_data = PredictionAppender(xgb_model).transform(xgb_train_data)
-    knn_test_data = PredictionAppender(xgb_model).transform(xgb_test_data)
-
-    knn_model = KNeighborsClassifier(n_neighbors=1)
-    knn_model.fit(knn_train_data, y_train)
-
-    job_role_model_dir = f"models/{job_role}"
-    if not os.path.exists(job_role_model_dir):
-        os.makedirs(job_role_model_dir)
-
-    joblib.dump(svc_model, f"{job_role_model_dir}/svc_model.pkl")
-    joblib.dump(xgb_model, f"{job_role_model_dir}/xgb_model.pkl")
-    joblib.dump(knn_model, f"{job_role_model_dir}/knn_model.pkl")
-    joblib.dump(preprocessor, f"{job_role_model_dir}/preprocessor.pkl")
-
-    print(f"Models for job role '{job_role}' trained and saved successfully.")
+# Load dataset
+df = pd.read_excel("Dataset Final.xlsx")
+process_all_roles(df)

@@ -1,70 +1,98 @@
 import joblib
 import pandas as pd
 import os
-from scipy import sparse
 import numpy as np
 
 class JobFitPredictor:
-
     def __init__(self, model_directory="models"):
         self.model_directory = model_directory
 
-    def load_model_and_preprocessor(self, job_role):
+    def load_models_and_preprocessors(self, job_role):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         job_role_model_dir = os.path.join(current_dir, self.model_directory, job_role)
 
         if not os.path.exists(job_role_model_dir):
             print(f"No models found for job role: {job_role}")
-            return None, None, None, None
+            return None
 
-        svc_model = joblib.load(os.path.join(job_role_model_dir, "svc_model.pkl"))
-        xgb_model = joblib.load(os.path.join(job_role_model_dir, "xgb_model.pkl"))
-        knn_model = joblib.load(os.path.join(job_role_model_dir, "knn_model.pkl"))
-        preprocessor = joblib.load(os.path.join(job_role_model_dir, "preprocessor.pkl"))
+        try:
+            return {
+                "skills_encoder": joblib.load(os.path.join(job_role_model_dir, "skills_encoder.pkl")),
+                "certs_encoder": joblib.load(os.path.join(job_role_model_dir, "certs_encoder.pkl")),
+                "educ_encoder": joblib.load(os.path.join(job_role_model_dir, "educ_encoder.pkl")),
+                "role_encoder": joblib.load(os.path.join(job_role_model_dir, "role_encoder.pkl")),
+                "scaler": joblib.load(os.path.join(job_role_model_dir, "scaler.pkl")),
+                "regressor": joblib.load(os.path.join(job_role_model_dir, "stacked_regressor.pkl")),
+                "classifier": joblib.load(os.path.join(job_role_model_dir, "stacked_classifier.pkl")),
+            }
+        except Exception as e:
+            print(f"Error loading models for {job_role}: {e}")
+            return None
 
-        return svc_model, xgb_model, knn_model, preprocessor
+    def preprocess_input(self, data_dict, encoders):
+        skills = [s.strip() for s in str(data_dict.get("Skills", "")).split(",") if s.strip()]
+        certs = [c.strip() for c in str(data_dict.get("Certifications", "")).split(",") if c.strip()]
+        educ = data_dict.get("Education", "")
+        role = data_dict.get("Job Role", "")
+        exp = float(data_dict.get("Experience (Years)", 0))
+        cgpa = float(data_dict.get("CGPA", 0.0))
 
-    def predict_job_fit_stacked(self, resume, job_role):
-        svc_model, xgb_model, knn_model, preprocessor = self.load_model_and_preprocessor(job_role)
+        num_skills = len(skills)
+        num_certs = len(certs)
 
-        if svc_model is None:
-            return None  
+    # Filter unknown labels
+        skills = [s for s in skills if s in encoders["skills_encoder"].classes_]
+        certs = [c for c in certs if c in encoders["certs_encoder"].classes_]
 
-        resume_df = pd.DataFrame([resume])
+        skills_enc = encoders["skills_encoder"].transform([skills])
+        certs_enc = encoders["certs_encoder"].transform([certs])
 
-        resume_transformed = preprocessor.transform(resume_df)
+    # Use DataFrame to preserve feature names
+        educ_df = pd.DataFrame([[educ]], columns=["Education"])
+        role_df = pd.DataFrame([[role]], columns=["Job Role"])
+        educ_enc = encoders["educ_encoder"].transform(educ_df)
+        role_enc = encoders["role_encoder"].transform(role_df)
 
-        if sparse.issparse(resume_transformed):
-            resume_transformed = resume_transformed.toarray()
+        if hasattr(educ_enc, "toarray"):
+            educ_enc = educ_enc.toarray()
+        if hasattr(role_enc, "toarray"):
+            role_enc = role_enc.toarray()
 
-        svc_prediction = svc_model.predict(resume_transformed)
+    # Use named columns for scaling
+        numeric_df = pd.DataFrame([[exp, cgpa, num_skills, num_certs]], columns=["Experience (Years)", "CGPA", "NumSkills", "NumCerts"])
+        numeric_scaled = encoders["scaler"].transform(numeric_df)
 
-        xgb_input = np.hstack((resume_transformed, svc_prediction.reshape(-1, 1)))
+        return np.hstack([skills_enc, certs_enc, educ_enc, role_enc, numeric_scaled])
 
-        xgb_prediction = xgb_model.predict(xgb_input)
 
-        knn_input = np.hstack((xgb_input, xgb_prediction.reshape(-1, 1)))
-        knn_prediction = knn_model.predict(knn_input)
 
-        if knn_prediction == 2:
-            return "High Success Rate"
-        elif knn_prediction == 1:
-            return "Moderate Success Rate"
-        else:
-            return "Low Success Rate"
+    def predict(self, data_dict, job_role):
+        loaded = self.load_models_and_preprocessors(job_role)
+        if not loaded:
+            return {"error": f"No model found for job role: {job_role}"}
 
-"""# Example usage for predicting job fit with stacked model
-resume_example = {
-    "Skills": "Python, Data Analysis, SQL",
-    "Education": "M.Sc Data Science",
-    "Certifications": "TensorFlow Developer Certificate",
-    "Experience (Years)": 5
-}
+        # Preprocess the input
+        X_input = self.preprocess_input(data_dict, loaded)
+        if X_input is None:
+            return {"error": "Input preprocessing failed."}
 
-job_role_example = "Data Scientist"
+        regressor = loaded["regressor"]
+        classifier = loaded["classifier"]
 
-predictor = JobFitPredictor()
-final_prediction = predictor.predict_job_fit_stacked(resume_example, job_role_example)
+        try:
+            job_fit_score = float(regressor.predict(X_input)[0])
+            class_label = int(classifier.predict(X_input)[0])
+        except Exception as e:
+            return {"error": f"Prediction failed: {e}"}
 
-if final_prediction is not None:
-    print(f"Final Predicted Job Fit (Stacked) for '{job_role_example}': {final_prediction}")"""
+        # Label interpretation
+        label_map = {
+            2: "High Success Rate",
+            1: "Moderate Success Rate",
+            0: "Low Success Rate"
+        }
+
+        return {
+            "job_fit_score": f"{round(job_fit_score, 2)}%",
+            "label": label_map.get(class_label, "Unknown")
+        }

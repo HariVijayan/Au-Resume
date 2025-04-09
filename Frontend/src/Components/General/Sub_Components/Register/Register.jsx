@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -202,32 +203,25 @@ const Register = () => {
       return;
     }
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:5000/createUser/register",
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            password,
-            registerNumber,
-            department,
-            courseType,
-            programme,
-            branch,
-          }),
-        }
+          email,
+          password,
+          registerNumber,
+          department,
+          courseType,
+          programme,
+          branch,
+        },
+        {}
       );
 
-      const data = await response.json();
-      setError(data.error);
-
-      if (response.ok) {
-        // Redirect to OTP verification page
+      if (response.status === 201) {
         navigate("/verify-otp", { state: { email } });
       }
-    } catch (error) {
-      setError("Registration failed");
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 

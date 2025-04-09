@@ -64,9 +64,9 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_role: str = 
         resume_entities = resumeClass.extract_resume(text)
         save_output_json("Entity List.json", resume_entities, "Output/Json")
 
-        svc_pred = jobSSClass.predict_job_fit_stacked(resume_entities, job_role)
+        result = jobSSClass.predict(resume_entities, job_role)
 
-        return {"success_score": svc_pred}
+        return {"success_score": result.get("label"), "job_fit_score": result.get("job_fit_score")}
         
     
     except Exception as e:

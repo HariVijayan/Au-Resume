@@ -14,6 +14,7 @@ function App() {
   const [resumeName, setResumeName] = useState("");
 
   const [successScore, setSuccessScore] = useState("");
+  const [jobFitScore, setJobFitScore] = useState("");
 
   const setNewResumePdf = (event) => {
     setResumeInput(event.target.files[0]);
@@ -40,7 +41,7 @@ function App() {
 
     try {
       const response = await axios.post(
-        "http://localhost:6969/getMatchScoreRole/",
+        "http://localhost:9000/getMatchScoreRole/",
         formData,
         {
           headers: {
@@ -49,9 +50,11 @@ function App() {
         }
       );
       setSuccessScore(response.data.success_score);
+      setJobFitScore(response.data.job_fit_score);
       setError("");
     } catch (error) {
       setSuccessScore("");
+      setJobFitScore("");
       setError("Error uploading file");
     }
   };
@@ -87,12 +90,15 @@ function App() {
             required
           >
             <option value="AI Engineer">AI Engineer</option>
+            <option value="Backend Developer">App Developer</option>
             <option value="Backend Developer">Backend Developer</option>
             <option value="Blockchain Developer">Blockchain Developer</option>
             <option value="Cloud Engineer">Cloud Engineer</option>
             <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+            <option value="Cybersecurity Specialist">
+              Cybersecurity Specialist
+            </option>
             <option value="Data Analyst">Data Analyst</option>
-            <option value="Data Architect">Data Architect</option>
             <option value="Data Scientist">Data Scientist</option>
             <option value="Database Administrator">
               Database Administrator
@@ -100,24 +106,18 @@ function App() {
             <option value="DevOps Engineer">DevOps Engineer</option>
             <option value="Frontend Developer">Frontend Developer</option>
             <option value="Game Developer">Game Developer</option>
-            <option value="IOT Engineer">IOT Engineer</option>
             <option value="IT Support Specialist">IT Support Specialist</option>
-            <option value="Machine Learning Engineer">
-              Machine Learning Engineer
-            </option>
-            <option value="Mobile App Developer">Mobile App Developer</option>
+            <option value="Machine Learning Engineer">ML Engineer</option>
             <option value="Network Administrator">Network Administrator</option>
-            <option value="Product Manager (IT)">Product Manager (IT)</option>
-            <option value="Robotics Engineer">Robotics Engineer</option>
+            <option value="Penetration Tester">Penetration Tester</option>
+            <option value="Product Manager (IT)">Product Manager</option>
+            <option value="Robotics Engineer">QA Engineer</option>
             <option value="Security Engineer">Security Engineer</option>
             <option value="SEO Specialist">SEO Specialist</option>
-            <option value="Software Architect">Software Architect</option>
             <option value="Software Engineer">Software Engineer</option>
-            <option value="Software QA Engineer">Software QA Engineer</option>
             <option value="System Administrator">System Administrator</option>
-            <option value="Virtual Reality Developer">
-              Virtual Reality Developer
-            </option>
+            <option value="UI and UX Designer">UI and UX Designer</option>
+            <option value="Virtual Reality Developer">VR Developer</option>
             <option value="Web Developer">Web Developer</option>
           </select>
           <label htmlFor="dropdown" className="DropDownLabel">
@@ -178,11 +178,12 @@ function App() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <div id="dv-RoleSSResultWrapper">
-        {successScore && (
+        {successScore && jobFitScore && (
           <p>
             Based on the historical data, your Resume seems to be having{" "}
             <span style={{ color: "red" }}>{successScore}</span> for this job
-            role.
+            role with a success score of{" "}
+            <span style={{ color: "red" }}>{jobFitScore}</span>.
           </p>
         )}
       </div>
