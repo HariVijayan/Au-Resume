@@ -85,9 +85,9 @@ class ProcessJD:
 
     def extract_jd_experience(self, text: str):
         """Extracts years of experience from the job description."""
-        matches = re.findall(r"(\d+)\s*(?:years?|months?)", text, re.IGNORECASE)
-        years = sum(int(m) / 12 if "month" in text.lower() else int(m) for m in matches) if matches else 0
-        return round(years, 1)
+        matches = re.findall(r"(\d+(?:\.\d+)?)\s*(?:years?|months?)", text, re.IGNORECASE)
+        years = sum(float(m) / 12 if "month" in text.lower() else float(m) for m in matches) if matches else 0
+        return f"{round(years, 2)} years of experience" if years else "0 years of experience"
 
     def extract_jd(self, text: str):
         """Extracts structured data from the job description using SBERT-based semantic classification."""
@@ -116,10 +116,10 @@ class ProcessJD:
 
         entities = {
             "SKILLS": list(skills),
-            "EXPERIENCE": str(experience),
             "EDUCATION": list(education),
             "CERTIFICATIONS": list(certifications),
         }
 
         entities = self.refine_entities(entities)
+        entities["EXPERIENCE"] = str(experience)
         return entities

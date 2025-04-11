@@ -1,27 +1,26 @@
 {
-    "match_score": 47.52,
+    "match_score": 48.38,
     "matched_entities": {
         "SKILLS": {
             "resume": "Web Development Cloud Deployment Machine Learning",
-            "job_description": "looking using frameworks a full stack developer involves web technologies expertise cloud services javascript frameworks scalable applications",
-            "similarity": "60.92%"
+            "job_description": "javascript expertise cloud services javascript frameworks a full stack developer looking involves web technologies scalable applications using frameworks",
+            "similarity": "59.04%"
+        },
+        "EXPERIENCE": {
+            "resume": "Zoho Corporation, Bangalore 2022 - Present Software Developer in Cloud Deployment Roles : Developed and maintained the company website using modern JavaScript frameworks Collaborated with cross-functional teams to deploy cloud solutions and improve scalability Amazon India, Chennai, India 2019 - 2022 Software Developer in Cloud Deployment Worked for 3 years. Developed security management portal",
+            "job_description": "3.0 years of experience",
+            "similarity": "16.28%"
         },
         "EDUCATION": {
             "resume": "Ph.D in Network Security 2024 - 2029 Anna UniversityExpertise: Networking, Security, Machine Learning, Hash Algorithms(Widely Accepted R esearch) Ph.D in Artificial Intelligence 2024 - 2029 Anna University Expertise: LLM, Machine Learning, Deep Learning(Best Research A ward) Mast er of Computer Applications 2022 - 2024 Princeton University CGPA: 9.5(Distinction Grade) Mast er of Business Administration 2022 - 2024 Anna University CGPA: 9.5(Distinction Grade) B.Sc. Computer Science 2019 - 2022 Princeton University CGPA: 8.7(Distinction Grade) Bachelor of Business Administration 2019 - 2022 Anna University CGPA: 8.7(Distinction Grade) Diploma in Technology 2017 - 2019 Princeton University CGPA: 9.5(Distinction Grade) Diploma in IT Equipments 2017 - 2019 Anna University CGPA: 9.5(Distinction Grade)",
-            "job_description": "computer science security artificial intelligence a bachelor include bachelor fluency computer science, artificial intelligence networking, security master's degree requires fluency bachelor machine learning research experience english a related field",
-            "similarity": "61.67%"
+            "job_description": "machine learning networking, security include bachelor master's degree a bachelor bachelor computer science english a related field networking requires fluency computer science, artificial intelligence research experience",
+            "similarity": "59.53%"
         },
         "CERTIFICATIONS": {
             "resume": "AWS Certified Developer Google Cloud Certified (udemy.com/certificate/ghvsgv212) Machine Learning Expert",
-            "job_description": "machine learning expert certifications preference experience include javascript the candidate google cloud certified company websites have years responsibilities software development cross-functional teams web development cloud deployment at least 3 years required skills cloud solutions given preference aws certified developer",
-            "similarity": "71.93%"
+            "job_description": "software development have years experience cloud solutions machine learning expert certifications google cloud certified responsibilities include preference company websites cloud deployment aws certified developer required skills at least 3 years web development the candidate cross-functional teams javascript machine learning expert include javascript given preference",
+            "similarity": "73.42%"
         }
     },
-    "unmatched_entities": {
-        "EXPERIENCE": {
-            "resume": "Zoho Corporation, Bangalore 2022 - Present Software Developer in Cloud Deployment Roles : Developed and maintained the company website using modern JavaScript frameworks Collaborated with cross-functional teams to deploy cloud solutions and improve scalability Amazon India, Chennai, India 2019 - 2022 Software Developer in Cloud Deployment Worked for 3 years. Developed security management portal",
-            "job_description": "3",
-            "similarity": "5.48%"
-        }
-    }
+    "unmatched_entities": {}
 }
