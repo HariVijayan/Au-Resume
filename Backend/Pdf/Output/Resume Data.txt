@@ -52,8 +52,7 @@
           "pg_degree_name": "Master of Computer Applications",
           "pg_degree_university": "Anna University",
           "pg_degree_year": "2022 - 2024",
-          "pg_degree_cgpa": "CGPA: 9.5",
-          "pg_additional_info": "Distinction Grade"
+          "pg_degree_cgpa": "CGPA: 9.5"
         }
       ],
       "ug_degree": [

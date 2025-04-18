@@ -40,14 +40,12 @@ class JobFitPredictor:
         num_skills = len(skills)
         num_certs = len(certs)
 
-    # Filter unknown labels
         skills = [s for s in skills if s in encoders["skills_encoder"].classes_]
         certs = [c for c in certs if c in encoders["certs_encoder"].classes_]
 
         skills_enc = encoders["skills_encoder"].transform([skills])
         certs_enc = encoders["certs_encoder"].transform([certs])
 
-    # Use DataFrame to preserve feature names
         educ_df = pd.DataFrame([[educ]], columns=["Education"])
         role_df = pd.DataFrame([[role]], columns=["Job Role"])
         educ_enc = encoders["educ_encoder"].transform(educ_df)
@@ -58,7 +56,6 @@ class JobFitPredictor:
         if hasattr(role_enc, "toarray"):
             role_enc = role_enc.toarray()
 
-    # Use named columns for scaling
         numeric_df = pd.DataFrame([[exp, cgpa, num_skills, num_certs]], columns=["Experience (Years)", "CGPA", "NumSkills", "NumCerts"])
         numeric_scaled = encoders["scaler"].transform(numeric_df)
 
@@ -71,7 +68,6 @@ class JobFitPredictor:
         if not loaded:
             return {"error": f"No model found for job role: {job_role}"}
 
-        # Preprocess the input
         X_input = self.preprocess_input(data_dict, loaded)
         if X_input is None:
             return {"error": "Input preprocessing failed."}
@@ -85,7 +81,6 @@ class JobFitPredictor:
         except Exception as e:
             return {"error": f"Prediction failed: {e}"}
 
-        # Label interpretation
         label_map = {
             2: "High Success Rate",
             1: "Moderate Success Rate",

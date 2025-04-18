@@ -230,7 +230,7 @@ iframe{
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	align-items: center;
+	align-items: flex-start;
 	width: 100%;
 	flex-grow: 1;
 	flex-shrink: 0;
@@ -356,27 +356,69 @@ iframe{
 	width: 100%;
 }
 
-.InputInfoSvg{
-	margin-left: 5vw;
+.MandatoryInputSvg{
+	margin-left: 2.5vw;
 	height: 30px;
 	width: 30px;
 	cursor: pointer;
 	fill: red;
 }
 
-.InputInfoSvg:hover{
-	background-color: #377dff;
-	fill: white;
-	border-radius: 50%;
+.OptionalInputSvg{
+	margin-left: 2.5vw;
+	height: 30px;
+	width: 30px;
+	cursor: pointer;
+	fill: black;
 }
 
-.InputInfoDiv{
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	width: 100%;
+.RecommededInputSvg{
+	margin-left: 2.5vw;
+	height: 30px;
+	width: 30px;
+	cursor: pointer;
+	fill: green;
 }
 
 #dv-MainForm input, #dv-MainForm textarea{
 	width:70%;
 }
+
+.InputInfoDiv {
+	background: white;
+	border-left: 6px solid #377dff;
+	border-radius: 12px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0 8px 15px;
+	padding: 12px;
+	margin: 20px 0px;
+	transition: box-shadow 0.3s ease;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 70%;
+  }
+  
+  .InputInfoDiv:hover {
+	box-shadow: rgba(0, 0, 0, 0.5) 0 8px 15px;
+  }
+  
+  .InputInfoDiv > div {
+	margin-bottom: 1vh;
+  }
+  
+  .InputInfoDiv > div:last-child {
+	margin-bottom: 0;
+  }
+  
+  .InputInfoHeading{
+	font-size: 1rem;
+	font-weight: bold;
+  }
+
+  .InputInfoValue{
+	font-size: 1rem;
+	font-weight: normal;
+  }
+
+  

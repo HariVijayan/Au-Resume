@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import os
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
@@ -12,7 +13,6 @@ from sklearn.ensemble import StackingRegressor, StackingClassifier
 from sklearn.metrics import mean_squared_error, accuracy_score
 from imblearn.over_sampling import SMOTE
 
-# Base directory for saving models
 MODELS_DIR = "models"
 os.makedirs(MODELS_DIR, exist_ok=True)
 
@@ -25,7 +25,6 @@ def preprocess_data(df):
     if 'Source' in df.columns:
         df = df.drop(columns=['Source']).copy()
 
-    # Impute missing values
     numerical_cols = df.select_dtypes(include=np.number).columns.tolist()
     categorical_cols = df.select_dtypes(include='object').columns.tolist()
 
@@ -35,13 +34,11 @@ def preprocess_data(df):
     imputer_cat = SimpleImputer(strategy='most_frequent')
     df[categorical_cols] = imputer_cat.fit_transform(df[categorical_cols])
 
-    # Process list fields correctly
     df['Skills'] = df['Skills'].apply(lambda x: [i.strip() for i in str(x).split(',') if i.strip()])
     df['Certifications'] = df['Certifications'].apply(lambda x: [i.strip() for i in str(x).split(',') if i.strip()])
     df['NumSkills'] = df['Skills'].apply(len)
     df['NumCerts'] = df['Certifications'].apply(len)
 
-    # Define preprocessors
     preprocessors = {
     'skills_encoder': MultiLabelBinarizer(),
     'certs_encoder': MultiLabelBinarizer(),
@@ -50,8 +47,6 @@ def preprocess_data(df):
     'scaler': StandardScaler()
     }
 
-
-    # Fit encoders
     skills_encoded = preprocessors['skills_encoder'].fit_transform(df['Skills'])
     certs_encoded = preprocessors['certs_encoder'].fit_transform(df['Certifications'])
 
@@ -61,10 +56,8 @@ def preprocess_data(df):
     num_features = df[['Experience (Years)', 'CGPA', 'NumSkills', 'NumCerts']]
     numeric_scaled = preprocessors['scaler'].fit_transform(num_features)
 
-    # Stack all features
     X_transformed = np.hstack([skills_encoded, certs_encoded, educ_encoded, role_encoded, numeric_scaled])
 
-    # Targets
     y_reg = df['Job Fit Score'].values
     y_class = pd.cut(y_reg, bins=[0, 60, 80, 100], labels=[0, 1, 2]).astype(int)
 
@@ -107,16 +100,47 @@ def train_role_specific_models(role, df_role):
         {'stacked_regressor': stacked_reg, 'stacked_classifier': stacked_clf},
         model_dir
     )
+    return mse, accuracy
 
 def process_all_roles(df):
     unique_roles = df['Job Role'].unique()
+    processed_roles = []
+    regression_mses = []
+    classification_accuracies = []
+
     for role in unique_roles:
         df_role = df[df['Job Role'] == role].copy()
         if len(df_role) < 10:
             print(f"Skipping {role} due to insufficient data.\n")
             continue
-        train_role_specific_models(role, df_role)
 
-# Load dataset
+        mse, accuracy = train_role_specific_models(role, df_role)
+        processed_roles.append(role)
+        regression_mses.append(mse)
+        classification_accuracies.append(accuracy)
+
+    if processed_roles:
+        plt.figure(figsize=(12, 6))
+        plt.bar(processed_roles, regression_mses, color='skyblue')
+        plt.xlabel("Job Role")
+        plt.ylabel("Mean Squared Error (MSE)")
+        plt.title("Regression Model Performance")
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        plt.show()
+
+        plt.figure(figsize=(12, 6))
+        plt.bar(processed_roles, classification_accuracies, color='lightcoral')
+        plt.xlabel("Job Role")
+        plt.ylabel("Accuracy (%)")
+        plt.title("Classification Model Performance")
+        plt.ylim(0, 100)
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        plt.show()
+    else:
+        print("No roles were processed to generate plots.")
+
+
 df = pd.read_excel("Dataset Final.xlsx")
 process_all_roles(df)

@@ -107,17 +107,17 @@ function App() {
             <option value="Frontend Developer">Frontend Developer</option>
             <option value="Game Developer">Game Developer</option>
             <option value="IT Support Specialist">IT Support Specialist</option>
-            <option value="Machine Learning Engineer">ML Engineer</option>
+            <option value="ML Engineer">ML Engineer</option>
             <option value="Network Administrator">Network Administrator</option>
             <option value="Penetration Tester">Penetration Tester</option>
-            <option value="Product Manager (IT)">Product Manager</option>
-            <option value="Robotics Engineer">QA Engineer</option>
+            <option value="Product Manager">Product Manager</option>
+            <option value="QA Engineer">QA Engineer</option>
             <option value="Security Engineer">Security Engineer</option>
             <option value="SEO Specialist">SEO Specialist</option>
             <option value="Software Engineer">Software Engineer</option>
             <option value="System Administrator">System Administrator</option>
             <option value="UI and UX Designer">UI and UX Designer</option>
-            <option value="Virtual Reality Developer">VR Developer</option>
+            <option value="VR Developer">VR Developer</option>
             <option value="Web Developer">Web Developer</option>
           </select>
           <label htmlFor="dropdown" className="DropDownLabel">
@@ -182,8 +182,9 @@ function App() {
           <p>
             Based on the historical data, your Resume seems to be having{" "}
             <span style={{ color: "red" }}>{successScore}</span> for this job
-            role with a success score of{" "}
-            <span style={{ color: "red" }}>{jobFitScore}</span>.
+            role based on ML Classification model and a success score of{" "}
+            <span style={{ color: "red" }}>{jobFitScore}</span> based on ML
+            Regression model.
           </p>
         )}
       </div>

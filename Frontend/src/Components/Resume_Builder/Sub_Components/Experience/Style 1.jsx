@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import InfoDiv from "../Info Div/InfoDiv";
 
 const Style1 = ({ resumeData, setResumeData }) => {
   const [infoDiv, setInfoDiv] = useState("");
@@ -54,23 +55,25 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </label>
             <svg
               onClick={() => showOrHideInfoDiv(`Company Name${index + 1}`)}
-              className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
+              className="MandatoryInputSvg"
               height="24px"
               viewBox="0 -960 960 960"
               width="24px"
               fill="#e3e3e3"
             >
-              <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+              <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
             </svg>
           </div>
 
           {infoDiv === `Company Name${index + 1}` && (
-            <div className="InputInfoDiv">
-              <div className="InputInfoText">
-                <p>Enter your company name</p>
-              </div>
-            </div>
+            <InfoDiv
+              requirement={"Mandatory"}
+              explanation={"Your Company's Name"}
+              examples={"Zoho Corporation"}
+              characterLimit={"Upto 35 characters"}
+              allowedCharacters={"No Restrictions"}
+            />
           )}
           <div id={`dv-ELLocationCopy${index + 1}`} className="InputWrapper">
             <input
@@ -89,23 +92,25 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </label>
             <svg
               onClick={() => showOrHideInfoDiv(`Work Location${index + 1}`)}
-              className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
+              className="RecommededInputSvg"
               height="24px"
               viewBox="0 -960 960 960"
               width="24px"
               fill="#e3e3e3"
             >
-              <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+              <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
             </svg>
           </div>
 
           {infoDiv === `Work Location${index + 1}` && (
-            <div className="InputInfoDiv">
-              <div className="InputInfoText">
-                <p>Enter your work location</p>
-              </div>
-            </div>
+            <InfoDiv
+              requirement={"Recommended"}
+              explanation={"The city where you've worked or remote"}
+              examples={"Chennai"}
+              characterLimit={"Upto 20 characters"}
+              allowedCharacters={"Alphabets"}
+            />
           )}
           <div id={`dv-ELPeriodCopy${index + 1}`} className="InputWrapper">
             <input
@@ -124,23 +129,25 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </label>
             <svg
               onClick={() => showOrHideInfoDiv(`Work Period${index + 1}`)}
-              className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
+              className="MandatoryInputSvg"
               height="24px"
               viewBox="0 -960 960 960"
               width="24px"
               fill="#e3e3e3"
             >
-              <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+              <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
             </svg>
           </div>
 
           {infoDiv === `Work Period${index + 1}` && (
-            <div className="InputInfoDiv">
-              <div className="InputInfoText">
-                <p>Enter the period of this work experience</p>
-              </div>
-            </div>
+            <InfoDiv
+              requirement={"Mandatory"}
+              explanation={"The period of your time with the company"}
+              examples={"June 2024 - Present"}
+              characterLimit={"Upto 25 characters"}
+              allowedCharacters={"Alphabets, Numbers, Hyphen"}
+            />
           )}
           <div id={`dv-ELDesignationCopy${index + 1}`} className="InputWrapper">
             <input
@@ -159,23 +166,25 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </label>
             <svg
               onClick={() => showOrHideInfoDiv(`Designation${index + 1}`)}
-              className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
+              className="MandatoryInputSvg"
               height="24px"
               viewBox="0 -960 960 960"
               width="24px"
               fill="#e3e3e3"
             >
-              <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+              <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
             </svg>
           </div>
 
           {infoDiv === `Designation${index + 1}` && (
-            <div className="InputInfoDiv">
-              <div className="InputInfoText">
-                <p>Enter the Designation which you held</p>
-              </div>
-            </div>
+            <InfoDiv
+              requirement={"Mandatory"}
+              explanation={"The designation in which you worked in the company"}
+              examples={"Software Engineer"}
+              characterLimit={"Upto 25 characters"}
+              allowedCharacters={"No Restrictions"}
+            />
           )}
           <div id={`dv-ELTeamNameCopy${index + 1}`} className="InputWrapper">
             <input
@@ -194,23 +203,25 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </label>
             <svg
               onClick={() => showOrHideInfoDiv(`Team Name${index + 1}`)}
-              className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
+              className="OptionalInputSvg"
               height="24px"
               viewBox="0 -960 960 960"
               width="24px"
               fill="#e3e3e3"
             >
-              <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+              <path d="M240-440v-80h480v80H240Z" />
             </svg>
           </div>
 
           {infoDiv === `Team Name${index + 1}` && (
-            <div className="InputInfoDiv">
-              <div className="InputInfoText">
-                <p>Enter your Team's name</p>
-              </div>
-            </div>
+            <InfoDiv
+              requirement={"Optional"}
+              explanation={"Your team's name within the company"}
+              examples={"Immediate CyberThreat Response Team"}
+              characterLimit={"Upto 25 characters"}
+              allowedCharacters={"No Restrictions"}
+            />
           )}
           <div id={`dv-ELRolesCopy${index + 1}`} className="InputWrapper">
             <input
@@ -229,29 +240,39 @@ const Style1 = ({ resumeData, setResumeData }) => {
             </label>
             <svg
               onClick={() => showOrHideInfoDiv(`Roles${index + 1}`)}
-              className="InputInfoSvg"
               xmlns="http://www.w3.org/2000/svg"
+              className="MandatoryInputSvg"
               height="24px"
               viewBox="0 -960 960 960"
               width="24px"
               fill="#e3e3e3"
             >
-              <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+              <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
             </svg>
           </div>
 
           {infoDiv === `Roles${index + 1}` && (
-            <div className="InputInfoDiv">
-              <div className="InputInfoText">
-                <p>Enter your Roles in the job as comma separated values</p>
-              </div>
-            </div>
+            <InfoDiv
+              requirement={"Mandatory"}
+              explanation={
+                "Highlight your important day to day tasks while being part of the team as comma separated values"
+              }
+              examples={
+                "Developed a security management dashboard for the team, Designed and developed a new threat detection algorithm"
+              }
+              characterLimit={"Upto 400 characters"}
+              allowedCharacters={"No Restrictions"}
+            />
           )}
 
           {infoDiv === " " && (
-            <div className="InputInfoDiv">
-              <div className="InputInfoText"></div>
-            </div>
+            <InfoDiv
+              requirement={""}
+              explanation={""}
+              examples={""}
+              characterLimit={""}
+              allowedCharacters={""}
+            />
           )}
         </div>
       ))}
