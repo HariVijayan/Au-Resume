@@ -3,6 +3,7 @@ import json
 import shutil
 import PyPDF2
 import os
+import fitz
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import numpy as np
 from fastapi import FastAPI, File, UploadFile, Form
@@ -40,6 +41,17 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
     logger.info("Received file: %s", pdf.filename)
     
     try:
+
+        pdf_content = await pdf.read()
+
+        # Load the PDF document from the in-memory bytes
+        pdf_document = fitz.open(stream=pdf_content, filetype="pdf")
+
+        # Get the metadata
+        metadata = pdf_document.metadata
+
+        subject = metadata.get('subject', 'No subject available')
+
         os.makedirs("Input", exist_ok=True)
         input_directory = "Input/"
 
@@ -49,7 +61,7 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
         with open(input_directory + "Job Description.txt", "w") as text_file:
             text_file.write(job_description)
 
-        pdf_reader = PyPDF2.PdfReader(pdf.file)
+        """pdf_reader = PyPDF2.PdfReader(pdf.file)
         text = "".join([page.extract_text() for page in pdf_reader.pages if page.extract_text()])
 
         resume_output_directory = "Output/Resume/Text/"
@@ -69,7 +81,13 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
         save_output_json("Cleaned Text.json", {"resume_text": text}, "Output/Resume/Json")
 
         resume_entities = resumeClass.extract_resume(text)
-        save_output_json("Entity List.json", resume_entities, "Output/Resume/Json")
+        save_output_json("Entity List.json", resume_entities, "Output/Resume/Json")"""
+
+        if(subject):
+            resume_entities = resumeClass.split_resume_sections(subject)
+            save_output_json("Entity List.json", resume_entities, "Output/Resume/Json")
+        else:
+            return JSONResponse(status_code=500, content={"error": "Upload AU Format Resume"})
 
         job_description_entities = jdClass.extract_jd(job_description)
         save_output_json("Entity List.json", job_description_entities, "Output/JD")
@@ -107,7 +125,7 @@ def save_output_json(filename, data, debug_dir):
 
 def compute_weighted_score(resume_entities, job_description_entities):
     """Computes weighted score using SBERT cosine similarity with size-matched embeddings."""
-    weights = {"SKILLS": 0.45, "EXPERIENCE": 0.2, "EDUCATION": 0.25, "CERTIFICATIONS": 0.05}
+    weights = {"Skills": 0.45, "Experience": 0.2, "Education": 0.25, "Certifications": 0.05}
     total_score = 0.0
     matched_entities = {}
     unmatched_entities = {}

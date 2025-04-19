@@ -336,6 +336,7 @@ li {
 #p-experiencedescription {
 	margin: 0;
 	font-size: 1.5rem;
+	margin-left: 5em;
 }
 
 #ul-experienceroles {
@@ -345,10 +346,6 @@ li {
 	margin-left: 5em;
 }
 
-#h3-experiencerole {
-	margin: 0;
-	font-size: 1.5rem;
-}
 
 #projects {
 	margin-top: 1em;

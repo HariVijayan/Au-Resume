@@ -93,7 +93,7 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
       const blob = new Blob([response.data], { type: "application/pdf" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "resume.pdf";
+      link.download = "Resume.pdf";
       link.click();
     } catch (error) {
       console.error("Error generating PDF:", error);

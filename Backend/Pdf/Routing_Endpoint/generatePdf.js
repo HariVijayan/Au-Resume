@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import { fileURLToPath } from 'url';
 import User from '../../Login/Database_Models/User.js';
 import ResumeDataDBModel from '../Database Models/resumeData.js';
+import { PDFDocument } from 'pdf-lib';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -89,6 +90,149 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
   return pdfBuffer;
 };
 
+const addMetadataToPdf = async (generatedPdf, name, resumeMetaData) => {
+  const pdfDoc = await PDFDocument.load(generatedPdf);
+    
+    pdfDoc.setTitle(name+ "'s Resume");
+    pdfDoc.setAuthor("Au Placement Helper");
+    pdfDoc.setSubject(resumeMetaData);
+
+    const pdfBytes = await pdfDoc.save();
+    return pdfBytes;
+};
+
+function extractRelevantResumeDetails(resumeData) {
+  const result = [];
+
+  // ===== EDUCATION =====
+  const educationData = resumeData.education?.[0];
+  const eduSections = ['phd', 'pg_degree', 'ug_degree', 'diploma'];
+  const eduLabels = {
+    phd: "PhD",
+    pg_degree: "Post Graduation",
+    ug_degree: "Under Graduation",
+    diploma: "Diploma"
+  };
+
+  if (educationData) {
+    let educationString = "=== Education ===";
+    
+    for (const section of eduSections) {
+      const entries = educationData[section];
+      if (Array.isArray(entries) && entries.length > 0) {
+        const sentences = entries.map(item => {
+          const degree = item[`${section}_name`]?.trim();
+          const university = item[`${section}_university`]?.trim();
+          const year = item[`${section}_year`]?.trim();
+          const expertise = item[`${section}_exp`] || "";
+          const cgpa = item[`${section}_cgpa`]?.trim();
+          const info = item[`${section}_additional_info`]?.trim();
+
+          let sentence = `Completed ${degree || "a degree"}`;
+          if (expertise) sentence += ` with specialization in ${expertise}`;
+          if(university) sentence +=  ` at ${university}`;
+          if (year) sentence += ` during ${year}`;
+          if(cgpa) sentence += `, achieving ${cgpa} CGPA`;
+          if (info) sentence += `. Additional info: ${info}`;
+          sentence += ".";
+          return sentence;
+        });
+
+        educationString += `\n ${sentences.join(" ")}`;
+      }
+    }
+
+    if (educationData.hsc_name?.trim()) {
+      educationString += ` Did High Schooling at ${educationData.hsc_name}`;
+      if(educationData.hsc_year) educationString += ` during ${educationData.hsc_year}`;
+      if(educationData.hsc_grade) educationString += ` with a grade of ${educationData.hsc_grade}.`;
+      if(educationData.hsc_additional_info) educationString += ` Additional info: ${educationData.hsc_additional_info}.`;
+    }
+
+    if (educationData.sslc_name?.trim()) {
+      educationString += ` Did SSLC at ${educationData.sslc_name}`;
+      if(educationData.sslc_year) educationString += ` during ${educationData.sslc_year}`;
+      if(educationData.sslc_grade) educationString += ` with a grade of ${educationData.sslc_grade}.`;
+      if(educationData.sslc_additional_info) educationString += ` Additional info: ${educationData.sslc_additional_info}.`;
+    }
+
+    result.push(educationString);
+  }
+
+  // ===== EXPERIENCE =====
+  const experienceData = resumeData.experience?.[0];
+  if (experienceData) {
+    let experienceString = "=== Experience ===";
+
+    // Style 1: Roles array-based
+    const style1Entries = experienceData.style1?.map(exp => {
+      const { experience_company, experience_location, experience_year, experience_designation, experience_team, experience_roles } = exp;
+
+      let sentence = `Worked as ${experience_designation || 'a member'}`;
+      if(experience_team) sentence += ` in the ${experience_team} team`;
+      if(experience_company) sentence += ` at ${experience_company}`;
+      if(experience_location) sentence += `, located in ${experience_location}`;
+      if(experience_year) sentence += ` during ${experience_year}`;
+      sentence += ".";
+      if (Array.isArray(experience_roles) && experience_roles.length > 0) {
+        sentence += ` Responsibilities include: ${experience_roles.join(". ")}.`;
+      }
+      return sentence;
+    }) || [];
+
+    // Style 2: Description based
+    const style2Entries = experienceData.style2?.map(exp => {
+      const { experience_company, experience_location, experience_year, experience_designation, experience_team, experience_description } = exp;
+
+      
+      let sentence = `Worked as ${experience_designation || 'a member'}`;
+      if(experience_team) sentence += ` in the ${experience_team} team`;
+      if(experience_company) sentence += ` at ${experience_company}`;
+      if(experience_location) sentence += `, located in ${experience_location}`;
+      if(experience_year) sentence += ` during ${experience_year}`;
+      sentence += ".";
+      if (experience_description?.trim()) {
+        sentence += ` Responsibilities include: ${experience_description}.`;
+      }
+      return sentence;
+    }) || [];
+
+    const allExpSentences = [...style1Entries, ...style2Entries];
+    if (allExpSentences.length > 0) {
+      experienceString += `\n${allExpSentences.join(" ")}`;
+      result.push(experienceString);
+    }
+  }
+
+  // ===== SKILLS =====
+  const skills = resumeData.skills?.style1?.skillset?.length
+    ? resumeData.skills.style1.skillset
+    : resumeData.skills?.style2?.skillset?.trim()
+      ? [resumeData.skills.style2.skillset]
+      : null;
+
+  if (skills) {
+    const skillsString = "=== Skills ===\n" + skills.join(", ");
+    result.push(skillsString);
+  }
+
+  // ===== CERTIFICATION =====
+  const certs = resumeData.certification?.style1?.certificationset?.length
+    ? resumeData.certification.style1.certificationset
+    : resumeData.certification?.style2?.certificationset?.trim()
+      ? [resumeData.certification.style2.certificationset]
+      : null;
+
+  if (certs) {
+    const certsString = "=== Certifications ===\n" + certs.join(", ");
+    result.push(certsString);
+  }
+
+  return result.join("\n\n");
+}
+
+
+
 router.post('/Resume', async (req, res) => {
   let {resumeData, templateType} = req.body;
   const accessToken = req.cookies.accessToken;
@@ -161,8 +305,13 @@ router.post('/Resume', async (req, res) => {
 
   const pdfBuffer = await generatePdf(compiledTemplate, headerFile, footerFile);
 
+  const resumeMetaData = extractRelevantResumeDetails(resumeData);
+  writeFileSync('../Output/Resume Data.txt', resumeMetaData);
+
+  const metadataAddedPdf = await addMetadataToPdf(pdfBuffer, resumeData.username, resumeMetaData);
+
   res.type('application/pdf');
-  res.end(pdfBuffer, 'binary');
+  res.end(metadataAddedPdf, 'binary');
 });
 
 export default router;

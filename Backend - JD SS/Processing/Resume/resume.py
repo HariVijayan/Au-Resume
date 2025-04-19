@@ -85,3 +85,24 @@ class ProcessResume:
             extracted_data[key] = new_value
 
         return extracted_data
+
+    def split_resume_sections(self, resume_metadata: str):
+
+        parts = re.split(r"(===\s*(?:Education|Experience|Skills|Certifications)\s*===)", resume_metadata)
+
+        sections = {
+            "Education": "",
+            "Experience": "",
+            "Skills": "",
+            "Certifications": ""
+        }
+
+        for i in range(1, len(parts), 2):
+            label = parts[i].strip("= ")
+            content = parts[i + 1].strip()
+
+            if label in sections:
+                sections[label] = content
+
+        return sections
+

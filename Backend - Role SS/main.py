@@ -2,6 +2,7 @@ import logging
 import json
 import shutil
 import PyPDF2
+import fitz
 import os
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import numpy as np
@@ -33,6 +34,17 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_role: str = 
     logger.info("Received file: %s", pdf.filename)
     
     try:
+        
+        pdf_content = await pdf.read()
+
+        # Load the PDF document from the in-memory bytes
+        pdf_document = fitz.open(stream=pdf_content, filetype="pdf")
+
+        # Get the metadata
+        metadata = pdf_document.metadata
+
+        subject = metadata.get('subject', 'No subject available')
+
         os.makedirs("Input", exist_ok=True)
         input_directory = "Input/"
 
@@ -42,7 +54,7 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_role: str = 
         with open(input_directory + "Job Role.txt", "w") as text_file:
             text_file.write(job_role)
 
-        pdf_reader = PyPDF2.PdfReader(pdf.file)
+        """pdf_reader = PyPDF2.PdfReader(pdf.file)
         text = "".join([page.extract_text() for page in pdf_reader.pages if page.extract_text()])
 
         resume_output_directory = "Output/Text/"
@@ -62,7 +74,13 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_role: str = 
         save_output_json("Cleaned Text.json", {"resume_text": text}, "Output/Json")
 
         resume_entities = resumeClass.extract_resume(text)
-        save_output_json("Entity List.json", resume_entities, "Output/Json")
+        save_output_json("Entity List.json", resume_entities, "Output/Json")"""
+
+        if(subject):
+            resume_entities = resumeClass.split_resume_sections(subject)
+            save_output_json("Entity List.json", resume_entities, "Output/Json")
+        else:
+            return JSONResponse(status_code=500, content={"error": "Upload AU Format Resume"})
 
         result = jobSSClass.predict(resume_entities, job_role)
 

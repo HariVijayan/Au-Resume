@@ -115,11 +115,11 @@ class ProcessJD:
                 certifications.update(extracted_terms)
 
         entities = {
-            "SKILLS": list(skills),
-            "EDUCATION": list(education),
-            "CERTIFICATIONS": list(certifications),
+            "Skills": list(skills),
+            "Education": list(education),
+            "Certifications": list(certifications),
         }
 
         entities = self.refine_entities(entities)
-        entities["EXPERIENCE"] = str(experience)
+        entities["Experience"] = str(experience)
         return entities
