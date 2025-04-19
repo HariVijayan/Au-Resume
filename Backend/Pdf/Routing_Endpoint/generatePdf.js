@@ -101,6 +101,92 @@ const addMetadataToPdf = async (generatedPdf, name, resumeMetaData) => {
     return pdfBytes;
 };
 
+function formatExperienceDuration(experience_year) {
+  if (!experience_year) return null;
+
+  experience_year = experience_year.trim().replace(/\s+/g, ' ');
+
+  const regex = /([A-Za-z]+)?\s*(\d{4})\s*-\s*([A-Za-z]+|Present)?\s*(\d{4}|Present)/;
+
+  const match = experience_year.match(regex);
+  if (!match) return null;
+
+  const [_, startMonthStr, startYearStr, endMonthStr, endYearStr] = match;
+
+  const monthMap = {
+    january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+    july: 6, august: 7, september: 8, october: 9, november: 10, december: 11
+  };
+
+  const now = new Date();
+
+  const startYear = parseInt(startYearStr, 10);
+  const startMonth = startMonthStr ? monthMap[startMonthStr.toLowerCase()] : 0;
+
+  const isPresent = endYearStr === "Present";
+
+  const endYear = isPresent ? now.getFullYear() : parseInt(endYearStr, 10);
+  let endMonth;
+
+  if (endMonthStr && endMonthStr !== "Present") {
+    endMonth = monthMap[endMonthStr.toLowerCase()];
+  } else if (isPresent) {
+    endMonth = now.getMonth(); // current month (0-based)
+  } else {
+    endMonth = startMonth; // fallback: assume December if month missing and not Present
+  }
+
+
+  const startDate = new Date(startYear, startMonth);
+  const endDate = new Date(endYear, endMonth);
+
+  let months = (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+               (endDate.getMonth() - startDate.getMonth());
+
+  if (months < 0) return null;
+
+  const years = Math.floor(months / 12);
+  months = months % 12;
+
+  return calculateExperienceYears(startMonth, startYear, endMonth, endYear)
+}
+
+function calculateExperienceYears(startMonth, startYear, endMonth, endYear) {
+  const now = new Date();
+  
+  // Normalize inputs
+  const sm = startMonth !== undefined ? startMonth : 0; // Jan
+  const sy = parseInt(startYear);
+  
+  let em, ey;
+  if (endYear === 'Present') {
+    em = now.getMonth(); // 0-indexed
+    ey = now.getFullYear();
+  } else {
+    ey = parseInt(endYear);
+    em = endMonth !== undefined 
+         ? endMonth 
+         : (startMonth !== undefined ? startMonth : 11); // Use startMonth or Dec
+  }
+
+  // Compute raw total months
+  const totalMonths = (ey - sy) * 12 + (em - sm);
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  // Map months to nearest lower quarter
+  let fractionalYear = 0;
+  if (months >= 9) fractionalYear = 0.75;
+  else if (months >= 6) fractionalYear = 0.5;
+  else if (months >= 3) fractionalYear = 0.25;
+
+  const totalYears = years + fractionalYear;
+
+  return `for a period of ${totalYears.toFixed(2)} years`;
+}
+
+
+
 function extractRelevantResumeDetails(resumeData) {
   const result = [];
 
@@ -138,19 +224,19 @@ function extractRelevantResumeDetails(resumeData) {
           return sentence;
         });
 
-        educationString += `\n ${sentences.join(" ")}`;
+        educationString += `\n${sentences.join(" ")}`;
       }
     }
 
     if (educationData.hsc_name?.trim()) {
-      educationString += ` Did High Schooling at ${educationData.hsc_name}`;
+      educationString += `\nDid High Schooling at ${educationData.hsc_name}`;
       if(educationData.hsc_year) educationString += ` during ${educationData.hsc_year}`;
       if(educationData.hsc_grade) educationString += ` with a grade of ${educationData.hsc_grade}.`;
       if(educationData.hsc_additional_info) educationString += ` Additional info: ${educationData.hsc_additional_info}.`;
     }
 
     if (educationData.sslc_name?.trim()) {
-      educationString += ` Did SSLC at ${educationData.sslc_name}`;
+      educationString += `\nDid SSLC at ${educationData.sslc_name}`;
       if(educationData.sslc_year) educationString += ` during ${educationData.sslc_year}`;
       if(educationData.sslc_grade) educationString += ` with a grade of ${educationData.sslc_grade}.`;
       if(educationData.sslc_additional_info) educationString += ` Additional info: ${educationData.sslc_additional_info}.`;
@@ -169,10 +255,12 @@ function extractRelevantResumeDetails(resumeData) {
       const { experience_company, experience_location, experience_year, experience_designation, experience_team, experience_roles } = exp;
 
       let sentence = `Worked as ${experience_designation || 'a member'}`;
+      const durationStr = formatExperienceDuration(experience_year);
+      if (durationStr) sentence += ` ${durationStr}`;
       if(experience_team) sentence += ` in the ${experience_team} team`;
       if(experience_company) sentence += ` at ${experience_company}`;
       if(experience_location) sentence += `, located in ${experience_location}`;
-      if(experience_year) sentence += ` during ${experience_year}`;
+
       sentence += ".";
       if (Array.isArray(experience_roles) && experience_roles.length > 0) {
         sentence += ` Responsibilities include: ${experience_roles.join(". ")}.`;
@@ -186,10 +274,12 @@ function extractRelevantResumeDetails(resumeData) {
 
       
       let sentence = `Worked as ${experience_designation || 'a member'}`;
+      const durationStr = formatExperienceDuration(experience_year);
+      if (durationStr) sentence += ` ${durationStr}`;
       if(experience_team) sentence += ` in the ${experience_team} team`;
       if(experience_company) sentence += ` at ${experience_company}`;
       if(experience_location) sentence += `, located in ${experience_location}`;
-      if(experience_year) sentence += ` during ${experience_year}`;
+
       sentence += ".";
       if (experience_description?.trim()) {
         sentence += ` Responsibilities include: ${experience_description}.`;
@@ -199,7 +289,7 @@ function extractRelevantResumeDetails(resumeData) {
 
     const allExpSentences = [...style1Entries, ...style2Entries];
     if (allExpSentences.length > 0) {
-      experienceString += `\n${allExpSentences.join(" ")}`;
+      experienceString += `\n${allExpSentences.join(" \n")}`;
       result.push(experienceString);
     }
   }

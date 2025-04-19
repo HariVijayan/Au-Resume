@@ -1,25 +1,25 @@
 {
-    "match_score": 45.41,
+    "match_score": 49.36,
     "matched_entities": {
         "Skills": {
             "resume": "Web Development, Cloud Deployment, Machine Learning",
-            "job_description": "javascript frameworks using frameworks javascript looking involves we web technologies expertise cloud services a full stack developer scalable applications",
-            "similarity": "57.04%"
+            "job_description": "involves scalable applications using frameworks a full stack developer cloud services web technologies looking javascript frameworks expertise we",
+            "similarity": "61.27%"
         },
         "Experience": {
-            "resume": "Worked as Software Developer at Zoho Corporation, located in Bangalore during 2022 - Present. Responsibilities include: Developed and maintained the company website using modern JavaScript frameworks. Collaborated with cross-functional teams to deploy cloud solutions and improve scalability. Worked as Software Developer in the Cloud Deployment team at Zoho Corporation, located in Chennai during 2019 - 2022. Responsibilities include: Developed and maintained the company website using modern JavaScript frameworks. Collaborated with cross-functional teams to deploy cloud solutions and improve scalability. Worked as Software Developer in the Cloud Deployment team at Amazon India, located in Chennai during 2019 - 2022. Responsibilities include: Worked for 3 years. Developed security management portal. Worked as Software Developer in the Cloud Deployment team at Amazon India, located in Bangalore during 2022 - Present. Responsibilities include: Worked for 3 years. Developed security management portal.",
+            "resume": "Worked as Software Developer for a period of 2.75 years at Zoho Corporation, located in Bangalore. Responsibilities include: Developed and maintained the company website using modern JavaScript frameworks. Collaborated with cross-functional teams to deploy cloud solutions and improve scalability. \nWorked as Software Developer for a period of 3.00 years in the Cloud Deployment team at Zoho Corporation, located in Chennai. Responsibilities include: Developed and maintained the company website using modern JavaScript frameworks. Collaborated with cross-functional teams to deploy cloud solutions and improve scalability. \nWorked as Software Developer for a period of 3.00 years in the Cloud Deployment team at Amazon India, located in Chennai. Responsibilities include: Worked for 3 years. Developed security management portal. \nWorked as Software Developer for a period of 3.25 years in the Cloud Deployment team at Amazon India, located in Bangalore. Responsibilities include: Worked for 3 years. Developed security management portal.",
             "job_description": "3.0 years of experience",
-            "similarity": "20.26%"
+            "similarity": "32.71%"
         },
         "Education": {
-            "resume": "Completed Ph.D in Network Security at Anna University during 2024 - 2029. Additional info: Widely accepted Research. Completed Ph.D in Advanced Neural Networks with specialization in Machine Learning, Neural Networks, Deep Learning at Anna University during 2024 - 2029.\n Completed Master of Computer Applications at Anna University during 2022 - 2024, achieving 9.5 CGPA.\n Completed B.Sc. Computer Science at Anna University during 2019 - 2022, achieving 8.7 CGPA.\n Completed Diploma in Technology at Anna University during 2017 - 2019, achieving 9.5 CGPA. Did High Schooling at Don Bosco School during 2015 - 2017 with a grade of Grade: 68.0. Additional info: State Board. Did SSLC at Don Bosco School during 2014 - 2015 with a grade of Grade: 68.0. Additional info: State Board.",
-            "job_description": "a related field artificial intelligence networking, security security include bachelor computer science, artificial intelligence research experience fluency english requires fluency computer science machine learning a bachelor master's degree",
-            "similarity": "48.05%"
+            "resume": "Completed Ph.D in Network Security at Anna University during 2024 - 2029. Additional info: Widely accepted Research. Completed Ph.D in Advanced Neural Networks with specialization in Machine Learning, Neural Networks, Deep Learning at Anna University during 2024 - 2029.\nCompleted Master of Computer Applications at Anna University during 2022 - 2024, achieving 9.5 CGPA.\nCompleted B.Sc. Computer Science at Anna University during 2019 - 2022, achieving 8.7 CGPA.\nCompleted Diploma in Technology at Anna University during 2017 - 2019, achieving 9.5 CGPA.\nDid High Schooling at Don Bosco School during 2015 - 2017 with a grade of Grade: 68.0. Additional info: State Board.\nDid SSLC at Don Bosco School during 2014 - 2015 with a grade of Grade: 68.0. Additional info: State Board.",
+            "job_description": "a bachelor a related field requires fluency master's degree include bachelor computer science, artificial intelligence networking, security english research experience security machine learning",
+            "similarity": "47.3%"
         },
         "Certifications": {
             "resume": "AWS Certified Developer, Google Cloud Certified (udemy.com/certificate/ghvsgv212), Machine Learning Expert",
-            "job_description": "include include javascript the candidate cloud deployment javascript cloud certified cloud solutions aws certified developer responsibilities required skills given preference software development machine learning expert certifications at least 3 years web development experience cross-functional teams google cloud certified have years company websites",
-            "similarity": "73.56%"
+            "job_description": "preference at least 3 years machine learning expert certifications the candidate include javascript cross-functional teams machine learning web development cloud solutions required skills experience company websites javascript cloud deployment responsibilities google cloud certified given preference aws certified developer software development have years",
+            "similarity": "68.41%"
         }
     },
     "unmatched_entities": {}

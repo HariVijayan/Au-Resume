@@ -6,7 +6,7 @@ import os
 import fitz
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import numpy as np
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sentence_transformers import SentenceTransformer
@@ -44,13 +44,17 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
 
         pdf_content = await pdf.read()
 
-        # Load the PDF document from the in-memory bytes
         pdf_document = fitz.open(stream=pdf_content, filetype="pdf")
 
-        # Get the metadata
         metadata = pdf_document.metadata
 
         subject = metadata.get('subject', 'No subject available')
+
+        if(subject):
+            resume_entities = resumeClass.split_resume_sections(subject)
+            save_output_json("Entity List.json", resume_entities, "Output/Resume/Json")
+        else:
+            return JSONResponse(status_code=400, content={"message": "The JD Success Score module works only with the resumes created from this site."})
 
         os.makedirs("Input", exist_ok=True)
         input_directory = "Input/"
@@ -82,12 +86,6 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_description:
 
         resume_entities = resumeClass.extract_resume(text)
         save_output_json("Entity List.json", resume_entities, "Output/Resume/Json")"""
-
-        if(subject):
-            resume_entities = resumeClass.split_resume_sections(subject)
-            save_output_json("Entity List.json", resume_entities, "Output/Resume/Json")
-        else:
-            return JSONResponse(status_code=500, content={"error": "Upload AU Format Resume"})
 
         job_description_entities = jdClass.extract_jd(job_description)
         save_output_json("Entity List.json", job_description_entities, "Output/JD")

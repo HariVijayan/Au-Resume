@@ -61,7 +61,7 @@ function App() {
       setSimilarity(null);
       setMatchedEntities(null);
       setUnmatchedEntities(null);
-      setError("Error uploading file");
+      setError(error.response.data.message || "Error uploading file");
     }
   };
 
