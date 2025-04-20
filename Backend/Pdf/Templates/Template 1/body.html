@@ -36,8 +36,8 @@
          <div class="experience_main_div">
             <div id="experiencetab1" class="experience_sub_div1">
                <div id="experiencecompanyinfo">
-                  <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}},</h3>
-                  <p id="p-experiencelocation" class="experience_location">{{experience_location}}</p>
+                  <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}}{{#if experience_location}},{{/if}}</h3>
+                  &nbsp;<p id="p-experiencelocation" class="experience_location">{{experience_location}}</p>
                </div>
                <p id="p-experienceyear" class="experience_period">{{experience_year}}</p>
             </div>
@@ -65,8 +65,8 @@
          <div class="experience_main_div">
             <div id="experiencetab1" class="experience_sub_div1">
                <div id="experiencecompanyinfo">
-                  <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}},</h3>
-                  <p id="p-experiencelocation" class="experience_location">{{experience_location}}</p>
+                  <h3 id="h3-experiencecompany" class="experience_company">{{experience_company}}{{#if experience_location}},{{/if}}</h3>
+                  &nbsp;<p id="p-experiencelocation" class="experience_location">{{experience_location}}</p>
                </div>
                <p id="p-experienceyear" class="experience_period">{{experience_year}}</p>
             </div>
@@ -100,69 +100,74 @@
          {{#each phd}}
          <div id="phd" class="education_main_div">
             <div id="phdtab1" class="education_sub_div1">
-               <h3 id="h3-phdname" class="education_name_heading">{{phd_name}}</h3>
+               <h3 id="h3-phdname" class="education_name_heading">{{phd_name}}&nbsp;{{#if phd_additional_info.length}}<p id="p-phdaddl" class="education_custom_field">({{phd_additional_info}})</p>{{/if}}</h3>
                <p id="p-phdyear" class="education_period">{{phd_year}}</p>
             </div>
             <div id="phdtab2" class="education_sub_div2">
                <p id="p-phduni" class="education_university">{{phd_university}}</p>
-               {{#if phd_exp.length}}<p id="p-phdexp" class="education_custom_field">Expertise: {{phd_exp}}{{/if}}{{#if phd_additional_info.length}}&nbsp;({{phd_additional_info}}){{/if}}</p>
+               {{#if phd_exp.length}}<p id="p-phdexp" class="education_custom_field"><strong>Expertise:</strong> {{phd_exp}}</p>{{/if}}
             </div>
          </div>
          {{/each}}
          {{#each pg_degree}}
          <div id="pg-degree" class="education_main_div">
             <div id="pgdegreetab1" class="education_sub_div1">
-               <h3 id="h3-pgdegreename" class="education_name_heading">{{pg_degree_name}}</h3>
+               <h3 id="h3-pgdegreename" class="education_name_heading">{{pg_degree_name}}&nbsp;{{#if pg_additional_info.length}}<p id="p-pgdegreeaddl" class="education_custom_field">({{pg_additional_info}})</p>{{/if}}</h3> 
                <p id="p-pgdegreeyear" class="education_period">{{pg_degree_year}}</p>
             </div>
             <div id="pgdegreetab2" class="education_sub_div2">
                <p id="p-pgdegreeuni" class="education_university">{{pg_degree_university}}</p>
-               {{#if pg_degree_cgpa.length}}<p id="p-pgdegreecgpa" class="education_custom_field">CGPA: {{pg_degree_cgpa}}{{/if}}{{#if pg_additional_info.length}}&nbsp;({{pg_additional_info}}){{/if}}</p>
+               {{#if pg_degree_cgpa.length}}<p id="p-pgdegreecgpa" class="education_custom_field"><strong>CGPA:</strong> {{pg_degree_cgpa}}</p>{{/if}}
             </div>
          </div>
          {{/each}}
          {{#each ug_degree}}
          <div id="ug-degree" class="education_main_div">
             <div id="ugdegreetab1" class="education_sub_div1">
-               <h3 id="h3-ugdegreename" class="education_name_heading">{{ug_degree_name}}</h3>
+               <h3 id="h3-ugdegreename" class="education_name_heading">{{ug_degree_name}}&nbsp;{{#if ug_additional_info.length}}<p id="p-ugdegreeaddl" class="education_custom_field">({{ug_additional_info}})</p>{{/if}}</h3>
                <p id="p-ugdegreeyear" class="education_period">{{ug_degree_year}}</p>
             </div>
             <div id="ugdegreetab2" class="education_sub_div2">
                <p id="p-ugdegreeuni" class="education_university">{{ug_degree_university}}</p>
-               {{#if ug_degree_cgpa.length}}<p id="p-ugdegreecgpa" class="education_custom_field">CGPA: {{ug_degree_cgpa}}{{/if}}{{#if ug_additional_info.length}}&nbsp;({{ug_additional_info}}){{/if}}</p>
+               {{#if ug_degree_cgpa.length}}<p id="p-ugdegreecgpa" class="education_custom_field"><strong>CGPA:</strong> {{ug_degree_cgpa}}</p>{{/if}}
             </div>
          </div>
          {{/each}}
          {{#each diploma}}
          <div id="diploma" class="education_main_div">
             <div id="diplomatab1" class="education_sub_div1">
-               <h3 id="h3-diplomaname" class="education_name_heading">{{diploma_name}}</h3>
+               <h3 id="h3-diplomaname" class="education_name_heading">{{diploma_name}}&nbsp;{{#if diploma_additional_info.length}}&nbsp;<p  id="p-diplomaaddl" class="education_custom_field">({{diploma_additional_info}}){{/if}}</p></h3>
                <p id="p-diplomayear" class="education_period">{{diploma_year}}</p>
             </div>
             <div id="diplomatab2" class="education_sub_div2">
                <p id="p-diplomauni" class="education_university">{{diploma_university}}</p>
-               {{#if diploma_cgpa.length}}<p id="p-diplomacgpa" class="education_custom_field">CGPA: {{diploma_cgpa}}{{/if}}{{#if diploma_additional_info.length}}&nbsp;({{diploma_additional_info}}){{/if}}</p>
+               {{#if diploma_cgpa.length}}<p id="p-diplomacgpa" class="education_custom_field"><strong>CGPA:</strong> {{diploma_cgpa}}</p>{{/if}}
             </div>
          </div>
          {{/each}}
          {{#if hsc_name.length}}
-         <h3 id="h3-xiischool" class="school_name_heading">HSC</h3>
-         <div id="hsc" class="school_main_div">
-            <div id="hsctableft" class="school_sub_div">
-               <h3 id="h3-xiischoolname" class="school_name">{{hsc_name}}</h3>
-               <p id="p-xiischoolgrade" class="school_grade">{{hsc_grade}}{{#if hsc_additional_info.length}}&nbsp;({{hsc_additional_info}}){{/if}}</p>
+         <div id="hsc" class="education_main_div">
+            <div id="hsctab1" class="education_sub_div1">
+               <h3 id="h3-hscname" class="education_name_heading">HSC&nbsp;{{#if hsc_additional_info.length}}&nbsp;<p  id="p-hscaddl" class="education_custom_field">({{hsc_additional_info}}){{/if}}</p></h3>
+               <p id="p-hscyear" class="education_period">{{hsc_year}}</p>
             </div>
-            <p id="p-xiischoolyear" class="school_period">{{hsc_year}}</p>
+            <div id="hsctab2" class="education_sub_div2">
+               <p id="p-hscschool" class="education_university">{{hsc_name}}</p>
+               {{#if hsc_grade.length}}<p id="p-hscgrade" class="education_custom_field"><strong>Grade:</strong> {{hsc_grade}}</p>{{/if}}
+            </div>
          </div>
          {{/if}}
+
          {{#if sslc_name.length}}
-         <h3 id="h3-xschool" class="school_name_heading">SSLC</h3>
-         <div id="sslc" class="school_main_div">
-            <div id="hsctableft" class="school_sub_div">
-               <h3 id="h3-xschoolname" class="school_name">{{sslc_name}}</h3>
-               <p id="p-xschoolgrade" class="school_grade">{{sslc_grade}}{{#if sslc_additional_info.length}}&nbsp;({{sslc_additional_info}}){{/if}}</p>
+         <div id="sslc" class="education_main_div">
+            <div id="sslctab1" class="education_sub_div1">
+               <h3 id="h3-sslcname" class="education_name_heading">SSLC&nbsp;{{#if sslc_additional_info.length}}&nbsp;<p  id="p-sslcaddl" class="education_custom_field">({{sslc_additional_info}}){{/if}}</p></h3>
+               <p id="p-sslcyear" class="education_period">{{sslc_year}}</p>
             </div>
-            <p id="p-xschoolyear" class="school_period">{{sslc_year}}</p>
+            <div id="sslctab2" class="education_sub_div2">
+               <p id="p-sslcschool" class="education_university">{{sslc_name}}</p>
+               {{#if sslc_grade.length}}<p id="p-sslcgrade" class="education_custom_field"><strong>Grade:</strong> {{sslc_grade}}</p>{{/if}}
+            </div>
          </div>
          {{/if}}
          {{/each}}

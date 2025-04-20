@@ -21,7 +21,7 @@ ul {
 	padding-top: 0.5rem;
 }
 
-.main_div {
+.project_main_div, .experience_main_div, .education_main_div, #customdiv, #languages, #certifications, #skills, #summary {
 	page-break-inside: avoid;
 	/* Prevent splitting divs across pages */
 }
@@ -75,6 +75,7 @@ li {
 #p-contactinfo {
 	margin: 0;
 	font-size: 1.5rem;
+	text-align: center;
 }
 
 #linkedinlink,
@@ -157,6 +158,7 @@ li {
 .education_name_heading {
 	margin: 0;
 	font-size: 1.5rem;
+	display: flex;
 }
 
 .education_period {
@@ -173,40 +175,7 @@ li {
 .education_custom_field {
 	margin: 0;
 	font-size: 1.5rem;
-}
-
-.school_main_div {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	margin-top: 1em;
-}
-
-.school_sub_div {
-	width: 70%;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	margin: 0;
-}
-
-.school_name_heading {
-	font-size: 1.5rem;
-	float: left;
-	width: 100%;
-	margin-top: 1em;
-}
-
-.school_name,
-.school_period,
-.school_grade {
-	font-size: 1.5rem;
-	margin: 0;
-}
-
-.school_grade {
-	margin-left: 1em;
+	font-weight: normal;
 }
 
 #skills {
@@ -320,7 +289,6 @@ li {
 .experience_location {
 	margin: 0;
 	font-size: 1.5rem;
-	padding-left: 10px;
 }
 
 .experience_period {
@@ -560,8 +528,8 @@ li {
          <p id="p-contactinfo">
             +91 9090909099
              | john@gmail.com
-             | <a id="linkedinlink" href="https://www.linkedin.com/John">linkedin.com/John</a>
-             | <a id="githublink" href="https://www.github.com/John">github.com/John</a>
+             | <a id="linkedinlink" href="https://www.linkedin.com/Hari">linkedin.com/Hari</a>
+             | <a id="githublink" href="https://www.github.com/Hari">github.com/Hari</a>
             
              | Chennai, India
          </p>
@@ -576,7 +544,7 @@ li {
             <div id="experiencetab1" class="experience_sub_div1">
                <div id="experiencecompanyinfo">
                   <h3 id="h3-experiencecompany" class="experience_company">Zoho Corporation,</h3>
-                  <p id="p-experiencelocation" class="experience_location">Bangalore</p>
+                  &nbsp;<p id="p-experiencelocation" class="experience_location">Bangalore</p>
                </div>
                <p id="p-experienceyear" class="experience_period">May 2022 - Present</p>
             </div>
@@ -594,7 +562,7 @@ li {
             <div id="experiencetab1" class="experience_sub_div1">
                <div id="experiencecompanyinfo">
                   <h3 id="h3-experiencecompany" class="experience_company">Zoho Corporation,</h3>
-                  <p id="p-experiencelocation" class="experience_location">Chennai</p>
+                  &nbsp;<p id="p-experiencelocation" class="experience_location">Chennai</p>
                </div>
                <p id="p-experienceyear" class="experience_period">May 2019 - 2022</p>
             </div>
@@ -614,7 +582,7 @@ li {
             <div id="experiencetab1" class="experience_sub_div1">
                <div id="experiencecompanyinfo">
                   <h3 id="h3-experiencecompany" class="experience_company">Amazon India,</h3>
-                  <p id="p-experiencelocation" class="experience_location">Chennai</p>
+                  &nbsp;<p id="p-experiencelocation" class="experience_location">Chennai</p>
                </div>
                <p id="p-experienceyear" class="experience_period">2019 - 2022</p>
             </div>
@@ -630,7 +598,7 @@ li {
             <div id="experiencetab1" class="experience_sub_div1">
                <div id="experiencecompanyinfo">
                   <h3 id="h3-experiencecompany" class="experience_company">Amazon India,</h3>
-                  <p id="p-experiencelocation" class="experience_location">Bangalore</p>
+                  &nbsp;<p id="p-experiencelocation" class="experience_location">Bangalore</p>
                </div>
                <p id="p-experienceyear" class="experience_period">2022 - Present</p>
             </div>
@@ -648,69 +616,74 @@ li {
          <h2 id="h2-education">EDUCATION</h2>
          <div id="phd" class="education_main_div">
             <div id="phdtab1" class="education_sub_div1">
-               <h3 id="h3-phdname" class="education_name_heading">Ph.D in Network Security</h3>
+               <h3 id="h3-phdname" class="education_name_heading">Ph.D in Network Security&nbsp;<p id="p-phdaddl" class="education_custom_field">(Widely accepted Research)</p></h3>
                <p id="p-phdyear" class="education_period">2024 - 2029</p>
             </div>
             <div id="phdtab2" class="education_sub_div2">
                <p id="p-phduni" class="education_university">Anna University</p>
-               &nbsp;(Widely accepted Research)</p>
+               <p id="p-phdexp" class="education_custom_field"><strong>Expertise:</strong> Network Security</p>
             </div>
          </div>
          <div id="phd" class="education_main_div">
             <div id="phdtab1" class="education_sub_div1">
-               <h3 id="h3-phdname" class="education_name_heading">Ph.D in Advanced Neural Networks</h3>
+               <h3 id="h3-phdname" class="education_name_heading">Ph.D in Advanced Neural Networks&nbsp;<p id="p-phdaddl" class="education_custom_field">(Best Research)</p></h3>
                <p id="p-phdyear" class="education_period">2024 - 2029</p>
             </div>
             <div id="phdtab2" class="education_sub_div2">
                <p id="p-phduni" class="education_university">Anna University</p>
-               <p id="p-phdexp" class="education_custom_field">Expertise: Machine Learning, Neural Networks, Deep Learning</p>
+               <p id="p-phdexp" class="education_custom_field"><strong>Expertise:</strong> Machine Learning, Neural Networks, Deep Learning</p>
             </div>
          </div>
          <div id="pg-degree" class="education_main_div">
             <div id="pgdegreetab1" class="education_sub_div1">
-               <h3 id="h3-pgdegreename" class="education_name_heading">Master of Computer Applications</h3>
+               <h3 id="h3-pgdegreename" class="education_name_heading">Master of Computer Applications&nbsp;</h3> 
                <p id="p-pgdegreeyear" class="education_period">2022 - 2024</p>
             </div>
             <div id="pgdegreetab2" class="education_sub_div2">
                <p id="p-pgdegreeuni" class="education_university">Anna University</p>
-               <p id="p-pgdegreecgpa" class="education_custom_field">CGPA: 9.5</p>
+               <p id="p-pgdegreecgpa" class="education_custom_field"><strong>CGPA:</strong> 9.5</p>
             </div>
          </div>
          <div id="ug-degree" class="education_main_div">
             <div id="ugdegreetab1" class="education_sub_div1">
-               <h3 id="h3-ugdegreename" class="education_name_heading">B.Sc. Computer Science</h3>
+               <h3 id="h3-ugdegreename" class="education_name_heading">B.Sc. Computer Science&nbsp;</h3>
                <p id="p-ugdegreeyear" class="education_period">2019 - 2022</p>
             </div>
             <div id="ugdegreetab2" class="education_sub_div2">
                <p id="p-ugdegreeuni" class="education_university">Anna University</p>
-               <p id="p-ugdegreecgpa" class="education_custom_field">CGPA: 8.7</p>
+               <p id="p-ugdegreecgpa" class="education_custom_field"><strong>CGPA:</strong> 8.7</p>
             </div>
          </div>
          <div id="diploma" class="education_main_div">
             <div id="diplomatab1" class="education_sub_div1">
-               <h3 id="h3-diplomaname" class="education_name_heading">Diploma in Technology</h3>
+               <h3 id="h3-diplomaname" class="education_name_heading">Diploma in Technology&nbsp;&nbsp;<p  id="p-diplomaaddl" class="education_custom_field">(Distinction Grade)</p></h3>
                <p id="p-diplomayear" class="education_period">2017 - 2019</p>
             </div>
             <div id="diplomatab2" class="education_sub_div2">
                <p id="p-diplomauni" class="education_university">Anna University</p>
-               <p id="p-diplomacgpa" class="education_custom_field">CGPA: 9.5</p>
+               <p id="p-diplomacgpa" class="education_custom_field"><strong>CGPA:</strong> 9.5</p>
             </div>
          </div>
-         <h3 id="h3-xiischool" class="school_name_heading">HSC</h3>
-         <div id="hsc" class="school_main_div">
-            <div id="hsctableft" class="school_sub_div">
-               <h3 id="h3-xiischoolname" class="school_name">Don Bosco School</h3>
-               <p id="p-xiischoolgrade" class="school_grade">Grade: 68.0&nbsp;(State Board)</p>
+         <div id="hsc" class="education_main_div">
+            <div id="hsctab1" class="education_sub_div1">
+               <h3 id="h3-hscname" class="education_name_heading">HSC&nbsp;&nbsp;<p  id="p-hscaddl" class="education_custom_field">(State Board)</p></h3>
+               <p id="p-hscyear" class="education_period">2015 - 2017</p>
             </div>
-            <p id="p-xiischoolyear" class="school_period">2015 - 2017</p>
+            <div id="hsctab2" class="education_sub_div2">
+               <p id="p-hscschool" class="education_university">Don Bosco School</p>
+               <p id="p-hscgrade" class="education_custom_field"><strong>Grade:</strong> 68.0</p>
+            </div>
          </div>
-         <h3 id="h3-xschool" class="school_name_heading">SSLC</h3>
-         <div id="sslc" class="school_main_div">
-            <div id="hsctableft" class="school_sub_div">
-               <h3 id="h3-xschoolname" class="school_name">Don Bosco School</h3>
-               <p id="p-xschoolgrade" class="school_grade">Grade: 68.0&nbsp;(State Board)</p>
+
+         <div id="sslc" class="education_main_div">
+            <div id="sslctab1" class="education_sub_div1">
+               <h3 id="h3-sslcname" class="education_name_heading">SSLC&nbsp;&nbsp;<p  id="p-sslcaddl" class="education_custom_field">(State Board)</p></h3>
+               <p id="p-sslcyear" class="education_period">2014 - 2015</p>
             </div>
-            <p id="p-xschoolyear" class="school_period">2014 - 2015</p>
+            <div id="sslctab2" class="education_sub_div2">
+               <p id="p-sslcschool" class="education_university">Don Bosco School</p>
+               <p id="p-sslcgrade" class="education_custom_field"><strong>Grade:</strong> 68.0</p>
+            </div>
          </div>
       </div>
       <div id="skills" class="main_div">
@@ -733,7 +706,7 @@ li {
                  <h3 id="h3-projectname" class="project_name">Project 1</h3>
                    <div id="projectlink">
                      <h3 id="h3-projectlink">Link :&nbsp;</h3>
-                     <a id="p-projectlink" class="project_link" href="https://github.com/John/Project1">https://github.com/John/Project1</a>
+                     <a id="p-projectlink" class="project_link" href="https://github.com/Hari/Project1">https://github.com/Hari/Project1</a>
                    </div>
                </div>
                <div id="projecttab2" class="project_sub_div2">
@@ -760,6 +733,14 @@ li {
             <ul id="ul-languages">
                <li>Tamil</li>
                <li>English</li>
+            </ul>
+         </div>
+      </div>
+      <div id="customdiv" class="main_div">
+         <h2 id="h2-customtitle">Extra Curricular Activities</h2>
+         <div id="customdivstyle1">
+            <ul id="ul-customdivstyle1">
+               <li>Head</li>
             </ul>
          </div>
       </div>

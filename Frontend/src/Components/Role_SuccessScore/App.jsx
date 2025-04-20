@@ -153,7 +153,7 @@ function App() {
         <button
           onClick={getSuccessScore}
           id="bt-SuccessScore"
-          className="SubmitButton"
+          className="DownloadButton"
         >
           Submit{" "}
           <svg

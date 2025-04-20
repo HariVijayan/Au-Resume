@@ -42,7 +42,7 @@ iframe{
 	transform: translateY(0);
 }
 
-.LeftNavigationButtons svg, .RightNavigationButtons svg, .PreviewButton svg, .ListInputButton svg, .AddInputButtons svg, .ParaInputButton svg, .SubmitButton svg {
+.LeftNavigationButtons svg, .RightNavigationButtons svg, .PreviewButton svg, .ListInputButton svg, .AddInputButtons svg, .ParaInputButton svg, .DownloadButton svg {
 	pointer-events: none;
 }
 
@@ -149,12 +149,12 @@ iframe{
 	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
 }
 
-.SubmitButton {
+.DownloadButton {
 	background-color: #04aa6d;
 	color: white;
 }
 
-.SubmitButton svg {
+.DownloadButton svg {
 	padding: 3px;
 	fill: black;
 	border-radius: 50%;
@@ -162,7 +162,7 @@ iframe{
 	background-color: white;
 }
 
-.SubmitButton:hover {
+.DownloadButton:hover {
 	box-shadow: rgba(4, 150, 96, 0.8) 0 8px 15px;
 }
 
