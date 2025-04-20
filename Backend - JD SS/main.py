@@ -6,7 +6,7 @@ import os
 import fitz
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import numpy as np
-from fastapi import FastAPI, File, UploadFile, Form, HTTPException
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sentence_transformers import SentenceTransformer

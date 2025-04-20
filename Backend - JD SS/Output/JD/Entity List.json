@@ -1,50 +1,7 @@
 {
-    "Skills": [
-        "involves",
-        "scalable applications",
-        "using frameworks",
-        "a full stack developer",
-        "cloud services",
-        "web technologies",
-        "looking",
-        "javascript frameworks",
-        "expertise",
-        "we"
-    ],
-    "Education": [
-        "a bachelor",
-        "a related field",
-        "requires fluency",
-        "master's degree",
-        "include bachelor",
-        "computer science, artificial intelligence",
-        "networking, security",
-        "english",
-        "research experience",
-        "security",
-        "machine learning"
-    ],
-    "Certifications": [
-        "preference",
-        "at least 3 years",
-        "machine learning expert certifications",
-        "the candidate",
-        "include javascript",
-        "cross-functional teams",
-        "machine learning",
-        "web development",
-        "cloud solutions",
-        "required skills",
-        "experience",
-        "company websites",
-        "javascript",
-        "cloud deployment",
-        "responsibilities",
-        "google cloud certified",
-        "given preference",
-        "aws certified developer",
-        "software development",
-        "have years"
-    ],
-    "Experience": "3.0 years of experience"
+    "Skills": "The ideal candidate should possess skills in cloud deployment, cloud services, cloud solutions, cross-functional teams, javascript frameworks, machine learning, scalable applications, software development, web development, web technologies.",
+    "Education": "A bachelor or master's degree degree in artificial intelligence, computer science, networking, research experience, security or a related area is preferred.",
+    "Certifications": "Candidates with certifications such as aws certified developer, google cloud certified will be favorably considered.",
+    "Experience": "This role requires 3.0 years of prior experience.",
+    "Language": "No specific language proficiency is mentioned."
 }
