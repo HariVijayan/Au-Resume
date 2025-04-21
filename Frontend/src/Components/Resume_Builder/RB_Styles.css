@@ -9,7 +9,7 @@ iframe{
 	cursor: pointer;
 	display: inline-block;
 	border: none;
-	font-size: 1rem;
+	font-size: var(--fs--normal);
 	line-height: normal;
 	margin: 0;
 	min-height: 60px;
@@ -47,123 +47,123 @@ iframe{
 }
 
 .LeftNavigationButtons {
-	background-color: #555555;
-	color: white;
+	background-color: var(--bt--general--background);
+	color: var(--background);
 }
 
 .LeftNavigationButtons svg {
 	padding: 3px;
-	fill: black;
+	fill: var(--primary--color);
 	border-radius: 50%;
 	margin-right: 10px;
-	background-color: white;
+	background-color: var(--background);
 }
 
 .LeftNavigationButtons:hover {
-	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
+	box-shadow: var(--bt--general--shadow);
 }
 
 
 .RightNavigationButtons {
-	background-color: #555555;
-	color: white;
+	background-color: var(--bt--general--background);
+	color: var(--background);
 }
 
 .RightNavigationButtons svg {
 	padding: 3px;
-	fill: black;
+	fill: var(--primary--color);
 	border-radius: 50%;
 	margin-left: 10px;
-	background-color: white;
+	background-color: var(--background);
 }
 
 .RightNavigationButtons:hover {
-	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
+	box-shadow: var(--bt--general--shadow);
 }
 
 .PreviewButton {
-	background-color: #5a67d8;
-	color: white;
+	background-color: var(--bt--preview--background);
+	color: var(--background);
 }
 
 .PreviewButton svg {
 	padding: 3px;
-	fill: black;
+	fill: var(--primary--color);
 	border-radius: 50%;
 	margin-right: 10px;
-	background-color: white;
+	background-color: var(--background);
 }
 
 .PreviewButton:hover {
-	box-shadow: rgba(90, 103, 216, 0.8) 0 8px 15px;
+	box-shadow: var(--bt--preview--shadow);
 }
 
 .ListInputButton {
-	background-color: #555555;
-	color: white;
+	background-color: var(--bt--general--background);
+	color: var(--background);
 }
 
 .ListInputButton svg {
 	padding: 3px;
-	fill: black;
+	fill: var(--primary--color);
 	border-radius: 50%;
 	margin-right: 10px;
-	background-color: white;
+	background-color: var(--background);
 }
 
 .ListInputButton:hover {
-	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
+	box-shadow: var(--bt--general--shadow);
 }
 
 .AddInputButtons {
-	background-color: #377dff;
-	color: white;
+	background-color: var(--bt--add--background);
+	color: var(--background);
 }
 
 .AddInputButtons svg {
 	padding: 3px;
-	fill: black;
+	fill: var(--primary--color);
 	border-radius: 50%;
 	margin-right: 10px;
-	background-color: white;
+	background-color: var(--background);
 }
 
 .AddInputButtons:hover {
-	box-shadow: rgba(55, 125, 255, 0.8) 0 8px 15px;
+	box-shadow: var(--bt--add--shadow);
 }
 
 .ParaInputButton {
-	background-color: #555555;
-	color: white;
+	background-color: var(--bt--general--background);
+	color: var(--background);
 }
 
 .ParaInputButton svg {
 	padding: 3px;
-	fill: black;
+	fill: var(--primary--color);
 	border-radius: 50%;
 	margin-right: 10px;
-	background-color: white;
+	background-color: var(--background);
 }
 
 .ParaInputButton:hover {
-	box-shadow: rgba(77, 77, 77, 0.8) 0 8px 15px;
+	box-shadow: var(--bt--general--shadow);
 }
 
 .DownloadButton {
-	background-color: #04aa6d;
-	color: white;
+	background-color: var(--bt--submit--background);
+	color: var(--background);
 }
 
 .DownloadButton svg {
 	padding: 3px;
-	fill: black;
+	fill: var(--primary--color);
 	border-radius: 50%;
 	margin-left: 10px;
-	background-color: white;
+	background-color: var(--background);
 }
 
 .DownloadButton:hover {
-	box-shadow: rgba(4, 150, 96, 0.8) 0 8px 15px;
+	box-shadow: var(--bt--submit--shadow);
 }
 
 #dv-TemplatesWrapper {
@@ -195,7 +195,7 @@ iframe{
 	height: 500px;
 	width: 350px;
 	border-radius: 25px 25px 25px 25px;
-	box-shadow: 10px 10px 10px 10px gray;
+	box-shadow: var(--general--shadow);
 }
 
 #dv-MainFormAndPreview {
@@ -291,7 +291,7 @@ iframe{
 #sp-rbheading{
 	font-weight: bold;
 	text-transform: uppercase;
-	color: #377dff;
+	color: var(--primary--accent);
 	cursor: pointer;
 }
 
@@ -361,7 +361,7 @@ iframe{
 	height: 30px;
 	width: 30px;
 	cursor: pointer;
-	fill: red;
+	fill: var(--mandatory--input);
 }
 
 .OptionalInputSvg{
@@ -369,7 +369,7 @@ iframe{
 	height: 30px;
 	width: 30px;
 	cursor: pointer;
-	fill: black;
+	fill: var(--optional--input);
 }
 
 .RecommededInputSvg{
@@ -377,7 +377,7 @@ iframe{
 	height: 30px;
 	width: 30px;
 	cursor: pointer;
-	fill: green;
+	fill: var(--recommended--input);
 }
 
 #dv-MainForm input, #dv-MainForm textarea{
@@ -385,10 +385,10 @@ iframe{
 }
 
 .InputInfoDiv {
-	background: white;
-	border-left: 6px solid #377dff;
+	background: var(--background);
+	border-left: 6px solid var(--primary--accent);
 	border-radius: 12px;
-	box-shadow: rgba(0, 0, 0, 0.1) 0 8px 15px;
+	box-shadow: var(--general--shadow);
 	padding: 12px;
 	margin: 20px 0px;
 	transition: box-shadow 0.3s ease;
@@ -397,10 +397,6 @@ iframe{
 	justify-content: center;
 	align-items: flex-start;
 	width: 70%;
-  }
-  
-  .InputInfoDiv:hover {
-	box-shadow: rgba(0, 0, 0, 0.5) 0 8px 15px;
   }
   
   .InputInfoDiv > div {
@@ -412,13 +408,17 @@ iframe{
   }
   
   .InputInfoHeading{
-	font-size: 1rem;
+	font-size: var(--fs--normal);
 	font-weight: bold;
   }
 
   .InputInfoValue{
-	font-size: 1rem;
+	font-size: var(--fs--normal);
 	font-weight: normal;
+  }
+
+  .RBHeaderText{
+	font-size: var(--fs--normal);
   }
 
   

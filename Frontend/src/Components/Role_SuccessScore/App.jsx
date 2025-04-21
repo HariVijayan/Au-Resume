@@ -55,7 +55,7 @@ function App() {
     } catch (error) {
       setSuccessScore("");
       setJobFitScore("");
-      setError("Error uploading file");
+      setError(error.response.data.message || "Error uploading file");
     }
   };
 

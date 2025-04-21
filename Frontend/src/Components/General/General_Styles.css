@@ -6,7 +6,7 @@
 	min-height: 85vh;
     flex-direction: column;
 	border-radius: 20px;
-  	box-shadow: 2px 2px 10px 2px gray;
+  	box-shadow: var(--general--shadow);
 	overflow: auto;
 	margin: 10vh 0em;
 }
@@ -56,11 +56,11 @@
 	top: 40%;
 	left: 5%;
 	transform: translateY(-50%);
-	font-size: 1rem;
-	color: rgba(0, 0, 0, 0.6);
+	font-size: var(--fs--normal);
+	color: var(--primary--label--color);
 	pointer-events: none;
 	transition: all 0.2s ease-in-out;
-	background: white;
+	background: var(--background);
 	padding: 0 4px;
 }
 
@@ -97,19 +97,19 @@
 
 
 .AuthenticationButton {
-	background-color: #377dff;
-	border: 0 solid #E5E7EB;
+	background-color: var(--primary--accent);
+	border: 0 solid var(--background);
 	box-sizing: border-box;
-	color: white;
+	color: var(--background);
 	display: flex;
-	font-size: 1rem;
+	font-size: var(--fs--normal);
 	font-weight: 700;
 	justify-content: center;
 	line-height: 1.75rem;
 	padding: .75rem 1.65rem;
 	position: relative;
 	text-align: center;
-	text-decoration: none #000000 solid;
+	text-decoration: none var(--primary--color) solid;
 	text-decoration-thickness: auto;
 	width: 15%;
 	max-width: 460px;
@@ -129,7 +129,7 @@
   .AuthenticationButton:after {
 	content: '';
 	position: absolute;
-	border: 1px solid #000000;
+	border: 1px solid var(--primary--color);
 	bottom: 4px;
 	left: 4px;
 	width: calc(100% - 1px);
@@ -142,7 +142,7 @@
   }
 
   .AuthenticationLink{
-	color:#377dff;
+	color:var(--primary--accent);
 	cursor: pointer;
   }
 
@@ -170,11 +170,11 @@
 	top: 40%;
 	left: 25%;
 	transform: translateY(-50%);
-	font-size: 1rem;
-	color: rgba(0, 0, 0, 0.6);
+	font-size: var(--fs--normal);
+	color: var(--primary--label--color);
 	pointer-events: none;
 	transition: all 0.2s ease-in-out;
-	background: white;
+	background: var(--background);
 	padding: 0 4px;
 }
 

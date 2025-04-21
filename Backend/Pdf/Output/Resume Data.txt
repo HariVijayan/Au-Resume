@@ -29,7 +29,7 @@
   "username": "Hari",
   "small_bio": "Developer | Designer | Freelancer",
   "phone_number": "+91 9090909099",
-  "emailid": "john@gmail.com",
+  "emailid": "hari@gmail.com",
   "location": "Chennai, India",
   "linkedin": "linkedin.com/Hari",
   "linkedinurl": "https://www.linkedin.com/Hari",

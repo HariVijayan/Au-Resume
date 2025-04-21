@@ -1,7 +1,35 @@
+:root{
+	--fs--small: 1.3rem;
+	--fs--normal: 1.5rem;
+	--fs--big:1.7rem;
+	--fs--huge:2rem;
+	--fs--max:2.5rem;
+	--svg--width:2.5rem;
+	--svg--height:2.5rem;
+	--background:white;
+	--primary--color:black;
+	--primary--label--color:rgba(0, 0, 0, 0.6);
+	--primary--accent:#377dff;
+	--general--shadow:rgba(0, 0, 0, 0.5) 0 8px 15px;
+	--input--border:#cccccc;
+	--mandatory--input:red;
+	--recommended--input:green;
+	--optional--input:black;
+	--bt--general--background:#555555;
+	--bt--general--shadow:rgba(77, 77, 77, 0.8) 0 8px 15px;
+	--bt--preview--background:#5a67d8;
+	--bt--preview--shadow:rgba(90, 103, 216, 0.8) 0 8px 15px;
+	--bt--add--background:var(--primary--accent);
+	--bt--add--shadow:rgba(55, 125, 255, 0.8) 0 8px 15px;
+	--bt--submit--background:#04aa6d;
+	--bt--submit--shadow:rgba(4, 150, 96, 0.8) 0 8px 15px;
+}
+
 html {
 	height: 100%;
 	overflow-y: auto;
 	margin: 0 auto;
+	font-size: 62.5%;
 }
 
 body {
@@ -10,14 +38,15 @@ body {
 	align-items: center;
 	margin: 0 auto;
 	height: 100%;
-	background: white;
+	background: var(--background);
+	font-size: var(--fs--normal);
 	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
 }
 
 body svg {
-	fill: black;
-	height: 25px;
-	width: 25px;
+	fill: var(--primary--color);
+	height: var(--svg--height);
+	width: var(--svg--width);
 }
 
 body button {
@@ -34,24 +63,6 @@ body button {
 	overflow: auto;
 }
 
-#dv-HeaderWrapper {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	width: 100%;
-	min-height: 10vh;
-	flex-shrink: 0;
-}
-
-#img-HeaderImage {
-	height: 100px;
-	width: 100px;
-}
-
-#h3-HeaderDept {
-	font-weight: normal;
-}
-
 #dv-BodyWrapper {
 	display: flex;
 	flex-direction: column;
@@ -59,16 +70,15 @@ body button {
 	align-items: center;
 	width: 100%;
 	height: 100%;
-	padding: 1em 0em 6em 0em;
+	padding: 2vh 0vh 10vh 0vh;
 }
 
-
 .Sidebar {
-	width: 3.5vw;
+	width: 60px;
 	height: 100vh;
 	border-radius: 0px 16px 16px 0px;
-	background-color: #377dff;
-	color: white;
+	background-color: var(--primary--accent);
+	color: var(--background);
 	position: sticky;
 	top: 0;
 	align-self: start;
@@ -95,7 +105,7 @@ body button {
 }
 
 .Sidebar svg {
-	fill: white;
+	fill: var(--background);
 }
 
 .Sidebar li span {
@@ -108,7 +118,7 @@ body button {
 
 .Sidebar a {
 	text-decoration: none;
-	color: white;
+	color: var(--background);
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -129,7 +139,7 @@ body button {
 }
 
 #cx-sidebar:checked+.Sidebar {
-	width: 15vw;
+	width: 250px;
 }
 
 #cx-sidebar:checked+.Sidebar ul li {
@@ -158,7 +168,7 @@ body button {
 }
 
 .SidebarMainNav {
-	margin-bottom: 30vh;
+	margin-bottom: 25vh;
 }
 
 .InputWrapper {
@@ -181,13 +191,15 @@ input[type="password"],
 textarea {
 	width: 50%;
 	padding: 12px;
-	border: 2px solid #ccc;
+	border: 2px solid var(--input--border);
 	border-radius: 8px;
-	font-size: 1rem;
+	font-size: var(--fs--normal);
 	outline: none;
 	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
 	transition: border-color 0.3s ease-in-out;
 	margin-bottom: 0.5em;
+	background: var(--background);
+	color: var(--primary--color);
 }
 
 /* Chrome, Safari, Edge, Opera - Remove Number Input Arrows */
@@ -204,7 +216,7 @@ input[type=number] {
 
 input:focus,
 textarea:focus {
-	border-color: #007bff;
+	border-color: var(--primary--accent);
 	/* Highlight color */
 }
 
@@ -213,11 +225,11 @@ textarea:focus {
 	top: 40%;
 	left: 2%;
 	transform: translateY(-50%);
-	font-size: 1rem;
-	color: rgba(0, 0, 0, 0.6);
+	font-size: var(--fs--normal);
+	color: var(--primary--label--color);
 	pointer-events: none;
 	transition: all 0.2s ease-in-out;
-	background: white;
+	background: var(--background);
 	padding: 0 4px;
 }
 
@@ -226,16 +238,14 @@ input:not(:placeholder-shown) + label,
 textarea:focus + label,
 textarea:not(:placeholder-shown) + label {
     top: 0;
-    font-size: 0.8rem;
-    color: #007bff;
+    font-size: var(--fs--small);
+    color: var(--primary--accent);
 }
 
 textarea {
 	resize: vertical;
-	min-height: 150px;
+	min-height: 25vh;
 }
-
-
 
 .dropdown-container {
 	position: relative;
@@ -248,18 +258,19 @@ select {
 	width: 100%;
 	padding: 12px 14px;
 	padding-right: 40px; /* Space for custom arrow */
-	border: 1px solid #ccc;
+	border: 1px solid var(--input--border);
 	border-radius: 8px;
-	font-size: 1rem;
+	font-size: var(--fs--normal);
 	outline: none;
 	appearance: none; /* Hides default dropdown icon */
-	background: white;
+	background: var(--background);
+	color: var(--primary--color);
 	cursor: pointer;
 	transition: border-color 0.3s ease-in-out;
 }
 
 select:focus {
-	border-color: #007bff;
+	border-color: var(--primary--accent);
 }
 
 /* Floating label */
@@ -268,19 +279,19 @@ select:focus {
 	top: 50%;
 	left: 14px;
 	transform: translateY(-50%);
-	font-size: 1rem;
-	color: rgba(0, 0, 0, 0.6);
+	font-size: var(--fs--normal);
+	color: var(--primary--label--color);
 	pointer-events: none;
 	transition: all 0.2s ease-in-out;
-	background: white;
+	background: var(--background);
 	padding: 0 4px;
 }
 
 select:focus + .DropDownLabel,
 select:not([value=""]) + .DropDownLabel {
 	top: 0;
-	font-size: 0.8rem;
-	color: #007bff;
+	font-size: var(--fs--small);
+	color: var(--primary--accent);
 }
 
 /* Custom dropdown arrow */
@@ -290,8 +301,8 @@ select:not([value=""]) + .DropDownLabel {
 	top: 50%;
 	right: 14px;
 	transform: translateY(-50%);
-	width: 25px;
-	height: 25px;
+	height: var(--svg--height);
+	width: var(--svg--width);
 	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,0,0,0.6)"><path d="M7 10l5 5 5-5H7z"/></svg>');
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -306,8 +317,8 @@ select:not([value=""]) + .DropDownLabel {
 	align-items: center;
 	width: 100%;
 	min-height: 5vh; 
-	background-color: #377dff;
-	color: white;
+	background-color: var(--primary--accent);
+	color: var(--background);
 	flex-shrink: 0; 
 	position: absolute;
   bottom: 0;
@@ -317,6 +328,10 @@ select:not([value=""]) + .DropDownLabel {
 	height: 35px;
 	width: 35px;
 	padding-right: 10px;
+}
+
+#p-footer{
+	font-size: var(--fs--normal);
 }
 
 .PageDetailsHeader {
