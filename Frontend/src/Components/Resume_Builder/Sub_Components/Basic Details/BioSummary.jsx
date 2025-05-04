@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const BioSummary = ({ resumeData, setResumeData, templateType }) => {
+const BioSummary = ({ templateType }) => {
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
+
   const navigate = useNavigate();
 
   const [infoDiv, setInfoDiv] = useState("");
@@ -22,17 +25,6 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
     } else {
       navigate("/resume-builder/experience");
     }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setResumeData((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
   };
 
   return (
@@ -66,9 +58,9 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="text"
               id="in-rb_bd_name"
-              name="username"
-              value={resumeData.username}
-              onChange={(e) => handleInputChange(e)}
+              name="name"
+              value={resumeDataNew.personal.name}
+              onChange={(e) => updateField("personal.name", e.target.value)}
               placeholder=" "
               required
             />
@@ -102,9 +94,9 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="text"
               id="in-rb_bd_bio"
-              name="small_bio"
-              value={resumeData.small_bio}
-              onChange={(e) => handleInputChange(e)}
+              name="bio"
+              value={resumeDataNew.personal.bio}
+              onChange={(e) => updateField("personal.bio", e.target.value)}
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_bio" className="TextFieldLabel">
@@ -137,9 +129,9 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="text"
               id="in-rb_bd_mobile"
-              name="phone_number"
-              value={resumeData.phone_number}
-              onChange={(e) => handleInputChange(e)}
+              name="mobile"
+              value={resumeDataNew.personal.mobile}
+              onChange={(e) => updateField("personal.mobile", e.target.value)}
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_mobile" className="TextFieldLabel">
@@ -172,9 +164,9 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="email"
               id="in-rb_bd_email"
-              name="emailid"
-              value={resumeData.emailid}
-              onChange={(e) => handleInputChange(e)}
+              name="email"
+              value={resumeDataNew.personal.email}
+              onChange={(e) => updateField("personal.email", e.target.value)}
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_email" className="TextFieldLabel">
@@ -208,8 +200,8 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_bd_location"
               name="location"
-              value={resumeData.location}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.personal.location}
+              onChange={(e) => updateField("personal.location", e.target.value)}
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_location" className="TextFieldLabel">
@@ -242,9 +234,11 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="text"
               id="in-rb_bd_linkedin"
-              name="linkedin"
-              value={resumeData.linkedin}
-              onChange={(e) => handleInputChange(e)}
+              name="linkedinDisplayName"
+              value={resumeDataNew.links.linkedinDisplayName}
+              onChange={(e) =>
+                updateField("links.linkedinDisplayName", e.target.value)
+              }
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_linkedin" className="TextFieldLabel">
@@ -277,9 +271,9 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="url"
               id="in-rb_bd_linkedinurl"
-              name="linkedinurl"
-              value={resumeData.linkedinurl}
-              onChange={(e) => handleInputChange(e)}
+              name="linkedinUrl"
+              value={resumeDataNew.links.linkedinUrl}
+              onChange={(e) => updateField("links.linkedinUrl", e.target.value)}
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_linkedinurl" className="TextFieldLabel">
@@ -312,9 +306,11 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="text"
               id="in-rb_bd_github"
-              name="github"
-              value={resumeData.github}
-              onChange={(e) => handleInputChange(e)}
+              name="githubDisplayName"
+              value={resumeDataNew.links.githubDisplayName}
+              onChange={(e) =>
+                updateField("links.githubDisplayName", e.target.value)
+              }
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_github" className="TextFieldLabel">
@@ -347,9 +343,9 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="url"
               id="in-rb_bd_githuburl"
-              name="githuburl"
-              value={resumeData.githuburl}
-              onChange={(e) => handleInputChange(e)}
+              name="githubUrl"
+              value={resumeDataNew.links.githubUrl}
+              onChange={(e) => updateField("links.githubUrl", e.target.value)}
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_githuburl" className="TextFieldLabel">
@@ -382,9 +378,11 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="text"
               id="in-rb_bd_customlink"
-              name="customlink"
-              value={resumeData.customlink}
-              onChange={(e) => handleInputChange(e)}
+              name="websiteDisplayName"
+              value={resumeDataNew.links.websiteDisplayName}
+              onChange={(e) =>
+                updateField("links.websiteDisplayName", e.target.value)
+              }
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_customlink" className="TextFieldLabel">
@@ -417,9 +415,9 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
             <input
               type="url"
               id="in-rb_bd_customlinkurl"
-              name="customlinkurl"
-              value={resumeData.customlinkurl}
-              onChange={(e) => handleInputChange(e)}
+              name="websiteUrl"
+              value={resumeDataNew.links.websiteUrl}
+              onChange={(e) => updateField("links.websiteUrl", e.target.value)}
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_customlinkurl" className="TextFieldLabel">
@@ -450,10 +448,10 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
 
           <div id="dv-BasicDetailsSummary" className="InputWrapper">
             <textarea
-              name="summary"
               id="in-rb_bd_summary"
-              value={resumeData.summary}
-              onChange={(e) => handleInputChange(e)}
+              name="summary"
+              value={resumeDataNew.summary}
+              onChange={(e) => updateField("summary", e.target.value)}
               placeholder=" "
             />
             <label htmlFor="in-rb_bd_summary" className="TextFieldLabel">
@@ -514,7 +512,7 @@ const BioSummary = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };

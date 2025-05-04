@@ -12,6 +12,8 @@ from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
 from sklearn.ensemble import StackingRegressor, StackingClassifier
 from sklearn.metrics import mean_squared_error, accuracy_score
 from imblearn.over_sampling import SMOTE
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 MODELS_DIR = "models"
 os.makedirs(MODELS_DIR, exist_ok=True)
@@ -94,6 +96,22 @@ def train_role_specific_models(role, df_role):
     accuracy = round(accuracy, 2)
     print(f"Classification Model Test Accuracy: {accuracy}%")
 
+    cm = confusion_matrix(y_test_class, stacked_clf.predict(X_test))
+
+    plt.figure(figsize=(8, 6))
+
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["0", "1", "2"], yticklabels=["0", "1", "2"])
+
+    plt.xlabel("Predicted Label")
+
+    plt.ylabel("True Label")
+
+    plt.title(f"Confusion Matrix for {role} Classification Model")
+
+    plt.tight_layout()
+
+    plt.show()
+
     model_dir = os.path.join(MODELS_DIR, role)
     save_model_and_preprocessors(
         preprocessors,
@@ -142,5 +160,5 @@ def process_all_roles(df):
         print("No roles were processed to generate plots.")
 
 
-df = pd.read_excel("Dataset Final.xlsx")
+df = pd.read_excel("Job_Role_Dataset.xlsx")
 process_all_roles(df)

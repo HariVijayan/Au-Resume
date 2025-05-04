@@ -1,0 +1,156 @@
+import { create } from "zustand";
+
+const ResumeInputTemplate = create((set) => ({
+  resumeDataNew: {
+    personal: {
+      name: "",
+      bio: "",
+      mobile: "",
+      email: "",
+      location: "",
+    },
+    links: {
+      linkedinDisplayName: "",
+      linkedinUrl: "",
+      githubDisplayName: "",
+      githubUrl: "",
+      websiteDisplayName: "",
+      websiteUrl: "",
+    },
+    summary: "",
+    education: {
+      phd: [
+        {
+          name: "",
+          university: "",
+          year: "",
+          expertise: "",
+          additionalInfo: "",
+        },
+      ],
+      pg_degree: [
+        {
+          name: "",
+          university: "",
+          year: "",
+          cgpa: "",
+          additionalInfo: "",
+        },
+      ],
+      ug_degree: [
+        {
+          name: "",
+          university: "",
+          year: "",
+          cgpa: "",
+          additionalInfo: "",
+        },
+      ],
+      diploma: [
+        {
+          name: "",
+          university: "",
+          year: "",
+          cgpa: "",
+          additionalInfo: "",
+        },
+      ],
+      hsc: {
+        name: "",
+        year: "",
+        grade: "",
+        additionalInfo: "",
+      },
+      sslc: {
+        name: "",
+        year: "",
+        grade: "",
+        additionalInfo: "",
+      },
+    },
+    experience: [
+      {
+        style: "style1",
+        company: "",
+        location: "",
+        year: "",
+        designation: "",
+        team: "",
+        roles: [],
+        description: "",
+      },
+    ],
+    projects: [
+      {
+        name: "",
+        link: "",
+        description: "",
+        tech_stack: [],
+      },
+    ],
+    skills: {
+      type: "style1",
+      skillSet: [],
+    },
+    certifications: {
+      type: "style1",
+      certificationSet: [],
+    },
+    languages: [],
+    custom_sections: [
+      {
+        title: "",
+        type: "list",
+        content: [],
+      },
+    ],
+  },
+
+  setResumeData: (newData) => set({ resumeData: newData }),
+
+  updateField: (path, value) =>
+    set((state) => {
+      const keys = path.split(".");
+      const lastKey = keys.pop(); 
+      let ref = { ...state.resumeDataNew };
+
+      let tempRef = ref;
+      keys.forEach((key) => {
+        tempRef[key] = { ...tempRef[key] }; 
+        tempRef = tempRef[key]; 
+      });
+
+      tempRef[lastKey] = value; 
+      return { resumeDataNew: ref }; 
+    }),
+
+  pushToArray: (path, newEntry) =>
+    set((state) => {
+      const keys = path.split(".");
+      const lastKey = keys.pop();
+      let ref = state.resumeData;
+
+      for (const key of keys) {
+        ref = ref[key];
+      }
+
+      ref[lastKey].push(newEntry);
+      return { resumeData: { ...state.resumeData } };
+    }),
+
+  removeFromArray: (path, index) =>
+    set((state) => {
+      const keys = path.split(".");
+      const lastKey = keys.pop();
+      let ref = state.resumeData;
+
+      for (const key of keys) {
+        ref = ref[key];
+      }
+
+      ref[lastKey].splice(index, 1);
+      return { resumeData: { ...state.resumeData } };
+    }),
+}));
+
+export default ResumeInputTemplate;

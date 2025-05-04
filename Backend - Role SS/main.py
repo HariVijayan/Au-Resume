@@ -86,7 +86,7 @@ async def process_frontend_request(pdf: UploadFile = File(...), job_role: str = 
     
     except Exception as e:
         logger.error("Error processing file: %s", str(e))
-        return JSONResponse(status_code=500, content={"error": str(e)})
+        return JSONResponse(status_code=500, content={"message": "Internal Server error. Processing failed."})
     
 def save_output_json(filename, data, debug_dir):
     """Saves intermediate processing results to a JSON file for debugging."""

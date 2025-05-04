@@ -13,7 +13,7 @@ class JobFitPredictor:
 
         if not os.path.exists(job_role_model_dir):
             print(f"No models found for job role: {job_role}")
-            return None
+            return (f"No models found for job role: {job_role}")
 
         try:
             return {
@@ -27,7 +27,7 @@ class JobFitPredictor:
             }
         except Exception as e:
             print(f"Error loading models for {job_role}: {e}")
-            return None
+            return {f"Error loading models for {job_role}: {e}"}
 
     def preprocess_input(self, data_dict, encoders):
         skills = [s.strip() for s in str(data_dict.get("Skills", "")).split(",") if s.strip()]

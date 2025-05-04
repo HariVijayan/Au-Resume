@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   BrowserRouter as Router,
   Routes,
@@ -34,7 +33,15 @@ import "./Components/Resume_Builder/RB_Styles.css";
 import "./Components/JD_SucessScore/Jd_SS_Styles.css";
 import "./Components/Role_SuccessScore/Role_SS_Styles.css";
 
+import ResumeInputTemplate from "./ResumeFormat.jsx";
+
 function RouteWrapper() {
+  const { resumeDataNew } = ResumeInputTemplate();
+
+  useEffect(() => {
+    console.log(resumeDataNew);
+  }, [resumeDataNew]);
+
   const forceMultiTabClosureOnLogout = () => {
     const navigate = useNavigate();
 

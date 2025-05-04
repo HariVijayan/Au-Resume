@@ -89,36 +89,13 @@ function App() {
             id="dropdown"
             required
           >
-            <option value="AI Engineer">AI Engineer</option>
-            <option value="Backend Developer">App Developer</option>
             <option value="Backend Developer">Backend Developer</option>
-            <option value="Blockchain Developer">Blockchain Developer</option>
             <option value="Cloud Engineer">Cloud Engineer</option>
             <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
-            <option value="Cybersecurity Specialist">
-              Cybersecurity Specialist
-            </option>
-            <option value="Data Analyst">Data Analyst</option>
             <option value="Data Scientist">Data Scientist</option>
-            <option value="Database Administrator">
-              Database Administrator
-            </option>
             <option value="DevOps Engineer">DevOps Engineer</option>
             <option value="Frontend Developer">Frontend Developer</option>
-            <option value="Game Developer">Game Developer</option>
-            <option value="IT Support Specialist">IT Support Specialist</option>
-            <option value="ML Engineer">ML Engineer</option>
-            <option value="Network Administrator">Network Administrator</option>
-            <option value="Penetration Tester">Penetration Tester</option>
-            <option value="Product Manager">Product Manager</option>
-            <option value="QA Engineer">QA Engineer</option>
-            <option value="Security Engineer">Security Engineer</option>
-            <option value="SEO Specialist">SEO Specialist</option>
             <option value="Software Engineer">Software Engineer</option>
-            <option value="System Administrator">System Administrator</option>
-            <option value="UI and UX Designer">UI and UX Designer</option>
-            <option value="VR Developer">VR Developer</option>
-            <option value="Web Developer">Web Developer</option>
           </select>
           <label htmlFor="dropdown" className="DropDownLabel">
             Job Role

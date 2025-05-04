@@ -1,5 +1,5 @@
 {
-    "match_score": 51.07,
+    "match_score": 51.91,
     "matched_entities": {
         "Skills": {
             "resume": "Web Development, Cloud Deployment, Machine Learning",
@@ -12,9 +12,9 @@
             "similarity": "26.71%"
         },
         "Education": {
-            "resume": "Completed Ph.D in Network Security at Anna University during 2024 - 2029. Additional info: Widely accepted Research. Completed Ph.D in Advanced Neural Networks with specialization in Machine Learning, Neural Networks, Deep Learning at Anna University during 2024 - 2029.\nCompleted Master of Computer Applications at Anna University during 2022 - 2024, achieving 9.5 CGPA.\nCompleted B.Sc. Computer Science at Anna University during 2019 - 2022, achieving 8.7 CGPA.\nCompleted Diploma in Technology at Anna University during 2017 - 2019, achieving 9.5 CGPA.\nDid High Schooling at Don Bosco School during 2015 - 2017 with a grade of Grade: 68.0. Additional info: State Board.\nDid SSLC at Don Bosco School during 2014 - 2015 with a grade of Grade: 68.0. Additional info: State Board.",
+            "resume": "Completed Ph.D in Network Security with specialization in Network Security at Anna University during 2024 - 2029. Additional info: Widely accepted Research. Completed Ph.D in Advanced Neural Networks with specialization in Machine Learning, Neural Networks, Deep Learning at Anna University during 2024 - 2029. Additional info: Best Research.\nCompleted Master of Computer Applications at Anna University during 2022 - 2024, achieving 9.5 CGPA.\nCompleted B.Sc. Computer Science at Anna University during 2019 - 2022, achieving 8.7 CGPA.\nCompleted Diploma in Technology at Anna University during 2017 - 2019, achieving 9.5 CGPA. Additional info: Distinction Grade.\nDid High Schooling at Don Bosco School during 2015 - 2017 with a grade of 68.0. Additional info: State Board.\nDid SSLC at Don Bosco School during 2014 - 2015 with a grade of 68.0. Additional info: State Board.",
             "job_description": "A bachelor or master's degree degree in artificial intelligence, computer science, networking, research experience, security or a related area is preferred.",
-            "similarity": "43.65%"
+            "similarity": "46.98%"
         },
         "Certifications": {
             "resume": "AWS Certified Developer, Google Cloud Certified (udemy.com/certificate/ghvsgv212), Machine Learning Expert",
