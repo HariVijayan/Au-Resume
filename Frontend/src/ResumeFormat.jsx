@@ -89,11 +89,11 @@ const ResumeInputTemplate = create((set) => ({
       },
     ],
     skills: {
-      type: "style1",
+      type: "",
       skillSet: [],
     },
     certifications: {
-      type: "style1",
+      type: "",
       certificationSet: [],
     },
     languages: [],
@@ -111,31 +111,33 @@ const ResumeInputTemplate = create((set) => ({
   updateField: (path, value) =>
     set((state) => {
       const keys = path.split(".");
-      const lastKey = keys.pop(); 
+      const lastKey = keys.pop();
       let ref = { ...state.resumeDataNew };
 
       let tempRef = ref;
       keys.forEach((key) => {
-        tempRef[key] = { ...tempRef[key] }; 
-        tempRef = tempRef[key]; 
+        tempRef[key] = { ...tempRef[key] };
+        tempRef = tempRef[key];
       });
 
-      tempRef[lastKey] = value; 
-      return { resumeDataNew: ref }; 
+      tempRef[lastKey] = value;
+      return { resumeDataNew: ref };
     }),
 
   pushToArray: (path, newEntry) =>
     set((state) => {
       const keys = path.split(".");
       const lastKey = keys.pop();
-      let ref = state.resumeData;
+      let ref = state.resumeDataNew;
 
-      for (const key of keys) {
-        ref = ref[key];
-      }
+      let tempRef = ref;
+      keys.forEach((key) => {
+        tempRef[key] = { ...tempRef[key] };
+        tempRef = tempRef[key];
+      });
 
-      ref[lastKey].push(newEntry);
-      return { resumeData: { ...state.resumeData } };
+      tempRef[lastKey].push(newEntry);
+      return { resumeDataNew: { ...state.resumeDataNew } };
     }),
 
   removeFromArray: (path, index) =>

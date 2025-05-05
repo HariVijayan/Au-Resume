@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import InfoDiv from "../Info Div/InfoDiv";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Style1 = ({ resumeData, setResumeData }) => {
+const Style1 = () => {
   const [infoDiv, setInfoDiv] = useState("");
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
+
+  const [skillsetValue, setSkillsetValue] = useState(
+    resumeDataNew.skills.skillSet || ""
+  );
 
   const showOrHideInfoDiv = (currentState) => {
     if (infoDiv === currentState) {
@@ -12,16 +19,22 @@ const Style1 = ({ resumeData, setResumeData }) => {
     }
   };
 
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const updatedSkills = { ...resumeData.skills };
+  const splitCSValues = (e) => {
+    let { value } = e.target;
+    let updatedSkills = { ...resumeDataNew.skills };
 
-    updatedSkills.style1.skillset = value.split(",").map((role) => role.trim());
+    setSkillsetValue(value);
 
-    setResumeData({
-      ...resumeData,
-      skills: updatedSkills,
-    });
+    let newSkills = value.split(",").filter((skill) => skill.trim().length > 0);
+
+    newSkills = newSkills.map((skill) => skill.trim());
+
+    updatedSkills = {
+      type: "style1",
+      skillSet: newSkills,
+    };
+
+    updateField("skills", updatedSkills);
   };
 
   return (
@@ -31,8 +44,8 @@ const Style1 = ({ resumeData, setResumeData }) => {
           type="text"
           name="skillset"
           id="in-rb_skills_list"
-          value={resumeData.skills.style1.skillset.join(", ")}
-          onChange={(e) => handleInputChange(e, 0)}
+          value={skillsetValue}
+          onChange={splitCSValues}
           placeholder=" "
         />
         <label htmlFor="in-rb_skills_list" className="TextFieldLabel">

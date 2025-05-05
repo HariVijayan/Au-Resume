@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Language = ({ resumeData, setResumeData, templateType }) => {
+const Language = ({ templateType }) => {
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
+
+  const [languageValue, setLanguageValue] = useState(
+    resumeDataNew.languages || ""
+  );
+
   const navigate = useNavigate();
 
   const [infoDiv, setInfoDiv] = useState("");
@@ -23,16 +30,21 @@ const Language = ({ resumeData, setResumeData, templateType }) => {
       navigate("/resume-builder/custom-input");
     }
   };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    let updatedLanguages = { ...resumeData.languages };
+  const splitCSValues = (e) => {
+    const { value } = e.target;
+    let updatedLanguages = { ...resumeDataNew.languages };
 
-    updatedLanguages = value.split(",").map((role) => role.trim());
+    setLanguageValue(value);
 
-    setResumeData({
-      ...resumeData,
-      languages: updatedLanguages,
-    });
+    updatedLanguages = value
+      .split(",")
+      .filter((language) => language.trim().length > 0);
+
+    updatedLanguages = updatedLanguages.map((language) => language.trim());
+
+    setLanguageValue(value);
+
+    updateField("languages", updatedLanguages);
   };
 
   return (
@@ -66,10 +78,10 @@ const Language = ({ resumeData, setResumeData, templateType }) => {
             <div id="dv-LanguagesSet" className="InputWrapper">
               <input
                 type="text"
-                name="languages"
                 id="in-rb_lan_list"
-                value={resumeData.languages.join(", ")}
-                onChange={(e) => handleInputChange(e)}
+                name="languages"
+                value={languageValue}
+                onChange={splitCSValues}
                 placeholder=" "
               />
               <label htmlFor="in-rb_lan_list" className="TextFieldLabel">
@@ -143,7 +155,7 @@ const Language = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };

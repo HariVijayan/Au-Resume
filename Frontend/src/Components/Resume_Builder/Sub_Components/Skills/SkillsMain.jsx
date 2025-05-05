@@ -3,9 +3,12 @@ import Style1 from "./Style 1";
 import Style2 from "./Style 2";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Skills = ({ resumeData, setResumeData, templateType }) => {
+const Skills = ({ templateType }) => {
   const navigate = useNavigate();
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -18,30 +21,28 @@ const Skills = ({ resumeData, setResumeData, templateType }) => {
   const [skillType, setSkillType] = useState("Default");
 
   useEffect(() => {
-    if (resumeData.skills.style1.skillset.length > 0) {
+    if (resumeDataNew.skills.type == "style1") {
       setSkillType("Style1");
-    } else if (resumeData.skills.style2.skillset.trim() !== "") {
+    } else if (resumeDataNew.skills.type == "style2") {
       setSkillType("Style2");
+    } else {
+      setSkillType("Default");
     }
-  }, [resumeData.skills]);
+  }, [resumeDataNew.skills]);
 
   const setSkills = (type) => {
     if (type === "Style1") {
-      setResumeData({
-        ...resumeData,
-        skills: {
-          style1: { skillset: resumeData.skills.style1.skillset },
-          style2: { skillset: "" },
-        },
-      });
+      let updatedSkills = { ...resumeDataNew.skills };
+      updatedSkills.type = "style1";
+      updatedSkills.skillSet = [];
+
+      updateField("skills", updatedSkills);
     } else if (type === "Style2") {
-      setResumeData({
-        ...resumeData,
-        skills: {
-          style1: { skillset: [] },
-          style2: { skillset: resumeData.skills.style2.skillset },
-        },
-      });
+      let updatedSkills = { ...resumeDataNew.skills };
+      updatedSkills.type = "style2";
+      updatedSkills.skillSet = "";
+
+      updateField("skills", updatedSkills);
     }
 
     setSkillType(type);
@@ -113,12 +114,8 @@ const Skills = ({ resumeData, setResumeData, templateType }) => {
           {skillType === "Default" && (
             <p>Please select a skill type to begin.</p>
           )}
-          {skillType === "Style1" && (
-            <Style1 resumeData={resumeData} setResumeData={setResumeData} />
-          )}
-          {skillType === "Style2" && (
-            <Style2 resumeData={resumeData} setResumeData={setResumeData} />
-          )}
+          {skillType === "Style1" && <Style1 />}
+          {skillType === "Style2" && <Style2 />}
         </div>
         <div id="dv-SkillsButtons" className="NavigationButtons">
           <button
@@ -155,7 +152,7 @@ const Skills = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };

@@ -3,9 +3,12 @@ import Style1 from "./Style 1";
 import Style2 from "./Style 2";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
 const Cerifications = ({ resumeData, setResumeData, templateType }) => {
   const navigate = useNavigate();
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -18,34 +21,28 @@ const Cerifications = ({ resumeData, setResumeData, templateType }) => {
   const [certificationType, setCertificationType] = useState("Default");
 
   useEffect(() => {
-    if (resumeData.certification.style1.certificationset.length > 0) {
+    if (resumeDataNew.certifications.type == "style1") {
       setCertificationType("Style1");
-    } else if (resumeData.certification.style2.certificationset.trim() !== "") {
+    } else if (resumeDataNew.certifications.type == "style2") {
       setCertificationType("Style2");
+    } else {
+      setCertificationType("Default");
     }
-  }, [resumeData.certification]);
+  }, [resumeDataNew.certifications]);
 
   const setCertifications = (type) => {
     if (type === "Style1") {
-      setResumeData({
-        ...resumeData,
-        certification: {
-          style1: {
-            certificationset: resumeData.certification.style1.certificationset,
-          },
-          style2: { certificationset: "" },
-        },
-      });
+      let updatedCertifications = { ...resumeDataNew.certifications };
+      updatedCertifications.type = "style1";
+      updatedCertifications.certificationSet = [];
+
+      updateField("certifications", updatedCertifications);
     } else if (type === "Style2") {
-      setResumeData({
-        ...resumeData,
-        certification: {
-          style1: { certificationset: [] },
-          style2: {
-            certificationset: resumeData.certification.style2.certificationset,
-          },
-        },
-      });
+      let updatedCertifications = { ...resumeDataNew.certifications };
+      updatedCertifications.type = "style2";
+      updatedCertifications.certificationSet = "";
+
+      updateField("certifications", updatedCertifications);
     }
 
     setCertificationType(type);

@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import InfoDiv from "../Info Div/InfoDiv";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Style2 = ({ resumeData, setResumeData }) => {
+const Style2 = () => {
   const [infoDiv, setInfoDiv] = useState("");
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
+
+  const [skillsetValue, setSkillsetValue] = useState(
+    resumeDataNew.skills.skillSet || ""
+  );
 
   const showOrHideInfoDiv = (currentState) => {
     if (infoDiv === currentState) {
@@ -12,17 +19,21 @@ const Style2 = ({ resumeData, setResumeData }) => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const trimParaWhitespaces = (e) => {
+    const { value } = e.target;
 
-    const updatedSkills = { ...resumeData.skills };
+    let updatedSkills = { ...resumeDataNew.skills };
 
-    updatedSkills.style2.skillset = value.trim();
+    let newSkills = value.trim();
 
-    setResumeData({
-      ...resumeData,
-      skills: updatedSkills,
-    });
+    setSkillsetValue(value);
+
+    updatedSkills = {
+      type: "style2",
+      skillSet: newSkills,
+    };
+
+    updateField("skills", updatedSkills);
   };
 
   return (
@@ -32,8 +43,8 @@ const Style2 = ({ resumeData, setResumeData }) => {
           type="text"
           name="skillset"
           id="in-rb_skills_para"
-          value={resumeData.skills.style2.skillset}
-          onChange={handleInputChange}
+          value={skillsetValue}
+          onChange={trimParaWhitespaces}
           placeholder=" "
         />
         <label htmlFor="in-rb_skills_para" className="TextFieldLabel">

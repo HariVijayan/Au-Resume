@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import InfoDiv from "../Info Div/InfoDiv";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Style1 = ({ resumeData, setResumeData }) => {
+const Style1 = () => {
   const [infoDiv, setInfoDiv] = useState("");
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
+
+  const [certificationSetValue, setCertificationSetValue] = useState(
+    resumeDataNew.certifications.certificationSet || ""
+  );
 
   const showOrHideInfoDiv = (currentState) => {
     if (infoDiv === currentState) {
@@ -12,18 +19,26 @@ const Style1 = ({ resumeData, setResumeData }) => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const updatedCertification = { ...resumeData.certification };
+  const splitCSValues = (e) => {
+    let { value } = e.target;
+    let updatedCertification = { ...resumeDataNew.certifications };
 
-    updatedCertification.style1.certificationset = value
+    setCertificationSetValue(value);
+
+    let newCertifications = value
       .split(",")
-      .map((role) => role.trim());
+      .filter((certification) => certification.trim().length > 0);
 
-    setResumeData({
-      ...resumeData,
-      certification: updatedCertification,
-    });
+    newCertifications = newCertifications.map((certification) =>
+      certification.trim()
+    );
+
+    updatedCertification = {
+      type: "style1",
+      certificationSet: newCertifications,
+    };
+
+    updateField("certifications", updatedCertification);
   };
 
   return (
@@ -33,8 +48,8 @@ const Style1 = ({ resumeData, setResumeData }) => {
           type="text"
           id="in-rb_cer_list"
           name="certificationset"
-          value={resumeData.certification.style1.certificationset.join(", ")}
-          onChange={(e) => handleInputChange(e)}
+          value={certificationSetValue}
+          onChange={splitCSValues}
           placeholder=" "
         />
         <label htmlFor="in-rb_cer_list" className="TextFieldLabel">

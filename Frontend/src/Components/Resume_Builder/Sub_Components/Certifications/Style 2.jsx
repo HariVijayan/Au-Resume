@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import InfoDiv from "../Info Div/InfoDiv";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Style2 = ({ resumeData, setResumeData }) => {
+const Style2 = () => {
   const [infoDiv, setInfoDiv] = useState("");
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
+
+  const [certificationSetValue, setCertificationSetValue] = useState(
+    resumeDataNew.certifications.certificationSet || ""
+  );
 
   const showOrHideInfoDiv = (currentState) => {
     if (infoDiv === currentState) {
@@ -12,17 +19,21 @@ const Style2 = ({ resumeData, setResumeData }) => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const trimParaWhitespaces = (e) => {
+    const { value } = e.target;
 
-    const updatedCertification = { ...resumeData.certification };
+    let updatedCertification = { ...resumeDataNew.certifications };
 
-    updatedCertification.style2.certificationset = value.trim();
+    let newCertifications = value.trim();
 
-    setResumeData({
-      ...resumeData,
-      certification: updatedCertification,
-    });
+    setCertificationSetValue(value);
+
+    updatedCertification = {
+      type: "style2",
+      certificationSet: newCertifications,
+    };
+
+    updateField("certifications", updatedCertification);
   };
 
   return (
@@ -32,8 +43,8 @@ const Style2 = ({ resumeData, setResumeData }) => {
           type="text"
           id="in-rb_cer_para"
           name="certificationset"
-          value={resumeData.certification.style2.certificationset}
-          onChange={handleInputChange}
+          value={certificationSetValue}
+          onChange={trimParaWhitespaces}
           placeholder=" "
         />
         <label htmlFor="in-rb_cer_para" className="TextFieldLabel">
