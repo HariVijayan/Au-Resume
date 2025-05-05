@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import InfoDiv from "../../Info Div/InfoDiv.jsx";
+import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 
-const Pg = ({ resumeData, setResumeData, templateType }) => {
+const Pg = ({ templateType }) => {
   const navigate = useNavigate();
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -24,31 +27,17 @@ const Pg = ({ resumeData, setResumeData, templateType }) => {
     }
   };
 
-  const handleEducationInputChange = (e, Index) => {
-    const { name, value } = e.target;
-    const updatedEducation = [...resumeData.education];
-    updatedEducation[0].pg_degree[Index][name] = value;
-    setResumeData({
-      ...resumeData,
-      education: updatedEducation,
-    });
-  };
-
-  const handleAddEducation = (e) => {
+  const addNewPg = (e) => {
     e.preventDefault();
-    const updatedEducation = [...resumeData.education];
-    updatedEducation[0].pg_degree.push({
-      pg_degree_name: "",
-      pg_degree_university: "",
-      pg_degree_year: "",
-      pg_degree_cgpa: "",
-      pg_degree_additional_info: "",
+    const updatedPg = [...resumeDataNew.education.postGraduate];
+    updatedPg.push({
+      name: "",
+      university: "",
+      year: "",
+      cgpa: "",
+      additionalInfo: "",
     });
-
-    setResumeData({
-      ...resumeData,
-      education: updatedEducation,
-    });
+    updateField("education.postGraduate", updatedPg);
   };
 
   return (
@@ -83,7 +72,7 @@ const Pg = ({ resumeData, setResumeData, templateType }) => {
           <div id="dv-EducationPgAddInput" className="AddInputButton">
             <button
               type="button"
-              onClick={(e) => handleAddEducation(e)}
+              onClick={addNewPg}
               className="AddInputButtons"
             >
               <svg
@@ -98,221 +87,261 @@ const Pg = ({ resumeData, setResumeData, templateType }) => {
               Add Pg
             </button>
           </div>
-          {resumeData.education[0].pg_degree.map((pg_degree, index) => (
-            <div
-              key={index}
-              id={`dv-EducationPgCopy${index + 1}`}
-              className="SubWrapper"
-            >
-              <div id={`dv-EduPgNameCopy${index + 1}`} className="InputWrapper">
-                <input
-                  type="text"
-                  id={`in-rb_edu_pg_name${index + 1}`}
-                  name="pg_degree_name"
-                  value={pg_degree.pg_degree_name}
-                  onChange={(e) => handleEducationInputChange(e, index)}
-                  placeholder=" "
-                />
-                <label
-                  htmlFor={`in-rb_edu_pg_name${index + 1}`}
-                  className="TextFieldLabel"
+
+          {resumeDataNew.education.postGraduate.map(
+            (newPgEntry, newPgIndex) => (
+              <div
+                key={newPgIndex}
+                id={`dv-EducationPgCopy${newPgIndex + 1}`}
+                className="SubWrapper"
+              >
+                <div
+                  id={`dv-EduPgNameCopy${newPgIndex + 1}`}
+                  className="InputWrapper"
                 >
-                  Name
-                </label>
-                <svg
-                  onClick={() => showOrHideInfoDiv(`Pg Name${index}`)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="MandatoryInputSvg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
+                  <input
+                    type="text"
+                    id={`in-rb_edu_pg_name${newPgIndex + 1}`}
+                    name="pg_degree_name"
+                    value={newPgEntry.name}
+                    onChange={(e) => {
+                      let updatedPg = [...resumeDataNew.education.postGraduate];
+                      updatedPg[newPgIndex].name = e.target.value;
+                      updateField("education.postGraduate", updatedPg);
+                    }}
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor={`in-rb_edu_pg_name${newPgIndex + 1}`}
+                    className="TextFieldLabel"
+                  >
+                    Name
+                  </label>
+                  <svg
+                    onClick={() => showOrHideInfoDiv(`Pg Name${newPgIndex}`)}
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="MandatoryInputSvg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                  >
+                    <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
+                  </svg>
+                </div>
+
+                {infoDiv === `Pg Name${newPgIndex}` && (
+                  <InfoDiv
+                    requirement={"Mandatory"}
+                    explanation={
+                      "Complete name of the Pg degree with specialization if any"
+                    }
+                    examples={"Master of Computer Applications"}
+                    characterLimit={"Upto 40 characters"}
+                    allowedCharacters={"No Restrictions"}
+                  />
+                )}
+
+                <div
+                  id={`dv-EduPgUniCopy${newPgIndex + 1}`}
+                  className="InputWrapper"
                 >
-                  <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                </svg>
+                  <input
+                    type="text"
+                    id={`in-rb_edu_pg_uni${newPgIndex + 1}`}
+                    name="pg_degree_university"
+                    value={newPgEntry.university}
+                    onChange={(e) => {
+                      let updatedPg = [...resumeDataNew.education.postGraduate];
+                      updatedPg[newPgIndex].university = e.target.value;
+                      updateField("education.postGraduate", updatedPg);
+                    }}
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor={`in-rb_edu_pg_uni${newPgIndex + 1}`}
+                    className="TextFieldLabel"
+                  >
+                    University
+                  </label>
+                  <svg
+                    onClick={() =>
+                      showOrHideInfoDiv(`Pg University${newPgIndex}`)
+                    }
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="MandatoryInputSvg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                  >
+                    <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
+                  </svg>
+                </div>
+
+                {infoDiv === `Pg University${newPgIndex}` && (
+                  <InfoDiv
+                    requirement={"Mandatory"}
+                    explanation={"The university which awarded the Pg degree"}
+                    examples={"Anna University"}
+                    characterLimit={"Upto 40 characters"}
+                    allowedCharacters={"No Restrictions"}
+                  />
+                )}
+
+                <div
+                  id={`dv-EduPgYearCopy${newPgIndex + 1}`}
+                  className="InputWrapper"
+                >
+                  <input
+                    type="text"
+                    id={`in-rb_edu_pg_year${newPgIndex + 1}`}
+                    name="pg_degree_year"
+                    value={newPgEntry.year}
+                    onChange={(e) => {
+                      let updatedPg = [...resumeDataNew.education.postGraduate];
+                      updatedPg[newPgIndex].year = e.target.value;
+                      updateField("education.postGraduate", updatedPg);
+                    }}
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor={`in-rb_edu_pg_year${newPgIndex + 1}`}
+                    className="TextFieldLabel"
+                  >
+                    Year
+                  </label>
+                  <svg
+                    onClick={() => showOrHideInfoDiv(`Pg Period${newPgIndex}`)}
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="MandatoryInputSvg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                  >
+                    <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
+                  </svg>
+                </div>
+
+                {infoDiv === `Pg Period${newPgIndex}` && (
+                  <InfoDiv
+                    requirement={"Mandatory"}
+                    explanation={
+                      "The period of your time pursuing this Pg program"
+                    }
+                    examples={"2022 - 2024"}
+                    characterLimit={"Upto 15 characters"}
+                    allowedCharacters={"Numbers, Hyphens"}
+                  />
+                )}
+
+                <div
+                  id={`dv-EduPgCgpaCopy${newPgIndex + 1}`}
+                  className="InputWrapper"
+                >
+                  <input
+                    type="text"
+                    id={`in-rb_edu_pg_cgpa${newPgIndex + 1}`}
+                    name="pg_degree_cgpa"
+                    value={newPgEntry.cgpa}
+                    onChange={(e) => {
+                      let updatedPg = [...resumeDataNew.education.postGraduate];
+                      updatedPg[newPgIndex].cgpa = e.target.value;
+                      updateField("education.postGraduate", updatedPg);
+                    }}
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor={`in-rb_edu_pg_cgpa${newPgIndex + 1}`}
+                    className="TextFieldLabel"
+                  >
+                    CGPA
+                  </label>
+                  <svg
+                    onClick={() => showOrHideInfoDiv(`Pg CGPA${newPgIndex}`)}
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="MandatoryInputSvg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                  >
+                    <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
+                  </svg>
+                </div>
+
+                {infoDiv === `Pg CGPA${newPgIndex}` && (
+                  <InfoDiv
+                    requirement={"Mandatory"}
+                    explanation={
+                      "Current or overall CGPA achieved in this degree"
+                    }
+                    examples={"9.5"}
+                    characterLimit={"Upto 5 characters"}
+                    allowedCharacters={"Numbers, Period"}
+                  />
+                )}
+
+                <div
+                  id={`dv-EduPgAddlCopy${newPgIndex + 1}`}
+                  className="InputWrapper"
+                >
+                  <input
+                    type="text"
+                    name="pg_additional_info"
+                    id={`in-rb_edu_pg_addl${newPgIndex + 1}`}
+                    value={newPgEntry.additionalInfo}
+                    onChange={(e) => {
+                      let updatedPg = [...resumeDataNew.education.postGraduate];
+                      updatedPg[newPgIndex].additionalInfo = e.target.value;
+                      updateField("education.postGraduate", updatedPg);
+                    }}
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor={`in-rb_edu_pg_addl${newPgIndex + 1}`}
+                    className="TextFieldLabel"
+                  >
+                    Additional Info
+                  </label>
+                  <svg
+                    onClick={() => showOrHideInfoDiv(`Pg Addl${newPgIndex}`)}
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="OptionalInputSvg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                  >
+                    <path d="M240-440v-80h480v80H240Z" />
+                  </svg>
+                </div>
+
+                {infoDiv === `Pg Addl${newPgIndex}` && (
+                  <InfoDiv
+                    requirement={"Optional"}
+                    explanation={
+                      "Any other important and relevant information related to this degree"
+                    }
+                    examples={"Distinction Grade"}
+                    characterLimit={"Upto 40 characters"}
+                    allowedCharacters={"No Restrictions"}
+                  />
+                )}
+
+                {infoDiv === " " && (
+                  <InfoDiv
+                    requirement={""}
+                    explanation={""}
+                    examples={""}
+                    characterLimit={""}
+                    allowedCharacters={""}
+                  />
+                )}
               </div>
-
-              {infoDiv === `Pg Name${index}` && (
-                <InfoDiv
-                  requirement={"Mandatory"}
-                  explanation={
-                    "Complete name of the Pg degree with specialization if any"
-                  }
-                  examples={"Master of Computer Applications"}
-                  characterLimit={"Upto 40 characters"}
-                  allowedCharacters={"No Restrictions"}
-                />
-              )}
-
-              <div id={`dv-EduPgUniCopy${index + 1}`} className="InputWrapper">
-                <input
-                  type="text"
-                  id={`in-rb_edu_pg_uni${index + 1}`}
-                  name="pg_degree_university"
-                  value={pg_degree.pg_degree_university}
-                  onChange={(e) => handleEducationInputChange(e, index)}
-                  placeholder=" "
-                />
-                <label
-                  htmlFor={`in-rb_edu_pg_uni${index + 1}`}
-                  className="TextFieldLabel"
-                >
-                  University
-                </label>
-                <svg
-                  onClick={() => showOrHideInfoDiv(`Pg University${index}`)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="MandatoryInputSvg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                </svg>
-              </div>
-
-              {infoDiv === `Pg University${index}` && (
-                <InfoDiv
-                  requirement={"Mandatory"}
-                  explanation={"The university which awarded the Pg degree"}
-                  examples={"Anna University"}
-                  characterLimit={"Upto 40 characters"}
-                  allowedCharacters={"No Restrictions"}
-                />
-              )}
-
-              <div id={`dv-EduPgYearCopy${index + 1}`} className="InputWrapper">
-                <input
-                  type="text"
-                  id={`in-rb_edu_pg_year${index + 1}`}
-                  name="pg_degree_year"
-                  value={pg_degree.pg_degree_year}
-                  onChange={(e) => handleEducationInputChange(e, index)}
-                  placeholder=" "
-                />
-                <label
-                  htmlFor={`in-rb_edu_pg_year${index + 1}`}
-                  className="TextFieldLabel"
-                >
-                  Year
-                </label>
-                <svg
-                  onClick={() => showOrHideInfoDiv(`Pg Period${index}`)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="MandatoryInputSvg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                </svg>
-              </div>
-
-              {infoDiv === `Pg Period${index}` && (
-                <InfoDiv
-                  requirement={"Mandatory"}
-                  explanation={
-                    "The period of your time pursuing this Pg program"
-                  }
-                  examples={"2022 - 2024"}
-                  characterLimit={"Upto 15 characters"}
-                  allowedCharacters={"Numbers, Hyphens"}
-                />
-              )}
-
-              <div id={`dv-EduPgCgpaCopy${index + 1}`} className="InputWrapper">
-                <input
-                  type="text"
-                  id={`in-rb_edu_pg_cgpa${index + 1}`}
-                  name="pg_degree_cgpa"
-                  value={pg_degree.pg_degree_cgpa}
-                  onChange={(e) => handleEducationInputChange(e, index)}
-                  placeholder=" "
-                />
-                <label
-                  htmlFor={`in-rb_edu_pg_cgpa${index + 1}`}
-                  className="TextFieldLabel"
-                >
-                  CGPA
-                </label>
-                <svg
-                  onClick={() => showOrHideInfoDiv(`Pg CGPA${index}`)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="MandatoryInputSvg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                </svg>
-              </div>
-
-              {infoDiv === `Pg CGPA${index}` && (
-                <InfoDiv
-                  requirement={"Mandatory"}
-                  explanation={
-                    "Current or overall CGPA achieved in this degree"
-                  }
-                  examples={"9.5"}
-                  characterLimit={"Upto 5 characters"}
-                  allowedCharacters={"Numbers, Period"}
-                />
-              )}
-
-              <div id={`dv-EduPgAddlCopy${index + 1}`} className="InputWrapper">
-                <input
-                  type="text"
-                  name="pg_additional_info"
-                  id={`in-rb_edu_pg_addl${index + 1}`}
-                  value={pg_degree.pg_additional_info}
-                  onChange={(e) => handleEducationInputChange(e, index)}
-                  placeholder=" "
-                />
-                <label
-                  htmlFor={`in-rb_edu_pg_addl${index + 1}`}
-                  className="TextFieldLabel"
-                >
-                  Additional Info
-                </label>
-                <svg
-                  onClick={() => showOrHideInfoDiv(`Pg Addl${index}`)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="OptionalInputSvg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M240-440v-80h480v80H240Z" />
-                </svg>
-              </div>
-
-              {infoDiv === `Pg Addl${index}` && (
-                <InfoDiv
-                  requirement={"Optional"}
-                  explanation={
-                    "Any other important and relevant information related to this degree"
-                  }
-                  examples={"Distinction Grade"}
-                  characterLimit={"Upto 40 characters"}
-                  allowedCharacters={"No Restrictions"}
-                />
-              )}
-
-              {infoDiv === " " && (
-                <InfoDiv
-                  requirement={""}
-                  explanation={""}
-                  examples={""}
-                  characterLimit={""}
-                  allowedCharacters={""}
-                />
-              )}
-            </div>
-          ))}
+            )
+          )}
         </div>
         <div id="dv-EducationPgButtons" className="NavigationButtons">
           <button
@@ -349,7 +378,7 @@ const Pg = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };

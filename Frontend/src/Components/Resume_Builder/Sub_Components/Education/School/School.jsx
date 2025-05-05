@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import InfoDiv from "../../Info Div/InfoDiv.jsx";
+import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 
-const School = ({ resumeData, setResumeData, templateType }) => {
+const School = ({ templateType }) => {
   const navigate = useNavigate();
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -22,20 +25,6 @@ const School = ({ resumeData, setResumeData, templateType }) => {
     } else {
       navigate("/resume-builder/projects");
     }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setResumeData((prevState) => {
-      const updatedEducation = { ...prevState.education[0] };
-      updatedEducation[name] = value;
-
-      return {
-        ...prevState,
-        education: [updatedEducation],
-      };
-    });
   };
 
   return (
@@ -72,8 +61,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_edu_schl_hsc_name"
               name="hsc_name"
-              value={resumeData.hsc_name}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.education.hsc.name}
+              onChange={(e) =>
+                updateField("education.hsc.name", e.target.value)
+              }
               placeholder=" "
             />
             <label htmlFor="in-rb_edu_schl_hsc_name" className="TextFieldLabel">
@@ -107,8 +98,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_edu_schl_hsc_year"
               name="hsc_year"
-              value={resumeData.hsc_year}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.education.hsc.year}
+              onChange={(e) =>
+                updateField("education.hsc.year", e.target.value)
+              }
               placeholder=" "
             />
             <label htmlFor="in-rb_edu_schl_hsc_year" className="TextFieldLabel">
@@ -142,8 +135,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_edu_schl_hsc_grade"
               name="hsc_grade"
-              value={resumeData.hsc_grade}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.education.hsc.grade}
+              onChange={(e) =>
+                updateField("education.hsc.grade", e.target.value)
+              }
               placeholder=" "
             />
             <label
@@ -180,8 +175,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_edu_schl_hsc_addl"
               name="hsc_additional_info"
-              value={resumeData.hsc_additional_info}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.education.hsc.additionalInfo}
+              onChange={(e) =>
+                updateField("education.hsc.additionalInfo", e.target.value)
+              }
               placeholder=" "
             />
             <label htmlFor="in-rb_edu_schl_hsc_addl" className="TextFieldLabel">
@@ -217,8 +214,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_edu_schl_sslc_name"
               name="sslc_name"
-              value={resumeData.sslc_name}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.education.sslc.name}
+              onChange={(e) =>
+                updateField("education.sslc.name", e.target.value)
+              }
               placeholder=" "
             />
             <label
@@ -255,8 +254,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_edu_schl_sslc_year"
               name="sslc_year"
-              value={resumeData.sslc_year}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.education.sslc.year}
+              onChange={(e) =>
+                updateField("education.sslc.year", e.target.value)
+              }
               placeholder=" "
             />
             <label
@@ -293,8 +294,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_edu_schl_sslc_grade"
               name="sslc_grade"
-              value={resumeData.sslc_grade}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.education.sslc.grade}
+              onChange={(e) =>
+                updateField("education.sslc.grade", e.target.value)
+              }
               placeholder=" "
             />
             <label
@@ -331,8 +334,10 @@ const School = ({ resumeData, setResumeData, templateType }) => {
               type="text"
               id="in-rb_edu_schl_sslc_addl"
               name="sslc_additional_info"
-              value={resumeData.sslc_additional_info}
-              onChange={(e) => handleInputChange(e)}
+              value={resumeDataNew.education.sslc.additionalInfo}
+              onChange={(e) =>
+                updateField("education.sslc.additionalInfo", e.target.value)
+              }
               placeholder=" "
             />
             <label
@@ -412,7 +417,7 @@ const School = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };

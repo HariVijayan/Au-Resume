@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Project = ({ resumeData, setResumeData, templateType }) => {
+const Project = ({ templateType }) => {
   const navigate = useNavigate();
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -24,40 +27,16 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
     }
   };
 
-  const handleInputChange = (e, projectKey) => {
-    const { name, value } = e.target;
-
-    setResumeData((prevState) => {
-      const updatedProjects = { ...prevState.projects };
-      updatedProjects[projectKey] = {
-        ...updatedProjects[projectKey],
-        [name]: value,
-      };
-
-      return {
-        ...prevState,
-        projects: updatedProjects,
-      };
-    });
-  };
-
-  const handleAddProjects = (e) => {
+  const addNewProject = (e) => {
     e.preventDefault();
-    const newProjectKey = `project${
-      Object.keys(resumeData.projects).length + 1
-    }`;
-    setResumeData({
-      ...resumeData,
-      projects: {
-        ...resumeData.projects,
-        [newProjectKey]: {
-          project_name: "",
-          project_link: "",
-          project_description: "",
-          project_tech: "",
-        },
-      },
+    const updatedProjects = [...resumeDataNew.projects];
+    updatedProjects.push({
+      name: "",
+      link: "",
+      description: "",
+      techStack: "",
     });
+    updateField("projects", updatedProjects);
   };
 
   return (
@@ -90,7 +69,7 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
           <div id="dv-ProjectsAddInput" className="AddInputButton">
             <button
               type="button"
-              onClick={handleAddProjects}
+              onClick={addNewProject}
               className="AddInputButtons"
             >
               <svg
@@ -107,33 +86,37 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
             </button>
           </div>
 
-          {Object.keys(resumeData.projects).map((projectKey) => (
+          {resumeDataNew.projects.map((newProjectEntry, newProjectIndex) => (
             <div
-              key={projectKey}
-              id={`dv-ProjectCopy${projectKey.charAt(7)}`}
+              key={newProjectIndex}
+              id={`dv-ProjectCopy${newProjectIndex + 1}`}
               className="SubWrapper"
             >
               <div
-                id={`dv-ProjectNameCopy${projectKey.charAt(7)}`}
+                id={`dv-ProjectNameCopy${newProjectIndex + 1}`}
                 className="InputWrapper"
               >
                 <input
                   type="text"
-                  id={`in-rb_project_name_copy${projectKey.charAt(7)}`}
+                  id={`in-rb_project_name_copy${newProjectIndex + 1}`}
                   name="project_name"
-                  value={resumeData.projects[projectKey].project_name}
-                  onChange={(e) => handleInputChange(e, projectKey)}
+                  value={newProjectEntry.name}
+                  onChange={(e) => {
+                    let updatedProjects = [...resumeDataNew.projects];
+                    updatedProjects[newProjectIndex].name = e.target.value;
+                    updateField("projects", updatedProjects);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_project_name_copy${projectKey.charAt(7)}`}
+                  htmlFor={`in-rb_project_name_copy${newProjectIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Name
                 </label>
                 <svg
                   onClick={() =>
-                    showOrHideInfoDiv(`Project Name${projectKey.charAt(7)}`)
+                    showOrHideInfoDiv(`Project Name${newProjectIndex + 1}`)
                   }
                   xmlns="http://www.w3.org/2000/svg"
                   className="MandatoryInputSvg"
@@ -146,7 +129,7 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Project Name${projectKey.charAt(7)}` && (
+              {infoDiv === `Project Name${newProjectIndex + 1}` && (
                 <InfoDiv
                   requirement={"Mandatory"}
                   explanation={"Your project's name"}
@@ -157,26 +140,30 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
               )}
 
               <div
-                id={`dv-ProjectLinkCopy${projectKey.charAt(7)}`}
+                id={`dv-ProjectLinkCopy${newProjectIndex + 1}`}
                 className="InputWrapper"
               >
                 <input
                   type="text"
                   name="project_link"
-                  id={`in-rb_project_link_copy${projectKey.charAt(7)}`}
-                  value={resumeData.projects[projectKey].project_link}
-                  onChange={(e) => handleInputChange(e, projectKey)}
+                  id={`in-rb_project_link_copy${newProjectIndex + 1}`}
+                  value={newProjectEntry.link}
+                  onChange={(e) => {
+                    let updatedProjects = [...resumeDataNew.projects];
+                    updatedProjects[newProjectIndex].link = e.target.value;
+                    updateField("projects", updatedProjects);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_project_link_copy${projectKey.charAt(7)}`}
+                  htmlFor={`in-rb_project_link_copy${newProjectIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Link
                 </label>
                 <svg
                   onClick={() =>
-                    showOrHideInfoDiv(`Project Link${projectKey.charAt(7)}`)
+                    showOrHideInfoDiv(`Project Link${newProjectIndex + 1}`)
                   }
                   xmlns="http://www.w3.org/2000/svg"
                   className="RecommededInputSvg"
@@ -189,7 +176,7 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Project Link${projectKey.charAt(7)}` && (
+              {infoDiv === `Project Link${newProjectIndex + 1}` && (
                 <InfoDiv
                   requirement={"Recommended"}
                   explanation={
@@ -202,19 +189,24 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
               )}
 
               <div
-                id={`dv-ProjectDescCopy${projectKey.charAt(7)}`}
+                id={`dv-ProjectDescCopy${newProjectIndex + 1}`}
                 className="InputWrapper"
               >
                 <input
                   type="text"
                   name="project_description"
-                  id={`in-rb_project_desc_copy${projectKey.charAt(7)}`}
-                  value={resumeData.projects[projectKey].project_description}
-                  onChange={(e) => handleInputChange(e, projectKey)}
+                  id={`in-rb_project_desc_copy${newProjectIndex + 1}`}
+                  value={newProjectEntry.description}
+                  onChange={(e) => {
+                    let updatedProjects = [...resumeDataNew.projects];
+                    updatedProjects[newProjectIndex].description =
+                      e.target.value;
+                    updateField("projects", updatedProjects);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_project_desc_copy${projectKey.charAt(7)}`}
+                  htmlFor={`in-rb_project_desc_copy${newProjectIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Description
@@ -222,7 +214,7 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
                 <svg
                   onClick={() =>
                     showOrHideInfoDiv(
-                      `Project Description${projectKey.charAt(7)}`
+                      `Project Description${newProjectIndex + 1}`
                     )
                   }
                   xmlns="http://www.w3.org/2000/svg"
@@ -236,7 +228,7 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Project Description${projectKey.charAt(7)}` && (
+              {infoDiv === `Project Description${newProjectIndex + 1}` && (
                 <InfoDiv
                   requirement={"Mandatory"}
                   explanation={
@@ -251,26 +243,30 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
               )}
 
               <div
-                id={`dv-ProjectTechCopy${projectKey.charAt(7)}`}
+                id={`dv-ProjectTechCopy${newProjectIndex + 1}`}
                 className="InputWrapper"
               >
                 <input
                   type="text"
                   name="project_tech"
-                  id={`in-rb_project_tech_copy${projectKey.charAt(7)}`}
-                  value={resumeData.projects[projectKey].project_tech}
-                  onChange={(e) => handleInputChange(e, projectKey)}
+                  id={`in-rb_project_tech_copy${newProjectIndex + 1}`}
+                  value={newProjectEntry.techStack}
+                  onChange={(e) => {
+                    let updatedProjects = [...resumeDataNew.projects];
+                    updatedProjects[newProjectIndex].techStack = e.target.value;
+                    updateField("projects", updatedProjects);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_project_tech_copy${projectKey.charAt(7)}`}
+                  htmlFor={`in-rb_project_tech_copy${newProjectIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Tech Stack
                 </label>
                 <svg
                   onClick={() =>
-                    showOrHideInfoDiv(`Project Tech${projectKey.charAt(7)}`)
+                    showOrHideInfoDiv(`Project Tech${newProjectIndex + 1}`)
                   }
                   xmlns="http://www.w3.org/2000/svg"
                   className="RecommededInputSvg"
@@ -283,7 +279,7 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Project Tech${projectKey.charAt(7)}` && (
+              {infoDiv === `Project Tech${newProjectIndex + 1}` && (
                 <InfoDiv
                   requirement={"Recommended"}
                   explanation={
@@ -342,7 +338,7 @@ const Project = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };

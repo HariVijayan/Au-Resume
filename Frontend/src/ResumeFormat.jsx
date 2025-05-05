@@ -28,7 +28,7 @@ const ResumeInputTemplate = create((set) => ({
           additionalInfo: "",
         },
       ],
-      pg_degree: [
+      postGraduate: [
         {
           name: "",
           university: "",
@@ -37,7 +37,7 @@ const ResumeInputTemplate = create((set) => ({
           additionalInfo: "",
         },
       ],
-      ug_degree: [
+      underGraduate: [
         {
           name: "",
           university: "",
@@ -85,7 +85,7 @@ const ResumeInputTemplate = create((set) => ({
         name: "",
         link: "",
         description: "",
-        tech_stack: [],
+        techStack: "",
       },
     ],
     skills: {

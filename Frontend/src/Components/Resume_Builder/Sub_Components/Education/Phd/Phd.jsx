@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import InfoDiv from "../../Info Div/InfoDiv.jsx";
+import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 
-const Phd = ({ resumeData, setResumeData, templateType }) => {
+const Phd = ({ templateType }) => {
   const navigate = useNavigate();
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -24,31 +27,17 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
     }
   };
 
-  const handleEducationInputChange = (e, Index) => {
-    const { name, value } = e.target;
-    const updatedEducation = [...resumeData.education];
-    updatedEducation[0].phd[Index][name] = value;
-    setResumeData({
-      ...resumeData,
-      education: updatedEducation,
-    });
-  };
-
-  const handleAddEducation = (e) => {
+  const addNewPhd = (e) => {
     e.preventDefault();
-    const updatedEducation = [...resumeData.education];
-    updatedEducation[0].phd.push({
-      phd_name: "",
-      phd_university: "",
-      phd_year: "",
-      phd_exp: "",
-      phd_additional_info: "",
+    const updatedPhd = [...resumeDataNew.education.phd];
+    updatedPhd.push({
+      name: "",
+      university: "",
+      year: "",
+      expertise: "",
+      additionalInfo: "",
     });
-
-    setResumeData({
-      ...resumeData,
-      education: updatedEducation,
-    });
+    updateField("education.phd", updatedPhd);
   };
 
   return (
@@ -84,7 +73,7 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
           <div id="dv-EducationPhdAddInput" className="AddInputButton">
             <button
               type="button"
-              onClick={(e) => handleAddEducation(e)}
+              onClick={addNewPhd}
               className="AddInputButtons"
             >
               <svg
@@ -100,32 +89,36 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
             </button>
           </div>
 
-          {resumeData.education[0].phd.map((phd, index) => (
+          {resumeDataNew.education.phd.map((newPhdEntry, newPhdIndex) => (
             <div
-              key={index}
-              id={`dv-EducationPhdCopy${index + 1}`}
+              key={newPhdIndex}
+              id={`dv-EducationPhdCopy${newPhdIndex + 1}`}
               className="SubWrapper"
             >
               <div
-                id={`dv-EduPhdNameCopy${index + 1}`}
+                id={`dv-EduPhdNameCopy${newPhdIndex + 1}`}
                 className="InputWrapper"
               >
                 <input
                   type="text"
-                  id={`in-rb_edu_phd_name${index + 1}`}
+                  id={`in-rb_edu_phd_name${newPhdIndex + 1}`}
                   name="phd_name"
-                  value={phd.phd_name}
-                  onChange={(e) => handleEducationInputChange(e, index)}
+                  value={newPhdEntry.name}
+                  onChange={(e) => {
+                    let updatedPhd = [...resumeDataNew.education.phd];
+                    updatedPhd[newPhdIndex].name = e.target.value;
+                    updateField("education.phd", updatedPhd);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_edu_phd_name${index + 1}`}
+                  htmlFor={`in-rb_edu_phd_name${newPhdIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Name
                 </label>
                 <svg
-                  onClick={() => showOrHideInfoDiv(`Phd Name${index}`)}
+                  onClick={() => showOrHideInfoDiv(`Phd Name${newPhdIndex}`)}
                   xmlns="http://www.w3.org/2000/svg"
                   className="MandatoryInputSvg"
                   height="24px"
@@ -137,7 +130,7 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Phd Name${index}` && (
+              {infoDiv === `Phd Name${newPhdIndex}` && (
                 <InfoDiv
                   requirement={"Mandatory"}
                   explanation={"Complete name of the PhD with specialization"}
@@ -147,23 +140,32 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
                 />
               )}
 
-              <div id={`dv-EduPhdUniCopy${index + 1}`} className="InputWrapper">
+              <div
+                id={`dv-EduPhdUniCopy${newPhdIndex + 1}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
-                  id={`in-rb_edu_phd_uni${index + 1}`}
+                  id={`in-rb_edu_phd_uni${newPhdIndex + 1}`}
                   name="phd_university"
-                  value={phd.phd_university}
-                  onChange={(e) => handleEducationInputChange(e, index)}
+                  value={newPhdEntry.university}
+                  onChange={(e) => {
+                    let updatedPhd = [...resumeDataNew.education.phd];
+                    updatedPhd[newPhdIndex].university = e.target.value;
+                    updateField("education.phd", updatedPhd);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_edu_phd_uni${index + 1}`}
+                  htmlFor={`in-rb_edu_phd_uni${newPhdIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   University
                 </label>
                 <svg
-                  onClick={() => showOrHideInfoDiv(`Phd University${index}`)}
+                  onClick={() =>
+                    showOrHideInfoDiv(`Phd University${newPhdIndex}`)
+                  }
                   xmlns="http://www.w3.org/2000/svg"
                   className="MandatoryInputSvg"
                   height="24px"
@@ -175,7 +177,7 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Phd University${index}` && (
+              {infoDiv === `Phd University${newPhdIndex}` && (
                 <InfoDiv
                   requirement={"Mandatory"}
                   explanation={"The university which awarded the PhD"}
@@ -186,25 +188,29 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
               )}
 
               <div
-                id={`dv-EduPhdYearCopy${index + 1}`}
+                id={`dv-EduPhdYearCopy${newPhdIndex + 1}`}
                 className="InputWrapper"
               >
                 <input
                   type="text"
-                  id={`in-rb_edu_phd_year${index + 1}`}
+                  id={`in-rb_edu_phd_year${newPhdIndex + 1}`}
                   name="phd_year"
-                  value={phd.phd_year}
-                  onChange={(e) => handleEducationInputChange(e, index)}
+                  value={newPhdEntry.year}
+                  onChange={(e) => {
+                    let updatedPhd = [...resumeDataNew.education.phd];
+                    updatedPhd[newPhdIndex].year = e.target.value;
+                    updateField("education.phd", updatedPhd);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_edu_phd_year${index + 1}`}
+                  htmlFor={`in-rb_edu_phd_year${newPhdIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Year
                 </label>
                 <svg
-                  onClick={() => showOrHideInfoDiv(`Phd Period${index}`)}
+                  onClick={() => showOrHideInfoDiv(`Phd Period${newPhdIndex}`)}
                   xmlns="http://www.w3.org/2000/svg"
                   className="MandatoryInputSvg"
                   height="24px"
@@ -216,7 +222,7 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Phd Period${index}` && (
+              {infoDiv === `Phd Period${newPhdIndex}` && (
                 <InfoDiv
                   requirement={"Mandatory"}
                   explanation={
@@ -228,23 +234,32 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
                 />
               )}
 
-              <div id={`dv-EduPhdExpCopy${index + 1}`} className="InputWrapper">
+              <div
+                id={`dv-EduPhdExpCopy${newPhdIndex + 1}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
-                  id={`in-rb_edu_phd_exp${index + 1}`}
+                  id={`in-rb_edu_phd_exp${newPhdIndex + 1}`}
                   name="phd_exp"
-                  value={phd.phd_exp}
-                  onChange={(e) => handleEducationInputChange(e, index)}
+                  value={newPhdEntry.expertise}
+                  onChange={(e) => {
+                    let updatedPhd = [...resumeDataNew.education.phd];
+                    updatedPhd[newPhdIndex].expertise = e.target.value;
+                    updateField("education.phd", updatedPhd);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_edu_phd_exp${index + 1}`}
+                  htmlFor={`in-rb_edu_phd_exp${newPhdIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Expertise
                 </label>
                 <svg
-                  onClick={() => showOrHideInfoDiv(`Phd Expertise${index}`)}
+                  onClick={() =>
+                    showOrHideInfoDiv(`Phd Expertise${newPhdIndex}`)
+                  }
                   xmlns="http://www.w3.org/2000/svg"
                   className="RecommededInputSvg"
                   height="24px"
@@ -256,7 +271,7 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Phd Expertise${index}` && (
+              {infoDiv === `Phd Expertise${newPhdIndex}` && (
                 <InfoDiv
                   requirement={"Recommended"}
                   explanation={"Domains which got expertise during PhD"}
@@ -267,25 +282,31 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
               )}
 
               <div
-                id={`dv-EduPhdAddlCopy${index + 1}`}
+                id={`dv-EduPhdAddlCopy${newPhdIndex + 1}`}
                 className="InputWrapper"
               >
                 <input
                   type="text"
-                  id={`in-rb_edu_phd_addl${index + 1}`}
+                  id={`in-rb_edu_phd_addl${newPhdIndex + 1}`}
                   name="phd_additional_info"
-                  value={phd.phd_additional_info}
-                  onChange={(e) => handleEducationInputChange(e, index)}
+                  value={newPhdEntry.additionalInfo}
+                  onChange={(e) => {
+                    let updatedPhd = [...resumeDataNew.education.phd];
+                    updatedPhd[newPhdIndex].additionalInfo = e.target.value;
+                    updateField("education.phd", updatedPhd);
+                  }}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_edu_phd_addl${index + 1}`}
+                  htmlFor={`in-rb_edu_phd_addl${newPhdIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Additional Info
                 </label>
                 <svg
-                  onClick={() => showOrHideInfoDiv(`Additional Info${index}`)}
+                  onClick={() =>
+                    showOrHideInfoDiv(`Additional Info${newPhdIndex}`)
+                  }
                   xmlns="http://www.w3.org/2000/svg"
                   className="OptionalInputSvg"
                   height="24px"
@@ -297,7 +318,7 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Additional Info${index}` && (
+              {infoDiv === `Additional Info${newPhdIndex}` && (
                 <InfoDiv
                   requirement={"Optional"}
                   explanation={
@@ -358,7 +379,7 @@ const Phd = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };
