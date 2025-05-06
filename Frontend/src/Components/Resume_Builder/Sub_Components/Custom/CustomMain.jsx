@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import Style1 from "./Style 1";
-import Style2 from "./Style 2";
+import ListType from "./ListType.jsx";
+import ParaType from "./ParaType.jsx";
 import axios from "axios";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
+const CustomDiv = ({ templateType }) => {
   const navigate = useNavigate();
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -14,68 +17,36 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
     }
   };
 
-  const [customDivType, setCustomDivType] = useState("Default");
+  const [hasChosenAStyle, setHasChosenAStyle] = useState(false);
+
   const [renderedStyles, setRenderedStyles] = useState([]);
 
-  const [hasStyle1Rendered, setHasStyle1Rendered] = useState(false);
-  const [hasStyle2Rendered, setHasStyle2Rendered] = useState(false);
-
-  const setCustomDiv = (type) => {
+  const addCustomInput = (styleType) => {
     let updatedStyles = [...renderedStyles];
-    if (type === "Style1") {
-      if (!hasStyle1Rendered) {
-        updatedStyles.push("Style1");
-        setCustomDivType("Style1");
-        setHasStyle1Rendered(true);
-      } else {
-        updatedStyles.push("Style1");
-        handleAddCustomDivStyle1();
-      }
-    } else if (type === "Style2") {
-      if (!hasStyle2Rendered) {
-        updatedStyles.push("Style2");
-        setCustomDivType("Style2");
-        setHasStyle2Rendered(true);
-      } else {
-        updatedStyles.push("Style2");
-        handleAddCustomDivStyle2();
-      }
-    }
+
+    updatedStyles.push(styleType);
+
     setRenderedStyles(updatedStyles);
-  };
 
-  const handleAddCustomDivStyle1 = (e) => {
-    const updatedCustomDivs = [...resumeData.customdiv];
-    updatedCustomDivs.push({
-      customtitle: "",
-      customdivstyle1: true,
-      customlist: [""],
-    });
+    const newEntry = {
+      style: styleType,
+      title: "",
+      listValues: styleType === "ListType" ? [] : undefined,
+      paraValues: styleType === "ParaType" ? "" : undefined,
+    };
 
-    setResumeData({
-      ...resumeData,
-      customdiv: updatedCustomDivs,
-    });
-  };
+    const updatedCustomInput = hasChosenAStyle
+      ? [...resumeDataNew.customInput, newEntry]
+      : [newEntry];
 
-  const handleAddCustomDivStyle2 = (e) => {
-    const updatedCustomDivs = [...resumeData.customdiv];
-    updatedCustomDivs.push({
-      customtitle: "",
-      customdivstyle2: true,
-      customparagraph: "",
-    });
-
-    setResumeData({
-      ...resumeData,
-      customdiv: updatedCustomDivs,
-    });
+    setHasChosenAStyle(true);
+    updateField("customInput", updatedCustomInput);
   };
 
   const handleSubmit = async () => {
-    localStorage.setItem(resumeData, JSON.stringify(resumeData));
+    localStorage.setItem(resumeDataNew, JSON.stringify(resumeDataNew));
     const formData = {
-      resumeData,
+      resumeDataNew,
       templateType,
     };
     try {
@@ -130,7 +101,7 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
           <div id="dv-CustomInputStyles" className="StyleChoosingButtons">
             <button
               type="button"
-              onClick={() => setCustomDiv("Style1")}
+              onClick={() => addCustomInput("ListType")}
               className="ListInputButton"
             >
               <svg
@@ -147,7 +118,7 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
 
             <button
               type="button"
-              onClick={() => setCustomDiv("Style2")}
+              onClick={() => addCustomInput("ParaType")}
               className="ParaInputButton"
             >
               <svg
@@ -163,17 +134,13 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
             </button>
           </div>
 
-          {customDivType === "Default" && (
-            <p>Please select an custom input type to begin.</p>
+          {!hasChosenAStyle && (
+            <p>Please select a custom input type to begin.</p>
           )}
 
-          {renderedStyles.includes("Style1") && (
-            <Style1 resumeData={resumeData} setResumeData={setResumeData} />
-          )}
+          {renderedStyles.includes("ListType") && <ListType />}
 
-          {renderedStyles.includes("Style2") && (
-            <Style2 resumeData={resumeData} setResumeData={setResumeData} />
-          )}
+          {renderedStyles.includes("ParaType") && <ParaType />}
         </div>
         <div id="dv-CustomDivButtons" className="NavigationButtons">
           <button
@@ -210,7 +177,7 @@ const CustomDiv = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };

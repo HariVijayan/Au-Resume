@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import InfoDiv from "../Info Div/InfoDiv";
+import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Style1 = () => {
+const ListType = () => {
   const [infoDiv, setInfoDiv] = useState("");
 
   const { resumeDataNew, updateField } = ResumeInputTemplate();
 
-  const [skillsetValue, setSkillsetValue] = useState(
-    resumeDataNew.skills.skillSet || ""
+  const [certificationSetValue, setCertificationSetValue] = useState(
+    resumeDataNew.certifications.certificationSet || ""
   );
 
   const showOrHideInfoDiv = (currentState) => {
@@ -21,38 +21,45 @@ const Style1 = () => {
 
   const splitCSValues = (e) => {
     let { value } = e.target;
-    let updatedSkills = { ...resumeDataNew.skills };
+    let updatedCertification = { ...resumeDataNew.certifications };
 
-    setSkillsetValue(value);
+    setCertificationSetValue(value);
 
-    let newSkills = value.split(",").filter((skill) => skill.trim().length > 0);
+    let newCertifications = value
+      .split(",")
+      .filter((certification) => certification.trim().length > 0);
 
-    newSkills = newSkills.map((skill) => skill.trim());
+    newCertifications = newCertifications.map((certification) =>
+      certification.trim()
+    );
 
-    updatedSkills = {
-      type: "style1",
-      skillSet: newSkills,
+    updatedCertification = {
+      type: "ListType",
+      certificationSet: newCertifications,
     };
 
-    updateField("skills", updatedSkills);
+    updateField("certifications", updatedCertification);
   };
 
   return (
-    <div id="dv-SkillsStyle1" className="SubWrapper">
-      <div id="dv-SkillsStyle1SkillSet" className="InputWrapper">
+    <div id="dv-CertificationListType" className="SubWrapper">
+      <div
+        id="dv-CertificationListTypeCertificationSet"
+        className="InputWrapper"
+      >
         <input
           type="text"
-          name="skillset"
-          id="in-rb_skills_list"
-          value={skillsetValue}
+          id="in-rb_cer_list"
+          name="certificationset"
+          value={certificationSetValue}
           onChange={splitCSValues}
           placeholder=" "
         />
-        <label htmlFor="in-rb_skills_list" className="TextFieldLabel">
-          Skills List
+        <label htmlFor="in-rb_cer_list" className="TextFieldLabel">
+          Certification List
         </label>
         <svg
-          onClick={() => showOrHideInfoDiv("Skills")}
+          onClick={() => showOrHideInfoDiv("Certification")}
           xmlns="http://www.w3.org/2000/svg"
           className="MandatoryInputSvg"
           height="24px"
@@ -64,11 +71,13 @@ const Style1 = () => {
         </svg>
       </div>
 
-      {infoDiv === "Skills" && (
+      {infoDiv === "Certification" && (
         <InfoDiv
           requirement={"Mandatory"}
-          explanation={"List of your personal skills, separated by commas"}
-          examples={"Web Development, Cloud Deployment, Machine Learning"}
+          explanation={"List of your certifications, separated by commas"}
+          examples={
+            "AWS Certified Developer, Google Cloud Certified (udemy.com/certificate/ghvsgv212)"
+          }
           characterLimit={"Upto 120 characters"}
           allowedCharacters={"No Restrictions"}
         />
@@ -86,4 +95,4 @@ const Style1 = () => {
   );
 };
 
-export default Style1;
+export default ListType;

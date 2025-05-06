@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Style1 from "./Style 1";
-import Style2 from "./Style 2";
+import ListType from "./ListType.jsx";
+import ParaType from "./ParaType.jsx";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
@@ -21,25 +21,25 @@ const Skills = ({ templateType }) => {
   const [skillType, setSkillType] = useState("Default");
 
   useEffect(() => {
-    if (resumeDataNew.skills.type == "style1") {
-      setSkillType("Style1");
-    } else if (resumeDataNew.skills.type == "style2") {
-      setSkillType("Style2");
+    if (resumeDataNew.skills.type == "ListType") {
+      setSkillType("ListType");
+    } else if (resumeDataNew.skills.type == "ParaType") {
+      setSkillType("ParaType");
     } else {
       setSkillType("Default");
     }
   }, [resumeDataNew.skills]);
 
   const setSkills = (type) => {
-    if (type === "Style1") {
+    if (type === "ListType") {
       let updatedSkills = { ...resumeDataNew.skills };
-      updatedSkills.type = "style1";
+      updatedSkills.type = "ListType";
       updatedSkills.skillSet = [];
 
       updateField("skills", updatedSkills);
-    } else if (type === "Style2") {
+    } else if (type === "ParaType") {
       let updatedSkills = { ...resumeDataNew.skills };
-      updatedSkills.type = "style2";
+      updatedSkills.type = "ParaType";
       updatedSkills.skillSet = "";
 
       updateField("skills", updatedSkills);
@@ -78,7 +78,7 @@ const Skills = ({ templateType }) => {
           <div id="dv-SkillsStyles" className="StyleChoosingButtons">
             <button
               type="button"
-              onClick={() => setSkills("Style1")}
+              onClick={() => setSkills("ListType")}
               className="ListInputButton"
             >
               <svg
@@ -95,7 +95,7 @@ const Skills = ({ templateType }) => {
 
             <button
               type="button"
-              onClick={() => setSkills("Style2")}
+              onClick={() => setSkills("ParaType")}
               className="ParaInputButton"
             >
               <svg
@@ -114,8 +114,8 @@ const Skills = ({ templateType }) => {
           {skillType === "Default" && (
             <p>Please select a skill type to begin.</p>
           )}
-          {skillType === "Style1" && <Style1 />}
-          {skillType === "Style2" && <Style2 />}
+          {skillType === "ListType" && <ListType />}
+          {skillType === "ParaType" && <ParaType />}
         </div>
         <div id="dv-SkillsButtons" className="NavigationButtons">
           <button

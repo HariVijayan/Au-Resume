@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import Style1 from "./Style 1";
-import Style2 from "./Style 2";
+import ListType from "./ListType.jsx";
+import ParaType from "./ParaType.jsx";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Experience = ({ resumeData, setResumeData, templateType }) => {
+const Experience = ({ templateType }) => {
   const navigate = useNavigate();
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -15,68 +18,34 @@ const Experience = ({ resumeData, setResumeData, templateType }) => {
     }
   };
 
-  const [experienceType, setExperienceType] = useState("Default");
+  const [hasChosenAStyle, setHasChosenAStyle] = useState(false);
+
   const [renderedStyles, setRenderedStyles] = useState([]);
 
-  const [hasStyle1Rendered, setHasStyle1Rendered] = useState(false);
-  const [hasStyle2Rendered, setHasStyle2Rendered] = useState(false);
-
-  const setExperience = (type) => {
+  const addExperience = (styleType) => {
     let updatedStyles = [...renderedStyles];
-    if (type === "Style1") {
-      if (!hasStyle1Rendered) {
-        updatedStyles.push("Style1");
-        setExperienceType("Style1");
-        setHasStyle1Rendered(true);
-      } else {
-        updatedStyles.push("Style1");
-        handleAddExperienceStyle1();
-      }
-    } else if (type === "Style2") {
-      if (!hasStyle2Rendered) {
-        updatedStyles.push("Style2");
-        setExperienceType("Style2");
-        setHasStyle2Rendered(true);
-      } else {
-        updatedStyles.push("Style2");
-        handleAddExperienceStyle2();
-      }
-    }
+
+    updatedStyles.push(styleType);
+
     setRenderedStyles(updatedStyles);
-  };
 
-  const handleAddExperienceStyle1 = () => {
-    const updatedExperience = [...resumeData.experience];
-    updatedExperience[0].style1.push({
-      experience_company: "",
-      experience_location: "",
-      experience_year: "",
-      experience_designation: "",
-      experience_team: "",
-      experience_roles: [],
-    });
+    const newEntry = {
+      style: styleType,
+      company: "",
+      location: "",
+      year: "",
+      designation: "",
+      team: "",
+      roles: styleType === "ListType" ? [] : undefined,
+      description: styleType === "ParaType" ? "" : undefined,
+    };
 
-    setResumeData({
-      ...resumeData,
-      experience: updatedExperience,
-    });
-  };
+    const updatedExperience = hasChosenAStyle
+      ? [...resumeDataNew.experience, newEntry]
+      : [newEntry];
 
-  const handleAddExperienceStyle2 = () => {
-    const updatedExperience = [...resumeData.experience];
-    updatedExperience[0].style2.push({
-      experience_company: "",
-      experience_location: "",
-      experience_year: "",
-      experience_designation: "",
-      experience_team: "",
-      experience_description: "",
-    });
-
-    setResumeData({
-      ...resumeData,
-      experience: updatedExperience,
-    });
+    setHasChosenAStyle(true);
+    updateField("experience", updatedExperience);
   };
 
   return (
@@ -109,7 +78,7 @@ const Experience = ({ resumeData, setResumeData, templateType }) => {
           <div id="dv-ExperienceStyles" className="StyleChoosingButtons">
             <button
               type="button"
-              onClick={() => setExperience("Style1")}
+              onClick={() => addExperience("ListType")}
               className="ListInputButton"
             >
               <svg
@@ -126,7 +95,7 @@ const Experience = ({ resumeData, setResumeData, templateType }) => {
 
             <button
               type="button"
-              onClick={() => setExperience("Style2")}
+              onClick={() => addExperience("ParaType")}
               className="ParaInputButton"
             >
               <svg
@@ -142,18 +111,15 @@ const Experience = ({ resumeData, setResumeData, templateType }) => {
             </button>
           </div>
 
-          {experienceType === "Default" && (
+          {!hasChosenAStyle && (
             <p>Please select an experience type to begin.</p>
           )}
 
-          {renderedStyles.includes("Style1") && (
-            <Style1 resumeData={resumeData} setResumeData={setResumeData} />
-          )}
+          {renderedStyles.includes("ListType") && <ListType />}
 
-          {renderedStyles.includes("Style2") && (
-            <Style2 resumeData={resumeData} setResumeData={setResumeData} />
-          )}
+          {renderedStyles.includes("ParaType") && <ParaType />}
         </div>
+
         <div id="dv-ExperienceButtons" className="NavigationButtons">
           <button
             type="button"
@@ -189,7 +155,7 @@ const Experience = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import InfoDiv from "../Info Div/InfoDiv";
+import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Style2 = () => {
+const ParaType = () => {
   const [infoDiv, setInfoDiv] = useState("");
 
   const { resumeDataNew, updateField } = ResumeInputTemplate();
@@ -29,7 +29,7 @@ const Style2 = () => {
     setCertificationSetValue(value);
 
     updatedCertification = {
-      type: "style2",
+      type: "ParaType",
       certificationSet: newCertifications,
     };
 
@@ -37,8 +37,11 @@ const Style2 = () => {
   };
 
   return (
-    <div id="dv-CertificationStyle2" className="SubWrapper">
-      <div id="dv-CertificationStyle2CertificationSet" className="InputWrapper">
+    <div id="dv-CertificationParaType" className="SubWrapper">
+      <div
+        id="dv-CertificationParaTypeCertificationSet"
+        className="InputWrapper"
+      >
         <input
           type="text"
           id="in-rb_cer_para"
@@ -87,4 +90,4 @@ const Style2 = () => {
   );
 };
 
-export default Style2;
+export default ParaType;

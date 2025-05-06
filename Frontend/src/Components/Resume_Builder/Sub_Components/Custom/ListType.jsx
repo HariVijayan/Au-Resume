@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import InfoDiv from "../Info Div/InfoDiv";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Style2 = ({ resumeData, setResumeData }) => {
+const ListType = () => {
   const [infoDiv, setInfoDiv] = useState("");
+
+  const { resumeDataNew, updateField } = ResumeInputTemplate();
 
   const showOrHideInfoDiv = (currentState) => {
     if (infoDiv === currentState) {
@@ -11,51 +14,54 @@ const Style2 = ({ resumeData, setResumeData }) => {
       setInfoDiv(currentState);
     }
   };
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const updatedCustomDivs = [...resumeData.customdiv];
 
-    if (name === "customparatitle") {
-      updatedCustomDivs[index].customtitle = value;
-    } else if (name === "custompara") {
-      updatedCustomDivs[index].customparagraph = value;
+  const modifyCustomInput = (e, customInputIndex) => {
+    const { name, value } = e.target;
+    const updatedCustomInput = [...resumeDataNew.customInput];
+
+    if (name === "listValues") {
+      updatedCustomInput[customInputIndex][name] = value
+        .split(",")
+        .map((role) => role.trim());
+    } else {
+      updatedCustomInput[customInputIndex][name] = value;
     }
 
-    updatedCustomDivs[index] = { ...updatedCustomDivs[index], [name]: value };
-
-    setResumeData({
-      ...resumeData,
-      customdiv: updatedCustomDivs,
-    });
+    updateField("customInput", updatedCustomInput);
   };
 
   return (
     <>
-      {resumeData.customdiv.map((div, index) => {
-        if (div.customdivstyle2) {
-          return (
+      {resumeDataNew.customInput.map(
+        (customInputEntry, customInputIndex) =>
+          customInputEntry.style === "ListType" && (
             <div
-              key={index}
-              id={`dv-CustomParaCopy${index + 1}`}
+              key={customInputIndex}
+              id={`dv-CustomListCopy${customInputIndex + 1}`}
               className="SubWrapper"
             >
-              <div id={`dv-CIPTitleCopy${index + 1}`} className="InputWrapper">
+              <div
+                id={`dv-CILTitleCopy${customInputIndex + 1}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
-                  name="customtitle"
-                  id={`in-rb_ci_para_title_copy${index + 1}`}
-                  value={div.customtitle}
-                  onChange={(e) => handleInputChange(e, index)}
+                  name="title"
+                  id={`in-rb_ci_title_copy${customInputIndex + 1}`}
+                  value={customInputEntry.title}
+                  onChange={(e) => modifyCustomInput(e, customInputIndex)}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_ci_para_title_copy${index + 1}`}
+                  htmlFor={`in-rb_ci_title_copy${customInputIndex + 1}`}
                   className="TextFieldLabel"
                 >
                   Custom Title
                 </label>
                 <svg
-                  onClick={() => showOrHideInfoDiv(`Title${index}`)}
+                  onClick={() =>
+                    showOrHideInfoDiv(`Title${customInputIndex + 1}`)
+                  }
                   xmlns="http://www.w3.org/2000/svg"
                   className="MandatoryInputSvg"
                   height="24px"
@@ -67,7 +73,7 @@ const Style2 = ({ resumeData, setResumeData }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Title${index}` && (
+              {infoDiv === `Title${customInputIndex + 1}` && (
                 <InfoDiv
                   requirement={"Mandatory"}
                   explanation={"Provide a title for the custom section"}
@@ -77,23 +83,28 @@ const Style2 = ({ resumeData, setResumeData }) => {
                 />
               )}
 
-              <div id={`dv-CIPParaCopy${index + 1}`} className="InputWrapper">
+              <div
+                id={`dv-CILListCopy${customInputIndex + 1}`}
+                className="InputWrapper"
+              >
                 <input
                   type="text"
-                  name="customparagraph"
-                  id={`in-rb_ci_para_input_copy${index + 1}`}
-                  value={div.customparagraph}
-                  onChange={(e) => handleInputChange(e, index)}
+                  name="listValues"
+                  id={`in-rb_ci_list_copy${customInputIndex + 1}`}
+                  value={customInputEntry.listValues}
+                  onChange={(e) => modifyCustomInput(e, customInputIndex)}
                   placeholder=" "
                 />
                 <label
-                  htmlFor={`in-rb_ci_para_input_copy${index + 1}`}
+                  htmlFor={`in-rb_ci_list_copy${customInputIndex + 1}`}
                   className="TextFieldLabel"
                 >
-                  Custom Paragraph
+                  Custom List
                 </label>
                 <svg
-                  onClick={() => showOrHideInfoDiv(`Para${index}`)}
+                  onClick={() =>
+                    showOrHideInfoDiv(`List${customInputIndex + 1}`)
+                  }
                   xmlns="http://www.w3.org/2000/svg"
                   className="MandatoryInputSvg"
                   height="24px"
@@ -105,12 +116,14 @@ const Style2 = ({ resumeData, setResumeData }) => {
                 </svg>
               </div>
 
-              {infoDiv === `Para${index}` && (
+              {infoDiv === `List${customInputIndex + 1}` && (
                 <InfoDiv
                   requirement={"Mandatory"}
-                  explanation={"Your custom paragraph"}
+                  explanation={
+                    "List all the custom values, separated by commas"
+                  }
                   examples={
-                    "High School Football team captain. Part of Bharat Scouts"
+                    "High School Football team captain, Part of Bharat Scouts"
                   }
                   characterLimit={"Upto 120 characters"}
                   allowedCharacters={"No Restrictions"}
@@ -127,12 +140,10 @@ const Style2 = ({ resumeData, setResumeData }) => {
                 />
               )}
             </div>
-          );
-        }
-        return null;
-      })}
+          )
+      )}
     </>
   );
 };
 
-export default Style2;
+export default ListType;

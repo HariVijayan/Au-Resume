@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Style1 from "./Style 1";
-import Style2 from "./Style 2";
+import ListType from "./ListType.jsx";
+import ParaType from "./ParaType.jsx";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
@@ -21,25 +21,25 @@ const Cerifications = ({ resumeData, setResumeData, templateType }) => {
   const [certificationType, setCertificationType] = useState("Default");
 
   useEffect(() => {
-    if (resumeDataNew.certifications.type == "style1") {
-      setCertificationType("Style1");
-    } else if (resumeDataNew.certifications.type == "style2") {
-      setCertificationType("Style2");
+    if (resumeDataNew.certifications.type == "ListType") {
+      setCertificationType("ListType");
+    } else if (resumeDataNew.certifications.type == "ParaType") {
+      setCertificationType("ParaType");
     } else {
       setCertificationType("Default");
     }
   }, [resumeDataNew.certifications]);
 
   const setCertifications = (type) => {
-    if (type === "Style1") {
+    if (type === "ListType") {
       let updatedCertifications = { ...resumeDataNew.certifications };
-      updatedCertifications.type = "style1";
+      updatedCertifications.type = "ListType";
       updatedCertifications.certificationSet = [];
 
       updateField("certifications", updatedCertifications);
-    } else if (type === "Style2") {
+    } else if (type === "ParaType") {
       let updatedCertifications = { ...resumeDataNew.certifications };
-      updatedCertifications.type = "style2";
+      updatedCertifications.type = "ParaType";
       updatedCertifications.certificationSet = "";
 
       updateField("certifications", updatedCertifications);
@@ -78,7 +78,7 @@ const Cerifications = ({ resumeData, setResumeData, templateType }) => {
           <div id="dv-CertificationStyles" className="StyleChoosingButtons">
             <button
               type="button"
-              onClick={() => setCertifications("Style1")}
+              onClick={() => setCertifications("ListType")}
               className="ListInputButton"
             >
               <svg
@@ -95,7 +95,7 @@ const Cerifications = ({ resumeData, setResumeData, templateType }) => {
 
             <button
               type="button"
-              onClick={() => setCertifications("Style2")}
+              onClick={() => setCertifications("ParaType")}
               className="ParaInputButton"
             >
               <svg
@@ -114,11 +114,11 @@ const Cerifications = ({ resumeData, setResumeData, templateType }) => {
           {certificationType === "Default" && (
             <p>Please select a certification type to begin.</p>
           )}
-          {certificationType === "Style1" && (
-            <Style1 resumeData={resumeData} setResumeData={setResumeData} />
+          {certificationType === "ListType" && (
+            <ListType resumeData={resumeData} setResumeData={setResumeData} />
           )}
-          {certificationType === "Style2" && (
-            <Style2 resumeData={resumeData} setResumeData={setResumeData} />
+          {certificationType === "ParaType" && (
+            <ParaType resumeData={resumeData} setResumeData={setResumeData} />
           )}
         </div>
         <div id="dv-CertificationsButtons" className="NavigationButtons">

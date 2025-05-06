@@ -70,7 +70,7 @@ const ResumeInputTemplate = create((set) => ({
     },
     experience: [
       {
-        style: "style1",
+        style: "",
         company: "",
         location: "",
         year: "",
@@ -97,11 +97,12 @@ const ResumeInputTemplate = create((set) => ({
       certificationSet: [],
     },
     languages: [],
-    custom_sections: [
+    customInput: [
       {
         title: "",
-        type: "list",
-        content: [],
+        style: "",
+        listValues: [],
+        paraValues:"",
       },
     ],
   },

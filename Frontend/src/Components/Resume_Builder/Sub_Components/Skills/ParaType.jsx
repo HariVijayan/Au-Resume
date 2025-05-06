@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import InfoDiv from "../Info Div/InfoDiv";
+import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Style2 = () => {
+const ParaType = () => {
   const [infoDiv, setInfoDiv] = useState("");
 
   const { resumeDataNew, updateField } = ResumeInputTemplate();
@@ -29,7 +29,7 @@ const Style2 = () => {
     setSkillsetValue(value);
 
     updatedSkills = {
-      type: "style2",
+      type: "ParaType",
       skillSet: newSkills,
     };
 
@@ -37,8 +37,8 @@ const Style2 = () => {
   };
 
   return (
-    <div id="dv-SkillsStyle2" className="SubWrapper">
-      <div id="dv-SkillsStyle2SkillSet" className="InputWrapper">
+    <div id="dv-SkillsParaType" className="SubWrapper">
+      <div id="dv-SkillsParaTypeSkillSet" className="InputWrapper">
         <input
           type="text"
           name="skillset"
@@ -87,4 +87,4 @@ const Style2 = () => {
   );
 };
 
-export default Style2;
+export default ParaType;
