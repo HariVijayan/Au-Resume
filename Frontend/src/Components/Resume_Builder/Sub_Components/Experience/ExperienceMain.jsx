@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ListType from "./ListType.jsx";
 import ParaType from "./ParaType.jsx";
 import PreviewPdf from "../PreviewPdf.jsx";
@@ -18,9 +18,18 @@ const Experience = ({ templateType }) => {
     }
   };
 
-  const [hasChosenAStyle, setHasChosenAStyle] = useState(false);
+  const [hasChosenAStyle, setHasChosenAStyle] = useState(
+    resumeDataNew.experience[0].company != "" ? true : false
+  );
 
   const [renderedStyles, setRenderedStyles] = useState([]);
+
+  useEffect(() => {
+    const styles = resumeDataNew.experience
+      .filter((exp) => exp.style !== "")
+      .map((exp) => exp.style);
+    setRenderedStyles(styles);
+  }, [resumeDataNew.experience]);
 
   const addExperience = (styleType) => {
     let updatedStyles = [...renderedStyles];

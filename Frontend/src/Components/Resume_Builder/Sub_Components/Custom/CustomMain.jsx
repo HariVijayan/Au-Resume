@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ListType from "./ListType.jsx";
 import ParaType from "./ParaType.jsx";
 import axios from "axios";
@@ -17,9 +17,18 @@ const CustomDiv = ({ templateType }) => {
     }
   };
 
-  const [hasChosenAStyle, setHasChosenAStyle] = useState(false);
+  const [hasChosenAStyle, setHasChosenAStyle] = useState(
+    resumeDataNew.customInput[0].title != "" ? true : false
+  );
 
   const [renderedStyles, setRenderedStyles] = useState([]);
+
+  useEffect(() => {
+    const styles = resumeDataNew.customInput
+      .filter((exp) => exp.style !== "")
+      .map((exp) => exp.style);
+    setRenderedStyles(styles);
+  }, [resumeDataNew.customInput]);
 
   const addCustomInput = (styleType) => {
     let updatedStyles = [...renderedStyles];
