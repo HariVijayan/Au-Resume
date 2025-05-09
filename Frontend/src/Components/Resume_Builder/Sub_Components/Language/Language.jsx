@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Language = ({ templateType }) => {
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+const Language = () => {
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const [languageValue, setLanguageValue] = useState(
-    resumeDataNew.languages || ""
+    resumeData.languages || ""
   );
 
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Language = ({ templateType }) => {
   };
   const splitCSValues = (e) => {
     const { value } = e.target;
-    let updatedLanguages = { ...resumeDataNew.languages };
+    let updatedLanguages = { ...resumeData.languages };
 
     setLanguageValue(value);
 
@@ -155,7 +155,7 @@ const Language = ({ templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };

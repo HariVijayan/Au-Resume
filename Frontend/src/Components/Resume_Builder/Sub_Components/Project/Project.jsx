@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Project = ({ templateType }) => {
+const Project = () => {
   const navigate = useNavigate();
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -29,7 +29,7 @@ const Project = ({ templateType }) => {
 
   const addNewProject = (e) => {
     e.preventDefault();
-    const updatedProjects = [...resumeDataNew.projects];
+    const updatedProjects = [...resumeData.projects];
     updatedProjects.push({
       name: "",
       link: "",
@@ -86,7 +86,7 @@ const Project = ({ templateType }) => {
             </button>
           </div>
 
-          {resumeDataNew.projects.map((newProjectEntry, newProjectIndex) => (
+          {resumeData.projects.map((newProjectEntry, newProjectIndex) => (
             <div
               key={newProjectIndex}
               id={`dv-ProjectCopy${newProjectIndex + 1}`}
@@ -102,7 +102,7 @@ const Project = ({ templateType }) => {
                   name="project_name"
                   value={newProjectEntry.name}
                   onChange={(e) => {
-                    let updatedProjects = [...resumeDataNew.projects];
+                    let updatedProjects = [...resumeData.projects];
                     updatedProjects[newProjectIndex].name = e.target.value;
                     updateField("projects", updatedProjects);
                   }}
@@ -149,7 +149,7 @@ const Project = ({ templateType }) => {
                   id={`in-rb_project_link_copy${newProjectIndex + 1}`}
                   value={newProjectEntry.link}
                   onChange={(e) => {
-                    let updatedProjects = [...resumeDataNew.projects];
+                    let updatedProjects = [...resumeData.projects];
                     updatedProjects[newProjectIndex].link = e.target.value;
                     updateField("projects", updatedProjects);
                   }}
@@ -198,7 +198,7 @@ const Project = ({ templateType }) => {
                   id={`in-rb_project_desc_copy${newProjectIndex + 1}`}
                   value={newProjectEntry.description}
                   onChange={(e) => {
-                    let updatedProjects = [...resumeDataNew.projects];
+                    let updatedProjects = [...resumeData.projects];
                     updatedProjects[newProjectIndex].description =
                       e.target.value;
                     updateField("projects", updatedProjects);
@@ -252,7 +252,7 @@ const Project = ({ templateType }) => {
                   id={`in-rb_project_tech_copy${newProjectIndex + 1}`}
                   value={newProjectEntry.techStack}
                   onChange={(e) => {
-                    let updatedProjects = [...resumeDataNew.projects];
+                    let updatedProjects = [...resumeData.projects];
                     updatedProjects[newProjectIndex].techStack = e.target.value;
                     updateField("projects", updatedProjects);
                   }}
@@ -338,7 +338,7 @@ const Project = ({ templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 const ParaType = () => {
   const [infoDiv, setInfoDiv] = useState("");
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const showOrHideInfoDiv = (currentState) => {
     if (infoDiv === currentState) {
@@ -17,7 +17,7 @@ const ParaType = () => {
 
   const modifyExperienceInput = (e, newExperienceIndex) => {
     const { name, value } = e.target;
-    const updatedExperience = [...resumeDataNew.experience];
+    const updatedExperience = [...resumeData.experience];
 
     updatedExperience[newExperienceIndex][name] = value;
 
@@ -26,7 +26,7 @@ const ParaType = () => {
 
   return (
     <>
-      {resumeDataNew.experience.map(
+      {resumeData.experience.map(
         (newExperienceEntry, newExperienceIndex) =>
           newExperienceEntry.style === "ParaType" && (
             <div

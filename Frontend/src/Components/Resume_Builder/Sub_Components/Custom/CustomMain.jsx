@@ -6,10 +6,10 @@ import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const CustomDiv = ({ templateType }) => {
+const CustomDiv = ({ setSubmitClicked }) => {
   const navigate = useNavigate();
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -18,17 +18,17 @@ const CustomDiv = ({ templateType }) => {
   };
 
   const [hasChosenAStyle, setHasChosenAStyle] = useState(
-    resumeDataNew.customInput[0].title != "" ? true : false
+    resumeData.customInput[0].title != "" ? true : false
   );
 
   const [renderedStyles, setRenderedStyles] = useState([]);
 
   useEffect(() => {
-    const styles = resumeDataNew.customInput
+    const styles = resumeData.customInput
       .filter((exp) => exp.style !== "")
       .map((exp) => exp.style);
     setRenderedStyles(styles);
-  }, [resumeDataNew.customInput]);
+  }, [resumeData.customInput]);
 
   const addCustomInput = (styleType) => {
     let updatedStyles = [...renderedStyles];
@@ -45,39 +45,11 @@ const CustomDiv = ({ templateType }) => {
     };
 
     const updatedCustomInput = hasChosenAStyle
-      ? [...resumeDataNew.customInput, newEntry]
+      ? [...resumeData.customInput, newEntry]
       : [newEntry];
 
     setHasChosenAStyle(true);
     updateField("customInput", updatedCustomInput);
-  };
-
-  const handleSubmit = async () => {
-    localStorage.setItem(resumeDataNew, JSON.stringify(resumeDataNew));
-    const formData = {
-      resumeDataNew,
-      templateType,
-    };
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/generate/Resume",
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          responseType: "arraybuffer",
-        }
-      );
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "Resume.pdf";
-      link.click();
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
   };
 
   return (
@@ -170,7 +142,7 @@ const CustomDiv = ({ templateType }) => {
           </button>
           <button
             type="submit"
-            onClick={() => handleSubmit()}
+            onClick={() => setSubmitClicked(true)}
             className="DownloadButton"
           >
             Download{" "}
@@ -186,7 +158,7 @@ const CustomDiv = ({ templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };

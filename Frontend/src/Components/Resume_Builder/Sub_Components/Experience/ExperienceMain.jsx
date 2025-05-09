@@ -5,10 +5,10 @@ import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Experience = ({ templateType }) => {
+const Experience = () => {
   const navigate = useNavigate();
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -19,17 +19,17 @@ const Experience = ({ templateType }) => {
   };
 
   const [hasChosenAStyle, setHasChosenAStyle] = useState(
-    resumeDataNew.experience[0].company != "" ? true : false
+    resumeData.experience[0].company != "" ? true : false
   );
 
   const [renderedStyles, setRenderedStyles] = useState([]);
 
   useEffect(() => {
-    const styles = resumeDataNew.experience
+    const styles = resumeData.experience
       .filter((exp) => exp.style !== "")
       .map((exp) => exp.style);
     setRenderedStyles(styles);
-  }, [resumeDataNew.experience]);
+  }, [resumeData.experience]);
 
   const addExperience = (styleType) => {
     let updatedStyles = [...renderedStyles];
@@ -50,7 +50,7 @@ const Experience = ({ templateType }) => {
     };
 
     const updatedExperience = hasChosenAStyle
-      ? [...resumeDataNew.experience, newEntry]
+      ? [...resumeData.experience, newEntry]
       : [newEntry];
 
     setHasChosenAStyle(true);
@@ -164,7 +164,7 @@ const Experience = ({ templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };

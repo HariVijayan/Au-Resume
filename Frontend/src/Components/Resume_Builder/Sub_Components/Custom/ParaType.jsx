@@ -5,7 +5,7 @@ import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 const ParaType = () => {
   const [infoDiv, setInfoDiv] = useState("");
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const showOrHideInfoDiv = (currentState) => {
     if (infoDiv === currentState) {
@@ -17,7 +17,7 @@ const ParaType = () => {
 
   const modifyCustomInput = (e, customInputIndex) => {
     const { name, value } = e.target;
-    const updatedCustomInput = [...resumeDataNew.customInput];
+    const updatedCustomInput = [...resumeData.customInput];
 
     updatedCustomInput[customInputIndex][name] = value;
 
@@ -26,7 +26,7 @@ const ParaType = () => {
 
   return (
     <>
-      {resumeDataNew.customInput.map(
+      {resumeData.customInput.map(
         (customInputEntry, customInputIndex) =>
           customInputEntry.style === "ParaType" && (
             <div

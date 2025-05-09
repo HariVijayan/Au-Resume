@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import InfoDiv from "../../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 
-const Phd = ({ templateType }) => {
+const Phd = () => {
   const navigate = useNavigate();
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -29,7 +29,7 @@ const Phd = ({ templateType }) => {
 
   const addNewPhd = (e) => {
     e.preventDefault();
-    const updatedPhd = [...resumeDataNew.education.phd];
+    const updatedPhd = [...resumeData.education.phd];
     updatedPhd.push({
       name: "",
       university: "",
@@ -89,7 +89,7 @@ const Phd = ({ templateType }) => {
             </button>
           </div>
 
-          {resumeDataNew.education.phd.map((newPhdEntry, newPhdIndex) => (
+          {resumeData.education.phd.map((newPhdEntry, newPhdIndex) => (
             <div
               key={newPhdIndex}
               id={`dv-EducationPhdCopy${newPhdIndex + 1}`}
@@ -105,7 +105,7 @@ const Phd = ({ templateType }) => {
                   name="phd_name"
                   value={newPhdEntry.name}
                   onChange={(e) => {
-                    let updatedPhd = [...resumeDataNew.education.phd];
+                    let updatedPhd = [...resumeData.education.phd];
                     updatedPhd[newPhdIndex].name = e.target.value;
                     updateField("education.phd", updatedPhd);
                   }}
@@ -150,7 +150,7 @@ const Phd = ({ templateType }) => {
                   name="phd_university"
                   value={newPhdEntry.university}
                   onChange={(e) => {
-                    let updatedPhd = [...resumeDataNew.education.phd];
+                    let updatedPhd = [...resumeData.education.phd];
                     updatedPhd[newPhdIndex].university = e.target.value;
                     updateField("education.phd", updatedPhd);
                   }}
@@ -197,7 +197,7 @@ const Phd = ({ templateType }) => {
                   name="phd_year"
                   value={newPhdEntry.year}
                   onChange={(e) => {
-                    let updatedPhd = [...resumeDataNew.education.phd];
+                    let updatedPhd = [...resumeData.education.phd];
                     updatedPhd[newPhdIndex].year = e.target.value;
                     updateField("education.phd", updatedPhd);
                   }}
@@ -244,7 +244,7 @@ const Phd = ({ templateType }) => {
                   name="phd_exp"
                   value={newPhdEntry.expertise}
                   onChange={(e) => {
-                    let updatedPhd = [...resumeDataNew.education.phd];
+                    let updatedPhd = [...resumeData.education.phd];
                     updatedPhd[newPhdIndex].expertise = e.target.value;
                     updateField("education.phd", updatedPhd);
                   }}
@@ -291,7 +291,7 @@ const Phd = ({ templateType }) => {
                   name="phd_additional_info"
                   value={newPhdEntry.additionalInfo}
                   onChange={(e) => {
-                    let updatedPhd = [...resumeDataNew.education.phd];
+                    let updatedPhd = [...resumeData.education.phd];
                     updatedPhd[newPhdIndex].additionalInfo = e.target.value;
                     updateField("education.phd", updatedPhd);
                   }}
@@ -379,7 +379,7 @@ const Phd = ({ templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };

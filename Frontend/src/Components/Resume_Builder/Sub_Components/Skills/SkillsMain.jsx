@@ -5,10 +5,10 @@ import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Skills = ({ templateType }) => {
+const Skills = () => {
   const navigate = useNavigate();
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -21,24 +21,24 @@ const Skills = ({ templateType }) => {
   const [skillType, setSkillType] = useState("Default");
 
   useEffect(() => {
-    if (resumeDataNew.skills.type == "ListType") {
+    if (resumeData.skills.type == "ListType") {
       setSkillType("ListType");
-    } else if (resumeDataNew.skills.type == "ParaType") {
+    } else if (resumeData.skills.type == "ParaType") {
       setSkillType("ParaType");
     } else {
       setSkillType("Default");
     }
-  }, [resumeDataNew.skills]);
+  }, [resumeData.skills]);
 
   const setSkills = (type) => {
     if (type === "ListType") {
-      let updatedSkills = { ...resumeDataNew.skills };
+      let updatedSkills = { ...resumeData.skills };
       updatedSkills.type = "ListType";
       updatedSkills.skillSet = [];
 
       updateField("skills", updatedSkills);
     } else if (type === "ParaType") {
-      let updatedSkills = { ...resumeDataNew.skills };
+      let updatedSkills = { ...resumeData.skills };
       updatedSkills.type = "ParaType";
       updatedSkills.skillSet = "";
 
@@ -152,7 +152,7 @@ const Skills = ({ templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };

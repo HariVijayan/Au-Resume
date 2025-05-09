@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
+import ResumeInputTemplate from "../../../ResumeFormat.jsx";
 
-const PreviewPdf = ({ resumeData, templateType }) => {
+const PreviewPdf = () => {
   const [pdfUrl, setPdfUrl] = useState("");
   const [isPreviewClicked, setIsPreviewClicked] = useState(false);
+
+  const { resumeData } = ResumeInputTemplate();
+
+  const templateType = resumeData.metaData.template;
 
   const fetchPdf = async () => {
     const formData = {
       resumeData,
-      templateType,
     };
     try {
       const response = await axios.post(

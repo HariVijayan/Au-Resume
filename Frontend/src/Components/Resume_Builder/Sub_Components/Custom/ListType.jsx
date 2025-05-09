@@ -5,7 +5,7 @@ import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 const ListType = () => {
   const [infoDiv, setInfoDiv] = useState("");
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const showOrHideInfoDiv = (currentState) => {
     if (infoDiv === currentState) {
@@ -17,7 +17,7 @@ const ListType = () => {
 
   const modifyCustomInput = (e, customInputIndex) => {
     const { name, value } = e.target;
-    const updatedCustomInput = [...resumeDataNew.customInput];
+    const updatedCustomInput = [...resumeData.customInput];
 
     if (name === "listValues") {
       updatedCustomInput[customInputIndex][name] = value
@@ -32,7 +32,7 @@ const ListType = () => {
 
   return (
     <>
-      {resumeDataNew.customInput.map(
+      {resumeData.customInput.map(
         (customInputEntry, customInputIndex) =>
           customInputEntry.style === "ListType" && (
             <div

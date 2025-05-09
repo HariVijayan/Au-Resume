@@ -86,7 +86,9 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
 };
 
 router.post('/Resume', async (req, res) => {
-  let {resumeData, templateType} = req.body;
+  let {resumeData} = req.body;
+
+  let templateType = resumeData.metaData.template;
 
   resumeData = removeEmptyValues(resumeData);
 

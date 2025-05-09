@@ -6,6 +6,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import axios from "axios";
 import Error404 from "./404Error.jsx";
 import Login from "./Components/General/Sub_Components/Login/Login.jsx";
 import Register from "./Components/General/Sub_Components/Register/Register.jsx";
@@ -36,11 +37,11 @@ import "./Components/Role_SuccessScore/Role_SS_Styles.css";
 import ResumeInputTemplate from "./ResumeFormat.jsx";
 
 function RouteWrapper() {
-  const { resumeDataNew } = ResumeInputTemplate();
+  const { resumeData } = ResumeInputTemplate();
 
   useEffect(() => {
-    console.log(resumeDataNew);
-  }, [resumeDataNew]);
+    console.log(resumeData);
+  }, [resumeData]);
 
   const forceMultiTabClosureOnLogout = () => {
     const navigate = useNavigate();
@@ -59,132 +60,6 @@ function RouteWrapper() {
   };
 
   forceMultiTabClosureOnLogout();
-
-  const [templateType, setTemplate] = useState("Template 1");
-
-  const [resumeData, setResumeData] = useState({
-    username: "",
-    small_bio: "",
-    phone_number: "",
-    emailid: "",
-    location: "",
-    linkedin: "",
-    linkedinurl: "",
-    github: "",
-    githuburl: "",
-    customlink: "",
-    customlinkurl: "",
-    summary: "",
-    education: [
-      {
-        phd: [
-          {
-            phd_name: "",
-            phd_university: "",
-            phd_year: "",
-            phd_exp: "",
-            phd_additional_info: "",
-          },
-        ],
-        pg_degree: [
-          {
-            pg_degree_name: "",
-            pg_degree_university: "",
-            pg_degree_year: "",
-            pg_degree_cgpa: "",
-            pg_degree_additional_info: "",
-          },
-        ],
-        ug_degree: [
-          {
-            ug_degree_name: "",
-            ug_degree_university: "",
-            ug_degree_year: "",
-            ug_degree_cgpa: "",
-            ug_degree_additional_info: "",
-          },
-        ],
-        diploma: [
-          {
-            diploma_name: "",
-            diploma_university: "",
-            diploma_year: "",
-            diploma_cgpa: "",
-            diploma_additional_info: "",
-          },
-        ],
-        hsc_name: "",
-        hsc_year: "",
-        hsc_grade: "",
-        hsc_additional_info: "",
-        sslc_name: "",
-        sslc_year: "",
-        sslc_grade: "",
-        sslc_additional_info: "",
-      },
-    ],
-    experience: [
-      {
-        style1: [
-          {
-            experience_company: "",
-            experience_location: "",
-            experience_year: "",
-            experience_designation: "",
-            experience_team: "",
-            experience_roles: [],
-          },
-        ],
-        style2: [
-          {
-            experience_company: "",
-            experience_location: "",
-            experience_year: "",
-            experience_designation: "",
-            experience_team: "",
-            experience_description: "",
-          },
-        ],
-      },
-    ],
-    projects: {
-      project1: {
-        project_name: "",
-        project_link: "",
-        project_description: "",
-        project_tech: "",
-      },
-    },
-    skills: {
-      style1: {
-        skillset: [],
-      },
-      style2: {
-        skillset: "",
-      },
-    },
-    certification: {
-      style1: {
-        certificationset: [],
-      },
-      style2: {
-        certificationset: "",
-      },
-    },
-    languages: [],
-    customdiv: [
-      {
-        customtitle: "",
-        customdivstyle1: true,
-        customlist: [],
-      },
-      {
-        customtitle: "",
-        customdivstyle2: true,
-        customparagraph: "",
-      },
-    ],
-  });
 
   const location = useLocation();
   const protectedRoutes = [
@@ -286,6 +161,41 @@ function RouteWrapper() {
     };
   }, [location]);
 
+  const downloadResume = async () => {
+    const formData = {
+      resumeData,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/generate/Resume",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "Resume.pdf";
+      link.click();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
+
+  const [submitClicked, setSubmitClicked] = useState(false);
+
+  useEffect(() => {
+    if (submitClicked === true) {
+      setSubmitClicked(false);
+      downloadResume();
+    }
+  }, [submitClicked]);
+
   return (
     <>
       <Routes>
@@ -298,132 +208,37 @@ function RouteWrapper() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/resume-builder/template-choosing"
-          element={
-            <TemplateChoosing
-              setTemplate={setTemplate}
-              setResumeData={setResumeData}
-            />
-          }
+          element={<TemplateChoosing />}
         />
-        <Route
-          path="/resume-builder/bio-summary"
-          element={
-            <BioSummary
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
-        />
-        <Route
-          path="/resume-builder/experience"
-          element={
-            <Experience
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
-        />
+        <Route path="/resume-builder/bio-summary" element={<BioSummary />} />
+        <Route path="/resume-builder/experience" element={<Experience />} />
         <Route
           path="/resume-builder/education/phd"
-          element={
-            <EducationPhd
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
+          element={<EducationPhd />}
         />
-        <Route
-          path="/resume-builder/education/pg"
-          element={
-            <EducationPg
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
-        />
-        <Route
-          path="/resume-builder/education/ug"
-          element={
-            <EducationUg
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
-        />
+        <Route path="/resume-builder/education/pg" element={<EducationPg />} />
+        <Route path="/resume-builder/education/ug" element={<EducationUg />} />
         <Route
           path="/resume-builder/education/diploma"
-          element={
-            <EducationDiploma
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
+          element={<EducationDiploma />}
         />
         <Route
           path="/resume-builder/education/school"
-          element={
-            <EducationSchool
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
+          element={<EducationSchool />}
         />
-        <Route
-          path="/resume-builder/projects"
-          element={
-            <Projects
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
-        />
-        <Route
-          path="/resume-builder/skills"
-          element={
-            <Skills
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
-        />
+        <Route path="/resume-builder/projects" element={<Projects />} />
+        <Route path="/resume-builder/skills" element={<Skills />} />
         <Route
           path="/resume-builder/certifications"
-          element={
-            <Certifications
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
+          element={<Certifications />}
         />
         <Route
           path="/resume-builder/languages-known"
-          element={
-            <LanguagesKnown
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
+          element={<LanguagesKnown />}
         />
         <Route
           path="/resume-builder/custom-input"
-          element={
-            <CustomInput
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              templateType={templateType}
-            />
-          }
+          element={<CustomInput setSubmitClicked={setSubmitClicked} />}
         />
         <Route path="/success-score/jd" element={<JdSuccessScore />} />
         <Route path="/success-score/role" element={<RoleSuccessScore />} />

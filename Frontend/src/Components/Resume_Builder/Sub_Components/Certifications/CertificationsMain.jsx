@@ -5,10 +5,10 @@ import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Cerifications = ({ resumeData, setResumeData, templateType }) => {
+const Cerifications = () => {
   const navigate = useNavigate();
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
@@ -21,24 +21,24 @@ const Cerifications = ({ resumeData, setResumeData, templateType }) => {
   const [certificationType, setCertificationType] = useState("Default");
 
   useEffect(() => {
-    if (resumeDataNew.certifications.type == "ListType") {
+    if (resumeData.certifications.type == "ListType") {
       setCertificationType("ListType");
-    } else if (resumeDataNew.certifications.type == "ParaType") {
+    } else if (resumeData.certifications.type == "ParaType") {
       setCertificationType("ParaType");
     } else {
       setCertificationType("Default");
     }
-  }, [resumeDataNew.certifications]);
+  }, [resumeData.certifications]);
 
   const setCertifications = (type) => {
     if (type === "ListType") {
-      let updatedCertifications = { ...resumeDataNew.certifications };
+      let updatedCertifications = { ...resumeData.certifications };
       updatedCertifications.type = "ListType";
       updatedCertifications.certificationSet = [];
 
       updateField("certifications", updatedCertifications);
     } else if (type === "ParaType") {
-      let updatedCertifications = { ...resumeDataNew.certifications };
+      let updatedCertifications = { ...resumeData.certifications };
       updatedCertifications.type = "ParaType";
       updatedCertifications.certificationSet = "";
 
@@ -114,12 +114,8 @@ const Cerifications = ({ resumeData, setResumeData, templateType }) => {
           {certificationType === "Default" && (
             <p>Please select a certification type to begin.</p>
           )}
-          {certificationType === "ListType" && (
-            <ListType resumeData={resumeData} setResumeData={setResumeData} />
-          )}
-          {certificationType === "ParaType" && (
-            <ParaType resumeData={resumeData} setResumeData={setResumeData} />
-          )}
+          {certificationType === "ListType" && <ListType />}
+          {certificationType === "ParaType" && <ParaType />}
         </div>
         <div id="dv-CertificationsButtons" className="NavigationButtons">
           <button
@@ -156,7 +152,7 @@ const Cerifications = ({ resumeData, setResumeData, templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeData} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };

@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import InfoDiv from "../../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 
-const Diploma = ({ templateType }) => {
+const Diploma = () => {
   const navigate = useNavigate();
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -29,7 +29,7 @@ const Diploma = ({ templateType }) => {
 
   const addNewDiploma = (e) => {
     e.preventDefault();
-    const updatedDiploma = [...resumeDataNew.education.diploma];
+    const updatedDiploma = [...resumeData.education.diploma];
     updatedDiploma.push({
       name: "",
       university: "",
@@ -88,7 +88,7 @@ const Diploma = ({ templateType }) => {
             </button>
           </div>
 
-          {resumeDataNew.education.diploma.map(
+          {resumeData.education.diploma.map(
             (newDiplomaEntry, newDiplomaIndex) => (
               <div
                 key={newDiplomaIndex}
@@ -105,7 +105,7 @@ const Diploma = ({ templateType }) => {
                     name="diploma_name"
                     value={newDiplomaEntry.name}
                     onChange={(e) => {
-                      let updatedDiploma = [...resumeDataNew.education.diploma];
+                      let updatedDiploma = [...resumeData.education.diploma];
                       updatedDiploma[newDiplomaIndex].name = e.target.value;
                       updateField("education.diploma", updatedDiploma);
                     }}
@@ -154,7 +154,7 @@ const Diploma = ({ templateType }) => {
                     name="diploma_university"
                     value={newDiplomaEntry.university}
                     onChange={(e) => {
-                      let updatedDiploma = [...resumeDataNew.education.diploma];
+                      let updatedDiploma = [...resumeData.education.diploma];
                       updatedDiploma[newDiplomaIndex].university =
                         e.target.value;
                       updateField("education.diploma", updatedDiploma);
@@ -202,7 +202,7 @@ const Diploma = ({ templateType }) => {
                     name="diploma_year"
                     value={newDiplomaEntry.year}
                     onChange={(e) => {
-                      let updatedDiploma = [...resumeDataNew.education.diploma];
+                      let updatedDiploma = [...resumeData.education.diploma];
                       updatedDiploma[newDiplomaIndex].year = e.target.value;
                       updateField("education.diploma", updatedDiploma);
                     }}
@@ -251,7 +251,7 @@ const Diploma = ({ templateType }) => {
                     name="diploma_cgpa"
                     value={newDiplomaEntry.cgpa}
                     onChange={(e) => {
-                      let updatedDiploma = [...resumeDataNew.education.diploma];
+                      let updatedDiploma = [...resumeData.education.diploma];
                       updatedDiploma[newDiplomaIndex].cgpa = e.target.value;
                       updateField("education.diploma", updatedDiploma);
                     }}
@@ -300,7 +300,7 @@ const Diploma = ({ templateType }) => {
                     id={`in-rb_edu_dipl_addl${newDiplomaIndex + 1}`}
                     value={newDiplomaEntry.additionalInfo}
                     onChange={(e) => {
-                      let updatedDiploma = [...resumeDataNew.education.diploma];
+                      let updatedDiploma = [...resumeData.education.diploma];
                       updatedDiploma[newDiplomaIndex].additionalInfo =
                         e.target.value;
                       updateField("education.diploma", updatedDiploma);
@@ -388,7 +388,7 @@ const Diploma = ({ templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };

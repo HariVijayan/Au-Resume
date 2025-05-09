@@ -5,10 +5,10 @@ import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 const ParaType = () => {
   const [infoDiv, setInfoDiv] = useState("");
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const [skillsetValue, setSkillsetValue] = useState(
-    resumeDataNew.skills.skillSet || ""
+    resumeData.skills.skillSet || ""
   );
 
   const showOrHideInfoDiv = (currentState) => {
@@ -22,7 +22,7 @@ const ParaType = () => {
   const trimParaWhitespaces = (e) => {
     const { value } = e.target;
 
-    let updatedSkills = { ...resumeDataNew.skills };
+    let updatedSkills = { ...resumeData.skills };
 
     let newSkills = value.trim();
 

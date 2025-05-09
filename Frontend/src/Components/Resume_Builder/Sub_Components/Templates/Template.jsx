@@ -1,12 +1,15 @@
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Template = ({ setTemplate, setResumeData }) => {
+const Template = () => {
   const navigate = useNavigate();
 
+  let { resumeData, updateField } = ResumeInputTemplate();
+
   const choseTemplate = async (templateName) => {
-    setTemplate(templateName);
+    updateField("metaData.template", templateName);
     try {
       const response = await axios.post(
         "http://localhost:5000/getPrevious/resume-details",
@@ -16,7 +19,7 @@ const Template = ({ setTemplate, setResumeData }) => {
       if (response.status === 500) {
         navigate("/resume-builder/bio-summary");
       }
-      setResumeData(response.data);
+      resumeData = response.data;
     } catch (error) {
       console.error("Error fetching resume details:", error);
       navigate("/resume-builder/bio-summary");

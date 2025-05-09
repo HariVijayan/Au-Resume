@@ -5,10 +5,10 @@ import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 const ListType = () => {
   const [infoDiv, setInfoDiv] = useState("");
 
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const [certificationSetValue, setCertificationSetValue] = useState(
-    resumeDataNew.certifications.certificationSet || ""
+    resumeData.certifications.certificationSet || ""
   );
 
   const showOrHideInfoDiv = (currentState) => {
@@ -21,7 +21,7 @@ const ListType = () => {
 
   const splitCSValues = (e) => {
     let { value } = e.target;
-    let updatedCertification = { ...resumeDataNew.certifications };
+    let updatedCertification = { ...resumeData.certifications };
 
     setCertificationSetValue(value);
 

@@ -1,7 +1,10 @@
 import { create } from "zustand";
 
 const ResumeInputTemplate = create((set) => ({
-  resumeDataNew: {
+  resumeData: {
+    metaData: {
+      template: "",
+    },
     personal: {
       name: "",
       bio: "",
@@ -102,7 +105,7 @@ const ResumeInputTemplate = create((set) => ({
         title: "",
         style: "",
         listValues: [],
-        paraValues:"",
+        paraValues: "",
       },
     ],
   },
@@ -113,7 +116,7 @@ const ResumeInputTemplate = create((set) => ({
     set((state) => {
       const keys = path.split(".");
       const lastKey = keys.pop();
-      let ref = { ...state.resumeDataNew };
+      let ref = { ...state.resumeData };
 
       let tempRef = ref;
       keys.forEach((key) => {
@@ -122,14 +125,14 @@ const ResumeInputTemplate = create((set) => ({
       });
 
       tempRef[lastKey] = value;
-      return { resumeDataNew: ref };
+      return { resumeData: ref };
     }),
 
   pushToArray: (path, newEntry) =>
     set((state) => {
       const keys = path.split(".");
       const lastKey = keys.pop();
-      let ref = state.resumeDataNew;
+      let ref = state.resumeData;
 
       let tempRef = ref;
       keys.forEach((key) => {
@@ -138,7 +141,7 @@ const ResumeInputTemplate = create((set) => ({
       });
 
       tempRef[lastKey].push(newEntry);
-      return { resumeDataNew: { ...state.resumeDataNew } };
+      return { resumeData: { ...state.resumeData } };
     }),
 
   removeFromArray: (path, index) =>

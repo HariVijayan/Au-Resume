@@ -324,7 +324,9 @@ function extractRelevantResumeDetails(resumeData) {
 
 
 router.post('/Resume', async (req, res) => {
-  let {resumeData, templateType} = req.body;
+  let {resumeData} = req.body;
+  let templateType = resumeData.metaData.template;
+  
   const accessToken = req.cookies.accessToken;
   if (!accessToken) return res.status(401).json({ message: 'No token provided' });
   

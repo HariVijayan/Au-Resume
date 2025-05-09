@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const BioSummary = ({ templateType }) => {
-  const { resumeDataNew, updateField } = ResumeInputTemplate();
+const BioSummary = () => {
+  const { resumeData, updateField } = ResumeInputTemplate();
 
   const navigate = useNavigate();
 
@@ -59,7 +59,7 @@ const BioSummary = ({ templateType }) => {
               type="text"
               id="in-rb_bd_name"
               name="name"
-              value={resumeDataNew.personal.name}
+              value={resumeData.personal.name}
               onChange={(e) => updateField("personal.name", e.target.value)}
               placeholder=" "
               required
@@ -95,7 +95,7 @@ const BioSummary = ({ templateType }) => {
               type="text"
               id="in-rb_bd_bio"
               name="bio"
-              value={resumeDataNew.personal.bio}
+              value={resumeData.personal.bio}
               onChange={(e) => updateField("personal.bio", e.target.value)}
               placeholder=" "
             />
@@ -130,7 +130,7 @@ const BioSummary = ({ templateType }) => {
               type="text"
               id="in-rb_bd_mobile"
               name="mobile"
-              value={resumeDataNew.personal.mobile}
+              value={resumeData.personal.mobile}
               onChange={(e) => updateField("personal.mobile", e.target.value)}
               placeholder=" "
             />
@@ -165,7 +165,7 @@ const BioSummary = ({ templateType }) => {
               type="email"
               id="in-rb_bd_email"
               name="email"
-              value={resumeDataNew.personal.email}
+              value={resumeData.personal.email}
               onChange={(e) => updateField("personal.email", e.target.value)}
               placeholder=" "
             />
@@ -200,7 +200,7 @@ const BioSummary = ({ templateType }) => {
               type="text"
               id="in-rb_bd_location"
               name="location"
-              value={resumeDataNew.personal.location}
+              value={resumeData.personal.location}
               onChange={(e) => updateField("personal.location", e.target.value)}
               placeholder=" "
             />
@@ -235,7 +235,7 @@ const BioSummary = ({ templateType }) => {
               type="text"
               id="in-rb_bd_linkedin"
               name="linkedinDisplayName"
-              value={resumeDataNew.links.linkedinDisplayName}
+              value={resumeData.links.linkedinDisplayName}
               onChange={(e) =>
                 updateField("links.linkedinDisplayName", e.target.value)
               }
@@ -272,7 +272,7 @@ const BioSummary = ({ templateType }) => {
               type="url"
               id="in-rb_bd_linkedinurl"
               name="linkedinUrl"
-              value={resumeDataNew.links.linkedinUrl}
+              value={resumeData.links.linkedinUrl}
               onChange={(e) => updateField("links.linkedinUrl", e.target.value)}
               placeholder=" "
             />
@@ -307,7 +307,7 @@ const BioSummary = ({ templateType }) => {
               type="text"
               id="in-rb_bd_github"
               name="githubDisplayName"
-              value={resumeDataNew.links.githubDisplayName}
+              value={resumeData.links.githubDisplayName}
               onChange={(e) =>
                 updateField("links.githubDisplayName", e.target.value)
               }
@@ -344,7 +344,7 @@ const BioSummary = ({ templateType }) => {
               type="url"
               id="in-rb_bd_githuburl"
               name="githubUrl"
-              value={resumeDataNew.links.githubUrl}
+              value={resumeData.links.githubUrl}
               onChange={(e) => updateField("links.githubUrl", e.target.value)}
               placeholder=" "
             />
@@ -379,7 +379,7 @@ const BioSummary = ({ templateType }) => {
               type="text"
               id="in-rb_bd_customlink"
               name="websiteDisplayName"
-              value={resumeDataNew.links.websiteDisplayName}
+              value={resumeData.links.websiteDisplayName}
               onChange={(e) =>
                 updateField("links.websiteDisplayName", e.target.value)
               }
@@ -416,7 +416,7 @@ const BioSummary = ({ templateType }) => {
               type="url"
               id="in-rb_bd_customlinkurl"
               name="websiteUrl"
-              value={resumeDataNew.links.websiteUrl}
+              value={resumeData.links.websiteUrl}
               onChange={(e) => updateField("links.websiteUrl", e.target.value)}
               placeholder=" "
             />
@@ -450,7 +450,7 @@ const BioSummary = ({ templateType }) => {
             <textarea
               id="in-rb_bd_summary"
               name="summary"
-              value={resumeDataNew.summary}
+              value={resumeData.summary}
               onChange={(e) => updateField("summary", e.target.value)}
               placeholder=" "
             />
@@ -512,7 +512,7 @@ const BioSummary = ({ templateType }) => {
           </button>
         </div>
       </div>
-      <PreviewPdf resumeData={resumeDataNew} templateType={templateType} />
+      <PreviewPdf />
     </div>
   );
 };
