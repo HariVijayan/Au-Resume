@@ -3,6 +3,138 @@
     "template": "Template 1"
   },
   "personal": {
-    "name": "sdds"
-  }
+    "name": "Hari",
+    "bio": "Developer | Designer | Freelancer",
+    "mobile": "+91 9090909099",
+    "email": "hari@gmail.com",
+    "location": "Chennai, India"
+  },
+  "links": {
+    "linkedinDisplayName": "linkedin.com/hari",
+    "linkedinUrl": "https://www.linkedin.com/hari",
+    "githubDisplayName": "github.com/hari",
+    "githubUrl": "https://www.github.com/hari"
+  },
+  "education": {
+    "hsc": {
+      "name": "Kendriya Vidyalaya",
+      "year": "2023 - 2025",
+      "grade": "80%",
+      "additionalInfo": "State Board"
+    },
+    "sslc": {
+      "name": "Kendriya Vidyalaya",
+      "year": "2023 - 2025",
+      "grade": "89%",
+      "additionalInfo": "State Board"
+    },
+    "phd": [
+      {
+        "name": "Ph.D in Network Security",
+        "university": "Anna University",
+        "year": "2024 - 2029",
+        "expertise": "Network Security, Hash Algorithms, Firewalls",
+        "additionalInfo": "Widely accepted research"
+      },
+      {
+        "name": "Ph.D in Neural Networks",
+        "university": "Anna University",
+        "year": "2024 - 2029",
+        "expertise": "Neural Networks, Machine Learning, Deep Learning",
+        "additionalInfo": "Widely accepted research"
+      }
+    ],
+    "postGraduate": [
+      {
+        "name": "Master of Computer Applications",
+        "university": "Anna University",
+        "year": "2023 - 2025",
+        "cgpa": "8.76",
+        "additionalInfo": "Distinction Grade"
+      }
+    ],
+    "underGraduate": [
+      {
+        "name": "B.Sc. in Computer Science",
+        "university": "Anna University",
+        "year": "2022 - 2025",
+        "cgpa": "8.9",
+        "additionalInfo": "Distinction Grade"
+      }
+    ],
+    "diploma": [
+      {
+        "name": "Diploma in Information Technology",
+        "university": "Anna University",
+        "year": "2023 - 2025",
+        "cgpa": "9.2",
+        "additionalInfo": "Distinction Grade"
+      }
+    ]
+  },
+  "skills": {
+    "type": "ListType",
+    "skillSet": [
+      "AWS",
+      "GCP",
+      "Machine Learning"
+    ]
+  },
+  "certifications": {
+    "type": "ListType",
+    "certificationSet": [
+      "AWS Certified Cloud Developer",
+      "ML Ceritified (udemy.com/dfijnjibdfjb)",
+      "GCP Advanced Architect"
+    ]
+  },
+  "login_email": "harijv0310@gmail.com",
+  "updatedAt": "11-05-2025 23:32:57",
+  "summary": "I am a full stack developer with 3 years of experience in web development. I have worked on multiple projects and have a good understanding of web technologies. I specialize in building scalable web applications using modern frameworks and cloud technologies.",
+  "experience": [
+    {
+      "style": "ListType",
+      "company": "Zoho Corporation",
+      "location": "Chennai",
+      "year": "2024 - 2025",
+      "designation": "Software Developer",
+      "team": "Cloud Deployment",
+      "roles": [
+        "Deployed and maintained client's products on cloud.",
+        " Managed a team of 7 members."
+      ]
+    },
+    {
+      "style": "ParaType",
+      "company": "Apple India",
+      "location": "Bangalore",
+      "year": "2023 - 2024",
+      "designation": "Technical Intern",
+      "team": "OS Updates",
+      "description": "Tasked with maintaining patch updates to the bugs that are daily reported on the OS"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Blog Website",
+      "link": "https://github.com/Hari/Project1",
+      "description": "Developed and maintained the company website with advanced features like authentication, user profiles, and data management.",
+      "techStack": "HTML, CSS, JavaScript, ReactJS, NodeJS, MongoDB"
+    }
+  ],
+  "languages": [
+    "Tamil (Mother Tongue)",
+    "English (Full professional proficiency)"
+  ],
+  "customInput": [
+    {
+      "title": "Extra Curricular Activities",
+      "style": "ListType",
+      "listValues": [
+        "Head of school football team",
+        " District Champion"
+      ]
+    }
+  ],
+  "__v": 0
 }

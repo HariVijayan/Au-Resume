@@ -20,9 +20,7 @@ const ListType = () => {
     const updatedCustomInput = [...resumeData.customInput];
 
     if (name === "listValues") {
-      updatedCustomInput[customInputIndex][name] = value
-        .split(",")
-        .map((role) => role.trim());
+      updatedCustomInput[customInputIndex][name] = value.split(",");
     } else {
       updatedCustomInput[customInputIndex][name] = value;
     }

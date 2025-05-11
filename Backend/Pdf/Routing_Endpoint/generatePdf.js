@@ -15,6 +15,9 @@ const __dirname = path.dirname(__filename);
 const router = express.Router();
 
 Handlebars.registerHelper("or", (...args) => args.some(Boolean));
+Handlebars.registerHelper('eq', function (a, b) {
+  return a === b;
+});
 
 const readFileSync = (filePath) => fs.readFileSync(path.join(__dirname, filePath), 'utf8');
 const writeFileSync = (filePath, data) => fs.writeFileSync(path.join(__dirname, filePath), data);
@@ -336,36 +339,72 @@ router.post('/Resume', async (req, res) => {
 
   const login_email = user.email;
 
+  const timestamp = getCurrentTimestamp();
+
   await ResumeDataDBModel.deleteMany({ login_email });
   const resumeDataDBEntry = new ResumeDataDBModel({
     login_email: login_email,
-    username: resumeData.username,
-    small_bio: resumeData.small_bio,
-    phone_number: resumeData.phone_number,
-    emailid: resumeData.emailid,
-    location: resumeData.location,
-    linkedin: resumeData.linkedin,
-    linkedinurl: resumeData.linkedinurl,
-    github: resumeData.github,
-    githuburl: resumeData.githuburl,
-    customlink: resumeData.customlink,
-    customlinkurl: resumeData.customlinkurl,
+    updatedAt: timestamp,
+    metaData: {
+      template: resumeData.metaData.template,
+    },
+    personal: {
+      name: resumeData.personal.name,
+      bio: resumeData.personal.bio,
+      mobile: resumeData.personal.mobile,
+      email: resumeData.personal.email,
+      location: resumeData.personal.location,
+    },
+  
+    links: {
+      linkedinDisplayName: resumeData.links.linkedinDisplayName,
+      linkedinUrl: resumeData.links.linkedinUrl,
+      githubDisplayName: resumeData.links.githubDisplayName,
+      githubUrl: resumeData.links.githubUrl,
+      websiteDisplayName: resumeData.links.websiteDisplayName,
+      websiteUrl: resumeData.links.websiteUrl,
+    },
+  
     summary: resumeData.summary,
   
-    education: resumeData.education,
-
-    experience: resumeData.experience,
-
-    projects: resumeData.projects,
-
-    skills: resumeData.skills,
-
-    certification: resumeData.certification,
-
-    languages: resumeData.languages,
-
-    customdiv: resumeData.customdiv,
+    education: {
+      phd: resumeData.education.phd || [],
+      postGraduate: resumeData.education.postGraduate || [],
+      underGraduate: resumeData.education.underGraduate || [],
+      diploma: resumeData.education.diploma || [],
+      hsc: resumeData.education.hsc || {
+        name: "",
+        year: "",
+        grade: "",
+        additionalInfo: "",
+      },
+      sslc: resumeData.education.sslc || {
+        name: "",
+        year: "",
+        grade: "",
+        additionalInfo: "",
+      },
+    },
+  
+    experience: resumeData.experience || [],
+  
+    projects: resumeData.projects || [],
+  
+    skills: {
+      type: resumeData.skills.type || "",
+      skillSet: resumeData.skills.skillSet || [],
+    },
+  
+    certifications: {
+      type: resumeData.certifications.type || "",
+      certificationSet: resumeData.certifications.certificationSet || [],
+    },
+  
+    languages: resumeData.languages || [],
+  
+    customInput: resumeData.customInput || [],
   });
+  
 
   await resumeDataDBEntry.save();
 
@@ -388,7 +427,6 @@ router.post('/Resume', async (req, res) => {
   let compiledTemplate = compileTemplate(templateFile.replace('<style></style>', `<style>${cssFile}</style>`), resumeData);
   footerFile = footerFile.replace('<img id="aulogo" src=""', `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`);
 
-  const timestamp = getCurrentTimestamp();
   footerFile = generateFooter(footerFile, timestamp);
 
   writeFileSync('../Output/Body.html', compiledTemplate);

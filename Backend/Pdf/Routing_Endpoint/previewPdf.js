@@ -11,6 +11,9 @@ const __dirname = path.dirname(__filename);
 const router = express.Router();
 
 Handlebars.registerHelper("or", (...args) => args.some(Boolean));
+Handlebars.registerHelper('eq', function (a, b) {
+  return a === b;
+});
 
 const readFileSync = (filePath) => fs.readFileSync(path.join(__dirname, filePath), 'utf8');
 const writeFileSync = (filePath, data) => fs.writeFileSync(path.join(__dirname, filePath), data);

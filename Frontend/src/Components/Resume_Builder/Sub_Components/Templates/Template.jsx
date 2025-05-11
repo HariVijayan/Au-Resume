@@ -6,7 +6,7 @@ import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 const Template = () => {
   const navigate = useNavigate();
 
-  let { resumeData, updateField } = ResumeInputTemplate();
+  let { updateField, setResumeData } = ResumeInputTemplate();
 
   const choseTemplate = async (templateName) => {
     updateField("metaData.template", templateName);
@@ -16,10 +16,10 @@ const Template = () => {
         {},
         { withCredentials: true }
       );
+      setResumeData(response.data);
       if (response.status === 500) {
         navigate("/resume-builder/bio-summary");
       }
-      resumeData = response.data;
     } catch (error) {
       console.error("Error fetching resume details:", error);
       navigate("/resume-builder/bio-summary");

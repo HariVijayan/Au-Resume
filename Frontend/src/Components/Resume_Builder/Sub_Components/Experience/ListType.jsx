@@ -20,9 +20,7 @@ const ListType = () => {
     const updatedExperience = [...resumeData.experience];
 
     if (name === "roles") {
-      updatedExperience[experienceIndex][name] = value
-        .split(",")
-        .map((role) => role.trim());
+      updatedExperience[experienceIndex][name] = value.split(",");
     } else {
       updatedExperience[experienceIndex][name] = value;
     }
