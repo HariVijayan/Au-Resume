@@ -1,0 +1,342 @@
+:root{
+	--fs--small: 1.3rem;
+	--fs--normal: 1.5rem;
+	--fs--big:1.7rem;
+	--fs--huge:2rem;
+	--fs--max:2.5rem;
+	--svg--width:2.5rem;
+	--svg--height:2.5rem;
+	--background:white;
+	--primary--color:black;
+	--primary--label--color:rgba(0, 0, 0, 0.6);
+	--primary--accent:#377dff;
+	--general--shadow:rgba(0, 0, 0, 0.5) 0 8px 15px;
+	--input--border:#cccccc;
+	--mandatory--input:red;
+	--recommended--input:green;
+	--optional--input:black;
+	--bt--general--background:#555555;
+	--bt--general--shadow:rgba(77, 77, 77, 0.8) 0 8px 15px;
+	--bt--preview--background:#5a67d8;
+	--bt--preview--shadow:rgba(90, 103, 216, 0.8) 0 8px 15px;
+	--bt--add--background:var(--primary--accent);
+	--bt--add--shadow:rgba(55, 125, 255, 0.8) 0 8px 15px;
+	--bt--submit--background:#04aa6d;
+	--bt--submit--shadow:rgba(4, 150, 96, 0.8) 0 8px 15px;
+}
+
+html {
+	height: 100%;
+	overflow-y: auto;
+	margin: 0 auto;
+	font-size: 62.5%;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	height: 100%;
+	background: var(--background);
+	font-size: var(--fs--normal);
+	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+}
+
+body svg {
+	fill: var(--primary--color);
+	height: var(--svg--height);
+	width: var(--svg--width);
+}
+
+body button {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+#dv-MainWrapper {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+
+#dv-BodyWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	padding: 2vh 0vh 10vh 0vh;
+}
+
+.Sidebar {
+	width: 60px;
+	height: 100vh;
+	border-radius: 0px 16px 16px 0px;
+	background-color: var(--primary--accent);
+	color: var(--background);
+	position: sticky;
+	top: 0;
+	align-self: start;
+	transition: 300ms ease-in-out;
+	overflow: hidden;
+	text-wrap: nowrap;
+	padding-top: 20px;
+	display: none;
+	flex-direction: column;
+}
+
+.Sidebar ul {
+	list-style: none;
+	padding: 0;
+}
+
+.Sidebar li {
+	padding: 10px;
+	text-align: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.Sidebar svg {
+	fill: var(--background);
+}
+
+.Sidebar li span {
+	display: none;
+}
+
+#cx-sidebar:checked+.Sidebar li span {
+	display: inline;
+}
+
+.Sidebar a {
+	text-decoration: none;
+	color: var(--background);
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.SidebarIcon {
+	margin-left: auto;
+	padding: 1em;
+	border: none;
+	border-radius: .5em;
+	background: none;
+	cursor: pointer;
+	margin-bottom: 20vh;
+
+	svg {
+		transition: rotate 150ms ease;
+	}
+}
+
+#cx-sidebar:checked+.Sidebar {
+	width: 250px;
+}
+
+#cx-sidebar:checked+.Sidebar ul li {
+	text-align: left;
+	padding-left: 20px;
+}
+
+#cx-sidebar {
+	display: none;
+}
+
+::-webkit-input-placeholder {
+	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+}
+
+:-ms-input-placeholder {
+	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+}
+
+:-moz-placeholder {
+	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+}
+
+::-moz-placeholder {
+	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+}
+
+.SidebarMainNav {
+	margin-bottom: 25vh;
+}
+
+.InputWrapper {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	position: relative;
+	max-width: 50vw;
+	min-height: 40px;
+	margin-top: 1em;
+	margin-bottom: auto;
+}
+
+input[type=text],
+input[type=number],
+input[type=email],
+input[type="url"],
+input[type="password"],
+textarea {
+	width: 50%;
+	padding: 12px;
+	border: 2px solid var(--input--border);
+	border-radius: 8px;
+	font-size: var(--fs--normal);
+	outline: none;
+	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+	transition: border-color 0.3s ease-in-out;
+	margin-bottom: 0.5em;
+	background: var(--background);
+	color: var(--primary--color);
+}
+
+/* Chrome, Safari, Edge, Opera - Remove Number Input Arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input:focus,
+textarea:focus {
+	border-color: var(--primary--accent);
+	/* Highlight color */
+}
+
+.TextFieldLabel {
+	position: absolute;
+	top: 40%;
+	left: 2%;
+	transform: translateY(-50%);
+	font-size: var(--fs--normal);
+	color: var(--primary--label--color);
+	pointer-events: none;
+	transition: all 0.2s ease-in-out;
+	background: var(--background);
+	padding: 0 4px;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label,
+textarea:focus + label,
+textarea:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: var(--fs--small);
+    color: var(--primary--accent);
+}
+
+textarea {
+	resize: vertical;
+	min-height: 25vh;
+}
+
+.dropdown-container {
+	position: relative;
+	width: 100%;
+	max-width: 300px;
+	margin-bottom: 20px;
+}
+
+select {
+	width: 100%;
+	padding: 12px 14px;
+	padding-right: 40px; /* Space for custom arrow */
+	border: 1px solid var(--input--border);
+	border-radius: 8px;
+	font-size: var(--fs--normal);
+	outline: none;
+	appearance: none; /* Hides default dropdown icon */
+	background: var(--background);
+	color: var(--primary--color);
+	cursor: pointer;
+	transition: border-color 0.3s ease-in-out;
+}
+
+select:focus {
+	border-color: var(--primary--accent);
+}
+
+/* Floating label */
+.DropDownLabel {
+	position: absolute;
+	top: 50%;
+	left: 14px;
+	transform: translateY(-50%);
+	font-size: var(--fs--normal);
+	color: var(--primary--label--color);
+	pointer-events: none;
+	transition: all 0.2s ease-in-out;
+	background: var(--background);
+	padding: 0 4px;
+}
+
+select:focus + .DropDownLabel,
+select:not([value=""]) + .DropDownLabel {
+	top: 0;
+	font-size: var(--fs--small);
+	color: var(--primary--accent);
+}
+
+/* Custom dropdown arrow */
+.dropdown-container::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	right: 14px;
+	transform: translateY(-50%);
+	height: var(--svg--height);
+	width: var(--svg--width);
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,0,0,0.6)"><path d="M7 10l5 5 5-5H7z"/></svg>');
+	background-size: contain;
+	background-repeat: no-repeat;
+	pointer-events: none; /* Prevents interaction */
+	transition: transform 0.2s ease-in-out;
+}
+
+#dv-FooterWrapper {
+	margin-top: 5em;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	min-height: 5vh; 
+	background-color: var(--primary--accent);
+	color: var(--background);
+	flex-shrink: 0; 
+	position: absolute;
+  bottom: 0;
+  }
+
+#img-FooterImage{
+	height: 35px;
+	width: 35px;
+	padding-right: 10px;
+}
+
+#p-footer{
+	font-size: var(--fs--normal);
+}
+
+.PageDetailsHeader {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+}

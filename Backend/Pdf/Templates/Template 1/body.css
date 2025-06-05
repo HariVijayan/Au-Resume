@@ -1,0 +1,515 @@
+html {
+	font-size: 62.5%;
+	/* 62.5% of 16px is 10px */
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Segoe UI', 'Helvetica', 'Verdana', 'Arial';
+	width: 100%;
+}
+
+ul {
+	padding-top: 0.5rem;
+}
+
+.project_main_div, .experience_main_div, .education_main_div, #customdiv, #languages, #certifications, #skills, #summary {
+	page-break-inside: avoid;
+	/* Prevent splitting divs across pages */
+}
+
+* {
+	margin: 0 auto;
+	padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li {
+	word-break: break-word;
+}
+
+#header {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+#headertop {
+	width: 100%;
+	display: flex;
+	align-items: flex-end;
+	margin-bottom: 1em;
+}
+
+#name {
+	width: 40%;
+	float: left;
+	text-align: left;
+	font-size: 3rem;
+}
+
+#smallbio {
+	width: 60%;
+	float: right;
+	text-align: right;
+	font-size: 1.5rem;
+}
+
+#p-contactinfo {
+	margin: 0;
+	font-size: 1.5rem;
+	text-align: center;
+}
+
+#linkedinlink,
+#githublink,
+#custombiolink {
+	text-decoration: none;
+	color: rgb(0, 121, 172);
+}
+
+#summary {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#h2-summary {
+	width: 100%;
+	text-align: left;
+	font-size: 1.75rem;
+	margin-bottom: 1em;
+	border-bottom: 2px solid black;
+	font-weight: normal;
+	margin: 0;
+	padding-bottom: 0.2em;
+}
+
+#p-summary {
+	width: 100%;
+	text-align: left;
+	font-size: 1.5rem;
+	margin-top: 0.5em;
+}
+
+#education {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#h2-education {
+	width: 100%;
+	text-align: left;
+	font-size: 1.75rem;
+	margin-bottom: 1em;
+	border-bottom: 2px solid black;
+	font-weight: normal;
+	margin: 0;
+}
+
+.education_main_div {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 1em;
+}
+
+.education_sub_div1 {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.education_sub_div2 {
+	margin-top: 0.5em;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.education_name_heading {
+	margin: 0;
+	font-size: 1.5rem;
+	display: flex;
+}
+
+.education_period {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.education_university {
+	margin: 0;
+	font-size: 1.5rem;
+	min-width: 30%;
+}
+
+.education_custom_field {
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: normal;
+}
+
+#skills {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#h2-skills {
+	width: 100%;
+	text-align: left;
+	font-size: 1.75rem;
+	margin-bottom: 1em;
+	border-bottom: 2px solid black;
+	font-weight: normal;
+	margin: 0;
+}
+
+#skillsstyle1,
+#skillsstyle2 {
+	margin-top: 1em;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+#ul-skillsstyle1 {
+	margin: 0;
+	font-size: 1.5rem;
+	list-style-type: square;
+	margin-left: 5em;
+}
+
+#p-skillset {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+#experience {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#h2-experience {
+	width: 100%;
+	text-align: left;
+	font-size: 1.75rem;
+	margin-bottom: 1em;
+	border-bottom: 2px solid black;
+	font-weight: normal;
+	margin: 0;
+}
+
+.experience_main_div {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 1em;
+}
+
+.experience_sub_div1 {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.experience_sub_div2 {
+	margin-top: 0.5em;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.experience_sub_div3 {
+	margin-top: 0.5em;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+#experiencecompanyinfo {
+	width: 70%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+	margin: 0;
+}
+
+.experience_company {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.experience_location {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.experience_period {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.experience_designation {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.experience_custom_field {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+#p-experiencedescription {
+	margin: 0;
+	font-size: 1.5rem;
+	margin-left: 5em;
+}
+
+#ul-experienceroles {
+	margin: 0;
+	font-size: 1.5rem;
+	list-style-type: square;
+	margin-left: 5em;
+}
+
+
+#projects {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#h2-projects {
+	width: 100%;
+	text-align: left;
+	font-size: 1.75rem;
+	margin-bottom: 1em;
+	border-bottom: 2px solid black;
+	font-weight: normal;
+	margin: 0;
+}
+
+.project_main_div {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 1em;
+}
+
+.project_sub_div1 {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.project_sub_div2 {
+	margin-top: 0.5em;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: column;
+}
+
+.project_name {
+	margin: 0;
+	font-size: 1.5rem;
+	width: 30%;
+}
+
+#projectlink {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 70%;
+}
+
+#h3-projectlink {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.project_link {
+	margin: 0;
+	font-size: 1.5rem;
+	text-decoration: none;
+	color: rgb(0, 121, 172);
+}
+
+.project_description {
+	margin: 0;
+	font-size: 1.5rem;
+	width: 100%;
+}
+
+.project_tech {
+	margin: 0;
+	font-size: 1.5rem;
+	width: 100%;
+}
+
+#certifications {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#h2-certification {
+	width: 100%;
+	text-align: left;
+	font-size: 1.75rem;
+	margin-bottom: 1em;
+	border-bottom: 2px solid black;
+	font-weight: normal;
+	margin: 0;
+}
+
+#certificationstyle1,
+#certificationstyle2 {
+	margin-top: 1em;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+#ul-certificationstyle1 {
+	margin: 0;
+	font-size: 1.5rem;
+	list-style-type: square;
+	margin-left: 5em;
+}
+
+#p-certificationset {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+#languages {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#h2-languages {
+	width: 100%;
+	text-align: left;
+	font-size: 1.75rem;
+	margin-bottom: 1em;
+	border-bottom: 2px solid black;
+	font-weight: normal;
+	margin: 0;
+}
+
+#languagesubdiv {
+	margin-top: 1em;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+#ul-languages {
+	margin: 0;
+	font-size: 1.5rem;
+	list-style-type: square;
+	margin-left: 5em;
+}
+
+#customdiv {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#h2-customtitle {
+	width: 100%;
+	text-align: left;
+	text-transform: uppercase;
+	font-size: 1.75rem;
+	margin-bottom: 1em;
+	border-bottom: 2px solid black;
+	font-weight: normal;
+	margin: 0;
+}
+
+#customdivstyle1,
+#customdivstyle2 {
+	margin-top: 1em;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+#ul-customdivstyle1 {
+	margin: 0;
+	font-size: 1.5rem;
+	list-style-type: square;
+	margin-left: 5em;
+}
+
+#p-custompara {
+	margin: 0;
+	font-size: 1.5rem;
+}

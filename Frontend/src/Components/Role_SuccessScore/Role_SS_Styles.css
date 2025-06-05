@@ -1,0 +1,84 @@
+#dv-RoleSSWrapper{
+    display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 95%;
+	min-height: 80vh;
+	flex-grow: 1;
+	flex-direction: column;
+}
+
+#dv-RoleSSInputWrapper{
+    display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+input[type="file"]{
+	opacity: 0;
+	display: none;
+}
+
+#dv-RoleSSResumeInputWrapper{
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 75%;
+	margin: 1em;
+}
+
+#dv-RoleSSResumeNameWrapper{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin: 1em;
+}
+
+#sp-ResumeNameHeader{
+	margin-right: 5px;
+	display: none;
+}
+
+#sp-ResumeName{
+	margin-left: 5px;
+}
+
+#bt-SuccessScore{
+	margin-top: 1em;
+}
+
+#dv-RoleSSResultWrapper{
+	display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 15vh;
+}
+
+#sp-rolessheading{
+	font-weight: bold;
+	text-transform: uppercase;
+	color: var(--primary--accent);
+}
+
+.RoleSSHeaderText{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 1em 0em;
+}
+
+.RoleSSHeaderSvg{
+	padding-left: 5px;
+}
+
+.RoleSSHeaderText{
+	font-size: var(--fs--normal);
+}
+
+@media (max-width: 600px) {
+	
+}
