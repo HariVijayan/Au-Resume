@@ -27,12 +27,8 @@ import Skills from "./Components/Resume_Builder/Sub_Components/Skills/SkillsMain
 import Certifications from "./Components/Resume_Builder/Sub_Components/Certifications/CertificationsMain.jsx";
 import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/Language.jsx";
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
-import JdSuccessScore from "./Components/JD_SucessScore/JdSS.jsx";
-import RoleSuccessScore from "./Components/Role_SuccessScore/RoleSS.jsx";
 import "./Components/General/General_Styles.css";
 import "./Components/Resume_Builder/RB_Styles.css";
-import "./Components/JD_SucessScore/Jd_SS_Styles.css";
-import "./Components/Role_SuccessScore/Role_SS_Styles.css";
 
 import ResumeInputTemplate from "./ResumeFormat.jsx";
 
@@ -194,6 +190,33 @@ function RouteWrapper() {
     }
   }, [submitClicked]);
 
+  const [logoutClicked, setLogoutClicked] = useState(false);
+
+  const logoutUser = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/authenticateUser/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      localStorage.setItem("flagLogout", Date.now());
+      setTimeout(() => localStorage.removeItem("flagLogout"), 100);
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (logoutClicked === true) {
+      setLogoutClicked(false);
+      logoutUser();
+    }
+  }, [logoutClicked]);
+
   return (
     <>
       <Routes>
@@ -206,37 +229,60 @@ function RouteWrapper() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/resume-builder/template-choosing"
-          element={<TemplateChoosing />}
+          element={<TemplateChoosing setLogoutClicked={setLogoutClicked} />}
         />
-        <Route path="/resume-builder/bio-summary" element={<BioSummary />} />
-        <Route path="/resume-builder/experience" element={<Experience />} />
+        <Route
+          path="/resume-builder/bio-summary"
+          element={<BioSummary setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/resume-builder/experience"
+          element={<Experience setLogoutClicked={setLogoutClicked} />}
+        />
         <Route
           path="/resume-builder/education/phd"
-          element={<EducationPhd />}
+          element={<EducationPhd setLogoutClicked={setLogoutClicked} />}
         />
-        <Route path="/resume-builder/education/pg" element={<EducationPg />} />
-        <Route path="/resume-builder/education/ug" element={<EducationUg />} />
+        <Route
+          path="/resume-builder/education/pg"
+          element={<EducationPg setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/resume-builder/education/ug"
+          element={<EducationUg setLogoutClicked={setLogoutClicked} />}
+        />
         <Route
           path="/resume-builder/education/diploma"
-          element={<EducationDiploma />}
+          element={<EducationDiploma setLogoutClicked={setLogoutClicked} />}
         />
         <Route
           path="/resume-builder/education/school"
-          element={<EducationSchool />}
+          element={<EducationSchool setLogoutClicked={setLogoutClicked} />}
         />
-        <Route path="/resume-builder/projects" element={<Projects />} />
-        <Route path="/resume-builder/skills" element={<Skills />} />
+        <Route
+          path="/resume-builder/projects"
+          element={<Projects setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/resume-builder/skills"
+          element={<Skills setLogoutClicked={setLogoutClicked} />}
+        />
         <Route
           path="/resume-builder/certifications"
-          element={<Certifications />}
+          element={<Certifications setLogoutClicked={setLogoutClicked} />}
         />
         <Route
           path="/resume-builder/languages-known"
-          element={<LanguagesKnown />}
+          element={<LanguagesKnown setLogoutClicked={setLogoutClicked} />}
         />
         <Route
           path="/resume-builder/custom-input"
-          element={<CustomInput setSubmitClicked={setSubmitClicked} />}
+          element={
+            <CustomInput
+              setLogoutClicked={setLogoutClicked}
+              setSubmitClicked={setSubmitClicked}
+            />
+          }
         />
       </Routes>
     </>

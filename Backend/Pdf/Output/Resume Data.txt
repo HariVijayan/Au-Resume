@@ -1,1 +1,9 @@
-null
+{
+  "personal": {
+    "name": "dffdfdfd"
+  },
+  "links": {
+    "linkedinDisplayName": "dffdf",
+    "linkedinUrl": "www.linkedin.com/dfddf"
+  }
+}
