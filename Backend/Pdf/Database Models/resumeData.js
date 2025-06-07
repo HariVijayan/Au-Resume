@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const resumeSchema = new mongoose.Schema({
   login_email: { type: String, default: undefined, required: true },
-  updatedAt: { type: String, default: "" },
-  metaData:{
+  updatedAt: { type: String, default: "", expires: 60 * 60 * 24 * 365 * 5 }, // 5 years expiration and will be removed automatically from the database
+  metaData: {
     template: { type: String, default: "" },
   },
   personal: {
