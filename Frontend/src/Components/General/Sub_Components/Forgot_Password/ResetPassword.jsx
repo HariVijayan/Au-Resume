@@ -9,6 +9,7 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email; // Get email from state
+  const isAdmin = location.state?.isAdmin || false; // Get isAdmin from state
 
   if (!email) {
     return <p>Please restart the process.</p>;
@@ -23,7 +24,7 @@ const ResetPassword = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/userRequest/reset-password",
-        { email, newPassword }
+        { email, newPassword, isAdmin }
       );
       setError(response.data.message);
 

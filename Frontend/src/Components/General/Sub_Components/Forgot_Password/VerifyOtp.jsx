@@ -9,6 +9,7 @@ const VerifyOTP = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email;
+  const isAdmin = location.state?.isAdmin || false;
 
   if (!email) {
     return <p>Please restart the process.</p>;
@@ -39,7 +40,7 @@ const VerifyOTP = () => {
       setError(data.message);
 
       if (response.ok) {
-        navigate("/reset-password", { state: { email } });
+        navigate("/reset-password", { state: { email, isAdmin } });
       } else {
         setError("OTP Verification Failed!");
       }

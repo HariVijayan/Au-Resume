@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   const getOtp = async (e) => {
@@ -13,11 +14,11 @@ const ForgotPassword = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/getFirstOtp/password-reset-otp",
-        { email }
+        { email, isAdmin }
       );
       setError(response.data.message);
 
-      navigate("/verify-password-otp", { state: { email } });
+      navigate("/verify-password-otp", { state: { email, isAdmin } });
     } catch (err) {
       setError(err.response?.data?.message || "Failed to send OTP");
     }
@@ -44,6 +45,15 @@ const ForgotPassword = () => {
             Email Id
           </label>
         </div>
+      </div>
+      <div id="dv-FPAdminCheckbox">
+        <span>System Admin</span>
+        <input
+          type="checkbox"
+          id="in-fp_admin"
+          checked={isAdmin}
+          onChange={(e) => setIsAdmin(e.target.checked)}
+        />
       </div>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
