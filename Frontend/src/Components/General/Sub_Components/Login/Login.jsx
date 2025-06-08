@@ -6,6 +6,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -73,6 +74,15 @@ const Login = () => {
         </div>
       </div>
       <div id="dv-LoginForgotPassword">
+        <div id="dv-LoginAdminCheckbox">
+          <span>System Admin</span>
+          <input
+            type="checkbox"
+            id="in-login_admin"
+            checked={isAdmin}
+            onChange={(e) => setIsAdmin(e.target.checked)}
+          />
+        </div>
         <p onClick={() => navigate("/forgot-password")} id="p-forgotpass">
           Forgot Password?
         </p>

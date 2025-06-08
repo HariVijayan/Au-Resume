@@ -217,7 +217,7 @@ iframe {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 95%;
+  width: 90%;
 }
 
 .MenuIcons {
@@ -235,7 +235,7 @@ iframe {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 95%;
+  width: 90%;
   min-height: 80vh;
   flex-grow: 1;
 }

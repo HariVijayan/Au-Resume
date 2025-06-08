@@ -17,13 +17,13 @@ const Template = ({ setLogoutClicked }) => {
       );
       setResumeData(response.data);
       if (response.status === 500) {
-        navigate("/resume-builder/bio-summary");
+        navigate("/resume-builder/basic-details");
       }
     } catch (error) {
       console.error("Error fetching resume details:", error);
-      navigate("/resume-builder/bio-summary");
+      navigate("/resume-builder/basic-details");
     }
-    navigate("/resume-builder/bio-summary");
+    navigate("/resume-builder/basic-details");
   };
 
   return (

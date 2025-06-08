@@ -12,7 +12,7 @@ const Experience = ({ setLogoutClicked }) => {
 
   const changeContent = (navigationType) => {
     if (navigationType === "previous") {
-      navigate("/resume-builder/bio-summary");
+      navigate("/resume-builder/basic-details");
     } else {
       navigate("/resume-builder/education/phd");
     }

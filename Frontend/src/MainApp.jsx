@@ -15,7 +15,7 @@ import ForgotPassword from "./Components/General/Sub_Components/Forgot_Password/
 import VerifyPasswordOtp from "./Components/General/Sub_Components/Forgot_Password/VerifyOtp.jsx";
 import ResetPassword from "./Components/General/Sub_Components/Forgot_Password/ResetPassword.jsx";
 import TemplateChoosing from "./Components/Resume_Builder/Sub_Components/Templates/Template.jsx";
-import BioSummary from "./Components/Resume_Builder/Sub_Components/Basic Details/BioSummary.jsx";
+import BasicDetails from "./Components/Resume_Builder/Sub_Components/Basic Details/BasicDetails.jsx";
 import Experience from "./Components/Resume_Builder/Sub_Components/Experience/ExperienceMain.jsx";
 import EducationPhd from "./Components/Resume_Builder/Sub_Components/Education/Phd/Phd.jsx";
 import EducationPg from "./Components/Resume_Builder/Sub_Components/Education/Pg/Pg.jsx";
@@ -34,10 +34,6 @@ import ResumeInputTemplate from "./ResumeFormat.jsx";
 
 function RouteWrapper() {
   const { resumeData } = ResumeInputTemplate();
-
-  useEffect(() => {
-    console.log(resumeData);
-  }, [resumeData]);
 
   const forceMultiTabClosureOnLogout = () => {
     const navigate = useNavigate();
@@ -60,7 +56,7 @@ function RouteWrapper() {
   const location = useLocation();
   const protectedRoutes = [
     "/resume-builder/template-choosing",
-    "/resume-builder/bio-summary",
+    "/resume-builder/basic-details",
     "/resume-builder/experience",
     "/resume-builder/education/phd",
     "/resume-builder/education/pg",
@@ -75,6 +71,7 @@ function RouteWrapper() {
   ];
   const navigate = useNavigate();
   const verifySessionForProtectedRoutes = async () => {
+    //Redirect to login page if session is previous session is invalid. If session is valid, no action is taken.
     try {
       const response = await fetch(
         "http://localhost:5000/verifySession/check-access",
@@ -93,7 +90,8 @@ function RouteWrapper() {
     }
   };
 
-  const verifySessionForAuthenticationRoutes = async () => {
+  const verifySessionForUnProtectedRoutes = async () => {
+    //Redirect to dashboard if there is a previous valid session available. If session is invalid, no action is taken.
     try {
       const response = await fetch(
         "http://localhost:5000/verifySession/check-access",
@@ -115,7 +113,6 @@ function RouteWrapper() {
   useEffect(() => {
     const setRouteBasedElements = () => {
       const footer = document.getElementById("dv-FooterWrapper");
-      const sidebar = document.querySelector(".Sidebar");
       if (footer) {
         if (protectedRoutes.includes(location.pathname)) {
           footer.style.display = "flex";
@@ -123,32 +120,25 @@ function RouteWrapper() {
           footer.style.display = "none";
         }
       }
-      if (sidebar) {
-        if (protectedRoutes.includes(location.pathname)) {
-          sidebar.style.display = "flex";
-        } else {
-          sidebar.style.display = "none";
-        }
-      }
     };
 
-    const checkAccessAndSetSidebar = async () => {
+    const checkAccessAndSetFooter = async () => {
       if (protectedRoutes.includes(location.pathname)) {
         await verifySessionForProtectedRoutes(); // Verify session before allowing protected routes
         setRouteBasedElements();
       } else {
-        await verifySessionForAuthenticationRoutes(); // Verify session for authentication routes
+        await verifySessionForUnProtectedRoutes(); // Verify session for authentication routes (Ex: Login, Register, Forgot Password, OTP)
         setRouteBasedElements();
       }
     };
 
     const observer = new MutationObserver(() => {
-      checkAccessAndSetSidebar();
+      checkAccessAndSetFooter();
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
 
-    checkAccessAndSetSidebar(); // Run on initial mount
+    checkAccessAndSetFooter(); // Run on initial mount
 
     return () => {
       observer.disconnect();
@@ -232,8 +222,8 @@ function RouteWrapper() {
           element={<TemplateChoosing setLogoutClicked={setLogoutClicked} />}
         />
         <Route
-          path="/resume-builder/bio-summary"
-          element={<BioSummary setLogoutClicked={setLogoutClicked} />}
+          path="/resume-builder/basic-details"
+          element={<BasicDetails setLogoutClicked={setLogoutClicked} />}
         />
         <Route
           path="/resume-builder/experience"

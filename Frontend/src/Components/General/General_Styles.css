@@ -1,206 +1,214 @@
-.AuthenticationWrapper{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 60%;
-	min-height: 85vh;
-    flex-direction: column;
-	border-radius: 20px;
-  	box-shadow: var(--general--shadow);
-	overflow: auto;
-	margin: 10vh 0em;
+.AuthenticationWrapper {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 60%;
+  min-height: 85vh;
+  flex-direction: column;
+  border-radius: 20px;
+  box-shadow: var(--general--shadow);
+  overflow: auto;
+  margin: 10vh 0em;
 }
 
-.AuthenticationWrapper h2{
-	margin: 0.5em;
+.AuthenticationWrapper h2 {
+  margin: 0.5em;
 }
 
-.LogoWrapper{
-	display: flex;
+.LogoWrapper {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   width: 90%;
   margin-top: 20px;
 }
 
-#img-aulogo{
-	height: 75px;
-	width: 75px;
+#img-aulogo {
+  height: 75px;
+  width: 75px;
 }
 
-.RegistrationDivWrapper{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 90%;
-    margin: 1em 0em;
+.RegistrationDivWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 90%;
+  margin: 1em 0em;
 }
 
 .RegisterInputWrapper {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 50%;
-	position: relative;
-	max-width: 50vw;
-	min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  position: relative;
+  max-width: 50vw;
+  min-height: 40px;
 }
 
-.RegisterInputWrapper input{
-    width: 375px;
-    height: 25px;
+.RegisterInputWrapper input {
+  width: 375px;
+  height: 25px;
 }
 
 .RegisterTextFieldLabel {
-	position: absolute;
-	top: 40%;
-	left: 5%;
-	transform: translateY(-50%);
-	font-size: var(--fs--normal);
-	color: var(--primary--label--color);
-	pointer-events: none;
-	transition: all 0.2s ease-in-out;
-	background: var(--background);
-	padding: 0 4px;
+  position: absolute;
+  top: 40%;
+  left: 5%;
+  transform: translateY(-50%);
+  font-size: var(--fs--normal);
+  color: var(--primary--label--color);
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background: var(--background);
+  padding: 0 4px;
 }
 
-.RegisterDropDownWrapper{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 50%;
+.RegisterDropDownWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
 }
 
 .RegisterDropDown {
-	position: relative;
-	width: 400px;
+  position: relative;
+  width: 400px;
 }
 
-.RegisterDropDown select{
-    height: 50px;
+.RegisterDropDown select {
+  height: 50px;
 }
 
 .RegisterDropDown::after {
-	content: '';
-	position: absolute;
-	top: 50%;
-	right: 14px;
-	transform: translateY(-50%);
-	width: 25px;
-	height: 25px;
-	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,0,0,0.6)"><path d="M7 10l5 5 5-5H7z"/></svg>');
-	background-size: contain;
-	background-repeat: no-repeat;
-	pointer-events: none; /* Prevents interaction */
-	transition: transform 0.2s ease-in-out;
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 25px;
+  height: 25px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,0,0,0.6)"><path d="M7 10l5 5 5-5H7z"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none; /* Prevents interaction */
+  transition: transform 0.2s ease-in-out;
 }
 
-
 .AuthenticationButton {
-	background-color: var(--primary--accent);
-	border: 0 solid var(--background);
-	box-sizing: border-box;
-	color: var(--background);
-	display: flex;
-	font-size: var(--fs--normal);
-	font-weight: 700;
-	justify-content: center;
-	line-height: 1.75rem;
-	padding: .75rem 1.65rem;
-	position: relative;
-	text-align: center;
-	text-decoration: none var(--primary--color) solid;
-	text-decoration-thickness: auto;
-	width: 15%;
-	max-width: 460px;
-	position: relative;
-	cursor: pointer;
-	transform: rotate(-2deg);
-	user-select: none;
-	-webkit-user-select: none;
-	touch-action: manipulation;
-	margin-top: 0.5em;
-  }
-  
-  .AuthenticationButton:focus {
-	outline: 0;
-  }
-  
-  .AuthenticationButton:after {
-	content: '';
-	position: absolute;
-	border: 1px solid var(--primary--color);
-	bottom: 4px;
-	left: 4px;
-	width: calc(100% - 1px);
-	height: calc(100% - 1px);
-  }
-  
-  .AuthenticationButton:hover:after {
-	bottom: 2px;
-	left: 2px;
-  }
+  background-color: var(--primary--accent);
+  border: 0 solid var(--background);
+  box-sizing: border-box;
+  color: var(--background);
+  display: flex;
+  font-size: var(--fs--normal);
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1.75rem;
+  padding: 0.75rem 1.65rem;
+  position: relative;
+  text-align: center;
+  text-decoration: none var(--primary--color) solid;
+  text-decoration-thickness: auto;
+  width: 15%;
+  max-width: 460px;
+  position: relative;
+  cursor: pointer;
+  transform: rotate(-2deg);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-top: 0.5em;
+}
 
-  .AuthenticationLink{
-	color:var(--primary--accent);
-	cursor: pointer;
-  }
+.AuthenticationButton:focus {
+  outline: 0;
+}
 
-  .AuthenticationDivWrapper{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    margin: 0.5em 0em;
+.AuthenticationButton:after {
+  content: "";
+  position: absolute;
+  border: 1px solid var(--primary--color);
+  bottom: 4px;
+  left: 4px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+}
+
+.AuthenticationButton:hover:after {
+  bottom: 2px;
+  left: 2px;
+}
+
+.AuthenticationLink {
+  color: var(--primary--accent);
+  cursor: pointer;
+}
+
+.AuthenticationDivWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 0.5em 0em;
 }
 
 .AuthenticationInputWrapper {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	position: relative;
-	max-width: 50vw;
-	min-height: 40px;
-	margin-top: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  max-width: 50vw;
+  min-height: 40px;
+  margin-top: 1em;
 }
 
 .AuthenticationTextFieldLabel {
-	position: absolute;
-	top: 40%;
-	left: 25%;
-	transform: translateY(-50%);
-	font-size: var(--fs--normal);
-	color: var(--primary--label--color);
-	pointer-events: none;
-	transition: all 0.2s ease-in-out;
-	background: var(--background);
-	padding: 0 4px;
+  position: absolute;
+  top: 40%;
+  left: 25%;
+  transform: translateY(-50%);
+  font-size: var(--fs--normal);
+  color: var(--primary--label--color);
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background: var(--background);
+  padding: 0 4px;
 }
 
-#dv-LoginCheckbox{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	max-width: 50vw;
-	min-height: 40px;
-	margin-top: 1em;
+#dv-LoginCheckbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 50vw;
+  min-height: 40px;
+  margin-top: 1em;
 }
 
-#dv-LoginForgotPassword{
-	width: 40%;
+#dv-LoginForgotPassword {
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-#p-forgotpass{
-	margin: 0;
-	text-align: right;
-	cursor: pointer;
-	width: fit-content;
-  	margin-left: auto;
+#p-forgotpass {
+  margin: 0;
+  text-align: right;
+  cursor: pointer;
+  width: fit-content;
+  margin-left: auto;
 }
 
-#in-login_rememberme{
-	height: 20px;
-	width: 20px;
+input[type="checkbox"] {
+  height: 20px;
+  width: 20px;
+}
+
+#dv-LoginAdminCheckbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
