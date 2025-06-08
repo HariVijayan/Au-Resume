@@ -17,13 +17,25 @@ const Login = () => {
   const loginUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:5000/authenticateUser/login",
-        { email, password, rememberMe },
+        { email, password, rememberMe, isAdmin },
         { withCredentials: true }
       );
       localStorage.removeItem("flagLogout");
-      navigate("/resume-builder/template-choosing");
+      if (
+        response?.data?.message ===
+        "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
+      ) {
+        navigate("/admin-dashboard/super-admin");
+      } else if (
+        response?.data?.message ===
+        "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
+      ) {
+        navigate("/admin-dashboard/analytics-admin");
+      } else if (response?.data?.message === "Login successful") {
+        navigate("/resume-builder/template-choosing");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }

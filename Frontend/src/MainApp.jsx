@@ -27,6 +27,9 @@ import Skills from "./Components/Resume_Builder/Sub_Components/Skills/SkillsMain
 import Certifications from "./Components/Resume_Builder/Sub_Components/Certifications/CertificationsMain.jsx";
 import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/Language.jsx";
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
+import Admin from "./Components/Profile/Admin.jsx";
+import User from "./Components/Profile/GeneralUser.jsx";
+import VOAdmin from "./Components/Profile/ViewOnlyAdmin.jsx";
 import "./Components/General/General_Styles.css";
 import "./Components/Resume_Builder/RB_Styles.css";
 
@@ -68,10 +71,39 @@ function RouteWrapper() {
     "/resume-builder/certifications",
     "/resume-builder/languages-known",
     "/resume-builder/custom-input",
+    "/user-profile",
+  ];
+
+  const adminRoutes = [
+    "/admin-dashboard/super-admin",
+    "/admin-dashboard/analytics-admin",
   ];
   const navigate = useNavigate();
+
+  const verifySessionForAdminRoutes = async () => {
+    //Redirect to login page if previous session is invalid or user not an admin. If session is valid and user is admin, no action is taken.
+    try {
+      const response = await fetch(
+        "http://localhost:5000/verifyAdminSession/check-admin-access",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error("Session invalid");
+      }
+    } catch (error) {
+      console.error("Session verification failed:", error);
+      navigate("/");
+    }
+  };
+
   const verifySessionForProtectedRoutes = async () => {
-    //Redirect to login page if session is previous session is invalid. If session is valid, no action is taken.
+    //Redirect to login page if previous session is invalid. If session is valid, no action is taken.
     try {
       const response = await fetch(
         "http://localhost:5000/verifySession/check-access",
@@ -113,37 +145,33 @@ function RouteWrapper() {
   useEffect(() => {
     const setRouteBasedElements = () => {
       const footer = document.getElementById("dv-FooterWrapper");
-      if (footer) {
-        if (protectedRoutes.includes(location.pathname)) {
-          footer.style.display = "flex";
-        } else {
-          footer.style.display = "none";
-        }
+      if (!footer) return;
+
+      if (
+        protectedRoutes.includes(location.pathname) ||
+        adminRoutes.includes(location.pathname)
+      ) {
+        footer.style.display = "flex";
+      } else {
+        footer.style.display = "none";
       }
     };
 
     const checkAccessAndSetFooter = async () => {
-      if (protectedRoutes.includes(location.pathname)) {
-        await verifySessionForProtectedRoutes(); // Verify session before allowing protected routes
-        setRouteBasedElements();
+      if (adminRoutes.includes(location.pathname)) {
+        console.log("Admin route detected");
+        await verifySessionForAdminRoutes();
+      } else if (protectedRoutes.includes(location.pathname)) {
+        await verifySessionForProtectedRoutes();
       } else {
-        await verifySessionForUnProtectedRoutes(); // Verify session for authentication routes (Ex: Login, Register, Forgot Password, OTP)
-        setRouteBasedElements();
+        await verifySessionForUnProtectedRoutes();
       }
+
+      setRouteBasedElements(); // Only after verification
     };
 
-    const observer = new MutationObserver(() => {
-      checkAccessAndSetFooter();
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    checkAccessAndSetFooter(); // Run on initial mount
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [location]);
+    checkAccessAndSetFooter(); // Single deterministic call per route change
+  }, [location.pathname]); // Only watch for path change, not DOM changes
 
   const downloadResume = async () => {
     const formData = {
@@ -211,6 +239,18 @@ function RouteWrapper() {
     <>
       <Routes>
         <Route path="*" element={<Error404 />} />
+        <Route
+          path="/admin-dashboard/super-admin"
+          element={<Admin setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/admin-dashboard/analytics-admin"
+          element={<VOAdmin setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/user-profile"
+          element={<User setLogoutClicked={setLogoutClicked} />}
+        />
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<Otp />} />

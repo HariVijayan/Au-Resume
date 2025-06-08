@@ -14,6 +14,7 @@ import verifyOtp from "./Login/Routing_Endpoints/Otp/Verify_Otp/verifyOtp.js";
 import login from "./Login/Routing_Endpoints/Authentication/Login/login.js";
 import logout from "./Login/Routing_Endpoints/Authentication/Logout/logout.js";
 import checkAccess from "./Login/Routing_Endpoints/Requests/Check_Access/checkAccess.js";
+import checkAdminAccess from "./Login/Routing_Endpoints/Requests/Check_Access/checkAdminAccess.js";
 import registerNewUser from "./Login/Routing_Endpoints/Requests/New_User/registerNewUser.js";
 import passwordReset from "./Login/Routing_Endpoints/Requests/Password_Reset/passwordReset.js";
 import adminUser from "./Login/Database_Models/adminUser.js";
@@ -60,6 +61,8 @@ app.use("/createUser", registerNewUser);
 app.use("/userRequest", passwordReset);
 
 app.use("/verifySession", checkAccess);
+
+app.use("/verifyAdminSession", checkAdminAccess);
 
 const formatISTTimestamp = (date) => {
   return new Intl.DateTimeFormat("en-GB", {
