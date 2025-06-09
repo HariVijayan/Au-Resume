@@ -21,7 +21,7 @@ const adminUserSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
   createdBy: { type: String, default: "System" },
-  accountType: { type: String, default: "ViewOnly" },
+  accountType: { type: String, default: "Analytics" },
   failedLoginAttempts: { type: Number, default: 0 },
   lockUntil: { type: Date, default: null },
   lockUntilFormatted: { type: String, default: null },

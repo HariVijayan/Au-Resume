@@ -27,9 +27,10 @@ import Skills from "./Components/Resume_Builder/Sub_Components/Skills/SkillsMain
 import Certifications from "./Components/Resume_Builder/Sub_Components/Certifications/CertificationsMain.jsx";
 import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/Language.jsx";
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
+import SuperAdmin from "./Components/Profile/SuperAdmin.jsx";
 import Admin from "./Components/Profile/Admin.jsx";
 import User from "./Components/Profile/GeneralUser.jsx";
-import VOAdmin from "./Components/Profile/ViewOnlyAdmin.jsx";
+import Analytics from "./Components/Profile/Analytics.jsx";
 import "./Components/General/General_Styles.css";
 import "./Components/Resume_Builder/RB_Styles.css";
 
@@ -76,7 +77,8 @@ function RouteWrapper() {
 
   const adminRoutes = [
     "/admin-dashboard/super-admin",
-    "/admin-dashboard/analytics-admin",
+    "/admin-dashboard/admin-actions",
+    "/admin-dashboard/analytics",
   ];
   const navigate = useNavigate();
 
@@ -159,7 +161,6 @@ function RouteWrapper() {
 
     const checkAccessAndSetFooter = async () => {
       if (adminRoutes.includes(location.pathname)) {
-        console.log("Admin route detected");
         await verifySessionForAdminRoutes();
       } else if (protectedRoutes.includes(location.pathname)) {
         await verifySessionForProtectedRoutes();
@@ -241,11 +242,15 @@ function RouteWrapper() {
         <Route path="*" element={<Error404 />} />
         <Route
           path="/admin-dashboard/super-admin"
+          element={<SuperAdmin setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/admin-dashboard/admin-actions"
           element={<Admin setLogoutClicked={setLogoutClicked} />}
         />
         <Route
-          path="/admin-dashboard/analytics-admin"
-          element={<VOAdmin setLogoutClicked={setLogoutClicked} />}
+          path="/admin-dashboard/analytics"
+          element={<Analytics setLogoutClicked={setLogoutClicked} />}
         />
         <Route
           path="/user-profile"

@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-const VOAdmin = ({ setLogoutClicked }) => {
+const SuperAdmin = ({ setLogoutClicked }) => {
   const navigate = useNavigate();
   return (
     <>
       <div id="dv-AdminDBWrapper">
         <p>
-          Admin Dashboard read only.{" "}
+          Super Admin Dashboard both read and write, add other admins.{" "}
           <span
             style={{ color: "red", cursor: "pointer" }}
             onClick={() => navigate("/")}
@@ -19,4 +19,4 @@ const VOAdmin = ({ setLogoutClicked }) => {
   );
 };
 
-export default VOAdmin;
+export default SuperAdmin;

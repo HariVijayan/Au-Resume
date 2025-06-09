@@ -107,9 +107,11 @@ router.post("/login", async (req, res) => {
       maxAge: rememberMe ? 2 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
     });
 
-    if (user.accountType === "Admin" || user.accountType === "SuperAdmin") {
+    if (user.accountType === "SuperAdmin") {
       res.json({ message: "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23" });
-    } else if (user.accountType === "ViewOnly") {
+    } else if (user.accountType === "Admin") {
+      res.json({ message: "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv" });
+    } else if (user.accountType === "Analytics") {
       res.json({ message: "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo" });
     } else {
       res.json({ message: "Login successful" });
