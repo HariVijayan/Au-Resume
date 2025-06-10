@@ -1,0 +1,123 @@
+.AdminConsoleWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 2vh;
+  min-height: 100vh;
+}
+
+.AdminConsoleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+.AdminConsoleHeaderImg {
+  width: 100px;
+  height: 100px;
+}
+
+.AdminConsoleHeaderTitle {
+  font-size: var(--fs--max);
+  color: var(--primary--accent);
+}
+
+.AdminConsoleHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin-top: 2rem;
+}
+
+.AdminConsoleHeading p {
+  font-size: var(--fs--huge);
+  font-weight: bold;
+}
+
+.AdminConsoleActionsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  width: 80%;
+}
+
+.AdminConsoleActionCard {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 1 calc(33.333% - 20px);
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  margin-top: 5vh;
+}
+
+.AdminConsoleActionCard:hover {
+  transform: translateY(-10px);
+  cursor: pointer;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+.CardTitle {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  padding: var(--fs--normal);
+  text-align: center;
+  font-size: var(--fs--huge);
+  flex-shrink: 0;
+}
+
+.CardContent {
+  padding: var(--fs--normal);
+  text-align: center;
+  flex-grow: 1;
+}
+
+.CardContent p {
+  font-size: var(--fs--small);
+  color: var(--primary--color);
+}
+
+.CardContentList {
+  list-style: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+.CardContentList li {
+  padding-bottom: 4%;
+}
+
+.CardContentLink {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: var(--primary--accent);
+}
+
+.CardContentLink svg {
+  fill: var(--primary--accent);
+}
+
+@media (max-width: 768px) {
+  .AdminConsoleActionCard {
+    flex: 1 1 100%;
+  }
+
+  .CardTitle {
+    font-size: 1.2rem;
+  }
+
+  .CardContent p {
+    font-size: 0.9rem;
+  }
+}

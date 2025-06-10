@@ -113,4 +113,24 @@ const newUser = new adminUser({
 });
 await newUser.save();
 
+const newUser1 = new adminUser({
+  email: "meow@gmail.com",
+  password: hashedPassword,
+  createdAt: createdAt,
+  createdAtFormatted: createdAtFormatted,
+  createdBy: "System",
+  accountType: "Admin",
+});
+await newUser1.save();
+
+const newUser2 = new adminUser({
+  email: "bow@gmail.com",
+  password: hashedPassword,
+  createdAt: createdAt,
+  createdAtFormatted: createdAtFormatted,
+  createdBy: "System",
+  accountType: "Analytics",
+});
+await newUser2.save();
+
 console.log("New SuperAdmin added. Good to go!");

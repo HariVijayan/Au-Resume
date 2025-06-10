@@ -6,6 +6,8 @@ import adminUser from "../../../Database_Models/adminUser.js";
 const router = express.Router();
 
 router.post("/check-admin-access", async (req, res) => {
+  const { routeType } = req.body;
+
   try {
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
@@ -29,7 +31,9 @@ router.post("/check-admin-access", async (req, res) => {
         .json({ message: "Session expired. Please log in again." });
     }
 
-    res.json({ message: "Valid access token" });
+    if (user.accountType != routeType) {
+      res.status(401).json({ message: "Unauthorised Access Request." });
+    }
   } catch (error) {
     console.error("Check Access Error:", error);
     res.status(500).json({ message: "Server error" });

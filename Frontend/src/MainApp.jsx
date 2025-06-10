@@ -28,11 +28,17 @@ import Certifications from "./Components/Resume_Builder/Sub_Components/Certifica
 import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/Language.jsx";
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
 import SuperAdmin from "./Components/Profile/SuperAdmin.jsx";
+import SAAdminMgmt from "./Components/Profile/Super_Admin_Actions/AdminMgmt.jsx";
+import SAUserMgmt from "./Components/Profile/Super_Admin_Actions/UserMgmt.jsx";
+import SALogMgmt from "./Components/Profile/Super_Admin_Actions/LogMgmt.jsx";
 import Admin from "./Components/Profile/Admin.jsx";
+import AdminUserMgmt from "./Components/Profile/Admin_Actions/UserMgmt.jsx";
+import AdminLogMgmt from "./Components/Profile/Admin_Actions/LogMgmt.jsx";
 import User from "./Components/Profile/GeneralUser.jsx";
 import Analytics from "./Components/Profile/Analytics.jsx";
 import "./Components/General/General_Styles.css";
 import "./Components/Resume_Builder/RB_Styles.css";
+import "./Components/Profile/Profile_Styles.css";
 
 import ResumeInputTemplate from "./ResumeFormat.jsx";
 
@@ -75,25 +81,30 @@ function RouteWrapper() {
     "/user-profile",
   ];
 
-  const adminRoutes = [
+  const superAdminRoutes = [
     "/admin-dashboard/super-admin",
-    "/admin-dashboard/admin-actions",
-    "/admin-dashboard/analytics",
+    "/admin-dashboard/super-admin/admin-management",
+    "/admin-dashboard/super-admin/user-management",
+    "/admin-dashboard/super-admin/log-management",
   ];
+
+  const adminRoutes = [
+    "/admin-dashboard/admin-general",
+    "/admin-dashboard/admin-general/user-management",
+    "/admin-dashboard/admin-general/log-management",
+  ];
+
+  const analyticsAdminRoutes = ["/admin-dashboard/analytics"];
   const navigate = useNavigate();
 
-  const verifySessionForAdminRoutes = async () => {
+  const verifySessionForAdminRoutes = async (routeType) => {
     //Redirect to login page if previous session is invalid or user not an admin. If session is valid and user is admin, no action is taken.
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:5000/verifyAdminSession/check-admin-access",
-        {
-          method: "POST",
-          credentials: "include",
-        }
+        { routeType },
+        { withCredentials: true }
       );
-
-      console.log(response);
 
       if (!response.ok) {
         throw new Error("Session invalid");
@@ -107,17 +118,13 @@ function RouteWrapper() {
   const verifySessionForProtectedRoutes = async () => {
     //Redirect to login page if previous session is invalid. If session is valid, no action is taken.
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:5000/verifySession/check-access",
-        {
-          method: "POST",
-          credentials: "include",
-        }
+        {},
+        { withCredentials: true }
       );
 
-      if (!response.ok) {
-        throw new Error("Session invalid");
-      }
+      console.log(response);
     } catch (error) {
       console.error("Session verification failed:", error);
       navigate("/");
@@ -127,18 +134,14 @@ function RouteWrapper() {
   const verifySessionForUnProtectedRoutes = async () => {
     //Redirect to dashboard if there is a previous valid session available. If session is invalid, no action is taken.
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:5000/verifySession/check-access",
-        {
-          method: "POST",
-          credentials: "include",
-        }
+        {},
+        { withCredentials: true }
       );
 
-      if (response.ok) {
-        console.log("Valid session. Redirecting to dashboard.");
-        navigate("/resume-builder/template-choosing");
-      }
+      console.log("Valid session. Redirecting to dashboard.");
+      navigate("/resume-builder/template-choosing");
     } catch (error) {
       return;
     }
@@ -160,8 +163,12 @@ function RouteWrapper() {
     };
 
     const checkAccessAndSetFooter = async () => {
-      if (adminRoutes.includes(location.pathname)) {
-        await verifySessionForAdminRoutes();
+      if (superAdminRoutes.includes(location.pathname)) {
+        await verifySessionForAdminRoutes("SuperAdmin");
+      } else if (adminRoutes.includes(location.pathname)) {
+        await verifySessionForAdminRoutes("Admin");
+      } else if (analyticsAdminRoutes.includes(location.pathname)) {
+        await verifySessionForAdminRoutes("Analytics");
       } else if (protectedRoutes.includes(location.pathname)) {
         await verifySessionForProtectedRoutes();
       } else {
@@ -245,8 +252,28 @@ function RouteWrapper() {
           element={<SuperAdmin setLogoutClicked={setLogoutClicked} />}
         />
         <Route
-          path="/admin-dashboard/admin-actions"
+          path="/admin-dashboard/super-admin/admin-management"
+          element={<SAAdminMgmt setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/admin-dashboard/super-admin/user-management"
+          element={<SAUserMgmt setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/admin-dashboard/super-admin/log-management"
+          element={<SALogMgmt setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/admin-dashboard/admin-general"
           element={<Admin setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/admin-dashboard/admin-general/user-management"
+          element={<AdminUserMgmt setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/admin-dashboard/admin-general/log-management"
+          element={<AdminLogMgmt setLogoutClicked={setLogoutClicked} />}
         />
         <Route
           path="/admin-dashboard/analytics"

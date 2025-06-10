@@ -22,6 +22,7 @@ const Login = () => {
         { email, password, rememberMe, isAdmin },
         { withCredentials: true }
       );
+      console.log(response?.data?.message);
       localStorage.removeItem("flagLogout");
       if (
         response?.data?.message ===
@@ -32,7 +33,7 @@ const Login = () => {
         response?.data?.message ===
         "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
       ) {
-        navigate("/admin-dashboard/admin-actions");
+        navigate("/admin-dashboard/admin-general");
       } else if (
         response?.data?.message ===
         "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"

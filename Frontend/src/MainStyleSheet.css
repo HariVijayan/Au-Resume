@@ -70,7 +70,8 @@ body button {
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 2vh 0vh 10vh 0vh;
+  padding: 2vh;
+  min-height: 100vh;
 }
 
 ::-webkit-input-placeholder {
@@ -229,7 +230,6 @@ select:not([value=""]) + .DropDownLabel {
 }
 
 #dv-FooterWrapper {
-  margin-top: 5em;
   display: none;
   justify-content: center;
   align-items: center;

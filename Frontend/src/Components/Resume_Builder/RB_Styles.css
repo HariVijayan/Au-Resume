@@ -293,34 +293,6 @@ iframe {
   overflow-y: auto;
 }
 
-.EducationHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.ProjectHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.CustomDivHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.ExperienceHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
 #sp-rbheading {
   font-weight: bold;
   text-transform: uppercase;
@@ -364,27 +336,6 @@ iframe {
 .AddInputButton {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-}
-
-.SkillsHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.CertificationsHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.LanguagesHeader {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
 }
