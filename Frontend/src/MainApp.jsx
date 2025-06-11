@@ -28,7 +28,8 @@ import Certifications from "./Components/Resume_Builder/Sub_Components/Certifica
 import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/Language.jsx";
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
 import SuperAdmin from "./Components/Profile/SuperAdmin.jsx";
-import SAAdminMgmt from "./Components/Profile/Super_Admin_Actions/AdminMgmt.jsx";
+import SAAdminMgmt from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/AdminMgmt.jsx";
+import AddAdmin from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/AddAdmin.jsx";
 import SAUserMgmt from "./Components/Profile/Super_Admin_Actions/UserMgmt.jsx";
 import SALogMgmt from "./Components/Profile/Super_Admin_Actions/LogMgmt.jsx";
 import Admin from "./Components/Profile/Admin.jsx";
@@ -86,6 +87,7 @@ function RouteWrapper() {
     "/admin-dashboard/super-admin/admin-management",
     "/admin-dashboard/super-admin/user-management",
     "/admin-dashboard/super-admin/log-management",
+    "/admin-dashboard/super-admin/admin-management/add-admin",
   ];
 
   const adminRoutes = [
@@ -152,10 +154,7 @@ function RouteWrapper() {
       const footer = document.getElementById("dv-FooterWrapper");
       if (!footer) return;
 
-      if (
-        protectedRoutes.includes(location.pathname) ||
-        adminRoutes.includes(location.pathname)
-      ) {
+      if (protectedRoutes.includes(location.pathname)) {
         footer.style.display = "flex";
       } else {
         footer.style.display = "none";
@@ -254,6 +253,10 @@ function RouteWrapper() {
         <Route
           path="/admin-dashboard/super-admin/admin-management"
           element={<SAAdminMgmt setLogoutClicked={setLogoutClicked} />}
+        />
+        <Route
+          path="/admin-dashboard/super-admin/admin-management/add-admin"
+          element={<AddAdmin setLogoutClicked={setLogoutClicked} />}
         />
         <Route
           path="/admin-dashboard/super-admin/user-management"

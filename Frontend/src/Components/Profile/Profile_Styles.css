@@ -7,6 +7,7 @@
   height: 100%;
   padding: 2vh;
   min-height: 100vh;
+  padding-bottom: 5em;
 }
 
 .AdminConsoleHeader {
@@ -56,6 +57,7 @@
   flex: 1 1 calc(33.333% - 20px);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 40vh;
   margin-top: 5vh;
 }
@@ -73,12 +75,17 @@
   text-align: center;
   font-size: var(--fs--huge);
   flex-shrink: 0;
+  height: 10%;
 }
 
 .CardContent {
   padding: var(--fs--normal);
   text-align: center;
   flex-grow: 1;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .CardContent p {
@@ -93,7 +100,15 @@
 }
 
 .CardContentList li {
-  padding-bottom: 4%;
+  padding-bottom: 2%;
+}
+
+.CardLink {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 20%;
+  padding: var(--fs--normal);
 }
 
 .CardContentLink {
@@ -106,6 +121,159 @@
 
 .CardContentLink svg {
   fill: var(--primary--accent);
+}
+
+.AdminDashboardLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.AdminDashboardLink:hover {
+  color: var(--primary--accent);
+  cursor: pointer;
+}
+
+.AdminDashboardLink svg {
+  fill: var(--primary--accent);
+  cursor: pointer;
+}
+
+.ListAdminsWrapper {
+  width: 90%;
+  margin-top: 2rem;
+}
+
+.AdminsListHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.AdminTableHeading,
+.AdminMgmtActionHeading {
+  font-size: var(--fs--huge);
+  font-weight: bold;
+}
+
+.AdminsList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.CurrentAdminsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.CurrentAdminsTable tr,
+td,
+th {
+  padding: 10px;
+  text-align: center;
+}
+
+.CurrentAdminsTable td,
+th {
+  border: 1px solid var(--primary--accent);
+}
+
+.AddAdminsWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin-top: 2rem;
+}
+
+.AdminMgmtActions {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.AddAdminInputsWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.AdminMgmtInputWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  position: relative;
+  max-width: 50vw;
+  min-height: 40px;
+}
+
+.AdminMgmtInputWrapper input {
+  width: 375px;
+  height: 25px;
+}
+
+.AdminMgmtTextFieldLabel {
+  position: absolute;
+  top: 40%;
+  left: 10%;
+  transform: translateY(-50%);
+  font-size: var(--fs--normal);
+  color: var(--primary--label--color);
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background: var(--background);
+  padding: 0 4px;
+}
+
+.AdminMgmtDropDown {
+  position: relative;
+  width: 400px;
+}
+
+.AdminMgmtDropDown select {
+  height: 50px;
+}
+
+.AdminMgmtDropDown::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 25px;
+  height: 25px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,0,0,0.6)"><path d="M7 10l5 5 5-5H7z"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none; /* Prevents interaction */
+  transition: transform 0.2s ease-in-out;
+}
+
+.AddAdminButtonWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.AdminMgmtApproval {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  text-align: center;
 }
 
 @media (max-width: 768px) {

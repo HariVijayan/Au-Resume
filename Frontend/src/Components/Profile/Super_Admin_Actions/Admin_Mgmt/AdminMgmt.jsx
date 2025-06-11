@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const SuperAdmin = ({ setLogoutClicked }) => {
+const AdminMgmt = ({ setLogoutClicked }) => {
   const navigate = useNavigate();
   return (
     <>
@@ -28,7 +28,22 @@ const SuperAdmin = ({ setLogoutClicked }) => {
           </svg>
         </div>
         <div id="dv-AdminDBType" className="AdminConsoleHeading">
-          <p>Admin Dashboard</p>
+          <p
+            className="AdminDashboardLink"
+            onClick={() => navigate("/admin-dashboard/super-admin")}
+          >
+            <svg
+              className="MenuIconsSvg"
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#e3e3e3"
+            >
+              <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+            </svg>
+            Admin Dashboard
+          </p>
           <span>
             Access Level: <span style={{ color: "red" }}>Super Admin</span>
           </span>
@@ -38,17 +53,19 @@ const SuperAdmin = ({ setLogoutClicked }) => {
           <div
             className="AdminConsoleActionCard"
             onClick={() =>
-              navigate("/admin-dashboard/super-admin/admin-management")
+              navigate(
+                "/admin-dashboard/super-admin/admin-management/add-admin"
+              )
             }
           >
-            <div className="CardTitle">Admin Management</div>
+            <div className="CardTitle">Add New Admins</div>
             <div className="CardContent">
-              <ul className="CardContentList">
-                <li>Add New Admins</li>
-                <li>Remove Existing Admins</li>
-                <li>View Current Admins</li>
-                <li>Modify Admin Permissions</li>
-              </ul>
+              <span>
+                Use this to add new admins to manage this site. Please note that
+                you've to manually verify your identity through an OTP sent to
+                your registered email to save changes. It will be recorded that
+                you're the one who is adding this new admin.
+              </span>
             </div>
             <div className="CardLink">
               <span className="CardContentLink">
@@ -72,14 +89,14 @@ const SuperAdmin = ({ setLogoutClicked }) => {
               navigate("/admin-dashboard/super-admin/user-management")
             }
           >
-            <div className="CardTitle">User Management</div>
+            <div className="CardTitle">Remove Existing Admins</div>
             <div className="CardContent">
-              <ul className="CardContentList">
-                <li>Add New Users</li>
-                <li>Remove Existing Users</li>
-                <li>View Current Users</li>
-                <li>Modify User Details</li>
-              </ul>
+              <span>
+                Use this to remove existing admins from this site. Please note
+                that you've to manually verify your identity through an OTP sent
+                to your registered email to save changes. It will be recorded
+                that you're the one who removed this existing admin.
+              </span>
             </div>
             <div className="CardLink">
               <span className="CardContentLink">
@@ -103,14 +120,14 @@ const SuperAdmin = ({ setLogoutClicked }) => {
               navigate("/admin-dashboard/super-admin/log-management")
             }
           >
-            <div className="CardTitle">Logs Management</div>
+            <div className="CardTitle">Modify Admin Permissions</div>
             <div className="CardContent">
-              <ul className="CardContentList">
-                <li>View Admin Logs</li>
-                <li>View Users Logs</li>
-                <li>Download Logs</li>
-                <li>Clear Logs</li>
-              </ul>
+              <span>
+                Use this to modify existing admin's permissions. You can elevate
+                existing admin's permissions to be super admins or limit
+                existing admin's permissions to be having analytics only
+                (ViewOnly) access.
+              </span>
             </div>
             <div className="CardLink">
               <span className="CardContentLink">
@@ -133,4 +150,4 @@ const SuperAdmin = ({ setLogoutClicked }) => {
   );
 };
 
-export default SuperAdmin;
+export default AdminMgmt;

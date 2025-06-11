@@ -22,7 +22,6 @@ const Login = () => {
         { email, password, rememberMe, isAdmin },
         { withCredentials: true }
       );
-      console.log(response?.data?.message);
       localStorage.removeItem("flagLogout");
       if (
         response?.data?.message ===
