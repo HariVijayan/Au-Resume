@@ -2,8 +2,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Template = ({ setLogoutClicked }) => {
+const Template = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
+
+  const logoutUser = () => {
+    setLogoutUserType("User");
+    setLogoutClicked(true);
+  };
 
   let { updateField, setResumeData } = ResumeInputTemplate();
 
@@ -43,7 +48,7 @@ const Template = ({ setLogoutClicked }) => {
           </svg>
           <svg
             className="MenuIconsSvg"
-            onClick={() => setLogoutClicked(true)}
+            onClick={logoutUser}
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"

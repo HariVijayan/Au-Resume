@@ -5,7 +5,7 @@ import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Experience = ({ setLogoutClicked }) => {
+const Experience = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
 
   const { resumeData, updateField } = ResumeInputTemplate();
@@ -16,6 +16,11 @@ const Experience = ({ setLogoutClicked }) => {
     } else {
       navigate("/resume-builder/education/phd");
     }
+  };
+
+  const logoutUser = () => {
+    setLogoutUserType("User");
+    setLogoutClicked(true);
   };
 
   const [hasChosenAStyle, setHasChosenAStyle] = useState(
@@ -97,7 +102,7 @@ const Experience = ({ setLogoutClicked }) => {
           </svg>
           <svg
             className="MenuIconsSvg"
-            onClick={() => setLogoutClicked(true)}
+            onClick={logoutUser}
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"

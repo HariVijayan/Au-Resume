@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-const AdminMgmt = ({ setLogoutClicked }) => {
+const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
+  const logoutUser = () => {
+    setLogoutUserType("Admin");
+    setLogoutClicked(true);
+  };
   return (
     <>
       <div id="dv-AdminDBWrapper" className="AdminConsoleWrapper">
@@ -18,7 +22,7 @@ const AdminMgmt = ({ setLogoutClicked }) => {
             </h1>
             <svg
               className="MenuIconsSvg"
-              onClick={() => setLogoutClicked(true)}
+              onClick={logoutUser}
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
               viewBox="0 -960 960 960"

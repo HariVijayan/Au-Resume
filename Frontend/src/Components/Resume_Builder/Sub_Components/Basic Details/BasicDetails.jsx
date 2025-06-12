@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const BioSummary = ({ setLogoutClicked }) => {
+const BioSummary = ({ setLogoutClicked, setLogoutUserType }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
 
   const navigate = useNavigate();
@@ -25,6 +25,11 @@ const BioSummary = ({ setLogoutClicked }) => {
     } else {
       navigate("/resume-builder/experience");
     }
+  };
+
+  const logoutUser = () => {
+    setLogoutUserType("User");
+    setLogoutClicked(true);
   };
 
   return (
@@ -67,7 +72,7 @@ const BioSummary = ({ setLogoutClicked }) => {
           </svg>
           <svg
             className="MenuIconsSvg"
-            onClick={() => setLogoutClicked(true)}
+            onClick={logoutUser}
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"

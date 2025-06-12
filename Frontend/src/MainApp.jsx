@@ -108,7 +108,7 @@ function RouteWrapper() {
         { withCredentials: true }
       );
 
-      if (!response.ok) {
+      if (response.statusText != "OK") {
         throw new Error("Session invalid");
       }
     } catch (error) {
@@ -121,12 +121,10 @@ function RouteWrapper() {
     //Redirect to login page if previous session is invalid. If session is valid, no action is taken.
     try {
       const response = await axios.post(
-        "http://localhost:5000/verifySession/check-access",
+        "http://localhost:5000/verifySession/protectedRoutes/check-access",
         {},
         { withCredentials: true }
       );
-
-      console.log(response);
     } catch (error) {
       console.error("Session verification failed:", error);
       navigate("/");
@@ -137,13 +135,29 @@ function RouteWrapper() {
     //Redirect to dashboard if there is a previous valid session available. If session is invalid, no action is taken.
     try {
       const response = await axios.post(
-        "http://localhost:5000/verifySession/check-access",
+        "http://localhost:5000/verifySession/authenticationRoutes/check-access",
         {},
         { withCredentials: true }
       );
 
-      console.log("Valid session. Redirecting to dashboard.");
-      navigate("/resume-builder/template-choosing");
+      if (
+        response?.data?.message ===
+        "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
+      ) {
+        navigate("/admin-dashboard/super-admin");
+      } else if (
+        response?.data?.message ===
+        "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
+      ) {
+        navigate("/admin-dashboard/admin-general");
+      } else if (
+        response?.data?.message ===
+        "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
+      ) {
+        navigate("/admin-dashboard/analytics");
+      } else if (response?.data?.message === "Valid access token") {
+        navigate("/resume-builder/template-choosing");
+      }
     } catch (error) {
       return;
     }
@@ -216,12 +230,13 @@ function RouteWrapper() {
   }, [submitClicked]);
 
   const [logoutClicked, setLogoutClicked] = useState(false);
+  const [logoutUserType, setLogoutUserType] = useState("");
 
-  const logoutUser = async () => {
+  const logoutUser = async (userType) => {
     try {
       await axios.post(
         "http://localhost:5000/authenticateUser/logout",
-        {},
+        { userType },
         {
           withCredentials: true,
         }
@@ -238,7 +253,8 @@ function RouteWrapper() {
   useEffect(() => {
     if (logoutClicked === true) {
       setLogoutClicked(false);
-      logoutUser();
+      logoutUser(logoutUserType);
+      setLogoutUserType("");
     }
   }, [logoutClicked]);
 
@@ -248,43 +264,93 @@ function RouteWrapper() {
         <Route path="*" element={<Error404 />} />
         <Route
           path="/admin-dashboard/super-admin"
-          element={<SuperAdmin setLogoutClicked={setLogoutClicked} />}
+          element={
+            <SuperAdmin
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/admin-dashboard/super-admin/admin-management"
-          element={<SAAdminMgmt setLogoutClicked={setLogoutClicked} />}
+          element={
+            <SAAdminMgmt
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/admin-dashboard/super-admin/admin-management/add-admin"
-          element={<AddAdmin setLogoutClicked={setLogoutClicked} />}
+          element={
+            <AddAdmin
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/admin-dashboard/super-admin/user-management"
-          element={<SAUserMgmt setLogoutClicked={setLogoutClicked} />}
+          element={
+            <SAUserMgmt
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/admin-dashboard/super-admin/log-management"
-          element={<SALogMgmt setLogoutClicked={setLogoutClicked} />}
+          element={
+            <SALogMgmt
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/admin-dashboard/admin-general"
-          element={<Admin setLogoutClicked={setLogoutClicked} />}
+          element={
+            <Admin
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/admin-dashboard/admin-general/user-management"
-          element={<AdminUserMgmt setLogoutClicked={setLogoutClicked} />}
+          element={
+            <AdminUserMgmt
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/admin-dashboard/admin-general/log-management"
-          element={<AdminLogMgmt setLogoutClicked={setLogoutClicked} />}
+          element={
+            <AdminLogMgmt
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/admin-dashboard/analytics"
-          element={<Analytics setLogoutClicked={setLogoutClicked} />}
+          element={
+            <Analytics
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/user-profile"
-          element={<User setLogoutClicked={setLogoutClicked} />}
+          element={
+            <User
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -294,57 +360,118 @@ function RouteWrapper() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/resume-builder/template-choosing"
-          element={<TemplateChoosing setLogoutClicked={setLogoutClicked} />}
+          element={
+            <TemplateChoosing
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/basic-details"
-          element={<BasicDetails setLogoutClicked={setLogoutClicked} />}
+          element={
+            <BasicDetails
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/experience"
-          element={<Experience setLogoutClicked={setLogoutClicked} />}
+          element={
+            <Experience
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/education/phd"
-          element={<EducationPhd setLogoutClicked={setLogoutClicked} />}
+          element={
+            <EducationPhd
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/education/pg"
-          element={<EducationPg setLogoutClicked={setLogoutClicked} />}
+          element={
+            <EducationPg
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/education/ug"
-          element={<EducationUg setLogoutClicked={setLogoutClicked} />}
+          element={
+            <EducationUg
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/education/diploma"
-          element={<EducationDiploma setLogoutClicked={setLogoutClicked} />}
+          element={
+            <EducationDiploma
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/education/school"
-          element={<EducationSchool setLogoutClicked={setLogoutClicked} />}
+          element={
+            <EducationSchool
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/projects"
-          element={<Projects setLogoutClicked={setLogoutClicked} />}
+          element={
+            <Projects
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/skills"
-          element={<Skills setLogoutClicked={setLogoutClicked} />}
+          element={
+            <Skills
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/certifications"
-          element={<Certifications setLogoutClicked={setLogoutClicked} />}
+          element={
+            <Certifications
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/languages-known"
-          element={<LanguagesKnown setLogoutClicked={setLogoutClicked} />}
+          element={
+            <LanguagesKnown
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
         />
         <Route
           path="/resume-builder/custom-input"
           element={
             <CustomInput
               setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
               setSubmitClicked={setSubmitClicked}
             />
           }

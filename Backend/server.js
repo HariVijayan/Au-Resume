@@ -13,7 +13,8 @@ import verifyOtpNewUser from "./Login/Routing_Endpoints/Otp/Verify_Otp/newRegist
 import verifyOtp from "./Login/Routing_Endpoints/Otp/Verify_Otp/verifyOtp.js";
 import login from "./Login/Routing_Endpoints/Authentication/Login/login.js";
 import logout from "./Login/Routing_Endpoints/Authentication/Logout/logout.js";
-import checkAccess from "./Login/Routing_Endpoints/Requests/Check_Access/checkAccess.js";
+import checkUnProtectedAccess from "./Login/Routing_Endpoints/Requests/Check_Access/checkUnProtectedAccess.js";
+import checkProtectedAccess from "./Login/Routing_Endpoints/Requests/Check_Access/checkProtectedAccess.js";
 import checkAdminAccess from "./Login/Routing_Endpoints/Requests/Check_Access/checkAdminAccess.js";
 import registerNewUser from "./Login/Routing_Endpoints/Requests/New_User/registerNewUser.js";
 import passwordReset from "./Login/Routing_Endpoints/Requests/Password_Reset/passwordReset.js";
@@ -61,7 +62,9 @@ app.use("/createUser", registerNewUser);
 
 app.use("/userRequest", passwordReset);
 
-app.use("/verifySession", checkAccess);
+app.use("/verifySession/authenticationRoutes", checkUnProtectedAccess);
+
+app.use("/verifySession/protectedRoutes", checkProtectedAccess);
 
 app.use("/verifyAdminSession", checkAdminAccess);
 

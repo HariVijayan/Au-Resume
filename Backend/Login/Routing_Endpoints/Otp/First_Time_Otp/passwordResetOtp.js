@@ -2,6 +2,7 @@ import express from "express";
 import User from "../../../Database_Models/User.js";
 import adminUser from "../../../Database_Models/adminUser.js";
 import Otp from "../../../Database_Models/Otp.js";
+import adminOtp from "../../../Database_Models/adminOtp.js";
 import nodemailer from "nodemailer";
 
 const router = express.Router();
@@ -55,7 +56,14 @@ router.post("/password-reset-otp", async (req, res) => {
 
     if (!user) return res.status(400).json({ message: "User not found" });
 
-    const lastOtp = await Otp.findOne({ email }).sort({ createdAt: -1 });
+    let lastOtp;
+
+    if (isAdmin) {
+      lastOtp = await adminOtp.findOne({ email }).sort({ createdAt: -1 });
+    } else {
+      lastOtp = await Otp.findOne({ email }).sort({ createdAt: -1 });
+    }
+
     if (
       lastOtp &&
       Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT
@@ -69,18 +77,32 @@ router.post("/password-reset-otp", async (req, res) => {
     const createdAt = new Date(Date.now());
     const expiresAt = new Date(Date.now() + OTP_EXPIRATION_TIME);
 
-    // Delete old OTPs
-    await Otp.deleteMany({ email });
+    if (isAdmin) {
+      await adminOtp.deleteMany({ email });
 
-    // Save new OTP
-    await Otp.create({
-      email,
-      otp,
-      createdAt,
-      createdAtFormatted: formatISTTimestamp(createdAt),
-      expiresAt,
-      expiresAtFormatted: formatISTTimestamp(expiresAt),
-    });
+      // Save new OTP
+      await adminOtp.create({
+        email,
+        otp,
+        createdAt,
+        createdAtFormatted: formatISTTimestamp(createdAt),
+        expiresAt,
+        expiresAtFormatted: formatISTTimestamp(expiresAt),
+        otpFor: "Password Reset",
+      });
+    } else {
+      await Otp.deleteMany({ email });
+
+      // Save new OTP
+      await Otp.create({
+        email,
+        otp,
+        createdAt,
+        createdAtFormatted: formatISTTimestamp(createdAt),
+        expiresAt,
+        expiresAtFormatted: formatISTTimestamp(expiresAt),
+      });
+    }
 
     let mailOptions;
 

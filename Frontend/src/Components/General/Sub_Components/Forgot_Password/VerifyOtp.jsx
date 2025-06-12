@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const VerifyOTP = () => {
   const [otp, setOtp] = useState("");
@@ -27,19 +28,13 @@ const VerifyOTP = () => {
   const verifyOtp = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:5000/verifyOtp/existingUser/forgot-password",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, otp }),
-        }
+        { email, isAdmin, otp }
       );
+      setError(response.data.message);
 
-      const data = await response.json();
-      setError(data.message);
-
-      if (response.ok) {
+      if (response.statusText === "OK") {
         navigate("/reset-password", { state: { email, isAdmin } });
       } else {
         setError("OTP Verification Failed!");
@@ -51,25 +46,19 @@ const VerifyOTP = () => {
 
   const resendOtp = async () => {
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:5000/resendOtp/existingUser/forgot-password",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        }
+        { email, isAdmin }
       );
+      setError(response.data.message);
+      console.log(response);
 
-      const data = await response.json();
-      setError(data.message);
-
-      if (response.ok) {
+      if (response.statusText === "OK") {
         setCountdown(60);
         setIsResendDisabled(true);
-      } else {
-        setError("Failed to resend OTP.");
       }
     } catch (error) {
+      console.log("Error: ", error);
       setError("Failed to resend OTP.");
     }
   };

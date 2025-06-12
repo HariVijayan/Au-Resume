@@ -2,6 +2,7 @@ import express from "express";
 import User from "../../../Database_Models/User.js";
 import adminUser from "../../../Database_Models/adminUser.js";
 import currentSession from "../../../Database_Models/currentSession.js";
+import adminCurrentSession from "../../../Database_Models/adminCurrentSession.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
@@ -76,23 +77,38 @@ router.post("/login", async (req, res) => {
     user.lockUntil = null;
     await user.save();
 
-    await currentSession.deleteMany({ userId: user._id });
-
     const sessionId = uuidv4();
     const createdAt = new Date();
     const expiresAt = new Date(
       Date.now() + (rememberMe ? 2 : 1) * 24 * 60 * 60 * 1000
     );
 
-    await currentSession.create({
-      userId: user._id,
-      email: user.email,
-      sessionId: sessionId,
-      createdAt: createdAt,
-      createdAtFormatted: formatISTTimestamp(createdAt),
-      expiresAt: expiresAt,
-      expiresAtFormatted: formatISTTimestamp(expiresAt),
-    });
+    if (isAdmin) {
+      await adminCurrentSession.deleteMany({ userId: user._id });
+
+      await adminCurrentSession.create({
+        userId: user._id,
+        email: user.email,
+        accountType: user.accountType,
+        sessionId: sessionId,
+        createdAt: createdAt,
+        createdAtFormatted: formatISTTimestamp(createdAt),
+        expiresAt: expiresAt,
+        expiresAtFormatted: formatISTTimestamp(expiresAt),
+      });
+    } else {
+      await currentSession.deleteMany({ userId: user._id });
+
+      await currentSession.create({
+        userId: user._id,
+        email: user.email,
+        sessionId: sessionId,
+        createdAt: createdAt,
+        createdAtFormatted: formatISTTimestamp(createdAt),
+        expiresAt: expiresAt,
+        expiresAtFormatted: formatISTTimestamp(expiresAt),
+      });
+    }
 
     const accessToken = jwt.sign(
       { userId: user._id, sessionId },

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Language = ({ setLogoutClicked }) => {
+const Language = ({ setLogoutClicked, setLogoutUserType }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
 
   const [languageValue, setLanguageValue] = useState(
@@ -30,6 +30,12 @@ const Language = ({ setLogoutClicked }) => {
       navigate("/resume-builder/custom-input");
     }
   };
+
+  const logoutUser = () => {
+    setLogoutUserType("User");
+    setLogoutClicked(true);
+  };
+
   const splitCSValues = (e) => {
     const { value } = e.target;
     let updatedLanguages = { ...resumeData.languages };
@@ -87,7 +93,7 @@ const Language = ({ setLogoutClicked }) => {
           </svg>
           <svg
             className="MenuIconsSvg"
-            onClick={() => setLogoutClicked(true)}
+            onClick={logoutUser}
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"

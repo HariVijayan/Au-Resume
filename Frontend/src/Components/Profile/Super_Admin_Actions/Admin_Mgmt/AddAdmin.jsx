@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const AdminMgmt = ({ setLogoutClicked }) => {
+const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
   const [adminUsers, setAdminUsers] = useState([]);
   const [numAdmins, setAdminNum] = useState(0);
@@ -13,6 +13,11 @@ const AdminMgmt = ({ setLogoutClicked }) => {
   const [verifyOtp, setVerifyOtp] = useState("");
   const [needApproval, setNeedApproval] = useState(null);
   const [submitOtp, setSubmitOtp] = useState(null);
+
+  const logoutUser = () => {
+    setLogoutUserType("Admin");
+    setLogoutClicked(true);
+  };
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -55,6 +60,14 @@ const AdminMgmt = ({ setLogoutClicked }) => {
     }
   };
 
+  useEffect(() => {
+    if (newAdminName && newAdminEmail && adminType) {
+      setNeedApproval(true);
+    } else {
+      setNeedApproval(false);
+    }
+  }, [adminType, newAdminEmail, newAdminName]);
+
   return (
     <>
       <div id="dv-AdminDBWrapper" className="AdminConsoleWrapper">
@@ -71,7 +84,7 @@ const AdminMgmt = ({ setLogoutClicked }) => {
             </h1>
             <svg
               className="MenuIconsSvg"
-              onClick={() => setLogoutClicked(true)}
+              onClick={logoutUser}
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
               viewBox="0 -960 960 960"

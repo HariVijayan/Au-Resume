@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const Project = ({ setLogoutClicked }) => {
+const Project = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
 
   const { resumeData, updateField } = ResumeInputTemplate();
@@ -25,6 +25,11 @@ const Project = ({ setLogoutClicked }) => {
     } else {
       navigate("/resume-builder/skills");
     }
+  };
+
+  const logoutUser = () => {
+    setLogoutUserType("User");
+    setLogoutClicked(true);
   };
 
   const addNewProject = (e) => {
@@ -79,7 +84,7 @@ const Project = ({ setLogoutClicked }) => {
           </svg>
           <svg
             className="MenuIconsSvg"
-            onClick={() => setLogoutClicked(true)}
+            onClick={logoutUser}
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"

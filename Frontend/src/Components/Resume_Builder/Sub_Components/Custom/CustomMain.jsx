@@ -6,7 +6,11 @@ import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
-const CustomDiv = ({ setSubmitClicked, setLogoutClicked }) => {
+const CustomDiv = ({
+  setSubmitClicked,
+  setLogoutClicked,
+  setLogoutUserType,
+}) => {
   const navigate = useNavigate();
 
   const { resumeData, updateField } = ResumeInputTemplate();
@@ -15,6 +19,11 @@ const CustomDiv = ({ setSubmitClicked, setLogoutClicked }) => {
     if (navigationType === "previous") {
       navigate("/resume-builder/languages-known");
     }
+  };
+
+  const logoutUser = () => {
+    setLogoutUserType("User");
+    setLogoutClicked(true);
   };
 
   const [hasChosenAStyle, setHasChosenAStyle] = useState(
@@ -92,7 +101,7 @@ const CustomDiv = ({ setSubmitClicked, setLogoutClicked }) => {
           </svg>
           <svg
             className="MenuIconsSvg"
-            onClick={() => setLogoutClicked(true)}
+            onClick={logoutUser}
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"
