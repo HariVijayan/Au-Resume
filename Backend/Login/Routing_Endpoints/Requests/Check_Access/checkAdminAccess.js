@@ -20,16 +20,19 @@ router.post("/check-admin-access", async (req, res) => {
       process.env.JWT_SECRET
     );
 
-    const user = await adminUser.findOne({ _id: userId });
-    if (!user) {
-      return res.status(403).json({ message: "Not an admin." });
-    }
-
     const session = await adminCurrentSession.findOne({ userId, sessionId });
     if (!session || session.expiresAt < Date.now()) {
       return res
         .status(403)
         .json({ message: "Session expired. Please log in again." });
+    }
+
+    const user = await adminUser.findOne({ email: session.email });
+
+    if (!user) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorised access. Not an admin." });
     }
 
     if (user.accountType != routeType) {
