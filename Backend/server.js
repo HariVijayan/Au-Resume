@@ -20,6 +20,8 @@ import registerNewUser from "./Login/Routing_Endpoints/Requests/New_User/registe
 import passwordReset from "./Login/Routing_Endpoints/Requests/Password_Reset/passwordReset.js";
 import adminUser from "./Login/Database_Models/adminUser.js";
 import fetchAdmins from "./Admin_Actions/Super_Admin/Routing_Endpoints/fetchAdmins.js";
+import approvalOtp from "./Admin_Actions/Super_Admin/Routing_Endpoints/approvalOtp.js";
+import addAdmin from "./Admin_Actions/Super_Admin/Routing_Endpoints/addAdmin.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
@@ -70,6 +72,10 @@ app.use("/verifyAdminSession", checkAdminAccess);
 
 app.use("/superAdmin/fetchAdmin", fetchAdmins);
 
+app.use("/superAdmin/approvals", approvalOtp);
+
+app.use("/superAdmin/actions/addNewAdmin", addAdmin);
+
 const formatISTTimestamp = (date) => {
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
@@ -119,60 +125,5 @@ const newUser = new adminUser({
   accountType: "SuperAdmin",
 });
 await newUser.save();
-
-const newUser3 = new adminUser({
-  name: "Hari2",
-  email: "hari2jv0310@gmail.com",
-  password: hashedPassword,
-  createdAt: createdAt,
-  createdAtFormatted: createdAtFormatted,
-  createdBy: "System",
-  accountType: "SuperAdmin",
-});
-await newUser3.save();
-
-const newUser1 = new adminUser({
-  name: "Meow",
-  email: "meow@gmail.com",
-  password: hashedPassword,
-  createdAt: createdAt,
-  createdAtFormatted: createdAtFormatted,
-  createdBy: "System",
-  accountType: "Admin",
-});
-await newUser1.save();
-
-const newUser4 = new adminUser({
-  name: "Meow2",
-  email: "meow2@gmail.com",
-  password: hashedPassword,
-  createdAt: createdAt,
-  createdAtFormatted: createdAtFormatted,
-  createdBy: "System",
-  accountType: "Admin",
-});
-await newUser4.save();
-
-const newUser2 = new adminUser({
-  name: "Bow",
-  email: "bow@gmail.com",
-  password: hashedPassword,
-  createdAt: createdAt,
-  createdAtFormatted: createdAtFormatted,
-  createdBy: "System",
-  accountType: "Analytics",
-});
-await newUser2.save();
-
-const newUser5 = new adminUser({
-  name: "Bow2",
-  email: "bow2@gmail.com",
-  password: hashedPassword,
-  createdAt: createdAt,
-  createdAtFormatted: createdAtFormatted,
-  createdBy: "System",
-  accountType: "Analytics",
-});
-await newUser5.save();
 
 console.log("New SuperAdmin added. Good to go!");

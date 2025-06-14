@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
+const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
   const [adminUsers, setAdminUsers] = useState([]);
   const [numAdmins, setAdminNum] = useState(0);
@@ -10,9 +10,16 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
   const [newAdminEmail, setNewAdminEmail] = useState("");
   const [approval, setApproval] = useState(false);
   const [adminType, setAdminType] = useState("");
-  const [verifyOtp, setVerifyOtp] = useState("");
+  const [otpInput, setOtpInput] = useState("");
   const [needApproval, setNeedApproval] = useState(null);
-  const [submitOtp, setSubmitOtp] = useState(null);
+  const [addAdminOtp, setAddAdminOtp] = useState(null);
+  const [otpReqMessage, setOtpReqMessage] = useState("");
+  const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
+
+  const [addAdminMessage, setAddAdminMessage] = useState("");
+  const [addAdminMessageColor, setAddAdminMessageColor] = useState("red");
+
+  const requestType = "addNewAdmin";
 
   const logoutUser = () => {
     setLogoutUserType("Admin");
@@ -39,24 +46,53 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
   const getVerificationOtp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/superAdmin/addAdmin/newAdmin",
-        { adminType },
+        "http://localhost:5000/superAdmin/approvals/get-approval-otp",
+        { requestType },
         { withCredentials: true }
       );
+      if (response.statusText === "OK") {
+        setAddAdminOtp(true);
+        setOtpReqMessage(
+          "An OTP has been sent to your email. Verify to proceed with the request"
+        );
+        setOtpReqMessageColor("green");
+      } else {
+        setOtpReqMessageColor("red");
+        setOtpReqMessage(response.data.message);
+      }
     } catch (error) {
-      console.error("Error adding new admin:", error);
+      setOtpReqMessageColor("red");
+      setOtpReqMessage(
+        "Failed to get otp for verification. Refresh the page and try again."
+      );
     }
   };
 
-  const addNewUserToDB = async () => {
+  const addNewAdminToDB = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/superAdmin/addAdmin/newAdmin",
-        { adminType },
+        "http://localhost:5000/superAdmin/actions/addNewAdmin/newAdmin",
+        { newAdminName, newAdminEmail, adminType, otpInput },
         { withCredentials: true }
       );
+
+      if (response.statusText === "OK") {
+        setAddAdminMessage(
+          `New admin has been added to the site successfully. Refreshing the page in 5 seconds.`
+        );
+        setAddAdminMessageColor("green");
+        setTimeout(() => {
+          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+        }, 5000);
+      } else {
+        setAddAdminMessageColor("red");
+        setAddAdminMessage(response.data.message);
+      }
     } catch (error) {
-      console.error("Error adding new admin:", error);
+      setAddAdminMessageColor("red");
+      setAddAdminMessage(
+        "Failed to add new admin. Refresh the page and try again."
+      );
     }
   };
 
@@ -203,14 +239,20 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
                 </div>
               )}
 
-              {submitOtp && (
+              {otpReqMessage && (
+                <p style={{ color: `${otpReqMessageColor}` }}>
+                  {otpReqMessage}
+                </p>
+              )}
+
+              {addAdminOtp && (
                 <div className="AdminMgmtOtpWrapper">
                   <div className="AdminMgmtOtp">
                     <input
                       type="text"
                       placeholder=" "
-                      value={verifyOtp}
-                      onChange={(e) => setVerifyOtp(e.target.value)}
+                      value={otpInput}
+                      onChange={(e) => setOtpInput(e.target.value)}
                       required
                     />
                     <label
@@ -221,13 +263,19 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
                     </label>
                   </div>
                   <button
-                    onClick={addNewUserToDB}
-                    disabled={!verifyOtp}
+                    onClick={addNewAdminToDB}
+                    disabled={!otpInput}
                     className="AddInputButtons"
                   >
                     Add Admin
                   </button>
                 </div>
+              )}
+
+              {addAdminMessage && (
+                <p style={{ color: `${addAdminMessageColor}` }}>
+                  {addAdminMessage}
+                </p>
               )}
             </div>
           </div>
@@ -274,4 +322,4 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
   );
 };
 
-export default AdminMgmt;
+export default AddNewAdmin;
