@@ -50,7 +50,7 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
               Admin Dashboard
             </p>
             <span>
-              Access Level: <span style={{ color: "red" }}>Super Admin</span>
+              Admin Type: <span style={{ color: "red" }}>Super Admin</span>
             </span>
           </div>
 
@@ -91,7 +91,9 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
             <div
               className="AdminConsoleActionCard"
               onClick={() =>
-                navigate("/admin-dashboard/super-admin/user-management")
+                navigate(
+                  "/admin-dashboard/super-admin/admin-management/remove-admin"
+                )
               }
             >
               <div className="CardTitle">Remove Existing Admins</div>
@@ -122,7 +124,9 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
             <div
               className="AdminConsoleActionCard"
               onClick={() =>
-                navigate("/admin-dashboard/super-admin/log-management")
+                navigate(
+                  "/admin-dashboard/super-admin/admin-management/modify-admin"
+                )
               }
             >
               <div className="CardTitle">Modify Admin Permissions</div>

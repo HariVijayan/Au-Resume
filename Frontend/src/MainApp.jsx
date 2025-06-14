@@ -28,8 +28,10 @@ import Certifications from "./Components/Resume_Builder/Sub_Components/Certifica
 import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/Language.jsx";
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
 import SuperAdmin from "./Components/Profile/SuperAdmin.jsx";
-import SAAdminMgmt from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/AdminMgmt.jsx";
+import SAAdminMgmt from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/Dashboard.jsx";
 import AddAdmin from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/AddAdmin.jsx";
+import RemoveAdmin from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/RemoveAdmin.jsx";
+import ModifyAdmin from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/ModifyAdminType.jsx";
 import SAUserMgmt from "./Components/Profile/Super_Admin_Actions/UserMgmt.jsx";
 import SALogMgmt from "./Components/Profile/Super_Admin_Actions/LogMgmt.jsx";
 import Admin from "./Components/Profile/Admin.jsx";
@@ -88,6 +90,8 @@ function RouteWrapper() {
     "/admin-dashboard/super-admin/user-management",
     "/admin-dashboard/super-admin/log-management",
     "/admin-dashboard/super-admin/admin-management/add-admin",
+    "/admin-dashboard/super-admin/admin-management/remove-admin",
+    "/admin-dashboard/super-admin/admin-management/modify-admin",
   ];
 
   const adminRoutes = [
@@ -284,6 +288,26 @@ function RouteWrapper() {
           path="/admin-dashboard/super-admin/admin-management/add-admin"
           element={
             <AddAdmin
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-dashboard/super-admin/admin-management/remove-admin"
+          element={
+            <RemoveAdmin
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-dashboard/super-admin/admin-management/modify-admin"
+          element={
+            <ModifyAdmin
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />

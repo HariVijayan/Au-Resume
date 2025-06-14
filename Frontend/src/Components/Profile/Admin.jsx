@@ -34,7 +34,7 @@ const Admin = ({ setLogoutClicked, setLogoutUserType }) => {
         <div id="dv-AdminDBType" className="AdminConsoleHeading">
           <p>Admin Dashboard</p>
           <span>
-            Access Level: <span style={{ color: "red" }}>Admin</span>
+            Admin Type: <span style={{ color: "red" }}>Admin</span>
           </span>
         </div>
 

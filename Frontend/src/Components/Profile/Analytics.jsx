@@ -34,7 +34,7 @@ const SuperAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
         <div id="dv-AdminDBType" className="AdminConsoleHeading">
           <p>Admin Dashboard</p>
           <span>
-            Access Level: <span style={{ color: "red" }}>Analytics</span>
+            Admin Type: <span style={{ color: "red" }}>Analytics</span>
           </span>
         </div>
 

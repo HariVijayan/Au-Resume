@@ -258,6 +258,19 @@ th {
   padding: 0 4px;
 }
 
+.AdminMgmtTextFieldLabel3 {
+  position: absolute;
+  top: 40%;
+  left: 23%;
+  transform: translateY(-50%);
+  font-size: var(--fs--normal);
+  color: var(--primary--label--color);
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background: var(--background);
+  padding: 0 4px;
+}
+
 .AdminMgmtDropDown {
   position: relative;
   width: 400px;

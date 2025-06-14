@@ -22,6 +22,8 @@ import adminUser from "./Login/Database_Models/adminUser.js";
 import fetchAdmins from "./Admin_Actions/Super_Admin/Routing_Endpoints/fetchAdmins.js";
 import approvalOtp from "./Admin_Actions/Super_Admin/Routing_Endpoints/approvalOtp.js";
 import addAdmin from "./Admin_Actions/Super_Admin/Routing_Endpoints/addAdmin.js";
+import removeAdmin from "./Admin_Actions/Super_Admin/Routing_Endpoints/removeAdmin.js";
+import modifyAdmin from "./Admin_Actions/Super_Admin/Routing_Endpoints/modifyAdmin.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
@@ -75,6 +77,10 @@ app.use("/superAdmin/fetchAdmin", fetchAdmins);
 app.use("/superAdmin/approvals", approvalOtp);
 
 app.use("/superAdmin/actions/addNewAdmin", addAdmin);
+
+app.use("/superAdmin/actions/existingAdmin", removeAdmin);
+
+app.use("/superAdmin/actions/modifyAdmin", modifyAdmin);
 
 const formatISTTimestamp = (date) => {
   return new Intl.DateTimeFormat("en-GB", {

@@ -2,24 +2,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
+const RemoveAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
   const [adminUsers, setAdminUsers] = useState([]);
   const [numAdmins, setAdminNum] = useState(0);
-  const [newAdminName, setNewAdminName] = useState("");
-  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [remAdminEmail, setRemAdminEmail] = useState("");
   const [approval, setApproval] = useState(false);
   const [adminType, setAdminType] = useState("");
   const [otpInput, setOtpInput] = useState("");
-  const [needApproval, setNeedApproval] = useState(null);
-  const [addAdminOtp, setAddAdminOtp] = useState(null);
+
+  const [showApproval, setShowApproval] = useState(null);
   const [otpReqMessage, setOtpReqMessage] = useState("");
   const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
 
-  const [addAdminMessage, setAddAdminMessage] = useState("");
-  const [addAdminMessageColor, setAddAdminMessageColor] = useState("red");
+  const [showRemAdminOtp, setShowRemAdminOtp] = useState(null);
+  const [remAdminMessage, setRemAdminMessage] = useState("");
+  const [remAdminMessageColor, setRemAdminMessageColor] = useState("red");
 
-  const requestType = "addNewAdmin";
+  const requestType = "removeAdmin";
 
   const logoutUser = () => {
     setLogoutUserType("Admin");
@@ -51,7 +51,7 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
         { withCredentials: true }
       );
       if (response.statusText === "OK") {
-        setAddAdminOtp(true);
+        setShowRemAdminOtp(true);
         setOtpReqMessage(
           "An OTP has been sent to your email. Verify to proceed with the request"
         );
@@ -71,27 +71,27 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
   const addNewAdminToDB = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/superAdmin/actions/addNewAdmin/newAdmin",
-        { newAdminName, newAdminEmail, adminType, otpInput },
+        "http://localhost:5000/superAdmin/actions/existingAdmin/removeAdmin",
+        { remAdminEmail, adminType, otpInput },
         { withCredentials: true }
       );
 
       if (response.statusText === "OK") {
-        setAddAdminMessage(
-          `New admin has been added to the site successfully. Refreshing the page in 5 seconds.`
+        setRemAdminMessage(
+          `The mentioned admin has been removed from the site successfully. Refreshing the page in 5 seconds.`
         );
-        setAddAdminMessageColor("green");
+        setRemAdminMessageColor("green");
         setTimeout(() => {
           window.location.reload(false); // This will trigger a page reload after 5 seconds delay
         }, 5000);
       } else {
-        setAddAdminMessageColor("red");
-        setAddAdminMessage(response.data.message);
+        setRemAdminMessageColor("red");
+        setRemAdminMessage(response.data.message);
       }
     } catch (error) {
-      setAddAdminMessageColor("red");
-      setAddAdminMessage(
-        "Failed to add new admin. Refreshing the page in 5 seconds. Please try again."
+      setRemAdminMessageColor("red");
+      setRemAdminMessage(
+        "Failed to remove new admin. Refreshing the page in 5 seconds. Please try again."
       );
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
@@ -100,12 +100,12 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
   };
 
   useEffect(() => {
-    if (newAdminName && newAdminEmail && adminType) {
-      setNeedApproval(true);
+    if (remAdminEmail && adminType) {
+      setShowApproval(true);
     } else {
-      setNeedApproval(false);
+      setShowApproval(false);
     }
-  }, [adminType, newAdminEmail, newAdminName]);
+  }, [adminType, remAdminEmail]);
 
   return (
     <>
@@ -157,40 +157,23 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
             </span>
           </div>
           <div className="AddAdminsWrapper">
-            <p className="AdminMgmtActionHeading">Add New Admins</p>
+            <p className="AdminMgmtActionHeading">Remove Existing Admins</p>
             <span>
-              (Scroll down to see the list of current admins before adding a new
-              one)
+              (Scroll down to see the list of current admins to remove one)
             </span>
             <div className="AdminMgmtActions">
               <div className="AdminConsoleInputsWrapper">
                 <div className="AdminMgmtInputWrapper">
                   <input
-                    type="text"
-                    placeholder=" "
-                    value={newAdminName}
-                    onChange={(e) => setNewAdminName(e.target.value)}
-                    required
-                  />
-                  <label
-                    htmlFor="in-add_admin_name"
-                    className="AdminMgmtTextFieldLabel"
-                  >
-                    Name
-                  </label>
-                </div>
-
-                <div className="AdminMgmtInputWrapper">
-                  <input
                     type="email"
                     placeholder=" "
-                    value={newAdminEmail}
-                    onChange={(e) => setNewAdminEmail(e.target.value)}
+                    value={remAdminEmail}
+                    onChange={(e) => setRemAdminEmail(e.target.value)}
                     required
                   />
                   <label
                     htmlFor="in-add_admin_email"
-                    className="AdminMgmtTextFieldLabel"
+                    className="AdminMgmtTextFieldLabel3"
                   >
                     Email
                   </label>
@@ -215,7 +198,7 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                 </div>
               </div>
 
-              {needApproval && (
+              {showApproval && (
                 <div className="AdminMgmtApprovalWrapper">
                   <div className="AdminMgmtApproval">
                     <input
@@ -225,16 +208,14 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                       onChange={(e) => setApproval(e.target.checked)}
                     />
                     <span>
-                      I affirm and authorize the above mentioned person to be a
-                      new admin of this site.
+                      I affirm and authorize the above mentioned person to be
+                      removed as an admin from this site.
                     </span>
                   </div>
                   <button
                     style={{ marginTop: "2rem" }}
                     onClick={getVerificationOtp}
-                    disabled={
-                      !approval || !newAdminName || !newAdminEmail || !adminType
-                    }
+                    disabled={!approval || !remAdminEmail || !adminType}
                     className="PreviewButton"
                   >
                     Approve
@@ -248,7 +229,7 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                 </p>
               )}
 
-              {addAdminOtp && (
+              {showRemAdminOtp && (
                 <div className="AdminMgmtOtpWrapper">
                   <div className="AdminMgmtOtp">
                     <input
@@ -270,14 +251,14 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                     disabled={!otpInput}
                     className="AddInputButtons"
                   >
-                    Add Admin
+                    Remove Admin
                   </button>
                 </div>
               )}
 
-              {addAdminMessage && (
-                <p style={{ color: `${addAdminMessageColor}` }}>
-                  {addAdminMessage}
+              {remAdminMessage && (
+                <p style={{ color: `${remAdminMessageColor}` }}>
+                  {remAdminMessage}
                 </p>
               )}
             </div>
@@ -325,4 +306,4 @@ const AddNewAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
   );
 };
 
-export default AddNewAdmin;
+export default RemoveAdmin;

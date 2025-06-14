@@ -110,7 +110,7 @@ router.post("/get-approval-otp", async (req, res) => {
         subject: "Admin - New Admin Approval OTP",
         text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
       };
-    } else {
+    } else if (requestType === "removeAdmin") {
       await adminOtp.create({
         email: adminEmail,
         otp,
@@ -118,13 +118,30 @@ router.post("/get-approval-otp", async (req, res) => {
         createdAtFormatted: formatISTTimestamp(createdAt),
         expiresAt,
         expiresAtFormatted: formatISTTimestamp(expiresAt),
-        otpFor: "New admin approval",
+        otpFor: "Removing admin approval",
       });
 
       mailOptions = {
         from: process.env.EMAIL_USER,
         to: adminEmail,
-        subject: "Admin - New Admin Approval OTP",
+        subject: "Admin - Remove Admin Approval OTP",
+        text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
+      };
+    } else if (requestType === "modifyAdminType") {
+      await adminOtp.create({
+        email: adminEmail,
+        otp,
+        createdAt,
+        createdAtFormatted: formatISTTimestamp(createdAt),
+        expiresAt,
+        expiresAtFormatted: formatISTTimestamp(expiresAt),
+        otpFor: "Modifying admin approval",
+      });
+
+      mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: adminEmail,
+        subject: "Admin - Modify Admin Approval OTP",
         text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
       };
     }
