@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
   failedLoginAttempts: { type: Number, default: 0 },
   lockUntil: { type: Date, default: null },
   lockUntilFormatted: { type: String, default: null },
+  encryptionSalt: { type: String, required: true },
 });
 
 const User = mongoose.model("User", userSchema);

@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import previousResume from "./Pdf/Routing_Endpoint/getPreviousResume.js";
 import generateResume from "./Pdf/Routing_Endpoint/generatePdf.js";
-import previewResume from "./Pdf/Routing_Endpoint/previewPdf.js";
+import saveResume from "./Pdf/Routing_Endpoint/saveResume.js";
 import firstTimeOtp from "./Login/Routing_Endpoints/Otp/First_Time_Otp/passwordResetOtp.js";
 import resendOtpNewUser from "./Login/Routing_Endpoints/Otp/Resend_Otp/newRegistration.js";
 import resendOtp from "./Login/Routing_Endpoints/Otp/Resend_Otp/resendOtp.js";
@@ -46,7 +46,7 @@ app.use("/getPrevious", previousResume);
 
 app.use("/generate", generateResume);
 
-app.use("/preview", previewResume);
+app.use("/saveResume", saveResume);
 
 app.use("/getFirstOtp", firstTimeOtp);
 

@@ -25,6 +25,7 @@ const PendingUserSchema = new mongoose.Schema({
   branch: { type: String, required: true },
   createdAt: { type: Date, default: Date.now, expires: 60 * 60 * 24 * 1 }, // 1 day expiration and will be removed automatically from the database
   createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
+  encryptionSalt: { type: String, required: true },
 });
 
 export default mongoose.model("PendingUser", PendingUserSchema);

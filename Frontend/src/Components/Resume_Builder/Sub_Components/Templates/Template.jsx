@@ -14,20 +14,6 @@ const Template = ({ setLogoutClicked, setLogoutUserType }) => {
 
   const choseTemplate = async (templateName) => {
     updateField("metaData.template", templateName);
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/getPrevious/resume-details",
-        {},
-        { withCredentials: true }
-      );
-      setResumeData(response.data);
-      if (response.status === 500) {
-        navigate("/resume-builder/basic-details");
-      }
-    } catch (error) {
-      console.error("Error fetching resume details:", error);
-      navigate("/resume-builder/basic-details");
-    }
     navigate("/resume-builder/basic-details");
   };
 

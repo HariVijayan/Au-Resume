@@ -16,7 +16,7 @@ const PreviewPdf = () => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:5000/preview/Resume",
+        "http://localhost:5000/generate/Resume",
         formData,
         {
           withCredentials: true,

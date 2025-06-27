@@ -11,11 +11,16 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
   const [adminType, setAdminType] = useState("");
   const [otpInput, setOtpInput] = useState("");
 
-  const [showApproval, setShowApproval] = useState(null);
+  const [nameChangeNeeded, setNameChangeNeeded] = useState(false);
+  const [adminTypeChange, setAdminTypeChange] = useState(false);
+  const [passwordReset, setPasswordReset] = useState(false);
+  const [accountUnlock, setAccountUnlock] = useState(false);
+
+  const [showApproval, setShowApproval] = useState(false);
   const [otpReqMessage, setOtpReqMessage] = useState("");
   const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
 
-  const [showModifyAdminOtp, setShowModifyAdminOtp] = useState(null);
+  const [showModifyAdminOtp, setShowModifyAdminOtp] = useState(false);
   const [modifyAdminMessage, setModifyAdminMessage] = useState("");
   const [modifyAdminMessageColor, setModifyAdminMessageColor] = useState("red");
 
@@ -201,7 +206,41 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                   <div className="AdminMgmtApproval">
                     <input
                       type="checkbox"
-                      id="in-add_admin_approval"
+                      id="in-modify_admin_name_change"
+                      checked={nameChangeNeeded}
+                      onChange={(e) => setNameChangeNeeded(e.target.checked)}
+                    />
+                    <span>Name Change</span>
+
+                    <input
+                      type="checkbox"
+                      id="in-modify_admin_admin_type"
+                      checked={adminTypeChange}
+                      onChange={(e) => setAdminTypeChange(e.target.checked)}
+                    />
+                    <span>Admin Type</span>
+                  </div>
+                  <div className="AdminMgmtApproval">
+                    <input
+                      type="checkbox"
+                      id="in-modify_admin_password_reset"
+                      checked={passwordReset}
+                      onChange={(e) => setPasswordReset(e.target.checked)}
+                    />
+                    <span>Password Reset</span>
+
+                    <input
+                      type="checkbox"
+                      id="in-modify_admin_account_unlock"
+                      checked={accountUnlock}
+                      onChange={(e) => setAccountUnlock(e.target.checked)}
+                    />
+                    <span>Unlock Account</span>
+                  </div>
+                  <div className="AdminMgmtApproval">
+                    <input
+                      type="checkbox"
+                      id="in-modify_admin_approval"
                       checked={approval}
                       onChange={(e) => setApproval(e.target.checked)}
                     />
@@ -238,7 +277,7 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                       required
                     />
                     <label
-                      htmlFor="in-add_admin_verify_otp"
+                      htmlFor="in-modify_admin_verify_otp"
                       className="AdminMgmtTextFieldLabel2"
                     >
                       Otp

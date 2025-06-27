@@ -190,12 +190,24 @@ const Register = () => {
       setError("Passwords doesn't match.");
       return;
     }
+    if (!password) {
+      setError("Choose your password to continue.");
+      return;
+    }
+    if (!confirmPassword) {
+      setError("Confirm your password to continue.");
+      return;
+    }
     if (!courseType) {
       setError("Choose your course type to continue.");
       return;
     }
     if (!programme) {
       setError("Select your programme to continue.");
+      return;
+    }
+    if (!branch) {
+      setError("Select your branch to continue.");
       return;
     }
     if (!branch) {
@@ -216,7 +228,6 @@ const Register = () => {
         },
         {}
       );
-
       if (response.status === 201) {
         navigate("/verify-otp", { state: { email } });
       }

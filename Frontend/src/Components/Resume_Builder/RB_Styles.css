@@ -220,6 +220,14 @@ iframe {
   width: 90%;
 }
 
+.ResumeActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 1em 0em 1em 0em;
+}
+
 .MenuIcons {
   display: flex;
   justify-content: center;
@@ -257,6 +265,7 @@ iframe {
   align-items: center;
   width: 40%;
   max-height: 100%;
+  margin-top: 1em;
 }
 
 .WrapperClass {

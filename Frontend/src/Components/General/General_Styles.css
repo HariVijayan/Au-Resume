@@ -6,8 +6,6 @@
   min-height: 85vh;
   flex-direction: column;
   border-radius: 20px;
-  box-shadow: var(--general--shadow);
-  overflow: auto;
   margin: 10vh 0em;
 }
 
@@ -211,4 +209,15 @@ input[type="checkbox"] {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.AuthenticationSvgHeading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.AuthenticationSvg{
+  padding-left: 5px;
+  cursor: pointer;
 }

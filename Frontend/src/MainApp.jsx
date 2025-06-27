@@ -46,7 +46,7 @@ import "./Components/Profile/Profile_Styles.css";
 import ResumeInputTemplate from "./ResumeFormat.jsx";
 
 function RouteWrapper() {
-  const { resumeData } = ResumeInputTemplate();
+  const { resumeData, setResumeData } = ResumeInputTemplate();
 
   const forceMultiTabClosureOnLogout = () => {
     const navigate = useNavigate();
@@ -262,6 +262,56 @@ function RouteWrapper() {
     }
   }, [logoutClicked]);
 
+  const [overlayType, setOverlayType] = useState("");
+  const [overlayMessage, setOverlayMessage] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+
+  const fetchPreviousResume = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/getPrevious/resume-details",
+        { userPassword },
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        setResumeData(response.data);
+        resetOverlay();
+      }
+    } catch (error) {
+      setUserPassword("");
+      setOverlayMessage(
+        error.response?.data?.message || "Error occured. Please try again."
+      );
+    }
+  };
+
+  const saveCurrentResume = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/saveResume/current-resume",
+        { userPassword, resumeData },
+        { withCredentials: true }
+      );
+      setUserPassword("");
+      if (response.status === 200) {
+        setOverlayMessage(
+          "Resume saved to the database successfully after encryption."
+        );
+      }
+    } catch (error) {
+      setUserPassword("");
+      setOverlayMessage(
+        error.response?.data?.message || "Error occured. Please try again."
+      );
+    }
+  };
+
+  const resetOverlay = () => {
+    setUserPassword("");
+    setOverlayType("");
+    setOverlayMessage("");
+  };
+
   return (
     <>
       <Routes>
@@ -395,6 +445,7 @@ function RouteWrapper() {
           path="/resume-builder/basic-details"
           element={
             <BasicDetails
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -404,6 +455,7 @@ function RouteWrapper() {
           path="/resume-builder/experience"
           element={
             <Experience
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -413,6 +465,7 @@ function RouteWrapper() {
           path="/resume-builder/education/phd"
           element={
             <EducationPhd
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -422,6 +475,7 @@ function RouteWrapper() {
           path="/resume-builder/education/pg"
           element={
             <EducationPg
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -431,6 +485,7 @@ function RouteWrapper() {
           path="/resume-builder/education/ug"
           element={
             <EducationUg
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -440,6 +495,7 @@ function RouteWrapper() {
           path="/resume-builder/education/diploma"
           element={
             <EducationDiploma
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -449,6 +505,7 @@ function RouteWrapper() {
           path="/resume-builder/education/school"
           element={
             <EducationSchool
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -458,6 +515,7 @@ function RouteWrapper() {
           path="/resume-builder/projects"
           element={
             <Projects
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -467,6 +525,7 @@ function RouteWrapper() {
           path="/resume-builder/skills"
           element={
             <Skills
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -476,6 +535,7 @@ function RouteWrapper() {
           path="/resume-builder/certifications"
           element={
             <Certifications
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -485,6 +545,7 @@ function RouteWrapper() {
           path="/resume-builder/languages-known"
           element={
             <LanguagesKnown
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -494,6 +555,7 @@ function RouteWrapper() {
           path="/resume-builder/custom-input"
           element={
             <CustomInput
+              setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
               setSubmitClicked={setSubmitClicked}
@@ -501,6 +563,105 @@ function RouteWrapper() {
           }
         />
       </Routes>
+      {overlayType === "FetchResume" && (
+        <div className="OverlayWrapper" style={{ display: "flex" }}>
+          <div className="OverlayResumeData" style={{ display: "flex" }}>
+            <div className="ResumeDataActions">
+              <div className="OverlayCloseBtn">
+                <svg
+                  onClick={resetOverlay}
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                </svg>
+              </div>
+              <h2>Fetch previously stored Resume Data</h2>
+              <div className="AuthenticationInputWrapper">
+                <input
+                  type="password"
+                  id="in-fetch_resume_password"
+                  value={userPassword}
+                  placeholder=" "
+                  onChange={(e) => setUserPassword(e.target.value)}
+                  required
+                />
+                <label
+                  htmlFor="in-fetch_resume_password"
+                  className="AuthenticationTextFieldLabel"
+                >
+                  Password
+                </label>
+              </div>
+              {overlayMessage && (
+                <p style={{ color: "red" }}>{overlayMessage}</p>
+              )}
+              <button
+                className="AuthenticationButton"
+                onClick={fetchPreviousResume}
+              >
+                Fetch
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {overlayType === "SaveResume" && (
+        <div className="OverlayWrapper" style={{ display: "flex" }}>
+          <div className="OverlayResumeData" style={{ display: "flex" }}>
+            <div className="ResumeDataActions">
+              <div className="OverlayCloseBtn">
+                <svg
+                  onClick={resetOverlay}
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#e3e3e3"
+                >
+                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                </svg>
+              </div>
+              <h2>Save current Resume Data</h2>
+              <div className="AuthenticationInputWrapper">
+                <input
+                  type="password"
+                  id="in-fetch_resume_password"
+                  value={userPassword}
+                  placeholder=" "
+                  onChange={(e) => setUserPassword(e.target.value)}
+                  required
+                />
+                <label
+                  htmlFor="in-fetch_resume_password"
+                  className="AuthenticationTextFieldLabel"
+                >
+                  Password
+                </label>
+              </div>
+              {overlayMessage && (
+                <p style={{ color: "red" }}>{overlayMessage}</p>
+              )}
+              <button
+                className="AuthenticationButton"
+                onClick={saveCurrentResume}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {overlayType === "" && (
+        <div className="OverlayWrapper" style={{ display: "none" }}>
+          <div className="OverlayResumeData" style={{ display: "none" }}>
+            <div className="ResumeDataActions"></div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

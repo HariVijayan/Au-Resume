@@ -6,7 +6,6 @@ import Handlebars from "handlebars";
 import jwt from "jsonwebtoken";
 import { fileURLToPath } from "url";
 import User from "../../Login/Database_Models/User.js";
-import ResumeDataDBModel from "../Database Models/resumeData.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -112,75 +111,7 @@ router.post("/Resume", async (req, res) => {
   const user = await User.findById(decoded.userId);
   if (!user) return res.status(403).json({ message: "User not found" });
 
-  const login_email = user.email;
-
   const timestamp = getCurrentTimestamp();
-
-  await ResumeDataDBModel.deleteMany({ login_email });
-  const resumeDataDBEntry = new ResumeDataDBModel({
-    login_email: login_email,
-    updatedAt: timestamp,
-    metaData: {
-      template: resumeData.metaData.template,
-    },
-    personal: {
-      name: resumeData.personal.name,
-      bio: resumeData.personal.bio,
-      mobile: resumeData.personal.mobile,
-      email: resumeData.personal.email,
-      location: resumeData.personal.location,
-    },
-
-    links: {
-      linkedinDisplayName: resumeData.links.linkedinDisplayName,
-      linkedinUrl: resumeData.links.linkedinUrl,
-      githubDisplayName: resumeData.links.githubDisplayName,
-      githubUrl: resumeData.links.githubUrl,
-      websiteDisplayName: resumeData.links.websiteDisplayName,
-      websiteUrl: resumeData.links.websiteUrl,
-    },
-
-    summary: resumeData.summary,
-
-    education: {
-      phd: resumeData.education.phd || [],
-      postGraduate: resumeData.education.postGraduate || [],
-      underGraduate: resumeData.education.underGraduate || [],
-      diploma: resumeData.education.diploma || [],
-      hsc: resumeData.education.hsc || {
-        name: "",
-        year: "",
-        grade: "",
-        additionalInfo: "",
-      },
-      sslc: resumeData.education.sslc || {
-        name: "",
-        year: "",
-        grade: "",
-        additionalInfo: "",
-      },
-    },
-
-    experience: resumeData.experience || [],
-
-    projects: resumeData.projects || [],
-
-    skills: {
-      type: resumeData.skills.type || "",
-      skillSet: resumeData.skills.skillSet || [],
-    },
-
-    certifications: {
-      type: resumeData.certifications.type || "",
-      certificationSet: resumeData.certifications.certificationSet || [],
-    },
-
-    languages: resumeData.languages || [],
-
-    customInput: resumeData.customInput || [],
-  });
-
-  await resumeDataDBEntry.save();
 
   resumeData = removeEmptyValues(resumeData);
 

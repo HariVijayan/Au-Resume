@@ -112,6 +112,9 @@ router.post("/register", async (req, res) => {
       .update(password)
       .digest("hex");
 
+    const salt = crypto.randomBytes(16); // 128-bit salt
+    const saltBase64 = salt.toString("base64");
+
     const newUser = new PendingUser({
       email,
       password: hashedPassword,
@@ -120,6 +123,7 @@ router.post("/register", async (req, res) => {
       courseType,
       programme,
       branch,
+      encryptionSalt: saltBase64,
     });
     await newUser.save();
 
