@@ -132,10 +132,11 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
               <div className="CardTitle">Modify Admin Permissions</div>
               <div className="CardContent">
                 <span>
-                  Use this to modify existing admin's permissions. You can
-                  elevate existing admin's permissions to be super admins or
-                  limit existing admin's permissions to be having analytics only
-                  (ViewOnly) access.
+                  Use this to elevate existing admin's permissions to be super
+                  admins or limit existing admin's permissions to be having
+                  analytics only (ViewOnly) access. You can also use this to
+                  reset password, unlock account or change the name of existing
+                  admin accounts.
                 </span>
               </div>
               <div className="CardLink">

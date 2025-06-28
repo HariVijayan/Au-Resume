@@ -57,14 +57,14 @@ const Template = ({ setLogoutClicked, setLogoutUserType }) => {
             id="img-Template1"
             className="TemplateImages"
             alt="Template 1"
-            onClick={() => choseTemplate("Template 1")}
+            onClick={() => choseTemplate("template1")}
           ></img>
           <img
             src="/Templates/More Templates.jpg"
             id="img-Template2"
             className="TemplateImages"
             alt="Template 2"
-            onClick={() => choseTemplate("Template 2")}
+            onClick={() => choseTemplate("template1")}
           ></img>
         </div>
       </div>
