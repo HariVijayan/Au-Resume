@@ -229,6 +229,15 @@ select:not([value=""]) + .DropDownLabel {
   transition: transform 0.2s ease-in-out;
 }
 
+input[type="checkbox"] {
+  height: 20px;
+  width: 20px;
+}
+
+input[type="checkbox"]:hover {
+  cursor: pointer;
+}
+
 #dv-FooterWrapper {
   display: none;
   justify-content: center;
@@ -268,7 +277,7 @@ select:not([value=""]) + .DropDownLabel {
   display: none;
 }
 
-.OverlayResumeData {
+.OverlayData {
   display: none;
   justify-content: center;
   align-items: center;

@@ -3,11 +3,40 @@ import adminUser from "../../../Login/Database_Models/adminUser.js";
 import adminCurrentSession from "../../../Login/Database_Models/adminCurrentSession.js";
 import adminOtp from "../../../Login/Database_Models/adminOtp.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 
-router.post("/adminType", async (req, res) => {
-  const { modifyAdminEmail, adminType, otpInput } = req.body;
+const generateStrongPassword = (length = 8) => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()";
+  return Array.from(
+    { length },
+    () => characters[Math.floor(Math.random() * characters.length)]
+  ).join("");
+};
+
+router.post("/admin-modifications", async (req, res) => {
+  const {
+    adminEmail,
+    currentAdminType,
+    otpInput,
+    nameChangeNeeded,
+    adminTypeChange,
+    passwordReset,
+    accountUnlock,
+    newName,
+    newAdminType,
+  } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
   try {
     const accessToken = req.cookies.accessToken;
@@ -27,9 +56,9 @@ router.post("/adminType", async (req, res) => {
         .json({ message: "Session expired. Please log in again." });
     }
 
-    const adminEmail = session.email;
+    const authorisingAdminEmail = session.email;
 
-    const user = await adminUser.findOne({ email: adminEmail });
+    const user = await adminUser.findOne({ email: authorisingAdminEmail });
 
     if (!user) {
       return res
@@ -38,49 +67,96 @@ router.post("/adminType", async (req, res) => {
     }
 
     const storedOtp = await adminOtp.findOne({
-      email: adminEmail,
+      email: authorisingAdminEmail,
       otp: otpInput,
     });
 
     if (!storedOtp) return res.status(400).json({ message: "Invalid OTP" });
 
     if (storedOtp.expiresAt < Date.now()) {
-      await adminOtp.deleteMany({ adminEmail });
+      await adminOtp.deleteMany({ authorisingAdminEmail });
       return res.status(400).json({ message: "OTP expired" });
     }
 
-    let modifyAdmin = await adminUser.findOne({
-      email: modifyAdminEmail,
+    let adminToBeModified = await adminUser.findOne({
+      email: adminEmail,
+      accountType: currentAdminType,
     });
 
-    if (!modifyAdmin) {
+    if (!adminToBeModified) {
       return res.status(400).json({ message: "No such admin found." });
     }
 
-    modifyAdmin = await adminUser.findOne({
-      email: modifyAdminEmail,
-      accountType: adminType,
-    });
-
-    if (modifyAdmin) {
-      return res.status(400).json({
-        message: "The mentioned admin already has the provided access type.",
-      });
+    if (nameChangeNeeded) {
+      await adminUser.updateOne(
+        { email: adminEmail },
+        { $set: { name: newName } }
+      );
     }
 
-    await adminUser.updateOne(
-      { email: modifyAdminEmail }, // Find user by email
-      { $set: { accountType: adminType } } // Modify the accountType field
-    );
+    if (accountUnlock) {
+      await adminUser.updateOne(
+        { email: adminEmail },
+        {
+          $set: {
+            failedLoginAttempts: 0,
+            lockUntil: null,
+            lockUntilFormatted: null,
+          },
+        }
+      );
+    }
 
-    await adminOtp.deleteMany({ email: adminEmail });
+    if (passwordReset) {
+      const newAdminPassword = generateStrongPassword(8);
+      const hashedPassword = crypto
+        .createHash("sha256")
+        .update(newAdminPassword)
+        .digest("hex");
+      await adminUser.updateOne(
+        { email: adminEmail },
+        {
+          $set: {
+            password: hashedPassword,
+          },
+        }
+      );
 
-    res.json({
-      message: "Admin removed successfully.",
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: adminEmail,
+        subject: "An admin has initiated a password reset for your account",
+        text: `Your new password is: ${newAdminPassword}. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`,
+      };
+
+      await transporter.sendMail(mailOptions);
+    }
+
+    if (adminTypeChange) {
+      adminToBeModified = await adminUser.findOne({
+        email: adminEmail,
+        accountType: newAdminType,
+      });
+
+      if (adminToBeModified) {
+        return res.status(400).json({
+          message: "The mentioned admin already has the provided access type.",
+        });
+      }
+
+      await adminUser.updateOne(
+        { email: adminEmail },
+        { $set: { accountType: newAdminType } }
+      );
+    }
+
+    await adminOtp.deleteMany({ email: authorisingAdminEmail });
+
+    res.status(200).json({
+      message: "Admin modified successfully.",
     });
   } catch (error) {
-    console.error("Request OTP error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Error occurred please try again." });
   }
 });
 

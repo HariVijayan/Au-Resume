@@ -565,7 +565,7 @@ function RouteWrapper() {
       </Routes>
       {overlayType === "FetchResume" && (
         <div className="OverlayWrapper" style={{ display: "flex" }}>
-          <div className="OverlayResumeData" style={{ display: "flex" }}>
+          <div className="OverlayData" style={{ display: "flex" }}>
             <div className="ResumeDataActions">
               <div className="OverlayCloseBtn">
                 <svg
@@ -611,7 +611,7 @@ function RouteWrapper() {
       )}
       {overlayType === "SaveResume" && (
         <div className="OverlayWrapper" style={{ display: "flex" }}>
-          <div className="OverlayResumeData" style={{ display: "flex" }}>
+          <div className="OverlayData" style={{ display: "flex" }}>
             <div className="ResumeDataActions">
               <div className="OverlayCloseBtn">
                 <svg
@@ -657,9 +657,7 @@ function RouteWrapper() {
       )}
       {overlayType === "" && (
         <div className="OverlayWrapper" style={{ display: "none" }}>
-          <div className="OverlayResumeData" style={{ display: "none" }}>
-            <div className="ResumeDataActions"></div>
-          </div>
+          <div className="OverlayData" style={{ display: "none" }}></div>
         </div>
       )}
     </>

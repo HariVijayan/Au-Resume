@@ -6,15 +6,22 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
   const [adminUsers, setAdminUsers] = useState([]);
   const [numAdmins, setAdminNum] = useState(0);
-  const [modifyAdminEmail, setModifyAdminEmail] = useState("");
+  const [adminEmail, setAdminEmail] = useState("");
   const [approval, setApproval] = useState(false);
-  const [adminType, setAdminType] = useState("");
+  const [currentAdminType, setCurrentAdminType] = useState("");
   const [otpInput, setOtpInput] = useState("");
 
   const [nameChangeNeeded, setNameChangeNeeded] = useState(false);
   const [adminTypeChange, setAdminTypeChange] = useState(false);
   const [passwordReset, setPasswordReset] = useState(false);
   const [accountUnlock, setAccountUnlock] = useState(false);
+
+  const [showNewFields, setShowNewFields] = useState(false);
+  const [showNewNameField, setShowNewNameField] = useState(false);
+  const [showNewAdminField, setShowNewAdminField] = useState(false);
+
+  const [newName, setNewName] = useState("");
+  const [newAdminType, setNewAdminType] = useState("");
 
   const [showApproval, setShowApproval] = useState(false);
   const [otpReqMessage, setOtpReqMessage] = useState("");
@@ -55,59 +62,88 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
         { requestType },
         { withCredentials: true }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         setShowModifyAdminOtp(true);
         setOtpReqMessage(
           "An OTP has been sent to your email. Verify to proceed with the request"
         );
         setOtpReqMessageColor("green");
-      } else {
-        setOtpReqMessageColor("red");
-        setOtpReqMessage(response.data.message);
       }
     } catch (error) {
       setOtpReqMessageColor("red");
       setOtpReqMessage(
-        "Failed to get otp for verification. Refresh the page and try again."
+        error.response?.data?.message ||
+          "Failed to get otp for verification. Refresh the page and try again."
       );
     }
   };
 
-  const addNewAdminToDB = async () => {
+  const modifyAdminInDB = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/superAdmin/actions/modifyAdmin/adminType",
-        { modifyAdminEmail, adminType, otpInput },
+        "http://localhost:5000/superAdmin/actions/modifyAdmin/admin-modifications",
+        {
+          adminEmail,
+          currentAdminType,
+          otpInput,
+          nameChangeNeeded,
+          adminTypeChange,
+          passwordReset,
+          accountUnlock,
+          newName,
+          newAdminType,
+        },
         { withCredentials: true }
       );
 
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         setModifyAdminMessage(
-          `The access type of the mentioned admin has been changed successfully. Refreshing the page in 5 seconds.`
+          `Admin details modified successfully. Refreshing the page in 5 seconds.`
         );
         setModifyAdminMessageColor("green");
         setTimeout(() => {
           window.location.reload(false); // This will trigger a page reload after 5 seconds delay
         }, 5000);
-      } else {
-        setModifyAdminMessageColor("red");
-        setModifyAdminMessage(response.data.message);
       }
     } catch (error) {
       setModifyAdminMessageColor("red");
       setModifyAdminMessage(
-        "Failed to modify admin's access. Refreshing the page in 5 seconds. Please try again."
+        error.response?.data?.message ||
+          "Failed to modify admin. Refreshing the page in 5 seconds. Please try again."
       );
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
     }
   };
 
   useEffect(() => {
-    if (modifyAdminEmail && adminType) {
+    if (adminEmail && currentAdminType) {
       setShowApproval(true);
     } else {
       setShowApproval(false);
     }
-  }, [adminType, modifyAdminEmail]);
+  }, [currentAdminType, adminEmail]);
+
+  useEffect(() => {
+    if (nameChangeNeeded) {
+      setShowNewFields(true);
+      setShowNewNameField(true);
+    }
+    if (adminTypeChange) {
+      setShowNewFields(true);
+      setShowNewAdminField(true);
+    }
+    if (!nameChangeNeeded) {
+      setShowNewNameField(false);
+    }
+    if (!adminTypeChange) {
+      setShowNewAdminField(false);
+    }
+    if (!nameChangeNeeded && !adminTypeChange) {
+      setShowNewFields(false);
+    }
+  }, [nameChangeNeeded, adminTypeChange]);
 
   return (
     <>
@@ -170,8 +206,8 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                   <input
                     type="email"
                     placeholder=" "
-                    value={modifyAdminEmail}
-                    onChange={(e) => setModifyAdminEmail(e.target.value)}
+                    value={adminEmail}
+                    onChange={(e) => setAdminEmail(e.target.value)}
                     required
                   />
                   <label
@@ -185,9 +221,9 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                 <div className="AdminMgmtInputWrapper">
                   <div className="AdminMgmtDropDown">
                     <select
-                      value={adminType}
+                      value={currentAdminType}
                       id="se-adminType"
-                      onChange={(e) => setAdminType(e.target.value)}
+                      onChange={(e) => setCurrentAdminType(e.target.value)}
                     >
                       <option value="">Choose AdminType</option>
                       <option value="SuperAdmin">Super Admin</option>
@@ -195,7 +231,7 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                       <option value="Analytics">Analytics</option>
                     </select>
                     <label htmlFor="se-adminType" className="DropDownLabel">
-                      Admin Type
+                      Current Admin Type
                     </label>
                   </div>
                 </div>
@@ -203,40 +239,90 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
 
               {showApproval && (
                 <div className="AdminMgmtApprovalWrapper">
-                  <div className="AdminMgmtApproval">
-                    <input
-                      type="checkbox"
-                      id="in-modify_admin_name_change"
-                      checked={nameChangeNeeded}
-                      onChange={(e) => setNameChangeNeeded(e.target.checked)}
-                    />
-                    <span>Name Change</span>
-
-                    <input
-                      type="checkbox"
-                      id="in-modify_admin_admin_type"
-                      checked={adminTypeChange}
-                      onChange={(e) => setAdminTypeChange(e.target.checked)}
-                    />
-                    <span>Admin Type</span>
+                  <h4>Choose an action to perform on the account</h4>
+                  <div className="AdminMgmtModifyActions">
+                    <div className="AdminMgmtModifyActionsLeft">
+                      <input
+                        type="checkbox"
+                        id="in-modify_admin_name_change"
+                        checked={nameChangeNeeded}
+                        onChange={(e) => setNameChangeNeeded(e.target.checked)}
+                      />
+                      <span>Name Change</span>
+                    </div>
+                    <div className="AdminMgmtModifyActionsRight">
+                      <span>Admin Type</span>
+                      <input
+                        type="checkbox"
+                        id="in-modify_admin_admin_type"
+                        checked={adminTypeChange}
+                        onChange={(e) => setAdminTypeChange(e.target.checked)}
+                      />
+                    </div>
                   </div>
-                  <div className="AdminMgmtApproval">
-                    <input
-                      type="checkbox"
-                      id="in-modify_admin_password_reset"
-                      checked={passwordReset}
-                      onChange={(e) => setPasswordReset(e.target.checked)}
-                    />
-                    <span>Password Reset</span>
-
-                    <input
-                      type="checkbox"
-                      id="in-modify_admin_account_unlock"
-                      checked={accountUnlock}
-                      onChange={(e) => setAccountUnlock(e.target.checked)}
-                    />
-                    <span>Unlock Account</span>
+                  <div className="AdminMgmtModifyActions">
+                    <div className="AdminMgmtModifyActionsLeft">
+                      <input
+                        type="checkbox"
+                        id="in-modify_admin_password_reset"
+                        checked={passwordReset}
+                        onChange={(e) => setPasswordReset(e.target.checked)}
+                      />
+                      <span>Password Reset</span>
+                    </div>
+                    <div className="AdminMgmtModifyActionsRight">
+                      <span>Unlock Account</span>
+                      <input
+                        type="checkbox"
+                        id="in-modify_admin_account_unlock"
+                        checked={accountUnlock}
+                        onChange={(e) => setAccountUnlock(e.target.checked)}
+                      />
+                    </div>
                   </div>
+
+                  {showNewFields && (
+                    <div className="AdminConsoleInputsWrapper">
+                      {showNewNameField && (
+                        <div className="AdminMgmtInputWrapper">
+                          <input
+                            type="text"
+                            placeholder=" "
+                            value={newName}
+                            onChange={(e) => setNewName(e.target.value)}
+                            required
+                          />
+                          <label className="AdminMgmtTextFieldLabel3">
+                            New Name
+                          </label>
+                        </div>
+                      )}
+
+                      {showNewAdminField && (
+                        <div className="AdminMgmtInputWrapper">
+                          <div className="AdminMgmtDropDown">
+                            <select
+                              value={newAdminType}
+                              id="se-newAdminType"
+                              onChange={(e) => setNewAdminType(e.target.value)}
+                            >
+                              <option value="">Choose AdminType</option>
+                              <option value="SuperAdmin">Super Admin</option>
+                              <option value="Admin">Admin</option>
+                              <option value="Analytics">Analytics</option>
+                            </select>
+                            <label
+                              htmlFor="se-newAdminType"
+                              className="DropDownLabel"
+                            >
+                              New Admin Type
+                            </label>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <div className="AdminMgmtApproval">
                     <input
                       type="checkbox"
@@ -252,7 +338,7 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                   <button
                     style={{ marginTop: "2rem" }}
                     onClick={getVerificationOtp}
-                    disabled={!approval || !modifyAdminEmail || !adminType}
+                    disabled={!approval || !adminEmail || !currentAdminType}
                     className="PreviewButton"
                   >
                     Approve
@@ -284,7 +370,7 @@ const ModifyAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                     </label>
                   </div>
                   <button
-                    onClick={addNewAdminToDB}
+                    onClick={modifyAdminInDB}
                     disabled={!otpInput}
                     className="AddInputButtons"
                   >

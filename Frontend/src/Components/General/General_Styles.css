@@ -200,11 +200,6 @@
   margin-left: auto;
 }
 
-input[type="checkbox"] {
-  height: 20px;
-  width: 20px;
-}
-
 #dv-LoginAdminCheckbox {
   display: flex;
   justify-content: center;
@@ -217,7 +212,7 @@ input[type="checkbox"] {
   align-items: center;
 }
 
-.AuthenticationSvg{
+.AuthenticationSvg {
   padding-left: 5px;
   cursor: pointer;
 }

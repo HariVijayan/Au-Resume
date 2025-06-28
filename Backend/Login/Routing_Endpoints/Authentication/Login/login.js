@@ -75,6 +75,7 @@ router.post("/login", async (req, res) => {
 
     user.failedLoginAttempts = 0;
     user.lockUntil = null;
+    user.lockUntilFormatted = null;
     await user.save();
 
     const sessionId = uuidv4();

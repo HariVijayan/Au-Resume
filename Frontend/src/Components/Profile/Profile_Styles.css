@@ -211,7 +211,7 @@ th {
 
 .AdminConsoleInputsWrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
   margin-top: 2rem;
@@ -309,6 +309,31 @@ th {
   justify-content: center;
   align-items: center;
   width: 60%;
+  text-align: center;
+}
+
+.AdminMgmtModifyActions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  text-align: center;
+  padding-bottom: 1em;
+}
+
+.AdminMgmtModifyActionsLeft {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 50%;
+  text-align: center;
+}
+
+.AdminMgmtModifyActionsRight {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 50%;
   text-align: center;
 }
 
