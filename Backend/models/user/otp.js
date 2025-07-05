@@ -24,4 +24,4 @@ const otpSchema = new mongoose.Schema({
   expiresAtFormatted: { type: String, required: true },
 });
 
-export default mongoose.model("Otp", otpSchema);
+export default mongoose.model("userOtp", otpSchema);

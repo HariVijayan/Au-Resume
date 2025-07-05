@@ -25,4 +25,4 @@ const sessionSchema = new mongoose.Schema({
   expiresAtFormatted: { type: String, required: true },
 });
 
-export default mongoose.model("currentActiveSession", sessionSchema);
+export default mongoose.model("userActiveSession", sessionSchema);

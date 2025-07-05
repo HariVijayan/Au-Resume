@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
+const SuperAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
   const logoutUser = () => {
     setLogoutUserType("Admin");
@@ -33,22 +33,7 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
             </svg>
           </div>
           <div id="dv-AdminDBType" className="AdminConsoleHeading">
-            <p
-              className="AdminDashboardLink"
-              onClick={() => navigate("/admin-dashboard/super-admin")}
-            >
-              <svg
-                className="MenuIconsSvg"
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
-              </svg>
-              Admin Dashboard
-            </p>
+            <p>Admin Dashboard</p>
             <span>
               Admin Type: <span style={{ color: "red" }}>Super Admin</span>
             </span>
@@ -58,19 +43,46 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
             <div
               className="AdminConsoleActionCard"
               onClick={() =>
-                navigate(
-                  "/admin-dashboard/super-admin/admin-management/add-admin"
-                )
+                navigate("/admin-dashboard/super-admin/admin-management")
               }
             >
-              <div className="CardTitle">Add New Admins</div>
+              <div className="CardTitle">Admin Management</div>
               <div className="CardContent">
-                <span>
-                  Use this to add new admins to manage this site. Please note
-                  that you've to manually verify your identity through an OTP
-                  sent to your registered email to save changes. It will be
-                  recorded that you're the one who is adding this new admin.
+                <ul className="CardContentList">
+                  <li>Add New Admins</li>
+                  <li>Remove Existing Admins</li>
+                  <li>View Current Admins</li>
+                  <li>Modify Admin Permissions</li>
+                </ul>
+              </div>
+              <div className="CardLink">
+                <span className="CardContentLink">
+                  Open{" "}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e3e3e3"
+                  >
+                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
+                  </svg>
                 </span>
+              </div>
+            </div>
+
+            <div
+              className="AdminConsoleActionCard"
+              onClick={() => navigate("/admin-dashboard/user-management")}
+            >
+              <div className="CardTitle">User Management</div>
+              <div className="CardContent">
+                <ul className="CardContentList">
+                  <li>Add New Users</li>
+                  <li>Remove Existing Users</li>
+                  <li>View Current Users</li>
+                  <li>Modify User Details</li>
+                </ul>
               </div>
               <div className="CardLink">
                 <span className="CardContentLink">
@@ -91,53 +103,17 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
             <div
               className="AdminConsoleActionCard"
               onClick={() =>
-                navigate(
-                  "/admin-dashboard/super-admin/admin-management/remove-admin"
-                )
+                navigate("/admin-dashboard/super-admin/log-management")
               }
             >
-              <div className="CardTitle">Remove Existing Admins</div>
+              <div className="CardTitle">Logs Management</div>
               <div className="CardContent">
-                <span>
-                  Use this to remove existing admins from this site. Please note
-                  that you've to manually verify your identity through an OTP
-                  sent to your registered email to save changes. It will be
-                  recorded that you're the one who removed this existing admin.
-                </span>
-              </div>
-              <div className="CardLink">
-                <span className="CardContentLink">
-                  Open{" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24px"
-                    viewBox="0 -960 960 960"
-                    width="24px"
-                    fill="#e3e3e3"
-                  >
-                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
-                  </svg>
-                </span>
-              </div>
-            </div>
-
-            <div
-              className="AdminConsoleActionCard"
-              onClick={() =>
-                navigate(
-                  "/admin-dashboard/super-admin/admin-management/modify-admin"
-                )
-              }
-            >
-              <div className="CardTitle">Modify Admin Permissions</div>
-              <div className="CardContent">
-                <span>
-                  Use this to elevate existing admin's permissions to be super
-                  admins or limit existing admin's permissions to be having
-                  analytics only (ViewOnly) access. You can also use this to
-                  reset password, unlock account or change the name of existing
-                  admin accounts.
-                </span>
+                <ul className="CardContentList">
+                  <li>View Admin Logs</li>
+                  <li>View Users Logs</li>
+                  <li>Download Logs</li>
+                  <li>Clear Logs</li>
+                </ul>
               </div>
               <div className="CardLink">
                 <span className="CardContentLink">
@@ -161,4 +137,4 @@ const AdminMgmt = ({ setLogoutClicked, setLogoutUserType }) => {
   );
 };
 
-export default AdminMgmt;
+export default SuperAdmin;

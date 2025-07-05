@@ -28,5 +28,5 @@ const adminUserSchema = new mongoose.Schema({
   lockUntilFormatted: { type: String, default: null },
 });
 
-const adminUser = mongoose.model("adminUser", adminUserSchema);
+const adminUser = mongoose.model("adminList", adminUserSchema);
 export default adminUser;

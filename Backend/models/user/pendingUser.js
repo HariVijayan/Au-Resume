@@ -28,4 +28,4 @@ const PendingUserSchema = new mongoose.Schema({
   encryptionSalt: { type: String, required: true },
 });
 
-export default mongoose.model("PendingUser", PendingUserSchema);
+export default mongoose.model("pendingUser", PendingUserSchema);

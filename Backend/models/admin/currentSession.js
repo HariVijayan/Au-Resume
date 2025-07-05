@@ -18,7 +18,7 @@ const formatISTTimestamp = (date) => {
 const sessionSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
   email: { type: String, required: true },
-  accountType: {type: String, required:true},
+  accountType: { type: String, required: true },
   sessionId: { type: String, required: true, unique: true },
   createdAt: { type: Date, default: Date.now, expires: 60 * 60 * 24 * 3 }, // 3 days expiration and will be removed automatically from the database
   createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
@@ -26,4 +26,4 @@ const sessionSchema = new mongoose.Schema({
   expiresAtFormatted: { type: String, required: true },
 });
 
-export default mongoose.model("adminCurrentSession", sessionSchema);
+export default mongoose.model("adminActiveSession", sessionSchema);

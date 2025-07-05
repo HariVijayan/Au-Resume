@@ -34,7 +34,10 @@ router.post("/check-admin-access", async (req, res) => {
         .json({ message: "Unauthorised access. Not an admin." });
     }
 
-    if (user.accountType != routeType) {
+    if (routeType === "SuperAdmin" && user.accountType != "SuperAdmin") {
+      res.status(401).json({ message: "Unauthorised Access Request." });
+    }
+    if (routeType === "Admin" && user.accountType === "Analytics") {
       res.status(401).json({ message: "Unauthorised Access Request." });
     }
   } catch (error) {

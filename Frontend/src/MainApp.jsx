@@ -27,18 +27,19 @@ import Skills from "./Components/Resume_Builder/Sub_Components/Skills/SkillsMain
 import Certifications from "./Components/Resume_Builder/Sub_Components/Certifications/CertificationsMain.jsx";
 import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/Language.jsx";
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
-import SuperAdmin from "./Components/Profile/SuperAdmin.jsx";
-import SAAdminMgmt from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/Dashboard.jsx";
-import AddAdmin from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/AddAdmin.jsx";
-import RemoveAdmin from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/RemoveAdmin.jsx";
-import ModifyAdmin from "./Components/Profile/Super_Admin_Actions/Admin_Mgmt/ModifyAdminType.jsx";
-import SAUserMgmt from "./Components/Profile/Super_Admin_Actions/UserMgmt.jsx";
-import SALogMgmt from "./Components/Profile/Super_Admin_Actions/LogMgmt.jsx";
-import Admin from "./Components/Profile/Admin.jsx";
-import AdminUserMgmt from "./Components/Profile/Admin_Actions/UserMgmt.jsx";
-import AdminLogMgmt from "./Components/Profile/Admin_Actions/LogMgmt.jsx";
-import User from "./Components/Profile/GeneralUser.jsx";
-import Analytics from "./Components/Profile/Analytics.jsx";
+import AdminPanelTemplate from "./Components/Profile/AdminPanelTemplate.jsx";
+import SuperAdmin from "./Components/Profile/MainDashboard/SuperAdminDashboard.jsx";
+import AdminMgmt from "./Components/Profile/SubComponents/AdminMgmt/Dashboard.jsx";
+import AddAdmin from "./Components/Profile/SubComponents/AdminMgmt/AddAdmin.jsx";
+import RemoveAdmin from "./Components/Profile/SubComponents/AdminMgmt/RemoveAdmin.jsx";
+import ModifyAdmin from "./Components/Profile/SubComponents/AdminMgmt/ModifyAdminType.jsx";
+import UserMgmt from "./Components/Profile/SubComponents/UserMgmt/Dashboard.jsx";
+import SALogMgmt from "./Components/Profile/SubComponents/LogMgmt/LogMgmt.jsx";
+import Admin from "./Components/Profile/MainDashboard/AdminDashboard.jsx";
+import AdminUserMgmt from "./Components/Profile/SubComponents/UserMgmt/Dashboard.jsx";
+import AdminLogMgmt from "./Components/Profile/SubComponents/LogMgmt/LogMgmt.jsx";
+import UserProfile from "./Components/Resume_Builder/Sub_Components/UserProfile.jsx";
+import Analytics from "./Components/Profile/MainDashboard/AnalyticsDashboard.jsx";
 import "./Components/General/General_Styles.css";
 import "./Components/Resume_Builder/RB_Styles.css";
 import "./Components/Profile/Profile_Styles.css";
@@ -87,8 +88,6 @@ function RouteWrapper() {
   const superAdminRoutes = [
     "/admin-dashboard/super-admin",
     "/admin-dashboard/super-admin/admin-management",
-    "/admin-dashboard/super-admin/user-management",
-    "/admin-dashboard/super-admin/log-management",
     "/admin-dashboard/super-admin/admin-management/add-admin",
     "/admin-dashboard/super-admin/admin-management/remove-admin",
     "/admin-dashboard/super-admin/admin-management/modify-admin",
@@ -96,11 +95,13 @@ function RouteWrapper() {
 
   const adminRoutes = [
     "/admin-dashboard/admin-general",
-    "/admin-dashboard/admin-general/user-management",
-    "/admin-dashboard/admin-general/log-management",
+    "/admin-dashboard/user-management",
+    "/admin-dashboard/user-management/add-user",
+    "/admin-dashboard/user-management/remove-user",
+    "/admin-dashboard/user-management/modify-user",
   ];
 
-  const analyticsAdminRoutes = ["/admin-dashboard/analytics"];
+  const analyticsAdminRoutes = ["/admin-dashboard/log-management"];
   const navigate = useNavigate();
 
   const verifySessionForAdminRoutes = async (routeType) => {
@@ -328,28 +329,42 @@ function RouteWrapper() {
         <Route
           path="/admin-dashboard/super-admin/admin-management"
           element={
-            <SAAdminMgmt
+            <AdminPanelTemplate
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Admin Dashboard"}
+              backArrowLink={"/admin-dashboard/super-admin"}
+              headerAdminType={"Super Admin"}
+              AdminConsoleContent={AdminMgmt}
             />
           }
         />
         <Route
           path="/admin-dashboard/super-admin/admin-management/add-admin"
           element={
-            <AddAdmin
-              setLogoutClicked={setLogoutClicked}
-              setLogoutUserType={setLogoutUserType}
-            />
+            <>
+              <AdminPanelTemplate
+                setLogoutClicked={setLogoutClicked}
+                setLogoutUserType={setLogoutUserType}
+                backArrowPageName={"Admin Management"}
+                backArrowLink={"/admin-dashboard/super-admin/admin-management"}
+                headerAdminType={"Super Admin"}
+                AdminConsoleContent={AddAdmin}
+              />
+            </>
           }
         />
 
         <Route
           path="/admin-dashboard/super-admin/admin-management/remove-admin"
           element={
-            <RemoveAdmin
+            <AdminPanelTemplate
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Admin Management"}
+              backArrowLink={"/admin-dashboard/super-admin/admin-management"}
+              headerAdminType={"Super Admin"}
+              AdminConsoleContent={RemoveAdmin}
             />
           }
         />
@@ -357,18 +372,26 @@ function RouteWrapper() {
         <Route
           path="/admin-dashboard/super-admin/admin-management/modify-admin"
           element={
-            <ModifyAdmin
+            <AdminPanelTemplate
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Admin Management"}
+              backArrowLink={"/admin-dashboard/super-admin/admin-management"}
+              headerAdminType={"Super Admin"}
+              AdminConsoleContent={ModifyAdmin}
             />
           }
         />
         <Route
-          path="/admin-dashboard/super-admin/user-management"
+          path="/admin-dashboard/user-management"
           element={
-            <SAUserMgmt
+            <AdminPanelTemplate
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Admin Dashboard"}
+              backArrowLink={"/admin-dashboard/super-admin"}
+              headerAdminType={"Super Admin"}
+              AdminConsoleContent={UserMgmt}
             />
           }
         />
@@ -420,7 +443,7 @@ function RouteWrapper() {
         <Route
           path="/user-profile"
           element={
-            <User
+            <UserProfile
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
