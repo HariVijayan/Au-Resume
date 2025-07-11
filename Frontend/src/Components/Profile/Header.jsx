@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 
 const AdminPanelHeader = ({
   backArrowPageName,
-  backArrowLink,
   headerAdminType,
   setLogoutClicked,
   setLogoutUserType,
@@ -37,10 +36,7 @@ const AdminPanelHeader = ({
         </svg>
       </div>
       <div id="dv-AdminDBType" className="AdminConsoleHeading">
-        <p
-          className="AdminDashboardLink"
-          onClick={() => navigate(backArrowLink)}
-        >
+        <p className="AdminDashboardLink" onClick={() => navigate(-1)}>
           <svg
             className="MenuIconsSvg"
             xmlns="http://www.w3.org/2000/svg"

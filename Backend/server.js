@@ -24,6 +24,10 @@ import approvalOtp from "./routes/adminActions/approvalOtp.js";
 import addAdmin from "./routes/adminActions/addAdmin.js";
 import removeAdmin from "./routes/adminActions/removeAdmin.js";
 import modifyAdmin from "./routes/adminActions/modifyAdmin.js";
+import addUserList from "./routes/adminActions/addUserList.js";
+import removeUserList from "./routes/adminActions/removeUserList.js";
+import addUser from "./routes/adminActions/addUser.js";
+import removeUser from "./routes/adminActions/removeUser.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
@@ -74,13 +78,21 @@ app.use("/verifyAdminSession", checkAdminAccess);
 
 app.use("/superAdmin/fetchAdmin", fetchAdmins);
 
-app.use("/superAdmin/approvals", approvalOtp);
+app.use("/admin/approvals", approvalOtp);
 
 app.use("/superAdmin/actions/addNewAdmin", addAdmin);
 
 app.use("/superAdmin/actions/existingAdmin", removeAdmin);
 
 app.use("/superAdmin/actions/modifyAdmin", modifyAdmin);
+
+app.use("/admin/userMgmt/addUser", addUserList);
+
+app.use("/admin/userMgmt/removeUser", removeUserList);
+
+app.use("/admin/actions/userMgmt/newUser", addUser);
+
+app.use("/admin/actions/userMgmt/existingUser", removeUser);
 
 const formatISTTimestamp = (date) => {
   return new Intl.DateTimeFormat("en-GB", {

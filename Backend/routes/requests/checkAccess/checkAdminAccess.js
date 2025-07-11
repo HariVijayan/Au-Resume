@@ -40,6 +40,14 @@ router.post("/check-admin-access", async (req, res) => {
     if (routeType === "Admin" && user.accountType === "Analytics") {
       res.status(401).json({ message: "Unauthorised Access Request." });
     }
+
+    if (user.accountType === "SuperAdmin") {
+      res.json({ message: "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23" });
+    } else if (user.accountType === "Admin") {
+      res.json({ message: "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv" });
+    } else if (user.accountType === "Analytics") {
+      res.json({ message: "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo" });
+    }
   } catch (error) {
     console.error("Check Access Error:", error);
     res.status(500).json({ message: "Server error" });

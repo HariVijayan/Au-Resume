@@ -28,16 +28,16 @@ import Certifications from "./Components/Resume_Builder/Sub_Components/Certifica
 import LanguagesKnown from "./Components/Resume_Builder/Sub_Components/Language/Language.jsx";
 import CustomInput from "./Components/Resume_Builder/Sub_Components/Custom/CustomMain.jsx";
 import AdminPanelTemplate from "./Components/Profile/AdminPanelTemplate.jsx";
-import SuperAdmin from "./Components/Profile/MainDashboard/SuperAdminDashboard.jsx";
-import AdminMgmt from "./Components/Profile/SubComponents/AdminMgmt/Dashboard.jsx";
+import SuperAdminDashboard from "./Components/Profile/MainDashboard/SuperAdminDashboard.jsx";
+import AdminMgmtDashboard from "./Components/Profile/SubComponents/AdminMgmt/Dashboard.jsx";
 import AddAdmin from "./Components/Profile/SubComponents/AdminMgmt/AddAdmin.jsx";
 import RemoveAdmin from "./Components/Profile/SubComponents/AdminMgmt/RemoveAdmin.jsx";
 import ModifyAdmin from "./Components/Profile/SubComponents/AdminMgmt/ModifyAdminType.jsx";
-import UserMgmt from "./Components/Profile/SubComponents/UserMgmt/Dashboard.jsx";
-import SALogMgmt from "./Components/Profile/SubComponents/LogMgmt/LogMgmt.jsx";
-import Admin from "./Components/Profile/MainDashboard/AdminDashboard.jsx";
-import AdminUserMgmt from "./Components/Profile/SubComponents/UserMgmt/Dashboard.jsx";
-import AdminLogMgmt from "./Components/Profile/SubComponents/LogMgmt/LogMgmt.jsx";
+import AdminDashboard from "./Components/Profile/MainDashboard/AdminDashboard.jsx";
+import UserMgmtDashboard from "./Components/Profile/SubComponents/UserMgmt/Dashboard.jsx";
+import AddUser from "./Components/Profile/SubComponents/UserMgmt/AddUser.jsx";
+import RemoveUser from "./Components/Profile/SubComponents/UserMgmt/RemoveUser.jsx";
+import LogMgmtDashboard from "./Components/Profile/SubComponents/LogMgmt/LogMgmt.jsx";
 import UserProfile from "./Components/Resume_Builder/Sub_Components/UserProfile.jsx";
 import Analytics from "./Components/Profile/MainDashboard/AnalyticsDashboard.jsx";
 import "./Components/General/General_Styles.css";
@@ -48,6 +48,7 @@ import ResumeInputTemplate from "./ResumeFormat.jsx";
 
 function RouteWrapper() {
   const { resumeData, setResumeData } = ResumeInputTemplate();
+  const [loggedInUserType, setLoggedInUserType] = useState("");
 
   const forceMultiTabClosureOnLogout = () => {
     const navigate = useNavigate();
@@ -113,7 +114,22 @@ function RouteWrapper() {
         { withCredentials: true }
       );
 
-      if (response.statusText != "OK") {
+      if (
+        response?.data?.message ===
+        "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
+      ) {
+        setLoggedInUserType("Super Admin");
+      } else if (
+        response?.data?.message ===
+        "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
+      ) {
+        setLoggedInUserType("Admin");
+      } else if (
+        response?.data?.message ===
+        "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
+      ) {
+        setLoggedInUserType("Analytics");
+      } else {
         throw new Error("Session invalid");
       }
     } catch (error) {
@@ -149,16 +165,19 @@ function RouteWrapper() {
         response?.data?.message ===
         "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
       ) {
+        setLoggedInUserType("Super Admin");
         navigate("/admin-dashboard/super-admin");
       } else if (
         response?.data?.message ===
         "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
       ) {
+        setLoggedInUserType("Admin");
         navigate("/admin-dashboard/admin-general");
       } else if (
         response?.data?.message ===
         "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
       ) {
+        setLoggedInUserType("Analytics");
         navigate("/admin-dashboard/analytics");
       } else if (response?.data?.message === "Valid access token") {
         navigate("/resume-builder/template-choosing");
@@ -320,7 +339,7 @@ function RouteWrapper() {
         <Route
           path="/admin-dashboard/super-admin"
           element={
-            <SuperAdmin
+            <SuperAdminDashboard
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -333,9 +352,8 @@ function RouteWrapper() {
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
               backArrowPageName={"Admin Dashboard"}
-              backArrowLink={"/admin-dashboard/super-admin"}
-              headerAdminType={"Super Admin"}
-              AdminConsoleContent={AdminMgmt}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={AdminMgmtDashboard}
             />
           }
         />
@@ -347,8 +365,7 @@ function RouteWrapper() {
                 setLogoutClicked={setLogoutClicked}
                 setLogoutUserType={setLogoutUserType}
                 backArrowPageName={"Admin Management"}
-                backArrowLink={"/admin-dashboard/super-admin/admin-management"}
-                headerAdminType={"Super Admin"}
+                headerAdminType={loggedInUserType}
                 AdminConsoleContent={AddAdmin}
               />
             </>
@@ -362,8 +379,7 @@ function RouteWrapper() {
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
               backArrowPageName={"Admin Management"}
-              backArrowLink={"/admin-dashboard/super-admin/admin-management"}
-              headerAdminType={"Super Admin"}
+              headerAdminType={loggedInUserType}
               AdminConsoleContent={RemoveAdmin}
             />
           }
@@ -376,9 +392,17 @@ function RouteWrapper() {
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
               backArrowPageName={"Admin Management"}
-              backArrowLink={"/admin-dashboard/super-admin/admin-management"}
-              headerAdminType={"Super Admin"}
+              headerAdminType={loggedInUserType}
               AdminConsoleContent={ModifyAdmin}
+            />
+          }
+        />
+        <Route
+          path="/admin-dashboard/admin-general"
+          element={
+            <AdminDashboard
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
             />
           }
         />
@@ -389,52 +413,51 @@ function RouteWrapper() {
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
               backArrowPageName={"Admin Dashboard"}
-              backArrowLink={"/admin-dashboard/super-admin"}
-              headerAdminType={"Super Admin"}
-              AdminConsoleContent={UserMgmt}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={UserMgmtDashboard}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-dashboard/user-management/add-user"
+          element={
+            <AdminPanelTemplate
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"User Management"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={AddUser}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-dashboard/user-management/remove-user"
+          element={
+            <AdminPanelTemplate
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"User Management"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={RemoveUser}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-dashboard/analytics"
+          element={
+            <Analytics
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
             />
           }
         />
         <Route
           path="/admin-dashboard/super-admin/log-management"
           element={
-            <SALogMgmt
-              setLogoutClicked={setLogoutClicked}
-              setLogoutUserType={setLogoutUserType}
-            />
-          }
-        />
-        <Route
-          path="/admin-dashboard/admin-general"
-          element={
-            <Admin
-              setLogoutClicked={setLogoutClicked}
-              setLogoutUserType={setLogoutUserType}
-            />
-          }
-        />
-        <Route
-          path="/admin-dashboard/admin-general/user-management"
-          element={
-            <AdminUserMgmt
-              setLogoutClicked={setLogoutClicked}
-              setLogoutUserType={setLogoutUserType}
-            />
-          }
-        />
-        <Route
-          path="/admin-dashboard/admin-general/log-management"
-          element={
-            <AdminLogMgmt
-              setLogoutClicked={setLogoutClicked}
-              setLogoutUserType={setLogoutUserType}
-            />
-          }
-        />
-        <Route
-          path="/admin-dashboard/analytics"
-          element={
-            <Analytics
+            <LogMgmtDashboard
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />
@@ -449,7 +472,10 @@ function RouteWrapper() {
             />
           }
         />
-        <Route path="/" element={<Login />} />
+        <Route
+          path="/"
+          element={<Login setLoggedInUserType={setLoggedInUserType} />}
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<Otp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -29,7 +29,7 @@ const Register = () => {
         "M.B.A.",
       ],
     },
-    braches: {
+    branches: {
       "B.E./B.Tech.": [
         "Aeronautical Engineering",
         "Agriculture & Irrigation Engineering",
@@ -162,7 +162,7 @@ const Register = () => {
   };
 
   const getBranchesList = () => {
-    return dropdownOptions.braches[programme] || [];
+    return dropdownOptions.branches[programme] || [];
   };
 
   const chooseCourseType = (e) => {

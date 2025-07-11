@@ -12,10 +12,9 @@ const UserMgmt = () => {
           <div className="CardTitle">Add New Users</div>
           <div className="CardContent">
             <span>
-              Use this to add new admins to manage this site. Please note that
+              Use this to add new users to access this site. Please note that
               you've to manually verify your identity through an OTP sent to
-              your registered email to save changes. It will be recorded that
-              you're the one who is adding this new admin.
+              your registered email to save changes.
             </span>
           </div>
           <div className="CardLink">
@@ -43,10 +42,9 @@ const UserMgmt = () => {
           <div className="CardTitle">Remove Existing Users</div>
           <div className="CardContent">
             <span>
-              Use this to remove existing admins from this site. Please note
-              that you've to manually verify your identity through an OTP sent
-              to your registered email to save changes. It will be recorded that
-              you're the one who removed this existing admin.
+              Use this to remove existing users from accessing this site. Please
+              note that you've to manually verify your identity through an OTP
+              sent to your registered email to save changes.
             </span>
           </div>
           <div className="CardLink">
@@ -74,11 +72,8 @@ const UserMgmt = () => {
           <div className="CardTitle">Modify User Account</div>
           <div className="CardContent">
             <span>
-              Use this to elevate existing admin's permissions to be super
-              admins or limit existing admin's permissions to be having
-              analytics only (ViewOnly) access. You can also use this to reset
-              password, unlock account or change the name of existing admin
-              accounts.
+              Use this to reset password, unlock account or change the account
+              details of existing user accounts.
             </span>
           </div>
           <div className="CardLink">

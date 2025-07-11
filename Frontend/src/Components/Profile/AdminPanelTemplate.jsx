@@ -14,7 +14,6 @@ const AdminPanelTemplate = ({
         <div className="AdminConsoleMainContent">
           <AdminPanelHeader
             backArrowPageName={backArrowPageName}
-            backArrowLink={backArrowLink}
             headerAdminType={headerAdminType}
             setLogoutClicked={setLogoutClicked}
             setLogoutUserType={setLogoutUserType}

@@ -1,0 +1,181 @@
+import express from "express";
+import adminUser from "../../models/admin/admin.js";
+import adminOtp from "../../models/admin/otp.js";
+import userDBModel from "../../models/user/user.js";
+import resumeData from "../../models/pdf/resumeData.js";
+import userOtp from "../../models/user/otp.js";
+import userCurrentSession from "../../models/user/currentSession.js";
+import pendingUser from "../../models/user/pendingUser.js";
+import adminCurrentSession from "../../models/admin/currentSession.js";
+import jwt from "jsonwebtoken";
+
+const router = express.Router();
+
+function csvToNumberArray(input) {
+  const trimmedInput = input.replace(/\s+/g, "");
+  const numArray = trimmedInput.split(",").map((value) => {
+    const num = Number(value);
+    if (isNaN(num)) {
+      return null;
+    }
+    return num;
+  });
+
+  return numArray.filter((num) => num !== null);
+}
+
+router.post("/removeUser", async (req, res) => {
+  const {
+    opertationType,
+    commonEmailSuffix,
+    commonRegNoPrefix,
+    commonRegNoStart,
+    commonRegNoEnd,
+    skipRegNo,
+    remUserEmail,
+    remUserRegNo,
+    otpInput,
+  } = req.body;
+
+  try {
+    const accessToken = req.cookies.accessToken;
+    if (!accessToken) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const { userId, sessionId } = jwt.verify(
+      accessToken,
+      process.env.JWT_SECRET
+    );
+
+    const session = await adminCurrentSession.findOne({ userId, sessionId });
+    if (!session || session.expiresAt < Date.now()) {
+      return res
+        .status(403)
+        .json({ message: "Session expired. Please log in again." });
+    }
+
+    const adminEmail = session.email;
+
+    const user = await adminUser.findOne({ email: adminEmail });
+
+    if (!user) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorised access. Not an admin." });
+    }
+
+    const storedOtp = await adminOtp.findOne({
+      email: adminEmail,
+      otp: otpInput,
+    });
+
+    if (!storedOtp) return res.status(400).json({ message: "Invalid OTP" });
+
+    if (storedOtp.expiresAt < Date.now()) {
+      await adminOtp.deleteMany({ adminEmail });
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    let finalUserList = [];
+    let skippableRegNoList = csvToNumberArray(skipRegNo);
+
+    if (opertationType === "Single") {
+      const existingUser = await userDBModel.findOne({
+        email: remUserEmail,
+        registerNumber: remUserRegNo,
+      });
+      if (!existingUser) {
+        return res.status(400).json({ message: "User doesn't exists." });
+      }
+      if (existingUser) {
+        finalUserList.push({
+          email: remUserEmail,
+          registerNumber: remUserRegNo,
+        });
+      }
+    } else if (opertationType === "Multiple") {
+      for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
+        if (skippableRegNoList.includes(i)) {
+          continue;
+        }
+        let iterableValue = i;
+        if (i < 10) {
+          iterableValue = `0${i}`;
+        }
+        const regNo = `${commonRegNoPrefix}${iterableValue}`;
+        const existingUserRegNoEmail = `${regNo}${commonEmailSuffix}`;
+
+        const existingUser = await userDBModel.findOne({
+          email: existingUserRegNoEmail,
+          registerNumber: regNo,
+        });
+
+        if (existingUser) {
+          finalUserList.push({
+            email: existingUserRegNoEmail,
+            registerNumber: regNo,
+          });
+        }
+      }
+    }
+
+    for (let i = 0; i < finalUserList.length; i++) {
+      const userToDelete = finalUserList[i];
+      const existingResume = await resumeData.findOne({
+        login_email: userToDelete.email,
+      });
+
+      const pendingAccount = await pendingUser.findOne({
+        email: userToDelete.email,
+        registerNumber: userToDelete.registerNumber,
+      });
+
+      const existingOtps = await userOtp.findOne({
+        email: userToDelete.email,
+      });
+
+      const existingSessions = await userCurrentSession.findOne({
+        email: userToDelete.email,
+      });
+
+      if (existingSessions) {
+        await resumeData.deleteOne({
+          email: userToDelete.email,
+        });
+      }
+
+      if (existingOtps) {
+        await resumeData.deleteOne({
+          email: userToDelete.email,
+        });
+      }
+
+      if (pendingAccount) {
+        await pendingUser.deleteOne({
+          email: userToDelete.email,
+          registerNumber: userToDelete.registerNumber,
+        });
+      }
+
+      if (existingResume) {
+        await resumeData.deleteOne({
+          login_email: userToDelete.email,
+        });
+      }
+
+      await userDBModel.deleteOne({
+        email: userToDelete.email,
+        registerNumber: userToDelete.registerNumber,
+      });
+    }
+    return res
+      .status(200)
+      .json({ message: `${finalUserList.length} users deleted successfully.` });
+  } catch (error) {
+    console.error("Request OTP error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+export default router;

@@ -39,7 +39,7 @@ const AddNewAdmin = () => {
   const getVerificationOtp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/superAdmin/approvals/get-approval-otp",
+        "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
         { withCredentials: true }
       );
@@ -102,7 +102,7 @@ const AddNewAdmin = () => {
 
   return (
     <>
-      <div className="AddAdminsWrapper">
+      <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">Add New Admins</p>
         <span>
           (Scroll down to see the list of current admins before adding a new
@@ -118,12 +118,7 @@ const AddNewAdmin = () => {
                 onChange={(e) => setNewAdminName(e.target.value)}
                 required
               />
-              <label
-                htmlFor="in-add_admin_name"
-                className="AdminMgmtTextFieldLabel"
-              >
-                Name
-              </label>
+              <label className="AdminMgmtTextFieldLabel">Name</label>
             </div>
 
             <div className="AdminMgmtInputWrapper">
@@ -134,12 +129,7 @@ const AddNewAdmin = () => {
                 onChange={(e) => setNewAdminEmail(e.target.value)}
                 required
               />
-              <label
-                htmlFor="in-add_admin_email"
-                className="AdminMgmtTextFieldLabel"
-              >
-                Email
-              </label>
+              <label className="AdminMgmtTextFieldLabel">Email</label>
             </div>
 
             <div className="AdminMgmtInputWrapper">
@@ -166,7 +156,6 @@ const AddNewAdmin = () => {
               <div className="AdminMgmtApproval">
                 <input
                   type="checkbox"
-                  id="in-add_admin_approval"
                   checked={approval}
                   onChange={(e) => setApproval(e.target.checked)}
                 />
@@ -202,12 +191,7 @@ const AddNewAdmin = () => {
                   onChange={(e) => setOtpInput(e.target.value)}
                   required
                 />
-                <label
-                  htmlFor="in-add_admin_verify_otp"
-                  className="AdminMgmtTextFieldLabel2"
-                >
-                  Otp
-                </label>
+                <label className="AdminMgmtTextFieldLabel2">Otp</label>
               </div>
               <button
                 onClick={addNewAdminToDB}

@@ -17,6 +17,7 @@
   flex-grow: 1;
   flex-shrink: 0;
   min-height: 100vh;
+  padding-bottom: 3rem;
 }
 
 .AdminConsoleHeader {
@@ -191,7 +192,7 @@ th {
   border: 1px solid var(--primary--accent);
 }
 
-.AddAdminsWrapper {
+.AdminMgmtWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -362,6 +363,24 @@ th {
 
 #btn-admin_mgmt {
   margin-top: 2rem;
+}
+
+.UserMgmtButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  padding: 1rem;
+}
+
+.AddSingleUserWrapper,
+.AddMultipleUserWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  padding: 1rem;
 }
 
 @media (max-width: 768px) {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setLoggedInUserType }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -27,18 +27,22 @@ const Login = () => {
         response?.data?.message ===
         "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
       ) {
+        setLoggedInUserType("Super Admin");
         navigate("/admin-dashboard/super-admin");
       } else if (
         response?.data?.message ===
         "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
       ) {
+        setLoggedInUserType("Admin");
         navigate("/admin-dashboard/admin-general");
       } else if (
         response?.data?.message ===
         "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
       ) {
+        setLoggedInUserType("Analytics");
         navigate("/admin-dashboard/analytics");
       } else if (response?.data?.message === "Login successful") {
+        setLoggedInUserType("User");
         navigate("/resume-builder/template-choosing");
       }
     } catch (err) {

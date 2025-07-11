@@ -144,6 +144,23 @@ router.post("/get-approval-otp", async (req, res) => {
         subject: "Admin - Modify Admin Approval OTP",
         text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
       };
+    } else {
+      await adminOtp.create({
+        email: adminEmail,
+        otp,
+        createdAt,
+        createdAtFormatted: formatISTTimestamp(createdAt),
+        expiresAt,
+        expiresAtFormatted: formatISTTimestamp(expiresAt),
+        otpFor: "Admin Management Action approval",
+      });
+
+      mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: adminEmail,
+        subject: "Admin - Admin Management Action Approval OTP",
+        text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
+      };
     }
 
     await transporter.sendMail(mailOptions);

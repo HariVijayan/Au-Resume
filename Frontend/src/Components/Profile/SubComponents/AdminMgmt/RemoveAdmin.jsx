@@ -41,7 +41,7 @@ const RemoveAdmin = () => {
   const getVerificationOtp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/superAdmin/approvals/get-approval-otp",
+        "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
         { withCredentials: true }
       );
@@ -63,7 +63,7 @@ const RemoveAdmin = () => {
     }
   };
 
-  const addNewAdminToDB = async () => {
+  const removeAdminFromDB = async () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/superAdmin/actions/existingAdmin/removeAdmin",
@@ -104,7 +104,7 @@ const RemoveAdmin = () => {
 
   return (
     <>
-      <div className="AddAdminsWrapper">
+      <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">Remove Existing Admins</p>
         <span>
           (Scroll down to see the list of current admins to remove one)
@@ -119,12 +119,7 @@ const RemoveAdmin = () => {
                 onChange={(e) => setRemAdminEmail(e.target.value)}
                 required
               />
-              <label
-                htmlFor="in-add_admin_email"
-                className="AdminMgmtTextFieldLabel3"
-              >
-                Email
-              </label>
+              <label className="AdminMgmtTextFieldLabel3">Email</label>
             </div>
 
             <div className="AdminMgmtInputWrapper">
@@ -151,7 +146,6 @@ const RemoveAdmin = () => {
               <div className="AdminMgmtApproval">
                 <input
                   type="checkbox"
-                  id="in-add_admin_approval"
                   checked={approval}
                   onChange={(e) => setApproval(e.target.checked)}
                 />
@@ -185,15 +179,10 @@ const RemoveAdmin = () => {
                   onChange={(e) => setOtpInput(e.target.value)}
                   required
                 />
-                <label
-                  htmlFor="in-add_admin_verify_otp"
-                  className="AdminMgmtTextFieldLabel2"
-                >
-                  Otp
-                </label>
+                <label className="AdminMgmtTextFieldLabel2">Otp</label>
               </div>
               <button
-                onClick={addNewAdminToDB}
+                onClick={removeAdminFromDB}
                 disabled={!otpInput}
                 className="AddInputButtons"
               >

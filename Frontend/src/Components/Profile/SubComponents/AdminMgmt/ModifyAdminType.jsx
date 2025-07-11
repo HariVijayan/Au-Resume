@@ -53,7 +53,7 @@ const ModifyAdmin = () => {
   const getVerificationOtp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/superAdmin/approvals/get-approval-otp",
+        "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
         { withCredentials: true }
       );
@@ -142,7 +142,7 @@ const ModifyAdmin = () => {
 
   return (
     <>
-      <div className="AddAdminsWrapper">
+      <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading"> Modify Admin Type</p>
         <span>
           (Scroll down to see the list of current admins to find an admin for
@@ -158,12 +158,7 @@ const ModifyAdmin = () => {
                 onChange={(e) => setAdminEmail(e.target.value)}
                 required
               />
-              <label
-                htmlFor="in-add_admin_email"
-                className="AdminMgmtTextFieldLabel3"
-              >
-                Email
-              </label>
+              <label className="AdminMgmtTextFieldLabel3">Email</label>
             </div>
 
             <div className="AdminMgmtInputWrapper">
