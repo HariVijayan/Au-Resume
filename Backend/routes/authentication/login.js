@@ -85,7 +85,7 @@ router.post("/login", async (req, res) => {
     );
 
     if (isAdmin) {
-      await adminCurrentSession.deleteMany({ userId: user._id });
+      await adminCurrentSession.deleteMany({ email: user.email });
 
       await adminCurrentSession.create({
         userId: user._id,

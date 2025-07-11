@@ -58,9 +58,27 @@ router.post("/removeAdmin", async (req, res) => {
       return res.status(400).json({ message: "No such admin found." });
     }
 
-    await adminUser.deleteOne({ email: remAdminEmail, accountType: adminType });
+    const existingSessions = await adminCurrentSession.find({
+      email: remAdminEmail,
+    });
 
-    await adminOtp.deleteMany({ email: adminEmail });
+    if (existingSessions) {
+      await adminCurrentSession.deleteMany({
+        email: remAdminEmail,
+      });
+    }
+
+    const existingOtp = await adminOtp.find({
+      email: remAdminEmail,
+    });
+
+    if (existingOtp) {
+      await adminOtp.deleteMany({
+        email: remAdminEmail,
+      });
+    }
+
+    await adminUser.deleteOne({ email: remAdminEmail, accountType: adminType });
 
     res.json({
       message: "Admin removed successfully.",

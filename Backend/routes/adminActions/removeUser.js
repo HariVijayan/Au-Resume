@@ -122,49 +122,49 @@ router.post("/removeUser", async (req, res) => {
 
     for (let i = 0; i < finalUserList.length; i++) {
       const userToDelete = finalUserList[i];
-      const existingResume = await resumeData.findOne({
+      const existingResume = await resumeData.find({
         login_email: userToDelete.email,
       });
 
-      const pendingAccount = await pendingUser.findOne({
+      const pendingAccount = await pendingUser.find({
         email: userToDelete.email,
         registerNumber: userToDelete.registerNumber,
       });
 
-      const existingOtps = await userOtp.findOne({
+      const existingOtps = await userOtp.find({
         email: userToDelete.email,
       });
 
-      const existingSessions = await userCurrentSession.findOne({
+      const existingSessions = await userCurrentSession.find({
         email: userToDelete.email,
       });
 
       if (existingSessions) {
-        await resumeData.deleteOne({
+        await userCurrentSession.deleteMany({
           email: userToDelete.email,
         });
       }
 
       if (existingOtps) {
-        await resumeData.deleteOne({
+        await userOtp.deleteMany({
           email: userToDelete.email,
         });
       }
 
       if (pendingAccount) {
-        await pendingUser.deleteOne({
+        await pendingUser.deleteMany({
           email: userToDelete.email,
           registerNumber: userToDelete.registerNumber,
         });
       }
 
       if (existingResume) {
-        await resumeData.deleteOne({
+        await resumeData.deleteMany({
           login_email: userToDelete.email,
         });
       }
 
-      await userDBModel.deleteOne({
+      await userDBModel.deleteMany({
         email: userToDelete.email,
         registerNumber: userToDelete.registerNumber,
       });

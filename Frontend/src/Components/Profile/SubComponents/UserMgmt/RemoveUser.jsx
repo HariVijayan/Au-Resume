@@ -163,7 +163,7 @@ const RemoveUser = () => {
 
       if (response.status === 200) {
         setFinalResult(
-          `New user(s) have been added to the site successfully. Refreshing the page in 5 seconds.`
+          `${response.data.message} Refreshing the page in 5 seconds.`
         );
         setFinalResultColor("green");
         setTimeout(() => {
@@ -174,7 +174,7 @@ const RemoveUser = () => {
       setFinalResultColor("red");
       setFinalResult(
         error.response.data.message ||
-          "Failed to add new user(s). Refreshing the page in 5 seconds. Please try again."
+          "Failed to remove user(s). Refreshing the page in 5 seconds. Please try again."
       );
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
