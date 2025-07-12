@@ -98,7 +98,7 @@ router.post("/login", async (req, res) => {
         expiresAtFormatted: formatISTTimestamp(expiresAt),
       });
     } else {
-      await currentSession.deleteMany({ userId: user._id });
+      await currentSession.deleteMany({ email: user.email });
 
       await currentSession.create({
         userId: user._id,

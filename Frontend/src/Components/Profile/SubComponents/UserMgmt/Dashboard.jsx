@@ -72,8 +72,8 @@ const UserMgmt = () => {
           <div className="CardTitle">Modify User Account</div>
           <div className="CardContent">
             <span>
-              Use this to reset password, unlock account or change the account
-              details of existing user accounts.
+              Use this to unlock account, reset password of existing user
+              accounts.
             </span>
           </div>
           <div className="CardLink">

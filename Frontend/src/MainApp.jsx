@@ -32,11 +32,12 @@ import SuperAdminDashboard from "./Components/Profile/MainDashboard/SuperAdminDa
 import AdminMgmtDashboard from "./Components/Profile/SubComponents/AdminMgmt/Dashboard.jsx";
 import AddAdmin from "./Components/Profile/SubComponents/AdminMgmt/AddAdmin.jsx";
 import RemoveAdmin from "./Components/Profile/SubComponents/AdminMgmt/RemoveAdmin.jsx";
-import ModifyAdmin from "./Components/Profile/SubComponents/AdminMgmt/ModifyAdminType.jsx";
+import ModifyAdmin from "./Components/Profile/SubComponents/AdminMgmt/ModifyAdmin.jsx";
 import AdminDashboard from "./Components/Profile/MainDashboard/AdminDashboard.jsx";
 import UserMgmtDashboard from "./Components/Profile/SubComponents/UserMgmt/Dashboard.jsx";
 import AddUser from "./Components/Profile/SubComponents/UserMgmt/AddUser.jsx";
 import RemoveUser from "./Components/Profile/SubComponents/UserMgmt/RemoveUser.jsx";
+import ModifyUser from "./Components/Profile/SubComponents/UserMgmt/ModifyUser.jsx";
 import LogMgmtDashboard from "./Components/Profile/SubComponents/LogMgmt/LogMgmt.jsx";
 import UserProfile from "./Components/Resume_Builder/Sub_Components/UserProfile.jsx";
 import Analytics from "./Components/Profile/MainDashboard/AnalyticsDashboard.jsx";
@@ -441,6 +442,19 @@ function RouteWrapper() {
               backArrowPageName={"User Management"}
               headerAdminType={loggedInUserType}
               AdminConsoleContent={RemoveUser}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-dashboard/user-management/modify-user"
+          element={
+            <AdminPanelTemplate
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"User Management"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={ModifyUser}
             />
           }
         />

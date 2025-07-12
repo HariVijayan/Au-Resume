@@ -26,8 +26,10 @@ import removeAdmin from "./routes/adminActions/removeAdmin.js";
 import modifyAdmin from "./routes/adminActions/modifyAdmin.js";
 import addUserList from "./routes/adminActions/addUserList.js";
 import removeUserList from "./routes/adminActions/removeUserList.js";
+import modifyUserList from "./routes/adminActions/modifyUserList.js";
 import addUser from "./routes/adminActions/addUser.js";
 import removeUser from "./routes/adminActions/removeUser.js";
+import modifyUser from "./routes/adminActions/modifyUser.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
@@ -90,9 +92,13 @@ app.use("/admin/userMgmt/addUser", addUserList);
 
 app.use("/admin/userMgmt/removeUser", removeUserList);
 
+app.use("/admin/userMgmt/modifyUser", modifyUserList);
+
 app.use("/admin/actions/userMgmt/newUser", addUser);
 
 app.use("/admin/actions/userMgmt/existingUser", removeUser);
+
+app.use("/admin/actions/userMgmt/modifyAccount", modifyUser);
 
 const formatISTTimestamp = (date) => {
   return new Intl.DateTimeFormat("en-GB", {
