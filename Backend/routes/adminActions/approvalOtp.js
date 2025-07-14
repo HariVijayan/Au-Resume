@@ -1,9 +1,7 @@
 import express from "express";
-import adminUser from "../../models/admin/admin.js";
-import adminCurrentSession from "../../models/admin/currentSession.js";
 import adminOtp from "../../models/admin/otp.js";
 import nodemailer from "nodemailer";
-import jwt from "jsonwebtoken";
+import getAdminOtp from "../components/getAdminOtp.js";
 
 const router = express.Router();
 
@@ -46,50 +44,18 @@ router.post("/get-approval-otp", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    if (!accessToken) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
-    const { userId, sessionId } = jwt.verify(
-      accessToken,
-      process.env.JWT_SECRET
-    );
-
-    const session = await adminCurrentSession.findOne({ userId, sessionId });
-    if (!session || session.expiresAt < Date.now()) {
+    const adminCheck = await getAdminOtp(accessToken);
+    if (adminCheck.Valid === "NO") {
       return res
-        .status(403)
-        .json({ message: "Session expired. Please log in again." });
+        .status(adminCheck.HtmlCode)
+        .json({ message: adminCheck.Reason });
     }
 
-    const adminEmail = session.email;
-
-    const user = await adminUser.findOne({ email: adminEmail });
-
-    if (!user) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorised access. Not an admin." });
-    }
-
-    const lastOtp = await adminOtp
-      .findOne({ adminEmail })
-      .sort({ createdAt: -1 });
-
-    if (
-      lastOtp &&
-      Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT
-    ) {
-      return res
-        .status(429)
-        .json({ message: "Too many OTP requests. Try again in 1 minute." });
-    }
+    const adminEmail = adminCheck.AdminEmail;
 
     const otp = generateStrongOtp(6);
     const createdAt = new Date(Date.now());
     const expiresAt = new Date(Date.now() + OTP_EXPIRATION_TIME);
-
-    await adminOtp.deleteMany({ email: adminEmail });
 
     let mailOptions;
 

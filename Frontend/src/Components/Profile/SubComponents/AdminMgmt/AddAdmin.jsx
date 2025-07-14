@@ -56,7 +56,8 @@ const AddNewAdmin = () => {
     } catch (error) {
       setOtpReqMessageColor("red");
       setOtpReqMessage(
-        "Failed to get otp for verification. Refresh the page and try again."
+        error.response.data.message ||
+          "Failed to get otp for verification. Refresh the page and try again."
       );
     }
   };

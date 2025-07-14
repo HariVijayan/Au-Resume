@@ -41,10 +41,10 @@ const VerifyOTP = () => {
       if (response.ok) {
         navigate("/"); // Redirect to login page
       } else {
-        setError("OTP Verification Failed!");
+        setError(data.message || "OTP Verification Failed!");
       }
     } catch (error) {
-      setError("OTP Verification Failed!");
+      setError(error.response.data.message || "OTP Verification Failed!");
     }
   };
 
@@ -66,10 +66,10 @@ const VerifyOTP = () => {
         setCountdown(60); // Reset the countdown
         setIsResendDisabled(true);
       } else {
-        setError("Failed to resend OTP.");
+        setError(data.message || "Failed to resend OTP.");
       }
     } catch (error) {
-      setError("Failed to resend OTP.");
+      setError(error.response.data.message || "Failed to resend OTP.");
     }
   };
 

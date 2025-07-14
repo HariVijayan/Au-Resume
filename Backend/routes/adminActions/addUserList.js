@@ -1,7 +1,5 @@
 import express from "express";
-import adminUser from "../../models/admin/admin.js";
-import adminCurrentSession from "../../models/admin/currentSession.js";
-import jwt from "jsonwebtoken";
+import checkAdminAccess from "../components/checkAdminAccess.js";
 
 const router = express.Router();
 
@@ -40,30 +38,11 @@ router.post("/get-final-users", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    if (!accessToken) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
-    const { userId, sessionId } = jwt.verify(
-      accessToken,
-      process.env.JWT_SECRET
-    );
-
-    const session = await adminCurrentSession.findOne({ userId, sessionId });
-    if (!session || session.expiresAt < Date.now()) {
+    const adminCheck = await checkAdminAccess(accessToken);
+    if (adminCheck.Valid === "NO") {
       return res
-        .status(403)
-        .json({ message: "Session expired. Please log in again." });
-    }
-
-    const adminEmail = session.email;
-
-    const user = await adminUser.findOne({ email: adminEmail });
-
-    if (!user) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorised access. Not an admin." });
+        .status(adminCheck.HtmlCode)
+        .json({ message: adminCheck.Reason });
     }
 
     let finalUserList = [];

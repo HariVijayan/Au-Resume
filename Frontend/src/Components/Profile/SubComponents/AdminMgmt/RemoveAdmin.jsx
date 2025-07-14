@@ -86,7 +86,8 @@ const RemoveAdmin = () => {
     } catch (error) {
       setRemAdminMessageColor("red");
       setRemAdminMessage(
-        "Failed to remove new admin. Refreshing the page in 5 seconds. Please try again."
+        `${error.response.data.message} Refreshing the page in 5 seconds. Please try again.` ||
+          "Failed to remove new admin. Refreshing the page in 5 seconds. Please try again."
       );
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay

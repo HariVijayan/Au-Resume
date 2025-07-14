@@ -1,10 +1,8 @@
 import express from "express";
 import adminUser from "../../models/admin/admin.js";
-import adminCurrentSession from "../../models/admin/currentSession.js";
-import adminOtp from "../../models/admin/otp.js";
 import nodemailer from "nodemailer";
-import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import verifyAdminOtp from "../components/verifyAdminOtp.js";
 
 const router = express.Router();
 
@@ -45,43 +43,15 @@ router.post("/newAdmin", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    if (!accessToken) {
-      return res.status(401).json({ message: "No token provided" });
-    }
 
-    const { userId, sessionId } = jwt.verify(
-      accessToken,
-      process.env.JWT_SECRET
-    );
-
-    const session = await adminCurrentSession.findOne({ userId, sessionId });
-    if (!session || session.expiresAt < Date.now()) {
+    const adminCheck = await verifyAdminOtp(accessToken, otpInput);
+    if (adminCheck.Valid === "NO") {
       return res
-        .status(403)
-        .json({ message: "Session expired. Please log in again." });
+        .status(adminCheck.HtmlCode)
+        .json({ message: adminCheck.Reason });
     }
 
-    const adminEmail = session.email;
-
-    const user = await adminUser.findOne({ email: adminEmail });
-
-    if (!user) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorised access. Not an admin." });
-    }
-
-    const storedOtp = await adminOtp.findOne({
-      email: adminEmail,
-      otp: otpInput,
-    });
-
-    if (!storedOtp) return res.status(400).json({ message: "Invalid OTP" });
-
-    if (storedOtp.expiresAt < Date.now()) {
-      await adminOtp.deleteMany({ adminEmail });
-      return res.status(400).json({ message: "OTP expired" });
-    }
+    const adminEmail = adminCheck.AdminEmail;
 
     const newAdminPassword = generateStrongPassword(8);
     const createdAt = new Date(Date.now());
@@ -110,8 +80,6 @@ router.post("/newAdmin", async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-
-    await adminOtp.deleteMany({ email: adminEmail });
 
     res.json({
       message: "New admin added successfully.",

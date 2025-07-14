@@ -375,7 +375,7 @@ const AddNewUser = () => {
       }
     } catch (error) {
       setOtpReqMessageColor("red");
-      setOtpReqMessage(response.data.message || "Failed to get OTP");
+      setOtpReqMessage(error.response.data.message || "Failed to get OTP");
     }
   };
 
@@ -417,7 +417,7 @@ const AddNewUser = () => {
     } catch (error) {
       setAddUserMessageColor("red");
       setAddUserMessage(
-        error.response.data.message ||
+        `${error.response?.data?.message} Refreshing the page in 5 seconds. Please try again.` ||
           "Failed to add new user(s). Refreshing the page in 5 seconds. Please try again."
       );
       setTimeout(() => {

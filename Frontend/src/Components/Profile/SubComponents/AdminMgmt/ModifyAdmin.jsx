@@ -103,7 +103,7 @@ const ModifyAdmin = () => {
     } catch (error) {
       setModifyAdminMessageColor("red");
       setModifyAdminMessage(
-        error.response?.data?.message ||
+        `${error.response?.data?.message} Refreshing the page in 5 seconds. Please try again.` ||
           "Failed to modify admin. Refreshing the page in 5 seconds. Please try again."
       );
       setTimeout(() => {

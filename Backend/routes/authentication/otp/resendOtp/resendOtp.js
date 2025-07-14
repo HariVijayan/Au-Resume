@@ -1,15 +1,12 @@
 import express from "express";
-import User from "../../../../models/user/user.js";
-import adminUser from "../../../../models/admin/admin.js";
 import Otp from "../../../../models/user/otp.js";
 import adminOtp from "../../../../models/admin/otp.js";
 import nodemailer from "nodemailer";
+import getUserOrAdminOtp from "../../../components/getUserOrAdminOtp.js";
 
 const router = express.Router();
 
 const OTP_EXPIRATION_TIME = 10 * 60 * 1000; // 10 minutes
-const OTP_REQUEST_LIMIT = 60 * 1000; // 1 minute
-
 const generateStrongOtp = (length = 6) => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()";
@@ -46,30 +43,11 @@ router.post("/forgot-password", async (req, res) => {
   });
 
   try {
-    let user;
-
-    if (isAdmin) {
-      user = await adminUser.findOne({ email });
-    } else {
-      user = await User.findOne({ email });
-    }
-    if (!user) return res.status(400).json({ message: "User not found" });
-
-    let lastOtp;
-
-    if (isAdmin) {
-      lastOtp = await adminOtp.findOne({ email }).sort({ createdAt: -1 });
-    } else {
-      lastOtp = await Otp.findOne({ email }).sort({ createdAt: -1 });
-    }
-
-    if (
-      lastOtp &&
-      Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT
-    ) {
+    const accountCheck = await getUserOrAdminOtp(email, isAdmin);
+    if (accountCheck.Valid === "NO") {
       return res
-        .status(429)
-        .json({ message: "Too many OTP requests. Try again in 1 minute." });
+        .status(accountCheck.HtmlCode)
+        .json({ message: accountCheck.Reason });
     }
 
     const otp = generateStrongOtp(6);
@@ -77,8 +55,6 @@ router.post("/forgot-password", async (req, res) => {
     const expiresAt = new Date(Date.now() + OTP_EXPIRATION_TIME);
 
     if (isAdmin) {
-      await adminOtp.deleteMany({ email });
-
       // Save new OTP
       await adminOtp.create({
         email,
@@ -90,8 +66,6 @@ router.post("/forgot-password", async (req, res) => {
         otpFor: "Resend Otp - Password Reset",
       });
     } else {
-      await Otp.deleteMany({ email });
-
       // Save new OTP
       await Otp.create({
         email,

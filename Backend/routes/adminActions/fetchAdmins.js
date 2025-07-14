@@ -1,10 +1,17 @@
 import express from "express";
 import adminUser from "../../models/admin/admin.js";
+import checkAdminAccess from "../components/checkAdminAccess.js";
 
 const router = express.Router();
 
 router.post("/adminListGrouped", async (req, res) => {
   try {
+    const adminCheck = await checkAdminAccess(accessToken);
+    if (adminCheck.Valid === "NO") {
+      return res
+        .status(adminCheck.HtmlCode)
+        .json({ message: adminCheck.Reason });
+    }
     const users = await adminUser.find(
       {},
       {

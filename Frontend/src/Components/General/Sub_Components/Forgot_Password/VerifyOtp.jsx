@@ -37,10 +37,10 @@ const VerifyOTP = () => {
       if (response.statusText === "OK") {
         navigate("/reset-password", { state: { email, isAdmin } });
       } else {
-        setError("OTP Verification Failed!");
+        setError(response.data.message || "OTP Verification Failed!");
       }
     } catch (error) {
-      setError("OTP Verification Failed!");
+      setError(error.response.data.message || "OTP Verification Failed!");
     }
   };
 
