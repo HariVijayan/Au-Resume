@@ -1,8 +1,8 @@
 import express from "express";
 import Otp from "../../../../models/user/otp.js";
 import adminOtp from "../../../../models/admin/otp.js";
-import nodemailer from "nodemailer";
 import getUserOrAdminOtp from "../../../components/getUserOrAdminOtp.js";
+import sendEmailToUser from "../../../components/sendEmail.js";
 
 const router = express.Router();
 
@@ -34,14 +34,6 @@ const formatISTTimestamp = (date) => {
 
 router.post("/password-reset-otp", async (req, res) => {
   const { email, isAdmin } = req.body;
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
   try {
     const accountCheck = await getUserOrAdminOtp(email, isAdmin);
@@ -78,24 +70,31 @@ router.post("/password-reset-otp", async (req, res) => {
       });
     }
 
-    let mailOptions;
+    let emailSubject = "";
 
     if (isAdmin) {
-      mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: "Admin - Password Reset OTP",
-        text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
-      };
+      emailSubject = "AU Resume Builder admin account password reset OTP";
     } else {
-      mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: "Password Reset OTP",
-        text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
-      };
+      emailSubject = "AU Resume Builder account password reset OTP";
     }
-    await transporter.sendMail(mailOptions);
+
+    const emailHeading =
+      "Use the below One Time Password to reset your account's password";
+    const emailBody = `${otp} is your OTP. It is valid for 10 minutes.`;
+
+    const sendEmail = await sendEmailToUser(
+      email,
+      emailSubject,
+      emailHeading,
+      emailBody
+    );
+
+    if (sendEmail.Success === "NO") {
+      console.log(sendEmail.Reason);
+      return res.status(sendEmail.HtmlCode).json({
+        message: "Please restart the process.",
+      });
+    }
 
     res.json({ message: "OTP sent to email" });
   } catch (error) {

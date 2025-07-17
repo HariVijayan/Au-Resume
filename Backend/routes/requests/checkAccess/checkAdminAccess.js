@@ -1,7 +1,5 @@
 import express from "express";
-import jwt from "jsonwebtoken";
-import adminCurrentSession from "../../../models/admin/currentSession.js";
-import adminUser from "../../../models/admin/admin.js";
+import checkAdminAccess from "../../components/checkAdminAccess.js";
 
 const router = express.Router();
 
@@ -10,42 +8,30 @@ router.post("/check-admin-access", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    if (!accessToken) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
-    const { userId, sessionId } = jwt.verify(
-      accessToken,
-      process.env.JWT_SECRET
-    );
-
-    const session = await adminCurrentSession.findOne({ userId, sessionId });
-    if (!session || session.expiresAt < Date.now()) {
+    const adminCheck = await checkAdminAccess(accessToken);
+    if (adminCheck.Valid === "NO") {
       return res
-        .status(403)
-        .json({ message: "Session expired. Please log in again." });
+        .status(adminCheck.HtmlCode)
+        .json({ message: adminCheck.Reason });
     }
 
-    const user = await adminUser.findOne({ email: session.email });
+    const adminAccount = adminCheck.AdminAccount;
 
-    if (!user) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorised access. Not an admin." });
-    }
-
-    if (routeType === "SuperAdmin" && user.accountType != "SuperAdmin") {
+    if (
+      routeType === "SuperAdmin" &&
+      adminAccount.accountType != "SuperAdmin"
+    ) {
       res.status(401).json({ message: "Unauthorised Access Request." });
     }
-    if (routeType === "Admin" && user.accountType === "Analytics") {
+    if (routeType === "Admin" && adminAccount.accountType === "Analytics") {
       res.status(401).json({ message: "Unauthorised Access Request." });
     }
 
-    if (user.accountType === "SuperAdmin") {
+    if (adminAccount.accountType === "SuperAdmin") {
       res.json({ message: "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23" });
-    } else if (user.accountType === "Admin") {
+    } else if (adminAccount.accountType === "Admin") {
       res.json({ message: "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv" });
-    } else if (user.accountType === "Analytics") {
+    } else if (adminAccount.accountType === "Analytics") {
       res.json({ message: "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo" });
     }
   } catch (error) {

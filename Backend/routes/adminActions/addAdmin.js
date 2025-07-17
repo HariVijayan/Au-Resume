@@ -1,8 +1,8 @@
 import express from "express";
 import adminUser from "../../models/admin/admin.js";
-import nodemailer from "nodemailer";
 import crypto from "crypto";
 import verifyAdminOtp from "../components/verifyAdminOtp.js";
+import sendEmailToUser from "../components/sendEmail.js";
 
 const router = express.Router();
 
@@ -32,14 +32,6 @@ const formatISTTimestamp = (date) => {
 
 router.post("/newAdmin", async (req, res) => {
   const { newAdminName, newAdminEmail, adminType, otpInput } = req.body;
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
   try {
     const accessToken = req.cookies.accessToken;
@@ -72,20 +64,29 @@ router.post("/newAdmin", async (req, res) => {
     });
     await newAdmin.save();
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: newAdminEmail,
-      subject: "You've been added as an admin to AU Resume Builder",
-      text: `Your login password is: ${newAdminPassword}. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`,
-    };
+    const emailSubject = "You've been added as an admin to AU Resume Builder";
+    const emailHeading = `Hi ${newAdminName}, your admin account is created in Au Resume Builder.`;
+    const emailBody = `Your login password is: ${newAdminPassword}. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`;
 
-    await transporter.sendMail(mailOptions);
+    const sendEmail = await sendEmailToUser(
+      newAdminEmail,
+      emailSubject,
+      emailHeading,
+      emailBody
+    );
+
+    if (sendEmail.Success === "NO") {
+      console.log(sendEmail.Reason);
+      return res.status(sendEmail.HtmlCode).json({
+        message:
+          "Admin added. System errored while sending credentials. Delete account and add again.",
+      });
+    }
 
     res.json({
       message: "New admin added successfully.",
     });
   } catch (error) {
-    console.error("Request OTP error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });

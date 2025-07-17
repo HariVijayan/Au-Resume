@@ -152,7 +152,7 @@ await newUser.save();
 
 const newUser2 = new adminUser({
   name: "Hari",
-  email: "hbds@gmail.com",
+  email: "harivijayan0310@gmail.com",
   password: hashedPassword,
   createdAt: createdAt,
   createdAtFormatted: createdAtFormatted,

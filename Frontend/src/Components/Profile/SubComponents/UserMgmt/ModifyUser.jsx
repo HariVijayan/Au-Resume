@@ -233,7 +233,12 @@ const ModifyUser = () => {
               <button
                 style={{ marginTop: "2rem" }}
                 onClick={getVerificationOtp}
-                disabled={!approval || !modifyUserEmail || !modifyUserRegNo || !(passwordReset || accountUnlock)}
+                disabled={
+                  !approval ||
+                  !modifyUserEmail ||
+                  !modifyUserRegNo ||
+                  !(passwordReset || accountUnlock)
+                }
                 className="PreviewButton"
               >
                 Approve

@@ -1,8 +1,8 @@
 import express from "express";
 import userDBModel from "../../models/user/user.js";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
 import checkAdminAccessAndOtp from "../components/verifyAdminOtp.js";
+import sendEmailToUser from "../components/sendEmail.js";
 
 const router = express.Router();
 
@@ -23,14 +23,6 @@ router.post("/modifyUser", async (req, res) => {
     accountUnlock,
     otpInput,
   } = req.body;
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
   try {
     const accessToken = req.cookies.accessToken;
@@ -78,21 +70,33 @@ router.post("/modifyUser", async (req, res) => {
         }
       );
 
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: modifyUserEmail,
-        subject: "An admin has initiated a password reset for your account",
-        text: `Your new password is: ${newUserPassword}. Use the forgot password option in the login page if you wish to change your password.`,
-      };
+      const emailSubject = "AU Resume Builder account password reset";
+      const emailHeading = `Your account's password has been reset by an admin.`;
+      const emailBody = `Your new password is: ${newUserPassword}. Use the forgot password option in the login page if you wish to change your password.`;
 
-      await transporter.sendMail(mailOptions);
+      const sendEmail = await sendEmailToUser(
+        modifyUserEmail,
+        emailSubject,
+        emailHeading,
+        emailBody
+      );
+
+      if (sendEmail.Success === "NO") {
+        console.log(sendEmail.Reason);
+        return res.status(sendEmail.HtmlCode).json({
+          message:
+            "Failed to send new password to the user. Please restart the process.",
+        });
+      }
     }
 
     res.status(200).json({
       message: "User account modified successfully.",
     });
   } catch (error) {
-    res.status(500).json({ message: "Error occurred please try again." });
+    res
+      .status(500)
+      .json({ message: `Error occurred please try again. ${error}` });
   }
 });
 

@@ -1,12 +1,11 @@
 import express from "express";
 import adminOtp from "../../models/admin/otp.js";
-import nodemailer from "nodemailer";
 import getAdminOtp from "../components/getAdminOtp.js";
+import sendEmailToUser from "../components/sendEmail.js";
 
 const router = express.Router();
 
 const OTP_EXPIRATION_TIME = 10 * 60 * 1000; // 10 minutes
-const OTP_REQUEST_LIMIT = 60 * 1000; // 1 minute
 
 const generateStrongOtp = (length = 6) => {
   const characters =
@@ -34,13 +33,6 @@ const formatISTTimestamp = (date) => {
 
 router.post("/get-approval-otp", async (req, res) => {
   const { requestType } = req.body;
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
   try {
     const accessToken = req.cookies.accessToken;
@@ -52,12 +44,12 @@ router.post("/get-approval-otp", async (req, res) => {
     }
 
     const adminEmail = adminCheck.AdminEmail;
+    const adminAccount = adminCheck.AdminAccount;
+    const adminName = adminAccount.name;
 
     const otp = generateStrongOtp(6);
     const createdAt = new Date(Date.now());
     const expiresAt = new Date(Date.now() + OTP_EXPIRATION_TIME);
-
-    let mailOptions;
 
     if (requestType === "addNewAdmin") {
       await adminOtp.create({
@@ -70,12 +62,23 @@ router.post("/get-approval-otp", async (req, res) => {
         otpFor: "New admin approval",
       });
 
-      mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: adminEmail,
-        subject: "Admin - New Admin Approval OTP",
-        text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
-      };
+      const emailSubject = "AU Resume Builder Admin Portal OTP";
+      const emailHeading = `Hi ${adminName}, use the below One Time Password to approve the new admin account.`;
+      const emailBody = `${otp} is your OTP. It is valid for 10 minutes. If you haven't made this request, kindly reset your password right away and contact the technical team.`;
+
+      const sendEmail = await sendEmailToUser(
+        adminEmail,
+        emailSubject,
+        emailHeading,
+        emailBody
+      );
+
+      if (sendEmail.Success === "NO") {
+        console.log(sendEmail.Reason);
+        return res.status(sendEmail.HtmlCode).json({
+          message: "Unable to send approval otp, try again later.",
+        });
+      }
     } else if (requestType === "removeAdmin") {
       await adminOtp.create({
         email: adminEmail,
@@ -87,12 +90,23 @@ router.post("/get-approval-otp", async (req, res) => {
         otpFor: "Removing admin approval",
       });
 
-      mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: adminEmail,
-        subject: "Admin - Remove Admin Approval OTP",
-        text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
-      };
+      const emailSubject = "AU Resume Builder Admin Portal OTP";
+      const emailHeading = `Hi ${adminName}, use the below One Time Password to approve the admin account removal.`;
+      const emailBody = `${otp} is your OTP. It is valid for 10 minutes. If you haven't made this request, kindly reset your password right away and contact the technical team.`;
+
+      const sendEmail = await sendEmailToUser(
+        adminEmail,
+        emailSubject,
+        emailHeading,
+        emailBody
+      );
+
+      if (sendEmail.Success === "NO") {
+        console.log(sendEmail.Reason);
+        return res.status(sendEmail.HtmlCode).json({
+          message: "Unable to send approval otp, try again later.",
+        });
+      }
     } else if (requestType === "modifyAdminType") {
       await adminOtp.create({
         email: adminEmail,
@@ -104,12 +118,23 @@ router.post("/get-approval-otp", async (req, res) => {
         otpFor: "Modifying admin approval",
       });
 
-      mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: adminEmail,
-        subject: "Admin - Modify Admin Approval OTP",
-        text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
-      };
+      const emailSubject = "AU Resume Builder Admin Portal OTP";
+      const emailHeading = `Hi ${adminName}, use the below One Time Password to approve the admin account modification.`;
+      const emailBody = `${otp} is your OTP. It is valid for 10 minutes. If you haven't made this request, kindly reset your password right away and contact the technical team.`;
+
+      const sendEmail = await sendEmailToUser(
+        adminEmail,
+        emailSubject,
+        emailHeading,
+        emailBody
+      );
+
+      if (sendEmail.Success === "NO") {
+        console.log(sendEmail.Reason);
+        return res.status(sendEmail.HtmlCode).json({
+          message: "Unable to send approval otp, try again later.",
+        });
+      }
     } else {
       await adminOtp.create({
         email: adminEmail,
@@ -121,15 +146,24 @@ router.post("/get-approval-otp", async (req, res) => {
         otpFor: "Admin Management Action approval",
       });
 
-      mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: adminEmail,
-        subject: "Admin - Admin Management Action Approval OTP",
-        text: `Your OTP is: ${otp}. It is valid for 5 minutes.`,
-      };
-    }
+      const emailSubject = "AU Resume Builder Admin Portal OTP";
+      const emailHeading = `Hi ${adminName}, use the below One Time Password to approve the admin portal action.`;
+      const emailBody = `${otp} is your OTP. It is valid for 10 minutes. If you haven't made this request, kindly reset your password right away and contact the technical team.`;
 
-    await transporter.sendMail(mailOptions);
+      const sendEmail = await sendEmailToUser(
+        adminEmail,
+        emailSubject,
+        emailHeading,
+        emailBody
+      );
+
+      if (sendEmail.Success === "NO") {
+        console.log(sendEmail.Reason);
+        return res.status(sendEmail.HtmlCode).json({
+          message: "Unable to send approval otp, try again later.",
+        });
+      }
+    }
 
     res.json({ message: "OTP sent to email" });
   } catch (error) {

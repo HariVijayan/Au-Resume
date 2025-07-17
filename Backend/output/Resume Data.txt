@@ -3,6 +3,128 @@
     "template": "template1"
   },
   "personal": {
-    "name": "Hariiii"
-  }
+    "name": "Hari Vijayan",
+    "bio": "Developer | Freelancer",
+    "mobile": "+91 9486448604",
+    "email": "harijv0310@gmail.com",
+    "location": "Chennai, India"
+  },
+  "links": {
+    "linkedinDisplayName": "linkedin.com/hari0310",
+    "linkedinUrl": "https://www.linkedin.com/hari0310",
+    "githubDisplayName": "github.com/hari0310",
+    "githubUrl": "https://www.github.com/hari0310",
+    "websiteDisplayName": "mywebsite.com",
+    "websiteUrl": "https://www.mywebsite.com"
+  },
+  "summary": "I am professional web developer with 5 years of experience in frontend development and 3 years of experience in backend development. I've worked with top companies and have a considerable amount of professional experience.",
+  "education": {
+    "phd": [
+      {
+        "name": "Ph.D in Neural Networks",
+        "university": "Anna University",
+        "year": "2023 - Present",
+        "expertise": "Neural Networks, Machine Learning, Deep Learning",
+        "additionalInfo": "Part of widely accepted research"
+      }
+    ],
+    "postGraduate": [
+      {
+        "name": "Master of Computer Applications",
+        "university": "Anna University",
+        "year": "2023 - 2025",
+        "cgpa": "6.9"
+      }
+    ],
+    "underGraduate": [
+      {
+        "name": "B.Sc Computer Science",
+        "university": "Anna University",
+        "year": "2021 - 2023",
+        "cgpa": "9.8",
+        "additionalInfo": "Distinction Grade"
+      }
+    ],
+    "diploma": [
+      {
+        "name": "Diploma in IT Fundamentals",
+        "university": "Anna University",
+        "year": "2019 - 2021",
+        "cgpa": "9.8",
+        "additionalInfo": "Distinction Grade"
+      }
+    ],
+    "hsc": {
+      "name": "Kendriya Vidyalaya",
+      "year": "2013",
+      "grade": "89%",
+      "additionalInfo": "State Board"
+    },
+    "sslc": {
+      "name": "Kendriya Vidyalaya",
+      "year": "2012",
+      "grade": "89%",
+      "additionalInfo": "State Board"
+    }
+  },
+  "experience": [
+    {
+      "style": "ListType",
+      "company": "Amazon India",
+      "location": "Chennai",
+      "year": "2023 - Present",
+      "designation": "Lead Developer",
+      "team": "Website Management",
+      "roles": [
+        "Co-ordinated and managed the team to develop new websites for the clients",
+        " Have developed more than 10 websites for clients"
+      ]
+    },
+    {
+      "style": "ParaType",
+      "company": "Zoho Corp",
+      "location": "Hyderabad",
+      "year": "2021 - 2023",
+      "designation": "Frontend Developer",
+      "description": "Worked as a part of the frontend development team that handles the websites of clients. Was responsible for managing the website main UI development."
+    }
+  ],
+  "projects": [
+    {
+      "name": "Blog Website",
+      "link": "https://www.github.com/hari0310/blog-website",
+      "description": "Demo implementation of a blog website.",
+      "techStack": "HTML, CSS, JavaScript"
+    }
+  ],
+  "skills": {
+    "type": "ListType",
+    "skillSet": [
+      "Machine Learning",
+      "Deep Learning",
+      "React"
+    ]
+  },
+  "certifications": {
+    "type": "ListType",
+    "certificationSet": [
+      "AWS Solutions Architect",
+      "Machine Learning Developer (udemy.com/sdjnsjksdnjksdnhk223)",
+      "Google Cloud Developer"
+    ]
+  },
+  "languages": [
+    "Tamil",
+    "English"
+  ],
+  "customInput": [
+    {
+      "style": "ListType",
+      "title": "Extra Curricular Activities",
+      "listValues": [
+        "Captain of school football team",
+        " Part of Bharat Scouts"
+      ]
+    }
+  ]
 }

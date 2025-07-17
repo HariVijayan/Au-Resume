@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/adminListGrouped", async (req, res) => {
   try {
+    const accessToken = req.cookies.accessToken;
     const adminCheck = await checkAdminAccess(accessToken);
     if (adminCheck.Valid === "NO") {
       return res

@@ -1,8 +1,8 @@
 import express from "express";
 import adminUser from "../../models/admin/admin.js";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
 import checkAdminAccessAndOtp from "../components/verifyAdminOtp.js";
+import sendEmailToUser from "../components/sendEmail.js";
 
 const router = express.Router();
 
@@ -27,14 +27,6 @@ router.post("/admin-modifications", async (req, res) => {
     newName,
     newAdminType,
   } = req.body;
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
   try {
     const accessToken = req.cookies.accessToken;
@@ -89,14 +81,25 @@ router.post("/admin-modifications", async (req, res) => {
         }
       );
 
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: adminEmail,
-        subject: "An admin has initiated a password reset for your account",
-        text: `Your new password is: ${newAdminPassword}. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`,
-      };
+      const emailSubject =
+        "An admin has initiated a password reset for your AU Resume Builder account";
+      const emailHeading = `Hi ${adminToBeModified.name}, your admin account's password has been reset.`;
+      const emailBody = `Your new password is: ${newAdminPassword}. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`;
 
-      await transporter.sendMail(mailOptions);
+      const sendEmail = await sendEmailToUser(
+        adminEmail,
+        emailSubject,
+        emailHeading,
+        emailBody
+      );
+
+      if (sendEmail.Success === "NO") {
+        console.log(sendEmail.Reason);
+        return res.status(sendEmail.HtmlCode).json({
+          message:
+            "Failed to send new password to the admin. Please restart the process.",
+        });
+      }
     }
 
     if (adminTypeChange) {

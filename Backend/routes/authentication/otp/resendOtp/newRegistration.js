@@ -1,7 +1,7 @@
 import express from "express";
 import Otp from "../../../../models/user/otp.js";
 import getPendingUserOtp from "../../../components/getPendingUserOtp.js";
-import nodemailer from "nodemailer";
+import sendEmailToUser from "../../../components/sendEmail.js";
 
 const router = express.Router();
 
@@ -34,14 +34,6 @@ const formatISTTimestamp = (date) => {
 router.post("/registration", async (req, res) => {
   const { email } = req.body;
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
   try {
     const accountCheck = await getPendingUserOtp(email);
     if (accountCheck.Valid === "NO") {
@@ -63,14 +55,23 @@ router.post("/registration", async (req, res) => {
       expiresAtFormatted: formatISTTimestamp(expiresAt),
     });
 
-    // Send the new OTP via email
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Resend OTP Request",
-      text: `Your new OTP is: ${otp}. It is valid for 10 minutes.`,
-    };
-    await transporter.sendMail(mailOptions);
+    const emailSubject = "AU Resume Builder resend OTP request";
+    const emailHeading = `Use the below One Time Password to register your account.`;
+    const emailBody = `${otp} is your OTP. It is valid for 10 minutes.`;
+
+    const sendEmail = await sendEmailToUser(
+      email,
+      emailSubject,
+      emailHeading,
+      emailBody
+    );
+
+    if (sendEmail.Success === "NO") {
+      console.log(sendEmail.Reason);
+      return res.status(sendEmail.HtmlCode).json({
+        message: "Please restart the process.",
+      });
+    }
 
     res.json({ message: "New OTP sent to email" });
   } catch (error) {
