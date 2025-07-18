@@ -1,23 +1,14 @@
 import express from "express";
-import User from "../../../models/user/user.js";
-import Otp from "../../../models/user/otp.js";
-import PendingUser from "../../../models/user/pendingUser.js";
+import User from "../../../../models/user/user.js";
+import Otp from "../../../../models/user/otp.js";
+import PendingUser from "../../../../models/user/pendingUser.js";
 import crypto from "crypto";
-import sendEmailToUser from "../../components/sendEmail.js";
+import sendEmailToUser from "../../../components/sendEmail.js";
+import generateOtp from "../../../components/generateOtp.js";
 
 const router = express.Router();
 
-const OTP_EXPIRATION_TIME = 10 * 60 * 1000; // 10 minutes
 const OTP_REQUEST_LIMIT = 60 * 1000; // 1 minute
-
-const generateStrongOtp = (length = 6) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()";
-  return Array.from(
-    { length },
-    () => characters[Math.floor(Math.random() * characters.length)]
-  ).join("");
-};
 
 function isPasswordStrong(password) {
   const minLength = 8;
@@ -60,21 +51,6 @@ function isPasswordStrong(password) {
   return { isValid: true, message: "Password is strong." };
 }
 
-const formatISTTimestamp = (date) => {
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "Asia/Kolkata",
-  })
-    .format(date)
-    .replace(",", "");
-};
-
 router.post("/register", async (req, res) => {
   const {
     email,
@@ -95,6 +71,50 @@ router.post("/register", async (req, res) => {
     const passwordCheck = isPasswordStrong(password);
     if (!passwordCheck.isValid) {
       return res.status(400).json({ message: passwordCheck.message });
+    }
+
+    const lastOtp = await Otp.findOne({ email });
+
+    if (
+      lastOtp &&
+      Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT
+    ) {
+      return res
+        .status(429)
+        .json({ message: "Too many OTP requests. Try again in 1 minute." });
+    }
+
+    const requestNewOtp = await generateOtp(
+      false,
+      email,
+      "New User Registration"
+    );
+
+    if (requestNewOtp.Success === "NO") {
+      console.log(requestNewOtp.Reason);
+      return res.status(requestNewOtp.HtmlCode).json({
+        message: "Unable to generate otp, try again later.",
+      });
+    }
+
+    const newOtp = requestNewOtp.NewOtp;
+
+    const emailSubject = "AU Resume Builder new account registration";
+    const emailHeading = `Use the below One Time Password to verify your email.`;
+    const emailBody = `${newOtp} is your OTP. It is valid for 10 minutes.`;
+
+    const sendEmail = await sendEmailToUser(
+      email,
+      emailSubject,
+      emailHeading,
+      emailBody
+    );
+
+    if (sendEmail.Success === "NO") {
+      console.log(sendEmail.Reason);
+      return res.status(sendEmail.HtmlCode).json({
+        message: "Please restart the process.",
+      });
     }
 
     await PendingUser.deleteMany({ email });
@@ -118,52 +138,6 @@ router.post("/register", async (req, res) => {
       encryptionSalt: saltBase64,
     });
     await newUser.save();
-
-    const lastOtp = await Otp.findOne({ email }).sort({ createdAt: -1 }).exec();
-
-    if (
-      lastOtp &&
-      Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT
-    ) {
-      return res
-        .status(429)
-        .json({ message: "Too many OTP requests. Try again in 1 minute." });
-    }
-
-    const otp = generateStrongOtp(6);
-    const createdAt = new Date(Date.now());
-    const expiresAt = new Date(Date.now() + OTP_EXPIRATION_TIME);
-
-    // Delete old OTPs
-    await Otp.deleteMany({ email });
-
-    // Save new OTP
-    await Otp.create({
-      email,
-      otp,
-      createdAt,
-      createdAtFormatted: formatISTTimestamp(createdAt),
-      expiresAt,
-      expiresAtFormatted: formatISTTimestamp(expiresAt),
-    });
-
-    const emailSubject = "AU Resume Builder new account registration";
-    const emailHeading = `Use the below One Time Password to verify your email.`;
-    const emailBody = `${otp} is your OTP. It is valid for 10 minutes.`;
-
-    const sendEmail = await sendEmailToUser(
-      email,
-      emailSubject,
-      emailHeading,
-      emailBody
-    );
-
-    if (sendEmail.Success === "NO") {
-      console.log(sendEmail.Reason);
-      return res.status(sendEmail.HtmlCode).json({
-        message: "Please restart the process.",
-      });
-    }
 
     res
       .status(201)

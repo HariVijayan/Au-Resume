@@ -6,9 +6,9 @@ import cors from "cors";
 import previousResume from "./routes/requests/pdf/getPreviousResume.js";
 import generateResume from "./routes/requests/pdf/generatePdf.js";
 import saveResume from "./routes/requests/pdf/saveResume.js";
-import firstTimeOtp from "./routes/authentication/otp/firstTimeOtp/passwordResetOtp.js";
-import resendOtpNewUser from "./routes/authentication/otp/resendOtp/newRegistration.js";
-import resendOtp from "./routes/authentication/otp/resendOtp/resendOtp.js";
+import firstTimeOtp from "./routes/authentication/otp/firstTimeOtp/passwordReset.js";
+import resendOtpNewUser from "./routes/authentication/otp/resendOtp/newUserRegistration.js";
+import resendOtp from "./routes/authentication/otp/resendOtp/passwordReset.js";
 import verifyOtpNewUser from "./routes/authentication/otp/verifyOtp/newRegistration.js";
 import verifyOtp from "./routes/authentication/otp/verifyOtp/verifyOtp.js";
 import login from "./routes/authentication/login.js";
@@ -16,7 +16,7 @@ import logout from "./routes/authentication/logout.js";
 import checkUnProtectedAccess from "./routes/requests/checkAccess/checkUnProtectedAccess.js";
 import checkProtectedAccess from "./routes/requests/checkAccess/checkProtectedAccess.js";
 import checkAdminAccess from "./routes/requests/checkAccess/checkAdminAccess.js";
-import registerNewUser from "./routes/requests/newUser/registerNewUser.js";
+import registerNewUser from "./routes/authentication/otp/firstTimeOtp/newUserRegistration.js";
 import passwordReset from "./routes/requests/passwordReset/passwordReset.js";
 import adminUser from "./models/admin/admin.js";
 import fetchAdmins from "./routes/adminActions/fetchAdmins.js";
@@ -152,7 +152,7 @@ await newUser.save();
 
 const newUser2 = new adminUser({
   name: "Hari",
-  email: "harivijayan0310@gmail.com",
+  email: "hsdsa@gmail.com",
   password: hashedPassword,
   createdAt: createdAt,
   createdAtFormatted: createdAtFormatted,

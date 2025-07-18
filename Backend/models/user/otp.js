@@ -22,6 +22,7 @@ const otpSchema = new mongoose.Schema({
   createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
   expiresAt: { type: Date, required: true },
   expiresAtFormatted: { type: String, required: true },
+  otpFor: { type: String, required: true },
 });
 
 export default mongoose.model("userOtp", otpSchema);
