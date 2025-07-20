@@ -3,17 +3,9 @@ import userDBModel from "../../models/user/user.js";
 import crypto from "crypto";
 import checkAdminAccessAndOtp from "../components/verifyAdminOtp.js";
 import sendEmailToUser from "../components/sendEmail.js";
+import generatePassword from "../components/generatePassword.js";
 
 const router = express.Router();
-
-const generateStrongPassword = (length = 8) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()";
-  return Array.from(
-    { length },
-    () => characters[Math.floor(Math.random() * characters.length)]
-  ).join("");
-};
 
 router.post("/modifyUser", async (req, res) => {
   const {
@@ -56,7 +48,7 @@ router.post("/modifyUser", async (req, res) => {
     }
 
     if (passwordReset) {
-      const newUserPassword = generateStrongPassword(8);
+      const newUserPassword = generatePassword();
       const hashedPassword = crypto
         .createHash("sha256")
         .update(newUserPassword)
@@ -72,7 +64,7 @@ router.post("/modifyUser", async (req, res) => {
 
       const emailSubject = "AU Resume Builder account password reset";
       const emailHeading = `Your account's password has been reset by an admin.`;
-      const emailBody = `Your new password is: ${newUserPassword}. Use the forgot password option in the login page if you wish to change your password.`;
+      const emailBody = `${newUserPassword} is your new password. Use the forgot password option in the login page if you wish to change your password.`;
 
       const sendEmail = await sendEmailToUser(
         modifyUserEmail,

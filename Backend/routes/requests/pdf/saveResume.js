@@ -3,19 +3,9 @@ import User from "../../../models/user/user.js";
 import ResumeData from "../../../models/pdf/resumeData.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import istDateFormat from "../../components/dateIstFormat.js";
 
 const router = express.Router();
-
-const getCurrentTimestamp = () => {
-  const date_time = new Date();
-  const date = String(date_time.getDate()).padStart(2, "0");
-  const month = String(date_time.getMonth() + 1).padStart(2, "0");
-  const year = date_time.getFullYear();
-  const hours = String(date_time.getHours()).padStart(2, "0");
-  const minutes = String(date_time.getMinutes()).padStart(2, "0");
-  const seconds = String(date_time.getSeconds()).padStart(2, "0");
-  return `${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-};
 
 const ivLength = 12;
 
@@ -74,8 +64,6 @@ router.post("/current-resume", async (req, res) => {
       await ResumeData.deleteMany({ login_email: user.email });
       const resumeDataDBEntry = new ResumeData({
         login_email: user.email,
-        createdAt: new Date(Date.now()),
-        createdAtFormatted: getCurrentTimestamp(),
         encryptedResumeData: encryptedResume,
       });
 

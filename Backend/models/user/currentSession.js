@@ -1,28 +1,42 @@
 import mongoose from "mongoose";
-
-const formatISTTimestamp = (date) => {
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "Asia/Kolkata",
-  })
-    .format(date)
-    .replace(",", "");
-};
+import istDateFormat from "../../helper/dateIstFormat.js";
 
 const sessionSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
   email: { type: String, required: true },
   sessionId: { type: String, required: true, unique: true },
-  createdAt: { type: Date, default: Date.now, expires: 60 * 60 * 24 * 3 }, // 3 days expiration and will be removed automatically from the database
-  createdAtFormatted: { type: String, default: formatISTTimestamp(new Date()) },
-  expiresAt: { type: Date, required: true },
-  expiresAtFormatted: { type: String, required: true },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    expires: process.env.CURRENT_SESSION_EXPIRY,
+  },
+  createdAtFormatted: {
+    type: String,
+  },
+  expiresAt: {
+    type: Date,
+  },
+  expiresAtFormatted: {
+    type: String,
+  },
+});
+
+sessionSchema.pre("save", function (next) {
+  if (!this.createdAtFormatted) {
+    this.createdAtFormatted = istDateFormat(this.createdAt);
+  }
+
+  if (!this.expiresAt) {
+    this.expiresAt = new Date(
+      this.createdAt.getTime() + process.env.CURRENT_SESSION_EXPIRY * 1000
+    );
+  }
+
+  if (!this.expiresAtFormatted) {
+    this.expiresAtFormatted = istDateFormat(this.expiresAt);
+  }
+
+  next();
 });
 
 export default mongoose.model("userActiveSession", sessionSchema);

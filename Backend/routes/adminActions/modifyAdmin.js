@@ -3,17 +3,9 @@ import adminUser from "../../models/admin/admin.js";
 import crypto from "crypto";
 import checkAdminAccessAndOtp from "../components/verifyAdminOtp.js";
 import sendEmailToUser from "../components/sendEmail.js";
+import generatePassword from "../components/generatePassword.js";
 
 const router = express.Router();
-
-const generateStrongPassword = (length = 8) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*()";
-  return Array.from(
-    { length },
-    () => characters[Math.floor(Math.random() * characters.length)]
-  ).join("");
-};
 
 router.post("/admin-modifications", async (req, res) => {
   const {
@@ -67,7 +59,7 @@ router.post("/admin-modifications", async (req, res) => {
     }
 
     if (passwordReset) {
-      const newAdminPassword = generateStrongPassword(8);
+      const newAdminPassword = generatePassword();
       const hashedPassword = crypto
         .createHash("sha256")
         .update(newAdminPassword)
@@ -84,7 +76,7 @@ router.post("/admin-modifications", async (req, res) => {
       const emailSubject =
         "An admin has initiated a password reset for your AU Resume Builder account";
       const emailHeading = `Hi ${adminToBeModified.name}, your admin account's password has been reset.`;
-      const emailBody = `Your new password is: ${newAdminPassword}. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`;
+      const emailBody = `${newAdminPassword} is your new password. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`;
 
       const sendEmail = await sendEmailToUser(
         adminEmail,

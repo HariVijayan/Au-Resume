@@ -3,8 +3,6 @@ import user from "../../models/user/user.js";
 import adminOtp from "../../models/admin/otp.js";
 import userOtp from "../../models/user/otp.js";
 
-const OTP_REQUEST_LIMIT = 60 * 1000; // 1 minute
-
 async function getUserAndAdminOtp(requestedEmail, isAdmin) {
   let requestedAccount;
   if (isAdmin) {
@@ -25,7 +23,10 @@ async function getUserAndAdminOtp(requestedEmail, isAdmin) {
     lastOtp = await userOtp.findOne({ email: requestedEmail });
   }
 
-  if (lastOtp && Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT) {
+  if (
+    lastOtp &&
+    Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
+  ) {
     return {
       Valid: "NO",
       HtmlCode: 429,

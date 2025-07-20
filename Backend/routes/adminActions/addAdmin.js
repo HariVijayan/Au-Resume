@@ -3,32 +3,9 @@ import adminUser from "../../models/admin/admin.js";
 import crypto from "crypto";
 import verifyAdminOtp from "../components/verifyAdminOtp.js";
 import sendEmailToUser from "../components/sendEmail.js";
+import generatePassword from "../components/generatePassword.js";
 
 const router = express.Router();
-
-const generateStrongPassword = (length = 8) => {
-  const characters =
-    "ABCDEFGHJKMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz0123456789!@#$%&*()";
-  return Array.from(
-    { length },
-    () => characters[Math.floor(Math.random() * characters.length)]
-  ).join("");
-};
-
-const formatISTTimestamp = (date) => {
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "Asia/Kolkata",
-  })
-    .format(date)
-    .replace(",", "");
-};
 
 router.post("/newAdmin", async (req, res) => {
   const { newAdminName, newAdminEmail, adminType, otpInput } = req.body;
@@ -45,8 +22,7 @@ router.post("/newAdmin", async (req, res) => {
 
     const adminEmail = adminCheck.AdminEmail;
 
-    const newAdminPassword = generateStrongPassword(8);
-    const createdAt = new Date(Date.now());
+    const newAdminPassword = generatePassword();
 
     const hashedPassword = crypto
       .createHash("sha256")
@@ -57,8 +33,6 @@ router.post("/newAdmin", async (req, res) => {
       name: newAdminName,
       email: newAdminEmail,
       password: hashedPassword,
-      createdAt,
-      createdAtFormatted: formatISTTimestamp(createdAt),
       createdBy: adminEmail,
       accountType: adminType,
     });
@@ -66,7 +40,7 @@ router.post("/newAdmin", async (req, res) => {
 
     const emailSubject = "You've been added as an admin to AU Resume Builder";
     const emailHeading = `Hi ${newAdminName}, your admin account is created in Au Resume Builder.`;
-    const emailBody = `Your login password is: ${newAdminPassword}. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`;
+    const emailBody = `${newAdminPassword} is your login password. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`;
 
     const sendEmail = await sendEmailToUser(
       newAdminEmail,

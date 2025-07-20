@@ -1,20 +1,8 @@
 import express from "express";
 import checkAdminAccess from "../components/checkAdminAccess.js";
+import csvToArray from "../components/csvToArray.js";
 
 const router = express.Router();
-
-function csvToNumberArray(input) {
-  const trimmedInput = input.replace(/\s+/g, "");
-  const numArray = trimmedInput.split(",").map((value) => {
-    const num = Number(value);
-    if (isNaN(num)) {
-      return null;
-    }
-    return num;
-  });
-
-  return numArray.filter((num) => num !== null);
-}
 
 router.post("/get-final-users", async (req, res) => {
   const {
@@ -46,7 +34,7 @@ router.post("/get-final-users", async (req, res) => {
     }
 
     let finalUserList = [];
-    let skippableRegNoList = csvToNumberArray(skipRegNo);
+    let skippableRegNoList = csvToArray(skipRegNo);
 
     if (newAdditionType === "Single") {
       finalUserList.push({

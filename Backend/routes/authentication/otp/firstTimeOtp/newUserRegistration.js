@@ -5,51 +5,9 @@ import PendingUser from "../../../../models/user/pendingUser.js";
 import crypto from "crypto";
 import sendEmailToUser from "../../../components/sendEmail.js";
 import generateOtp from "../../../components/generateOtp.js";
+import checkPassword from "../../../components/checkPassword.js";
 
 const router = express.Router();
-
-const OTP_REQUEST_LIMIT = 60 * 1000; // 1 minute
-
-function isPasswordStrong(password) {
-  const minLength = 8;
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasNumber = /\d/.test(password);
-  const hasSpecialChar = /[\W_]/.test(password); // Matches special characters
-
-  if (password.length < minLength) {
-    return {
-      isValid: false,
-      message: "Password must be at least 8 characters long.",
-    };
-  }
-  if (!hasUpperCase) {
-    return {
-      isValid: false,
-      message: "Password must contain at least one uppercase letter.",
-    };
-  }
-  if (!hasLowerCase) {
-    return {
-      isValid: false,
-      message: "Password must contain at least one lowercase letter.",
-    };
-  }
-  if (!hasNumber) {
-    return {
-      isValid: false,
-      message: "Password must contain at least one number.",
-    };
-  }
-  if (!hasSpecialChar) {
-    return {
-      isValid: false,
-      message: "Password must contain at least one special character.",
-    };
-  }
-
-  return { isValid: true, message: "Password is strong." };
-}
 
 router.post("/register", async (req, res) => {
   const {
@@ -68,8 +26,8 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    const passwordCheck = isPasswordStrong(password);
-    if (!passwordCheck.isValid) {
+    const passwordCheck = checkPassword(password);
+    if (!passwordCheck.Valid) {
       return res.status(400).json({ message: passwordCheck.message });
     }
 
@@ -77,7 +35,7 @@ router.post("/register", async (req, res) => {
 
     if (
       lastOtp &&
-      Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT
+      Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
     ) {
       return res
         .status(429)

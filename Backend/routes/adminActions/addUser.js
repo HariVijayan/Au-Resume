@@ -2,45 +2,11 @@ import express from "express";
 import userDBModel from "../../models/user/user.js";
 import crypto from "crypto";
 import verifyAdminOtp from "../components/verifyAdminOtp.js";
+import generatePassword from "../components/generatePassword.js";
+import sendEmailToUser from "../components/sendEmail.js";
+import csvToArray from "../components/csvToArray.js";
 
 const router = express.Router();
-
-function csvToNumberArray(input) {
-  const trimmedInput = input.replace(/\s+/g, "");
-  const numArray = trimmedInput.split(",").map((value) => {
-    const num = Number(value);
-    if (isNaN(num)) {
-      return null;
-    }
-    return num;
-  });
-
-  return numArray.filter((num) => num !== null);
-}
-
-const generateStrongPassword = (length = 8) => {
-  const characters =
-    "ABCDEFGHJKMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz0123456789!@#$%&*()";
-  return Array.from(
-    { length },
-    () => characters[Math.floor(Math.random() * characters.length)]
-  ).join("");
-};
-
-const formatISTTimestamp = (date) => {
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "Asia/Kolkata",
-  })
-    .format(date)
-    .replace(",", "");
-};
 
 router.post("/addNewUser", async (req, res) => {
   const {
@@ -73,7 +39,7 @@ router.post("/addNewUser", async (req, res) => {
     }
 
     let finalUserList = [];
-    let skippableRegNoList = csvToNumberArray(skipRegNo);
+    let skippableRegNoList = csvToArray(skipRegNo);
 
     if (newAdditionType === "Single") {
       const newUser = await userDBModel.findOne({ email: newUserEmail });
@@ -81,8 +47,7 @@ router.post("/addNewUser", async (req, res) => {
         return res.status(400).json({ message: "User already exists." });
       }
       if (!newUser) {
-        const newUserPassword = generateStrongPassword(8);
-        const createdAt = new Date(Date.now());
+        const newUserPassword = generatePassword();
 
         const hashedPassword = crypto
           .createHash("sha256")
@@ -100,10 +65,27 @@ router.post("/addNewUser", async (req, res) => {
           courseType: newUserCourseType,
           programme: newUserProgramme,
           branch: newUserBranch,
-          createdAt: createdAt,
-          createdAtFormatted: formatISTTimestamp(createdAt),
           encryptionSalt: saltBase64,
         });
+        const emailSubject =
+          "An admin has created your AU Resume Builder account";
+        const emailHeading = `Your AU Resume Builder account is created.`;
+        const emailBody = `${newUserPassword} is your login password. Use the forgot password option in the login page if you wish to change your password.`;
+
+        const sendEmail = await sendEmailToUser(
+          newUserEmail,
+          emailSubject,
+          emailHeading,
+          emailBody
+        );
+
+        if (sendEmail.Success === "NO") {
+          console.log(sendEmail.Reason);
+          return res.status(sendEmail.HtmlCode).json({
+            message:
+              "User added. System errored while sending credentials. Delete account and add again.",
+          });
+        }
       }
     } else if (newAdditionType === "Multiple") {
       for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
@@ -124,8 +106,7 @@ router.post("/addNewUser", async (req, res) => {
         }
 
         if (!newUser) {
-          const newUserPassword = generateStrongPassword(8);
-          const createdAt = new Date(Date.now());
+          const newUserPassword = generatePassword();
 
           const hashedPassword = crypto
             .createHash("sha256")
@@ -143,8 +124,6 @@ router.post("/addNewUser", async (req, res) => {
             courseType: commonUserCourseType,
             programme: commonUserProgramme,
             branch: commonUserBranch,
-            createdAt: createdAt,
-            createdAtFormatted: formatISTTimestamp(createdAt),
             encryptionSalt: saltBase64,
           });
         }

@@ -2,54 +2,14 @@ import express from "express";
 import User from "../../../models/user/user.js";
 import adminUser from "../../../models/admin/admin.js";
 import crypto from "crypto";
+import checkPassword from "../../components/checkPassword.js";
 
 const router = express.Router();
 
-function isPasswordStrong(password) {
-  const minLength = 8;
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasNumber = /\d/.test(password);
-  const hasSpecialChar = /[\W_]/.test(password);
-
-  if (password.length < minLength) {
-    return {
-      isValid: false,
-      message: "Password must be at least 8 characters long.",
-    };
-  }
-  if (!hasUpperCase) {
-    return {
-      isValid: false,
-      message: "Password must contain at least one uppercase letter.",
-    };
-  }
-  if (!hasLowerCase) {
-    return {
-      isValid: false,
-      message: "Password must contain at least one lowercase letter.",
-    };
-  }
-  if (!hasNumber) {
-    return {
-      isValid: false,
-      message: "Password must contain at least one number.",
-    };
-  }
-  if (!hasSpecialChar) {
-    return {
-      isValid: false,
-      message: "Password must contain at least one special character.",
-    };
-  }
-
-  return { isValid: true, message: "Password is strong." };
-}
-
 router.post("/reset-password", async (req, res) => {
   const { email, newPassword, isAdmin } = req.body;
-  const passwordCheck = isPasswordStrong(newPassword);
-  if (!passwordCheck.isValid) {
+  const passwordCheck = checkPassword(newPassword);
+  if (!passwordCheck.Valid) {
     return res.status(400).json({ message: passwordCheck.message });
   }
 

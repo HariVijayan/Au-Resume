@@ -6,6 +6,7 @@ import Handlebars from "handlebars";
 import jwt from "jsonwebtoken";
 import { fileURLToPath } from "url";
 import User from "../../../models/user/user.js";
+import istDateFormat from "../../components/dateIstFormat.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,17 +47,6 @@ function removeEmptyValues(obj) {
     return obj === "" ? null : obj;
   }
 }
-
-const getCurrentTimestamp = () => {
-  const date_time = new Date();
-  const date = String(date_time.getDate()).padStart(2, "0");
-  const month = String(date_time.getMonth() + 1).padStart(2, "0");
-  const year = date_time.getFullYear();
-  const hours = String(date_time.getHours()).padStart(2, "0");
-  const minutes = String(date_time.getMinutes()).padStart(2, "0");
-  const seconds = String(date_time.getSeconds()).padStart(2, "0");
-  return `${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-};
 
 const generateFooter = (footerFile, timestamp) => {
   return footerFile.replace(
@@ -111,7 +101,7 @@ router.post("/Resume", async (req, res) => {
   const user = await User.findById(decoded.userId);
   if (!user) return res.status(403).json({ message: "User not found" });
 
-  const timestamp = getCurrentTimestamp();
+  const timestamp = istDateFormat(new Date());
 
   resumeData = removeEmptyValues(resumeData);
 

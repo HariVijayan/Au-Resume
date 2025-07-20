@@ -3,8 +3,6 @@ import adminOtp from "../../models/admin/otp.js";
 import adminCurrentSession from "../../models/admin/currentSession.js";
 import jwt from "jsonwebtoken";
 
-const OTP_REQUEST_LIMIT = 60 * 1000; // 1 minute
-
 async function getAdminOtp(accessToken) {
   if (!accessToken) {
     return { Valid: "NO", HtmlCode: 400, Reason: "No token provided" };
@@ -35,7 +33,10 @@ async function getAdminOtp(accessToken) {
 
   const lastOtp = await adminOtp.findOne({ adminEmail });
 
-  if (lastOtp && Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT) {
+  if (
+    lastOtp &&
+    Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
+  ) {
     return {
       Valid: "NO",
       HtmlCode: 429,

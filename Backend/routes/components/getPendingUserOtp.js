@@ -1,8 +1,6 @@
 import pendingUser from "../../models/user/pendingUser.js";
 import userOtp from "../../models/user/otp.js";
 
-const OTP_REQUEST_LIMIT = 60 * 1000; // 1 minute
-
 async function getPendingUserOtp(requestedEmail) {
   const requestedAccount = await pendingUser.findOne({ email: requestedEmail });
   if (!requestedAccount) {
@@ -14,7 +12,10 @@ async function getPendingUserOtp(requestedEmail) {
   }
 
   const lastOtp = await userOtp.findOne({ email: requestedEmail });
-  if (lastOtp && Date.now() - lastOtp.createdAt.getTime() < OTP_REQUEST_LIMIT) {
+  if (
+    lastOtp &&
+    Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
+  ) {
     return {
       Valid: "NO",
       HtmlCode: 429,
