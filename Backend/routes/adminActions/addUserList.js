@@ -1,6 +1,6 @@
 import express from "express";
-import checkAdminAccess from "../components/checkAdminAccess.js";
-import csvToArray from "../components/csvToArray.js";
+import checkAdminAccess from "../../helper/checkAdminAccess.js";
+import csvToArray from "../../helper/csvToArray.js";
 
 const router = express.Router();
 

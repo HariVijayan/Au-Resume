@@ -1,6 +1,6 @@
-import adminUser from "../../models/admin/admin.js";
-import adminCurrentSession from "../../models/admin/currentSession.js";
-import adminOtp from "../../models/admin/otp.js";
+import adminUser from "../models/admin/admin.js";
+import adminCurrentSession from "../models/admin/currentSession.js";
+import adminOtp from "../models/admin/otp.js";
 import jwt from "jsonwebtoken";
 
 async function verifyAdminOtp(accessToken, otpInput) {

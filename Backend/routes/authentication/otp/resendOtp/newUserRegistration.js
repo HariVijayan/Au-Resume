@@ -1,7 +1,7 @@
 import express from "express";
-import getPendingUserOtp from "../../../components/getPendingUserOtp.js";
-import sendEmailToUser from "../../../components/sendEmail.js";
-import generateOtp from "../../../components/generateOtp.js";
+import getPendingUserOtp from "../../../../helper/getPendingUserOtp.js";
+import sendEmailToUser from "../../../../helper/sendEmail.js";
+import generateOtp from "../../../../helper/generateOtp.js";
 
 const router = express.Router();
 

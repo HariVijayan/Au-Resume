@@ -2,7 +2,7 @@ import express from "express";
 import User from "../../../models/user/user.js";
 import adminUser from "../../../models/admin/admin.js";
 import crypto from "crypto";
-import checkPassword from "../../components/checkPassword.js";
+import checkPassword from "../../../helper/checkPassword.js";
 
 const router = express.Router();
 

@@ -6,7 +6,7 @@ import adminCurrentSession from "../../models/admin/currentSession.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
-import istDateFormat from "../components/dateIstFormat.js";
+import istDateFormat from "../../helper/dateIstFormat.js";
 
 const router = express.Router();
 

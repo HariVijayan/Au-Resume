@@ -4,8 +4,8 @@ import resumeData from "../../models/pdf/resumeData.js";
 import userOtp from "../../models/user/otp.js";
 import userCurrentSession from "../../models/user/currentSession.js";
 import pendingUser from "../../models/user/pendingUser.js";
-import checkAdminAccessAndOtp from "../components/verifyAdminOtp.js";
-import csvToArray from "../components/csvToArray.js";
+import checkAdminAccessAndOtp from "../../helper/verifyAdminOtp.js";
+import csvToArray from "../../helper/csvToArray.js";
 
 const router = express.Router();
 

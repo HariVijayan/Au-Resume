@@ -1,10 +1,10 @@
 import express from "express";
 import userDBModel from "../../models/user/user.js";
 import crypto from "crypto";
-import verifyAdminOtp from "../components/verifyAdminOtp.js";
-import generatePassword from "../components/generatePassword.js";
-import sendEmailToUser from "../components/sendEmail.js";
-import csvToArray from "../components/csvToArray.js";
+import verifyAdminOtp from "../../helper/verifyAdminOtp.js";
+import generatePassword from "../../helper/generatePassword.js";
+import sendEmailToUser from "../../helper/sendEmail.js";
+import csvToArray from "../../helper/csvToArray.js";
 
 const router = express.Router();
 

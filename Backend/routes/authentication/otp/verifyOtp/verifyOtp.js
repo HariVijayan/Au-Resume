@@ -1,5 +1,5 @@
 import express from "express";
-import verifyUserOrAdminOtp from "../../../components/verifyUserOrAdminOtp.js";
+import verifyUserOrAdminOtp from "../../../../helper/verifyUserOrAdminOtp.js";
 
 const router = express.Router();
 

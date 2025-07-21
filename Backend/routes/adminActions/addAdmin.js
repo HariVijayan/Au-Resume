@@ -1,9 +1,9 @@
 import express from "express";
 import adminUser from "../../models/admin/admin.js";
 import crypto from "crypto";
-import verifyAdminOtp from "../components/verifyAdminOtp.js";
-import sendEmailToUser from "../components/sendEmail.js";
-import generatePassword from "../components/generatePassword.js";
+import verifyAdminOtp from "../../helper/verifyAdminOtp.js";
+import sendEmailToUser from "../../helper/sendEmail.js";
+import generatePassword from "../../helper/generatePassword.js";
 
 const router = express.Router();
 

@@ -3,7 +3,6 @@ import User from "../../../models/user/user.js";
 import ResumeData from "../../../models/pdf/resumeData.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import istDateFormat from "../../components/dateIstFormat.js";
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import express from "express";
 import UserDBModel from "../../models/user/user.js";
-import checkAdminAccess from "../components/checkAdminAccess.js";
+import checkAdminAccess from "../../helper/checkAdminAccess.js";
 
 const router = express.Router();
 

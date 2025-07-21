@@ -1,7 +1,7 @@
 import express from "express";
-import getUserOrAdminOtp from "../../../components/getUserOrAdminOtp.js";
-import sendEmailToUser from "../../../components/sendEmail.js";
-import generateOtp from "../../../components/generateOtp.js";
+import getUserOrAdminOtp from "../../../../helper/getUserOrAdminOtp.js";
+import sendEmailToUser from "../../../../helper/sendEmail.js";
+import generateOtp from "../../../../helper/generateOtp.js";
 
 const router = express.Router();
 

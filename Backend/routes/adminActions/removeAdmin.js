@@ -2,7 +2,7 @@ import express from "express";
 import adminUser from "../../models/admin/admin.js";
 import adminCurrentSession from "../../models/admin/currentSession.js";
 import adminOtp from "../../models/admin/otp.js";
-import checkAdminAccessAndOtp from "../components/verifyAdminOtp.js";
+import checkAdminAccessAndOtp from "../../helper/verifyAdminOtp.js";
 
 const router = express.Router();
 

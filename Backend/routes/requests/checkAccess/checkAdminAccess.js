@@ -1,5 +1,5 @@
 import express from "express";
-import checkAdminAccess from "../../components/checkAdminAccess.js";
+import checkAdminAccess from "../../../helper/checkAdminAccess.js";
 
 const router = express.Router();
 

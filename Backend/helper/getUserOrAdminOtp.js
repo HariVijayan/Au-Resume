@@ -1,7 +1,7 @@
-import admin from "../../models/admin/admin.js";
-import user from "../../models/user/user.js";
-import adminOtp from "../../models/admin/otp.js";
-import userOtp from "../../models/user/otp.js";
+import admin from "../models/admin/admin.js";
+import user from "../models/user/user.js";
+import adminOtp from "../models/admin/otp.js";
+import userOtp from "../models/user/otp.js";
 
 async function getUserAndAdminOtp(requestedEmail, isAdmin) {
   let requestedAccount;

@@ -1,7 +1,7 @@
 import express from "express";
 import User from "../../../../models/user/user.js";
 import pendingUser from "../../../../models/user/pendingUser.js";
-import verifyPendingUserOtp from "../../../components/verifyPendingUserOtp.js";
+import verifyPendingUserOtp from "../../../../helper/verifyPendingUserOtp.js";
 
 const router = express.Router();
 

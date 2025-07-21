@@ -1,5 +1,5 @@
-import pendingUser from "../../models/user/pendingUser.js";
-import userOtp from "../../models/user/otp.js";
+import pendingUser from "../models/user/pendingUser.js";
+import userOtp from "../models/user/otp.js";
 
 async function getPendingUserOtp(requestedEmail) {
   const requestedAccount = await pendingUser.findOne({ email: requestedEmail });

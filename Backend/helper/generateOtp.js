@@ -1,5 +1,5 @@
-import userOtp from "../../models/user/otp.js";
-import adminOtp from "../../models/admin/otp.js";
+import userOtp from "../models/user/otp.js";
+import adminOtp from "../models/admin/otp.js";
 
 const generateNewOtp = (length) => {
   const characters =

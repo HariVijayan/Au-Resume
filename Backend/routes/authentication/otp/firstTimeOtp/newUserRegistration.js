@@ -3,9 +3,9 @@ import User from "../../../../models/user/user.js";
 import Otp from "../../../../models/user/otp.js";
 import PendingUser from "../../../../models/user/pendingUser.js";
 import crypto from "crypto";
-import sendEmailToUser from "../../../components/sendEmail.js";
-import generateOtp from "../../../components/generateOtp.js";
-import checkPassword from "../../../components/checkPassword.js";
+import sendEmailToUser from "../../../../helper/sendEmail.js";
+import generateOtp from "../../../../helper/generateOtp.js";
+import checkPassword from "../../../../helper/checkPassword.js";
 
 const router = express.Router();
 

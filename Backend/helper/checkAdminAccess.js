@@ -1,5 +1,5 @@
-import adminUser from "../../models/admin/admin.js";
-import adminCurrentSession from "../../models/admin/currentSession.js";
+import adminUser from "../models/admin/admin.js";
+import adminCurrentSession from "../models/admin/currentSession.js";
 import jwt from "jsonwebtoken";
 
 async function checkAdminAccess(accessToken) {
