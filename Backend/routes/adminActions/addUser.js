@@ -1,10 +1,12 @@
 import express from "express";
 import userDBModel from "../../models/user/user.js";
 import crypto from "crypto";
-import verifyAdminOtp from "../../helper/verifyAdminOtp.js";
-import generatePassword from "../../helper/generatePassword.js";
-import sendEmailToUser from "../../helper/sendEmail.js";
-import csvToArray from "../../helper/csvToArray.js";
+import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
+import generatePassword from "../../helper/functions/generatePassword.js";
+import sendEmailToUser from "../../helper/functions/sendEmail.js";
+import csvToArray from "../../helper/functions/csvToArray.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -31,11 +33,22 @@ router.post("/addNewUser", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    const adminCheck = await verifyAdminOtp(accessToken, otpInput);
-    if (adminCheck.Valid === "NO") {
+
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (adminAccessCheck.Valid === "NO") {
       return res
-        .status(adminCheck.HtmlCode)
-        .json({ message: adminCheck.Reason });
+        .status(adminAccessCheck.HtmlCode)
+        .json({ message: adminAccessCheck.Reason });
+    }
+
+    const adminEmail = adminAccessCheck.AdminEmail;
+
+    const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
+
+    if (adminOtpVerification.Valid === "NO") {
+      return res
+        .status(adminOtpVerification.HtmlCode)
+        .json({ message: adminOtpVerification.Reason });
     }
 
     let finalUserList = [];
@@ -131,12 +144,29 @@ router.post("/addNewUser", async (req, res) => {
     }
 
     const result = await userDBModel.insertMany(finalUserList);
+    await addLogs(
+      true,
+      false,
+      adminEmail,
+      adminEmail,
+      "Confidential",
+      "P4",
+      `Successfully added ${result.length} users from ${commonRegNoPrefix} register number group.`
+    );
     return res
       .status(200)
       .json({ message: `${result.length} users inserted successfully.` });
   } catch (error) {
-    console.error("Request OTP error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to add new users. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

@@ -3,9 +3,10 @@ import User from "../../../../models/user/user.js";
 import Otp from "../../../../models/user/otp.js";
 import PendingUser from "../../../../models/user/pendingUser.js";
 import crypto from "crypto";
-import sendEmailToUser from "../../../../helper/sendEmail.js";
-import generateOtp from "../../../../helper/generateOtp.js";
-import checkPassword from "../../../../helper/checkPassword.js";
+import sendEmailToUser from "../../../../helper/functions/sendEmail.js";
+import generateOtp from "../../../../helper/functions/generateOtp.js";
+import checkPassword from "../../../../helper/functions/checkPassword.js";
+import addLogs from "../../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -69,7 +70,6 @@ router.post("/register", async (req, res) => {
     );
 
     if (sendEmail.Success === "NO") {
-      console.log(sendEmail.Reason);
       return res.status(sendEmail.HtmlCode).json({
         message: "Please restart the process.",
       });
@@ -97,12 +97,30 @@ router.post("/register", async (req, res) => {
     });
     await newUser.save();
 
+    await addLogs(
+      false,
+      false,
+      email,
+      email,
+      "Public",
+      "P4",
+      `Account created. Yet to be verified.`
+    );
+
     res
       .status(201)
       .json({ message: "OTP sent. Verify to complete registration." });
   } catch (error) {
-    console.error("Registration error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      false,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to register pending user. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

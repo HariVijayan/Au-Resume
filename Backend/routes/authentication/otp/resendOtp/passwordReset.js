@@ -1,18 +1,28 @@
 import express from "express";
-import getUserOrAdminOtp from "../../../../helper/getUserOrAdminOtp.js";
-import sendEmailToUser from "../../../../helper/sendEmail.js";
-import generateOtp from "../../../../helper/generateOtp.js";
+import checkUserOrAdminAccess from "../../../../helper/authentication/userOrAdmin/checkAccess.js";
+import otpPreConditions from "../../../../helper/authentication/userOrAdmin/otpPreConditions.js";
+import sendEmailToUser from "../../../../helper/functions/sendEmail.js";
+import generateOtp from "../../../../helper/functions/generateOtp.js";
+import addLogs from "../../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
 router.post("/forgot-password", async (req, res) => {
   const { email, isAdmin } = req.body;
   try {
-    const accountCheck = await getUserOrAdminOtp(email, isAdmin);
-    if (accountCheck.Valid === "NO") {
+    const accountAccessCheck = await checkUserOrAdminAccess(email, isAdmin);
+    if (accountAccessCheck.Valid === "NO") {
       return res
-        .status(accountCheck.HtmlCode)
-        .json({ message: accountCheck.Reason });
+        .status(accountAccessCheck.HtmlCode)
+        .json({ message: accountAccessCheck.Reason });
+    }
+
+    const otpGenerationPreCheck = await otpPreConditions(email, isAdmin);
+
+    if (otpGenerationPreCheck.Valid === "NO") {
+      return res
+        .status(otpGenerationPreCheck.HtmlCode)
+        .json({ message: otpGenerationPreCheck.Reason });
     }
 
     const requestNewOtp = await generateOtp(isAdmin, email, "Password Reset");
@@ -52,10 +62,28 @@ router.post("/forgot-password", async (req, res) => {
       });
     }
 
+    await addLogs(
+      false,
+      false,
+      email,
+      email,
+      "Public",
+      "P4",
+      `Requested otp resending for password reset.`
+    );
+
     res.json({ message: "New OTP sent to email" });
   } catch (error) {
-    console.error("Resend OTP error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      false,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to resend otp for password reset. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

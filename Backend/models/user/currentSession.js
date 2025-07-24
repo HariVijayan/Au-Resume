@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import istDateFormat from "../../helper/dateIstFormat.js";
+import istDateFormat from "../../helper/functions/dateIstFormat.js";
 
 const sessionSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },

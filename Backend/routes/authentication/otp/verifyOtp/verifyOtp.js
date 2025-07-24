@@ -1,5 +1,7 @@
 import express from "express";
-import verifyUserOrAdminOtp from "../../../../helper/verifyUserOrAdminOtp.js";
+import verifyUserOrAdminOtp from "../../../../helper/authentication/userOrAdmin/verifyOtp.js";
+import checkUserOrAdminAccess from "../../../../helper/authentication/userOrAdmin/checkAccess.js";
+import addLogs from "../../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -7,19 +9,45 @@ router.post("/forgot-password", async (req, res) => {
   const { email, isAdmin, otp } = req.body;
 
   try {
-    const accountCheck = await verifyUserOrAdminOtp(email, isAdmin, otp);
-    if (accountCheck.Valid === "NO") {
+    const accountAccessCheck = await checkUserOrAdminAccess(email, isAdmin);
+    if (accountAccessCheck.Valid === "NO") {
       return res
-        .status(accountCheck.HtmlCode)
-        .json({ message: accountCheck.Reason });
+        .status(accountAccessCheck.HtmlCode)
+        .json({ message: accountAccessCheck.Reason });
     }
+
+    const otpVerification = await verifyUserOrAdminOtp(email, isAdmin, otp);
+
+    if (otpVerification.Valid === "NO") {
+      return res
+        .status(otpVerification.HtmlCode)
+        .json({ message: otpVerification.Reason });
+    }
+
+    await addLogs(
+      isAdmin,
+      false,
+      email,
+      email,
+      "Public",
+      "P4",
+      `Verified email. Initiated password reset process.`
+    );
 
     res.json({
       message: "OTP verified successfully. You can now reset your password.",
     });
   } catch (error) {
-    console.error("OTP Verification error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      isAdmin,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to verify otp for password reset. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

@@ -6,7 +6,8 @@ import adminCurrentSession from "../../models/admin/currentSession.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
-import istDateFormat from "../../helper/dateIstFormat.js";
+import istDateFormat from "../../helper/functions/dateIstFormat.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -116,6 +117,15 @@ router.post("/login", async (req, res) => {
       maxAge: rememberMe ? 2 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
     });
 
+    await addLogs(
+      isAdmin,
+      false,
+      user.email,
+      user.email,
+      "Public",
+      "Successful login"
+    );
+
     if (user.accountType === "SuperAdmin") {
       res.json({ message: "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23" });
     } else if (user.accountType === "Admin") {
@@ -126,7 +136,15 @@ router.post("/login", async (req, res) => {
       res.json({ message: "Login successful" });
     }
   } catch (error) {
-    console.error("Login error:", error);
+    await addLogs(
+      isAdmin,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to login user. ${error}`
+    );
     res.status(500).json({ message: "Server error" });
   }
 });

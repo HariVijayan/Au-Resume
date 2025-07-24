@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import istDateFormat from "../../helper/dateIstFormat.js";
+import istDateFormat from "../../helper/functions/dateIstFormat.js";
 
 const adminUserSchema = new mongoose.Schema({
   name: { type: String, required: true },

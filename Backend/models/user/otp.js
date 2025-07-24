@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import istDateFormat from "../../helper/dateIstFormat.js";
+import istDateFormat from "../../helper/functions/dateIstFormat.js";
 
 const otpSchema = new mongoose.Schema({
   email: { type: String, required: true },

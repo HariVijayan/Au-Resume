@@ -1,5 +1,6 @@
 import express from "express";
-import checkAdminAccess from "../../../helper/checkAdminAccess.js";
+import checkAdminAccess from "../../../helper/authentication/admin/checkAccess.js";
+import addLogs from "../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -35,7 +36,15 @@ router.post("/check-admin-access", async (req, res) => {
       res.json({ message: "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo" });
     }
   } catch (error) {
-    console.error("Check Access Error:", error);
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to check admin access. ${error}`
+    );
     res.status(500).json({ message: "Server error" });
   }
 });

@@ -4,8 +4,10 @@ import resumeData from "../../models/pdf/resumeData.js";
 import userOtp from "../../models/user/otp.js";
 import userCurrentSession from "../../models/user/currentSession.js";
 import pendingUser from "../../models/user/pendingUser.js";
-import checkAdminAccessAndOtp from "../../helper/verifyAdminOtp.js";
-import csvToArray from "../../helper/csvToArray.js";
+import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
+import csvToArray from "../../helper/functions/csvToArray.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -24,11 +26,22 @@ router.post("/removeUser", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    const adminCheck = await checkAdminAccessAndOtp(accessToken, otpInput);
-    if (adminCheck.Valid === "NO") {
+
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (adminAccessCheck.Valid === "NO") {
       return res
-        .status(adminCheck.HtmlCode)
-        .json({ message: adminCheck.Reason });
+        .status(adminAccessCheck.HtmlCode)
+        .json({ message: adminAccessCheck.Reason });
+    }
+
+    const adminEmail = adminAccessCheck.AdminEmail;
+
+    const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
+
+    if (adminOtpVerification.Valid === "NO") {
+      return res
+        .status(adminOtpVerification.HtmlCode)
+        .json({ message: adminOtpVerification.Reason });
     }
 
     let finalUserList = [];
@@ -123,12 +136,31 @@ router.post("/removeUser", async (req, res) => {
         registerNumber: userToDelete.registerNumber,
       });
     }
+
+    await addLogs(
+      true,
+      false,
+      adminEmail,
+      adminEmail,
+      "Confidential",
+      "P4",
+      `Successfully removed ${finalUserList.length} users from ${commonRegNoPrefix} register number group.`
+    );
+
     return res
       .status(200)
       .json({ message: `${finalUserList.length} users deleted successfully.` });
   } catch (error) {
-    console.error("Request OTP error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to remove user account. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

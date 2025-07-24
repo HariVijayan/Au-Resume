@@ -1,9 +1,11 @@
 import express from "express";
 import userDBModel from "../../models/user/user.js";
 import crypto from "crypto";
-import checkAdminAccessAndOtp from "../../helper/verifyAdminOtp.js";
-import sendEmailToUser from "../../helper/sendEmail.js";
-import generatePassword from "../../helper/generatePassword.js";
+import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
+import sendEmailToUser from "../../helper/functions/sendEmail.js";
+import generatePassword from "../../helper/functions/generatePassword.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -18,11 +20,22 @@ router.post("/modifyUser", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    const adminCheck = await checkAdminAccessAndOtp(accessToken, otpInput);
-    if (adminCheck.Valid === "NO") {
+
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (adminAccessCheck.Valid === "NO") {
       return res
-        .status(adminCheck.HtmlCode)
-        .json({ message: adminCheck.Reason });
+        .status(adminAccessCheck.HtmlCode)
+        .json({ message: adminAccessCheck.Reason });
+    }
+
+    const adminEmail = adminAccessCheck.AdminEmail;
+
+    const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
+
+    if (adminOtpVerification.Valid === "NO") {
+      return res
+        .status(adminOtpVerification.HtmlCode)
+        .json({ message: adminOtpVerification.Reason });
     }
 
     const modifiableUser = await userDBModel.findOne({
@@ -86,9 +99,16 @@ router.post("/modifyUser", async (req, res) => {
       message: "User account modified successfully.",
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: `Error occurred please try again. ${error}` });
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to modify user account. ${error}`
+    );
+    res.status(500).json({ message: `Server error` });
   }
 });
 

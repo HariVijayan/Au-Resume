@@ -6,7 +6,7 @@ import Handlebars from "handlebars";
 import jwt from "jsonwebtoken";
 import { fileURLToPath } from "url";
 import User from "../../../models/user/user.js";
-import istDateFormat from "../../../helper/dateIstFormat.js";
+import istDateFormat from "../../../helper/functions/dateIstFormat.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

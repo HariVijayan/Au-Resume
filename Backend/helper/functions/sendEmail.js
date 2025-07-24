@@ -26,7 +26,7 @@ async function sendEmailToUser(
       EmailBody: emailBody,
     };
 
-    const templatePath = "../../resources/email/template.html";
+    const templatePath = "../resources/email/template.html";
 
     let emailTemplate = readFileSync(templatePath);
 

@@ -1,9 +1,11 @@
 import express from "express";
 import adminUser from "../../models/admin/admin.js";
 import crypto from "crypto";
-import verifyAdminOtp from "../../helper/verifyAdminOtp.js";
-import sendEmailToUser from "../../helper/sendEmail.js";
-import generatePassword from "../../helper/generatePassword.js";
+import sendEmailToUser from "../../helper/functions/sendEmail.js";
+import generatePassword from "../../helper/functions/generatePassword.js";
+import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -13,14 +15,22 @@ router.post("/newAdmin", async (req, res) => {
   try {
     const accessToken = req.cookies.accessToken;
 
-    const adminCheck = await verifyAdminOtp(accessToken, otpInput);
-    if (adminCheck.Valid === "NO") {
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (adminAccessCheck.Valid === "NO") {
       return res
-        .status(adminCheck.HtmlCode)
-        .json({ message: adminCheck.Reason });
+        .status(adminAccessCheck.HtmlCode)
+        .json({ message: adminAccessCheck.Reason });
     }
 
-    const adminEmail = adminCheck.AdminEmail;
+    const adminEmail = adminAccessCheck.AdminEmail;
+
+    const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
+
+    if (adminOtpVerification.Valid === "NO") {
+      return res
+        .status(adminOtpVerification.HtmlCode)
+        .json({ message: adminOtpVerification.Reason });
+    }
 
     const newAdminPassword = generatePassword();
 
@@ -50,18 +60,36 @@ router.post("/newAdmin", async (req, res) => {
     );
 
     if (sendEmail.Success === "NO") {
-      console.log(sendEmail.Reason);
       return res.status(sendEmail.HtmlCode).json({
         message:
           "Admin added. System errored while sending credentials. Delete account and add again.",
       });
     }
 
+    await addLogs(
+      true,
+      false,
+      adminEmail,
+      adminEmail,
+      "Confidential",
+      "P4",
+      `Successfully added new admin ${newAdminEmail}.`
+    );
+
     res.json({
       message: "New admin added successfully.",
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P3",
+      `Failed to add new admin. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

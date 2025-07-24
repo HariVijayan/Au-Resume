@@ -1,6 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import currentSession from "../../../models/user/currentSession.js";
+import addLogs from "../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -24,7 +25,15 @@ router.post("/check-access", async (req, res) => {
 
     res.json({ message: "Valid access token" });
   } catch (error) {
-    console.error("Check Access Error:", error);
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to check protected route access. ${error}`
+    );
     res.status(500).json({ message: "Server error" });
   }
 });

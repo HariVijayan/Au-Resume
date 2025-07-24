@@ -2,7 +2,9 @@ import express from "express";
 import adminUser from "../../models/admin/admin.js";
 import adminCurrentSession from "../../models/admin/currentSession.js";
 import adminOtp from "../../models/admin/otp.js";
-import checkAdminAccessAndOtp from "../../helper/verifyAdminOtp.js";
+import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -11,14 +13,23 @@ router.post("/removeAdmin", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    const adminCheck = await checkAdminAccessAndOtp(accessToken, otpInput);
-    if (adminCheck.Valid === "NO") {
+
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (adminAccessCheck.Valid === "NO") {
       return res
-        .status(adminCheck.HtmlCode)
-        .json({ message: adminCheck.Reason });
+        .status(adminAccessCheck.HtmlCode)
+        .json({ message: adminAccessCheck.Reason });
     }
 
-    console.log("Admin Check:", adminCheck);
+    const adminEmail = adminAccessCheck.AdminEmail;
+
+    const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
+
+    if (adminOtpVerification.Valid === "NO") {
+      return res
+        .status(adminOtpVerification.HtmlCode)
+        .json({ message: adminOtpVerification.Reason });
+    }
 
     const removeAdmin = await adminUser.findOne({
       email: remAdminEmail,
@@ -51,12 +62,30 @@ router.post("/removeAdmin", async (req, res) => {
 
     await adminUser.deleteOne({ email: remAdminEmail, accountType: adminType });
 
+    await addLogs(
+      true,
+      false,
+      adminEmail,
+      adminEmail,
+      "Confidential",
+      "P4",
+      `Successfully removed admin ${remAdminEmail}.`
+    );
+
     res.json({
       message: "Admin removed successfully.",
     });
   } catch (error) {
-    console.error("Request OTP error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to remove admin. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

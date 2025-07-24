@@ -1,9 +1,11 @@
 import express from "express";
 import adminUser from "../../models/admin/admin.js";
 import crypto from "crypto";
-import checkAdminAccessAndOtp from "../../helper/verifyAdminOtp.js";
-import sendEmailToUser from "../../helper/sendEmail.js";
-import generatePassword from "../../helper/generatePassword.js";
+import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
+import sendEmailToUser from "../../helper/functions/sendEmail.js";
+import generatePassword from "../../helper/functions/generatePassword.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -22,11 +24,25 @@ router.post("/admin-modifications", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    const adminCheck = await checkAdminAccessAndOtp(accessToken, otpInput);
-    if (adminCheck.Valid === "NO") {
+
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (adminAccessCheck.Valid === "NO") {
       return res
-        .status(adminCheck.HtmlCode)
-        .json({ message: adminCheck.Reason });
+        .status(adminAccessCheck.HtmlCode)
+        .json({ message: adminAccessCheck.Reason });
+    }
+
+    const approvingAdminEmail = adminAccessCheck.AdminEmail;
+
+    const adminOtpVerification = await verifyAdminOtp(
+      approvingAdminEmail,
+      otpInput
+    );
+
+    if (adminOtpVerification.Valid === "NO") {
+      return res
+        .status(adminOtpVerification.HtmlCode)
+        .json({ message: adminOtpVerification.Reason });
     }
 
     let adminToBeModified = await adminUser.findOne({
@@ -112,11 +128,34 @@ router.post("/admin-modifications", async (req, res) => {
       );
     }
 
+    await addLogs(
+      true,
+      false,
+      approvingAdminEmail,
+      approvingAdminEmail,
+      "Confidential",
+      "P4",
+      `Successfully modified admin ${adminEmail}. Changes made: ${
+        nameChangeNeeded ? "Name Change" : ""
+      } ${adminTypeChange ? "Admin Type" : ""} ${
+        passwordReset ? "Password Reset" : ""
+      } ${accountUnlock ? "Account Unlock" : ""}`
+    );
+
     res.status(200).json({
       message: "Admin modified successfully.",
     });
   } catch (error) {
-    res.status(500).json({ message: "Error occurred please try again." });
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to modify admin account. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

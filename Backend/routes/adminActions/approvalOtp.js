@@ -1,7 +1,9 @@
 import express from "express";
-import getAdminOtp from "../../helper/getAdminOtp.js";
-import sendEmailToUser from "../../helper/sendEmail.js";
-import generateOtp from "../../helper/generateOtp.js";
+import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import otpPreConditions from "../../helper/authentication/admin/otpPreConditions.js";
+import sendEmailToUser from "../../helper/functions/sendEmail.js";
+import generateOtp from "../../helper/functions/generateOtp.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -10,16 +12,25 @@ router.post("/get-approval-otp", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    const adminCheck = await getAdminOtp(accessToken);
-    if (adminCheck.Valid === "NO") {
+
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (adminAccessCheck.Valid === "NO") {
       return res
-        .status(adminCheck.HtmlCode)
-        .json({ message: adminCheck.Reason });
+        .status(adminAccessCheck.HtmlCode)
+        .json({ message: adminAccessCheck.Reason });
     }
 
     const adminEmail = adminCheck.AdminEmail;
     const adminAccount = adminCheck.AdminAccount;
     const adminName = adminAccount.name;
+
+    const otpGenerationPreCheck = await otpPreConditions(adminEmail);
+
+    if (otpGenerationPreCheck.Valid === "NO") {
+      return res
+        .status(otpGenerationPreCheck.HtmlCode)
+        .json({ message: otpGenerationPreCheck.Reason });
+    }
 
     let otpReason = "";
 
@@ -74,8 +85,16 @@ router.post("/get-approval-otp", async (req, res) => {
 
     res.json({ message: "OTP sent to email" });
   } catch (error) {
-    console.error("Request OTP error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to send Otp for admin portal action. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

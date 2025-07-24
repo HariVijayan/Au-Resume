@@ -1,7 +1,8 @@
 import express from "express";
 import userDBModel from "../../models/user/user.js";
-import checkAdminAccess from "../../helper/checkAdminAccess.js";
-import csvToArray from "../../helper/csvToArray.js";
+import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import csvToArray from "../../helper/functions/csvToArray.js";
+import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -19,11 +20,12 @@ router.post("/get-final-users", async (req, res) => {
 
   try {
     const accessToken = req.cookies.accessToken;
-    const adminCheck = await checkAdminAccess(accessToken);
-    if (adminCheck.Valid === "NO") {
+
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (adminAccessCheck.Valid === "NO") {
       return res
-        .status(adminCheck.HtmlCode)
-        .json({ message: adminCheck.Reason });
+        .status(adminAccessCheck.HtmlCode)
+        .json({ message: adminAccessCheck.Reason });
     }
 
     let finalUserList = [];
@@ -81,8 +83,16 @@ router.post("/get-final-users", async (req, res) => {
       usersList: finalUserList,
     });
   } catch (error) {
-    console.error("Request OTP error:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to fetch user list for removal. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 
