@@ -38,7 +38,8 @@ import UserMgmtDashboard from "./Components/Profile/SubComponents/UserMgmt/Dashb
 import AddUser from "./Components/Profile/SubComponents/UserMgmt/AddUser.jsx";
 import RemoveUser from "./Components/Profile/SubComponents/UserMgmt/RemoveUser.jsx";
 import ModifyUser from "./Components/Profile/SubComponents/UserMgmt/ModifyUser.jsx";
-import LogMgmtDashboard from "./Components/Profile/SubComponents/LogMgmt/LogMgmt.jsx";
+import LogMgmtDashboard from "./Components/Profile/SubComponents/LogMgmt/Dashboard.jsx";
+import AdminLogs from "./Components/Profile/SubComponents/LogMgmt/AdminLogs.jsx";
 import UserProfile from "./Components/Resume_Builder/Sub_Components/UserProfile.jsx";
 import Analytics from "./Components/Profile/MainDashboard/AnalyticsDashboard.jsx";
 import "./Components/General/General_Styles.css";
@@ -103,7 +104,10 @@ function RouteWrapper() {
     "/admin-dashboard/user-management/modify-user",
   ];
 
-  const analyticsAdminRoutes = ["/admin-dashboard/log-management"];
+  const analyticsAdminRoutes = [
+    "/admin-dashboard/log-management",
+    "/admin-dashboard/log-management/admin-logs",
+  ];
   const navigate = useNavigate();
 
   const verifySessionForAdminRoutes = async (routeType) => {
@@ -460,18 +464,35 @@ function RouteWrapper() {
         />
 
         <Route
-          path="/admin-dashboard/analytics"
+          path="/admin-dashboard/log-management"
           element={
-            <Analytics
+            <AdminPanelTemplate
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Admin Dashboard"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={LogMgmtDashboard}
             />
           }
         />
+
         <Route
-          path="/admin-dashboard/super-admin/log-management"
+          path="/admin-dashboard/log-management/admin-logs"
           element={
-            <LogMgmtDashboard
+            <AdminPanelTemplate
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Log Management"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={AdminLogs}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-dashboard/analytics"
+          element={
+            <Analytics
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
             />

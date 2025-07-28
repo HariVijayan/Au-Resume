@@ -383,6 +383,20 @@ th {
   padding: 1rem;
 }
 
+.LogsNavigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0rem;
+}
+
+.LogListSort {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 2rem 0rem;
+}
+
 @media (max-width: 768px) {
   .AdminConsoleActionCard {
     flex: 1 1 100%;

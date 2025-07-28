@@ -51,7 +51,6 @@ const SuperAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                 <ul className="CardContentList">
                   <li>Add New Admins</li>
                   <li>Remove Existing Admins</li>
-                  <li>View Current Admins</li>
                   <li>Modify Admin Permissions</li>
                 </ul>
               </div>
@@ -80,7 +79,6 @@ const SuperAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
                 <ul className="CardContentList">
                   <li>Add New Users</li>
                   <li>Remove Existing Users</li>
-                  <li>View Current Users</li>
                   <li>Modify User Details</li>
                 </ul>
               </div>
@@ -102,17 +100,14 @@ const SuperAdmin = ({ setLogoutClicked, setLogoutUserType }) => {
 
             <div
               className="AdminConsoleActionCard"
-              onClick={() =>
-                navigate("/admin-dashboard/super-admin/log-management")
-              }
+              onClick={() => navigate("/admin-dashboard/log-management")}
             >
               <div className="CardTitle">Logs Management</div>
               <div className="CardContent">
                 <ul className="CardContentList">
                   <li>View Admin Logs</li>
                   <li>View Users Logs</li>
-                  <li>Download Logs</li>
-                  <li>Clear Logs</li>
+                  <li>Log Actions</li>
                 </ul>
               </div>
               <div className="CardLink">

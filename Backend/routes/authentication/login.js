@@ -123,6 +123,7 @@ router.post("/login", async (req, res) => {
       user.email,
       user.email,
       "Public",
+      "P4",
       "Successful login"
     );
 

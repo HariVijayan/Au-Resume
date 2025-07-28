@@ -48,6 +48,7 @@ router.post("/logout", async (req, res) => {
       userEmail,
       userEmail,
       "Public",
+      "P4",
       "Successful logout"
     );
 
