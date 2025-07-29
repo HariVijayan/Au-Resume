@@ -40,6 +40,7 @@ import RemoveUser from "./Components/Profile/SubComponents/UserMgmt/RemoveUser.j
 import ModifyUser from "./Components/Profile/SubComponents/UserMgmt/ModifyUser.jsx";
 import LogMgmtDashboard from "./Components/Profile/SubComponents/LogMgmt/Dashboard.jsx";
 import AdminLogs from "./Components/Profile/SubComponents/LogMgmt/AdminLogs.jsx";
+import UserLogs from "./Components/Profile/SubComponents/LogMgmt/UserLogs.jsx";
 import UserProfile from "./Components/Resume_Builder/Sub_Components/UserProfile.jsx";
 import Analytics from "./Components/Profile/MainDashboard/AnalyticsDashboard.jsx";
 import "./Components/General/General_Styles.css";
@@ -107,6 +108,7 @@ function RouteWrapper() {
   const analyticsAdminRoutes = [
     "/admin-dashboard/log-management",
     "/admin-dashboard/log-management/admin-logs",
+    "/admin-dashboard/log-management/user-logs",
   ];
   const navigate = useNavigate();
 
@@ -485,6 +487,19 @@ function RouteWrapper() {
               backArrowPageName={"Log Management"}
               headerAdminType={loggedInUserType}
               AdminConsoleContent={AdminLogs}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-dashboard/log-management/user-logs"
+          element={
+            <AdminPanelTemplate
+              setLogoutClicked={setLogoutClicked}
+              setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Log Management"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={UserLogs}
             />
           }
         />

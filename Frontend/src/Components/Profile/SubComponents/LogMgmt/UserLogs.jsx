@@ -3,7 +3,7 @@ import axios from "axios";
 
 const PAGE_SIZE = 50;
 
-const AdminLogs = () => {
+const UserLogs = () => {
   const [loading, setLoading] = useState(false);
   const [logsData, setLogsData] = useState({
     DateNewest: [],
@@ -23,7 +23,7 @@ const AdminLogs = () => {
   const [createdByFilter, setCreatedByFilter] = useState("");
   const [logFilter, setLogFilter] = useState("");
 
-  const isAdmin = true;
+  const isAdmin = false;
 
   useEffect(() => {
     if (!logTypeRequested) return;
@@ -125,10 +125,10 @@ const AdminLogs = () => {
   return (
     <>
       <div className="AdminMgmtWrapper">
-        <p className="AdminMgmtActionHeading">Admin Logs</p>
+        <p className="AdminMgmtActionHeading">User Logs</p>
         <span>
           (Choose the respective buttons given below to see either regular logs
-          or error logs registered for admin accounts.)
+          or error logs registered for user accounts.)
         </span>
 
         <div className="AdminMgmtActions">
@@ -301,4 +301,4 @@ const AdminLogs = () => {
   );
 };
 
-export default AdminLogs;
+export default UserLogs;

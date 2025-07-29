@@ -1,13 +1,15 @@
 import express from "express";
 import adminLogs from "../../models/logs/admin.js";
 import adminErrorLogs from "../../models/logs/adminError.js";
+import userLogs from "../../models/logs/user.js";
+import userErrorLogs from "../../models/logs/userError.js";
 import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
 router.post("/getLogs", async (req, res) => {
-  const { logTypeRequested } = req.body;
+  const { isAdmin, logTypeRequested } = req.body;
   try {
     const accessToken = req.cookies.accessToken;
 
@@ -23,34 +25,66 @@ router.post("/getLogs", async (req, res) => {
     let logs;
     let numLogs;
 
-    if (logTypeRequested === "Regular") {
-      logs = await adminLogs.find(
-        {},
-        {
-          logLinkedAccount: 1,
-          logAddedBy: 1,
-          logPriority: 1,
-          logDetails: 1,
-          createdAt: 1,
-          createdAtFormatted: 1,
-        }
-      );
-      numLogs = logs.length;
-    }
+    if (isAdmin) {
+      if (logTypeRequested === "Regular") {
+        logs = await adminLogs.find(
+          {},
+          {
+            logLinkedAccount: 1,
+            logAddedBy: 1,
+            logPriority: 1,
+            logDetails: 1,
+            createdAt: 1,
+            createdAtFormatted: 1,
+          }
+        );
+        numLogs = logs.length;
+      }
 
-    if (logTypeRequested === "Error") {
-      logs = await adminErrorLogs.find(
-        {},
-        {
-          logLinkedAccount: 1,
-          logAddedBy: 1,
-          logPriority: 1,
-          logDetails: 1,
-          createdAt: 1,
-          createdAtFormatted: 1,
-        }
-      );
-      numLogs = logs.length;
+      if (logTypeRequested === "Error") {
+        logs = await adminErrorLogs.find(
+          {},
+          {
+            logLinkedAccount: 1,
+            logAddedBy: 1,
+            logPriority: 1,
+            logDetails: 1,
+            createdAt: 1,
+            createdAtFormatted: 1,
+          }
+        );
+        numLogs = logs.length;
+      }
+    } else {
+      if (logTypeRequested === "Regular") {
+        logs = await userLogs.find(
+          {},
+          {
+            logLinkedAccount: 1,
+            logAddedBy: 1,
+            logPriority: 1,
+            logDetails: 1,
+            createdAt: 1,
+            createdAtFormatted: 1,
+          }
+        );
+        numLogs = logs.length;
+      }
+
+      if (logTypeRequested === "Error") {
+        logs = await userErrorLogs.find(
+          {},
+          {
+            logLinkedAccount: 1,
+            logAddedBy: 1,
+            logPriority: 1,
+            logDetails: 1,
+            createdAt: 1,
+            createdAtFormatted: 1,
+          }
+        );
+        numLogs = logs.length;
+      }
     }
 
     const plainLogs = logs.map((doc) => doc.toObject());

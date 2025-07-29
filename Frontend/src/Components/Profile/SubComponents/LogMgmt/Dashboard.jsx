@@ -34,19 +34,13 @@ const LogMgmt = () => {
 
         <div
           className="AdminConsoleActionCard"
-          onClick={() =>
-            navigate(
-              "/admin-dashboard/super-admin/admin-management/remove-admin"
-            )
-          }
+          onClick={() => navigate("/admin-dashboard/log-management/user-logs")}
         >
           <div className="CardTitle">View User Logs</div>
           <div className="CardContent">
             <span>
-              Use this to remove existing admins from this site. Please note
-              that you've to manually verify your identity through an OTP sent
-              to your registered email to save changes. It will be recorded that
-              you're the one who removed this existing admin.
+              Use this to view logs added by users on their accounts while using
+              the resume builder and their error logs.
             </span>
           </div>
           <div className="CardLink">
