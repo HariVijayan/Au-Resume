@@ -39,8 +39,6 @@ async function getAdminOtp(adminEmail) {
   return {
     Valid: "YES",
     HtmlCode: 200,
-    AdminAccount: admin,
-    AdminEmail: adminEmail,
   };
 }
 

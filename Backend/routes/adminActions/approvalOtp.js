@@ -20,8 +20,8 @@ router.post("/get-approval-otp", async (req, res) => {
         .json({ message: adminAccessCheck.Reason });
     }
 
-    const adminEmail = adminCheck.AdminEmail;
-    const adminAccount = adminCheck.AdminAccount;
+    const adminEmail = adminAccessCheck.AdminEmail;
+    const adminAccount = adminAccessCheck.AdminAccount;
     const adminName = adminAccount.name;
 
     const otpGenerationPreCheck = await otpPreConditions(adminEmail);
@@ -77,7 +77,6 @@ router.post("/get-approval-otp", async (req, res) => {
     );
 
     if (sendEmail.Success === "NO") {
-      console.log(sendEmail.Reason);
       return res.status(sendEmail.HtmlCode).json({
         message: "Unable to send approval otp, try again later.",
       });

@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { fileURLToPath } from "url";
 import User from "../../../models/user/user.js";
 import istDateFormat from "../../../helper/functions/dateIstFormat.js";
+import addLogs from "../../../helper/functions/addLogs.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -93,56 +94,83 @@ router.post("/Resume", async (req, res) => {
   let { resumeData } = req.body;
   let templateType = resumeData.metaData.template;
 
-  const accessToken = req.cookies.accessToken;
-  if (!accessToken)
-    return res.status(401).json({ message: "No token provided" });
+  try {
+    const accessToken = req.cookies.accessToken;
+    if (!accessToken)
+      return res.status(401).json({ message: "No token provided" });
 
-  const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
-  const user = await User.findById(decoded.userId);
-  if (!user) return res.status(403).json({ message: "User not found" });
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
+    if (!user) return res.status(403).json({ message: "User not found" });
 
-  const timestamp = istDateFormat(new Date());
+    const timestamp = istDateFormat(new Date());
 
-  resumeData = removeEmptyValues(resumeData);
+    resumeData = removeEmptyValues(resumeData);
 
-  if (templateType != "template1") {
-    templateType = "template1"; //Dummy code to modify if template values are different. If new templates are to be added, remove if condition.
+    if (templateType != "template1") {
+      templateType = "template1"; //Dummy code to modify if template values are different. If new templates are to be added, remove if condition.
+    }
+    const templatePath =
+      "../../../resources/templates/" + templateType + "/body.html";
+    const templateCssPath =
+      "../../../resources/templates/" + templateType + "/body.css";
+
+    const headerFooterPaths = generateHeaderFooterPaths(templateType);
+
+    const templateFile = readFileSync(templatePath);
+    const cssFile = readFileSync(templateCssPath);
+    const headerFile = readFileSync(headerFooterPaths.headerPath);
+    let footerFile = readFileSync(headerFooterPaths.footerPath);
+    const auLogoFile = readFileSync(headerFooterPaths.auLogoBase64Path);
+
+    let compiledTemplate = compileTemplate(
+      templateFile.replace("<style></style>", `<style>${cssFile}</style>`),
+      resumeData
+    );
+    footerFile = footerFile.replace(
+      '<img id="aulogo" src=""',
+      `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`
+    );
+
+    footerFile = generateFooter(footerFile, timestamp);
+
+    writeFileSync("../../../output/Body.html", compiledTemplate);
+    writeFileSync(
+      "../../../output/Resume Data.txt",
+      JSON.stringify(resumeData, null, 2)
+    );
+    writeFileSync("../../../output/Footer.html", footerFile);
+
+    const pdfBuffer = await generatePdf(
+      compiledTemplate,
+      headerFile,
+      footerFile
+    );
+
+    await addLogs(
+      false,
+      false,
+      user.email,
+      user.email,
+      "Public",
+      "P4",
+      `Generated Resume.`
+    );
+
+    res.type("application/pdf");
+    res.end(pdfBuffer, "binary");
+  } catch (error) {
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to generate resume. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
-  const templatePath =
-    "../../../resources/templates/" + templateType + "/body.html";
-  const templateCssPath =
-    "../../../resources/templates/" + templateType + "/body.css";
-
-  const headerFooterPaths = generateHeaderFooterPaths(templateType);
-
-  const templateFile = readFileSync(templatePath);
-  const cssFile = readFileSync(templateCssPath);
-  const headerFile = readFileSync(headerFooterPaths.headerPath);
-  let footerFile = readFileSync(headerFooterPaths.footerPath);
-  const auLogoFile = readFileSync(headerFooterPaths.auLogoBase64Path);
-
-  let compiledTemplate = compileTemplate(
-    templateFile.replace("<style></style>", `<style>${cssFile}</style>`),
-    resumeData
-  );
-  footerFile = footerFile.replace(
-    '<img id="aulogo" src=""',
-    `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`
-  );
-
-  footerFile = generateFooter(footerFile, timestamp);
-
-  writeFileSync("../../../output/Body.html", compiledTemplate);
-  writeFileSync(
-    "../../../output/Resume Data.txt",
-    JSON.stringify(resumeData, null, 2)
-  );
-  writeFileSync("../../../output/Footer.html", footerFile);
-
-  const pdfBuffer = await generatePdf(compiledTemplate, headerFile, footerFile);
-
-  res.type("application/pdf");
-  res.end(pdfBuffer, "binary");
 });
 
 export default router;

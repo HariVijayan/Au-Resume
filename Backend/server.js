@@ -36,6 +36,8 @@ import addUser from "./routes/adminActions/addUser.js";
 import removeUser from "./routes/adminActions/removeUser.js";
 import modifyUser from "./routes/adminActions/modifyUser.js";
 import fetchLog from "./routes/adminActions/fetchLog.js";
+import getLogDetails from "./routes/adminActions/getLogDetails.js";
+import implementLogAction from "./routes/adminActions/implementLogAction.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
@@ -107,6 +109,12 @@ app.use("/admin/actions/userMgmt/existingUser", removeUser);
 app.use("/admin/actions/userMgmt/modifyAccount", modifyUser);
 
 app.use("/admin/actions/logMgmt", fetchLog);
+
+app.use("/admin/actions/logMgmt/logDetails", getLogDetails);
+
+app.use("/admin/actions/logMgmt/logAction", implementLogAction);
+
+implementLogAction;
 
 const formatISTTimestamp = (date) => {
   return new Intl.DateTimeFormat("en-GB", {

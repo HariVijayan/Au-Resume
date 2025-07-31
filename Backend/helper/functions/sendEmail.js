@@ -26,13 +26,13 @@ async function sendEmailToUser(
       EmailBody: emailBody,
     };
 
-    const templatePath = "../resources/email/template.html";
+    const templatePath = "../../resources/email/template.html"; //Path relative to this file
 
     let emailTemplate = readFileSync(templatePath);
 
     const compiledEmailTemplate = compileTemplate(emailTemplate, emailData);
 
-    const aulogo = "./resources/images/aulogo.png";
+    const aulogo = "./resources/images/aulogo.png"; //Path relative to the server.js main file
 
     const mailOptions = {
       from: process.env.EMAIL_USER,

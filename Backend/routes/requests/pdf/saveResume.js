@@ -3,6 +3,7 @@ import User from "../../../models/user/user.js";
 import ResumeData from "../../../models/pdf/resumeData.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import addLogs from "../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -71,9 +72,28 @@ router.post("/current-resume", async (req, res) => {
 
     encryptResume(resumeData, user.password, user.encryptionSalt);
 
+    await addLogs(
+      false,
+      false,
+      user.email,
+      user.email,
+      "Public",
+      "P4",
+      `Saved new resume.`
+    );
+
     res.status(200).json({ message: "Resume Saved successfully." });
-  } catch (err) {
-    res.json({ message: "Failed to save the resume data.", err });
+  } catch (error) {
+    await addLogs(
+      true,
+      true,
+      "System",
+      "System",
+      "Confidential",
+      "P4",
+      `Failed to save new resume. ${error}`
+    );
+    res.status(500).json({ message: "Server error" });
   }
 });
 

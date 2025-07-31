@@ -62,19 +62,14 @@ const LogMgmt = () => {
         <div
           className="AdminConsoleActionCard"
           onClick={() =>
-            navigate(
-              "/admin-dashboard/super-admin/admin-management/modify-admin"
-            )
+            navigate("/admin-dashboard/log-management/log-actions")
           }
         >
           <div className="CardTitle">Log Actions</div>
           <div className="CardContent">
             <span>
-              Use this to elevate existing admin's permissions to be super
-              admins or limit existing admin's permissions to be having
-              analytics only (ViewOnly) access. You can also use this to reset
-              password, unlock account or change the name of existing admin
-              accounts.
+              Use this to clear existing logs or to download existing logs as an
+              excel file.
             </span>
           </div>
           <div className="CardLink">
