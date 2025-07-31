@@ -9,9 +9,8 @@ import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 
 const router = express.Router();
 
-router.post("/implementLogAction", async (req, res) => {
-  const { otpInput, collectionName, startDate, endDate, logActionType } =
-    req.body;
+router.post("/deleteLogs", async (req, res) => {
+  const { otpInput, collectionName, startDate, endDate } = req.body;
   try {
     const accessToken = req.cookies.accessToken;
 
@@ -37,40 +36,36 @@ router.post("/implementLogAction", async (req, res) => {
     const endDateObj = new Date(endDate);
     endDateObj.setHours(23, 59, 59, 999);
 
-    if (logActionType === "Clear") {
-      if (collectionName === "Admin Logs") {
-        await adminLogs.deleteMany({
-          createdAt: {
-            $gte: startDateObj,
-            $lte: endDateObj,
-          },
-        });
-      } else if (collectionName === "Admin Error Logs") {
-        await adminErrorLogs.deleteMany({
-          createdAt: {
-            $gte: startDateObj,
-            $lte: endDateObj,
-          },
-        });
-      } else if (collectionName === "User Logs") {
-        await userLogs.deleteMany({
-          createdAt: {
-            $gte: startDateObj,
-            $lte: endDateObj,
-          },
-        });
-      } else if (collectionName === "User Error Logs") {
-        await userErrorLogs.deleteMany({
-          createdAt: {
-            $gte: startDateObj,
-            $lte: endDateObj,
-          },
-        });
-      } else {
-        return res.status(400).json({ message: "Invalid collection name" });
-      }
-    }
-    if (logActionType === "Download") {
+    if (collectionName === "Admin Logs") {
+      await adminLogs.deleteMany({
+        createdAt: {
+          $gte: startDateObj,
+          $lte: endDateObj,
+        },
+      });
+    } else if (collectionName === "Admin Error Logs") {
+      await adminErrorLogs.deleteMany({
+        createdAt: {
+          $gte: startDateObj,
+          $lte: endDateObj,
+        },
+      });
+    } else if (collectionName === "User Logs") {
+      await userLogs.deleteMany({
+        createdAt: {
+          $gte: startDateObj,
+          $lte: endDateObj,
+        },
+      });
+    } else if (collectionName === "User Error Logs") {
+      await userErrorLogs.deleteMany({
+        createdAt: {
+          $gte: startDateObj,
+          $lte: endDateObj,
+        },
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid collection name" });
     }
 
     await addLogs(
@@ -80,10 +75,10 @@ router.post("/implementLogAction", async (req, res) => {
       adminEmail,
       "Confidential",
       "P4",
-      `Implemented ${logActionType} logs request for logs between ${startDateObj} and ${endDateObj}.`
+      `Deleted logs between ${startDateObj} and ${endDateObj} from ${collectionName} table.`
     );
     return res.status(200).json({
-      message: `${logActionType} logs request has been performed successfully.`,
+      message: `Logs has been deleted successfully.`,
     });
   } catch (error) {
     await addLogs(
@@ -93,7 +88,7 @@ router.post("/implementLogAction", async (req, res) => {
       "System",
       "Confidential",
       "P4",
-      `Failed to implement log action. ${error}`
+      `Failed to delete logs. ${error}`
     );
     res.status(500).json({ message: "Server error" });
   }

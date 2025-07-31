@@ -57,17 +57,17 @@ const LogActions = () => {
     }
   };
 
-  const implementLogAction = async () => {
+  const deleteLogs = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/admin/actions/logMgmt/logAction/implementLogAction",
-        { otpInput, collectionName, startDate, endDate, logActionType },
+        "http://localhost:5000/admin/actions/logMgmt/deleteRequest/deleteLogs",
+        { otpInput, collectionName, startDate, endDate },
         { withCredentials: true }
       );
 
       if (response.statusText === "OK") {
         setLogActionResult(
-          `Logs have been ${logActionType}ed successfully. Refreshing the page in 5 seconds.`
+          `Logs have been deleted successfully. Refreshing the page in 5 seconds.`
         );
         setLogActionResultColor("green");
         setTimeout(() => {
@@ -80,11 +80,59 @@ const LogActions = () => {
     } catch (error) {
       setLogActionResultColor("red");
       setLogActionResult(
-        `Failed to ${logActionType} logs. Refreshing the page in 5 seconds. Please try again.`
+        `Failed to delete logs. Refreshing the page in 5 seconds. Please try again.`
       );
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
+    }
+  };
+
+  const downloadLogs = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/admin/actions/logMgmt/downloadRequest/downloadLogs",
+        { otpInput, collectionName, startDate, endDate },
+        { withCredentials: true }
+      );
+
+      if (response.statusText === "OK") {
+        const blob = new Blob([response.data], {
+          type: "text/csv",
+        });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${collectionName} ${startDate} to ${endDate}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        setLogActionResult(
+          `Logs have been downloaded successfully. Refreshing the page in 5 seconds.`
+        );
+        setLogActionResultColor("green");
+        setTimeout(() => {
+          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+        }, 5000);
+      } else {
+        setLogActionResultColor("red");
+        setLogActionResult(response.data.message);
+      }
+    } catch (error) {
+      setLogActionResultColor("red");
+      setLogActionResult(
+        `Failed to download logs. Refreshing the page in 5 seconds. Please try again.`
+      );
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
+    }
+  };
+
+  const implementLogAction = async () => {
+    if (logActionType === "Delete") {
+      deleteLogs();
+    }
+    if (logActionType === "Download") {
+      downloadLogs();
     }
   };
 
@@ -99,13 +147,13 @@ const LogActions = () => {
       <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">Log Actions</p>
         <span>
-          (Choose the respective buttons given below to perform either clear
+          (Choose the respective buttons given below to perform either delete
           logs or download logs on the log collections.)
         </span>
 
         <div className="AdminMgmtActions">
           <div className="AdminConsoleInputsWrapper">
-            {["Clear", "Download"].map((type) => (
+            {["Delete", "Download"].map((type) => (
               <div className="AdminMgmtInputWrapper" key={type}>
                 <button
                   onClick={() => setLogActionType(type)}
