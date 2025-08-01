@@ -296,7 +296,7 @@ for (let i = 51; i <= 75; i++) {
   await userErrorLog.save();
 }
 
-for (let i = 76; i <= 100; i++) {
+for (let i = 76; i <= 105; i++) {
   const newAdminLog = new adminLogs({
     logLinkedAccount: "System",
     logAddedBy: "System",

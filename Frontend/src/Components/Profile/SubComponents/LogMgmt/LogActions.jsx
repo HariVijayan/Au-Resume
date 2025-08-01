@@ -1,12 +1,18 @@
 import { use, useEffect, useState } from "react";
 import axios from "axios";
 
+const PAGE_SIZE = 50;
+
 const LogActions = () => {
   const [logActionType, setLogActionType] = useState("");
   const [collectionName, setCollectionName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [toBeAffectedLogs, setToBeAffectedLogs] = useState(null);
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [showLogs, setShowLogs] = useState(false);
+  const [totalLogs, setTotalLogs] = useState([]);
+  const [visibleLogs, setVisibleLogs] = useState([]);
+  const [visibleLogsStart, setVisibleLogsStart] = useState(0);
 
   const [showOtp, setShowOtp] = useState(false);
   const [otpInput, setOtpInput] = useState("");
@@ -24,8 +30,16 @@ const LogActions = () => {
         { collectionName, startDate, endDate },
         { withCredentials: true }
       );
-      setToBeAffectedLogs(response.data.toBeAffectedLogs);
-    } catch (error) {}
+      setTotalLogs(response.data.logs);
+      setTotalRecords(response.data.toBeAffectedLogs);
+      setVisibleLogs(response.data.logs.slice(0, PAGE_SIZE));
+      setVisibleLogsStart(0);
+    } catch (error) {
+      console.error("Error fetching log details:", error);
+      setVisibleLogs([]);
+      setTotalRecords(0);
+      setVisibleLogsStart(0);
+    }
   };
 
   const requestType = "logActions";
@@ -142,6 +156,21 @@ const LogActions = () => {
     }
   }, [startDate, endDate]);
 
+  const handlePrev = () => {
+    const newStart = Math.max(0, visibleLogsStart - PAGE_SIZE);
+    setVisibleLogsStart(newStart);
+    setVisibleLogs(totalLogs.slice(newStart, newStart + PAGE_SIZE));
+  };
+
+  const handleNext = () => {
+    const newStart = Math.min(
+      visibleLogsStart + PAGE_SIZE,
+      Math.max(0, totalRecords - PAGE_SIZE)
+    );
+    setVisibleLogsStart(newStart);
+    setVisibleLogs(totalLogs.slice(newStart, newStart + PAGE_SIZE));
+  };
+
   return (
     <>
       <div className="AdminMgmtWrapper">
@@ -236,19 +265,91 @@ const LogActions = () => {
         </>
       )}
 
-      {toBeAffectedLogs != null && (
+      {totalRecords != null && (
         <span style={{ paddingBottom: "5rem" }}>
-          <span style={{ color: "red" }}>{toBeAffectedLogs} logs</span> will be
-          affected by this action.
+          <span style={{ color: "red" }}>{totalRecords} logs</span> will be
+          affected by this action.{" "}
+          {!showLogs && (
+            <span
+              style={{ color: "#377dff", cursor: "pointer" }}
+              onClick={() => setShowLogs(true)}
+            >
+              (Show Logs)
+            </span>
+          )}
+          {showLogs && (
+            <span
+              style={{ color: "#377dff", cursor: "pointer" }}
+              onClick={() => setShowLogs(false)}
+            >
+              (Hide Logs)
+            </span>
+          )}
         </span>
+      )}
+
+      {showLogs && (
+        <div className="LogDisplayWrapper">
+          <div className="AdminsList">
+            <table className="CurrentAdminsTable">
+              <thead>
+                <tr>
+                  <th>Linked Account</th>
+                  <th>Created By</th>
+                  <th>Created At</th>
+                  <th>Priority</th>
+                  <th>Log</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visibleLogs.map((log) => (
+                  <tr key={`${log.createdAt}-${log.logDetails}`}>
+                    <td>{log.logLinkedAccount}</td>
+                    <td>{log.logAddedBy}</td>
+                    <td>{log.createdAtFormatted}</td>
+                    <td>{log.logPriority}</td>
+                    <td>{log.logDetails}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="LogsNavigation">
+            <button
+              onClick={handlePrev}
+              className="LeftNavigationButtons"
+              disabled={visibleLogsStart === 0}
+            >
+              Previous
+            </button>
+
+            <span>
+              Showing {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
+              {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)} out of{" "}
+              {totalRecords} records.
+            </span>
+
+            <button
+              onClick={handleNext}
+              className="LeftNavigationButtons"
+              disabled={
+                visibleLogsStart + PAGE_SIZE >= totalRecords ||
+                totalRecords === 0
+              }
+            >
+              Next
+            </button>
+          </div>
+        </div>
       )}
 
       {logActionType &&
         collectionName &&
         startDate &&
         endDate &&
-        toBeAffectedLogs != null &&
-        toBeAffectedLogs > 0 && (
+        totalRecords != null &&
+        totalRecords > 0 && (
           <button className="AddInputButtons" onClick={getVerificationOtp}>
             Proceed
           </button>

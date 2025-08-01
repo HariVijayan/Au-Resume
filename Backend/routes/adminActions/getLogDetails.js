@@ -67,6 +67,7 @@ router.post("/getLogDetails", async (req, res) => {
 
     res.json({
       toBeAffectedLogs,
+      logs,
     });
   } catch (error) {
     await addLogs(
