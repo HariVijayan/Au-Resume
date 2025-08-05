@@ -54,6 +54,7 @@ body button {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin: 2rem 0rem;
 }
 
 #dv-MainWrapper {

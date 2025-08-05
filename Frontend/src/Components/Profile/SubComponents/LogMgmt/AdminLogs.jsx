@@ -32,7 +32,9 @@ const AdminLogs = () => {
     setLoading(true);
     setVisibleLogs([]);
     setVisibleLogsStart(0);
-    setLinkedAccountFilter(""); // Reset filter when log type changes
+    setLinkedAccountFilter("");
+    setCreatedByFilter("");
+    setLogFilter("");
 
     const fetchLogs = async () => {
       try {
@@ -104,7 +106,9 @@ const AdminLogs = () => {
       );
     }
 
-    setVisibleLogs(selectedLogs);
+    setVisibleLogs(
+      selectedLogs.slice(visibleLogsStart, visibleLogsStart + PAGE_SIZE)
+    );
     setTotalRecords(selectedLogs.length);
   };
 

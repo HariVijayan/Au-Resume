@@ -11,7 +11,6 @@ iframe {
   border: none;
   font-size: var(--fs--normal);
   line-height: normal;
-  margin: 0;
   min-height: 60px;
   min-width: 0;
   outline: none;
@@ -417,4 +416,119 @@ iframe {
 
 .RBHeaderText {
   font-size: var(--fs--normal);
+}
+
+.UserProfile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  flex-direction: column;
+  min-height: 80vh;
+  flex-grow: 1;
+  padding: 5rem 0rem;
+}
+
+.UserProfileWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  max-height: 100%;
+  min-height: 100%;
+}
+
+.UserProfileInnerWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  padding-bottom: 5em;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.UserProfileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.UserProfileBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+}
+
+.UserDetailsWrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.UserProfileDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
+  margin: 2rem 0em;
+  border-bottom: 2px solid black;
+}
+
+.UserDetailsHeading {
+  color: var(--primary--accent);
+  font-weight: bold;
+}
+
+.UserProfileButtons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.UserProfileContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 2rem 0rem;
+  flex-direction: column;
+}
+
+.UserProfileContentOtp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  position: relative;
+  max-width: 50vw;
+  min-height: 40px;
+}
+
+.UserProfileContentOtp input {
+  width: 375px;
+  height: 25px;
+}
+
+.UserOtpLabel {
+  position: absolute;
+  top: 40%;
+  left: 13%;
+  transform: translateY(-50%);
+  font-size: var(--fs--normal);
+  color: var(--primary--label--color);
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background: var(--background);
+  padding: 0 4px;
 }

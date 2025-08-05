@@ -1,15 +1,29 @@
 import express from "express";
 import User from "../../../models/user/user.js";
-import adminUser from "../../../models/admin/admin.js";
 import crypto from "crypto";
 import checkPassword from "../../../helper/functions/checkPassword.js";
+import resumeData from "../../../models/pdf/resumeData.js";
+import userCurrentSession from "../../../models/user/currentSession.js";
 import addLogs from "../../../helper/functions/addLogs.js";
+import verifyUserOrAdminOtp from "../../../helper/authentication/userOrAdmin/verifyOtp.js";
 
 const router = express.Router();
 
-router.post("/reset-password", async (req, res) => {
-  const { email, newPassword, isAdmin } = req.body;
+router.post("/resetPassword", async (req, res) => {
+  const { userEmail, newPassword, otpInput } = req.body;
   try {
+    const otpVerification = await verifyUserOrAdminOtp(
+      userEmail,
+      false,
+      otpInput
+    );
+
+    if (otpVerification.Valid === "NO") {
+      return res
+        .status(otpVerification.HtmlCode)
+        .json({ message: otpVerification.Reason });
+    }
+
     const passwordCheck = checkPassword(newPassword);
     if (!passwordCheck.Valid) {
       return res.status(400).json({ message: passwordCheck.message });
@@ -20,17 +34,17 @@ router.post("/reset-password", async (req, res) => {
       .update(newPassword)
       .digest("hex");
 
-    if (isAdmin) {
-      await adminUser.updateOne({ email }, { password: hashedPassword });
-    } else {
-      await User.updateOne({ email }, { password: hashedPassword });
-    }
+    await resumeData.deleteMany({ login_email: userEmail });
+
+    await userCurrentSession.deleteMany({ email: userEmail });
+
+    await User.updateOne({ email: userEmail }, { password: hashedPassword });
 
     await addLogs(
-      isAdmin,
       false,
-      email,
-      email,
+      false,
+      userEmail,
+      userEmail,
       "Public",
       "P4",
       `Successful password reset.`
@@ -47,7 +61,7 @@ router.post("/reset-password", async (req, res) => {
       "System",
       "Confidential",
       "P4",
-      `Failed to perform password reset. ${error}`
+      `Failed to perform password reset from user profile. ${error}`
     );
     res.status(500).json({ message: "Server error" });
   }

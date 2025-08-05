@@ -23,7 +23,7 @@ import checkUnProtectedAccess from "./routes/requests/checkAccess/checkUnProtect
 import checkProtectedAccess from "./routes/requests/checkAccess/checkProtectedAccess.js";
 import checkAdminAccess from "./routes/requests/checkAccess/checkAdminAccess.js";
 import registerNewUser from "./routes/authentication/otp/firstTimeOtp/newUserRegistration.js";
-import passwordReset from "./routes/requests/passwordReset/passwordReset.js";
+import passwordReset from "./routes/requests/userActions/passwordReset.js";
 import fetchAdmins from "./routes/adminActions/fetchAdmins.js";
 import approvalOtp from "./routes/adminActions/approvalOtp.js";
 import addAdmin from "./routes/adminActions/addAdmin.js";
@@ -39,6 +39,11 @@ import fetchLog from "./routes/adminActions/fetchLog.js";
 import getLogDetails from "./routes/adminActions/getLogDetails.js";
 import deleteLogs from "./routes/adminActions/deleteLogs.js";
 import downloadLogs from "./routes/adminActions/downloadLogs.js";
+import getUserDetails from "./routes/requests/userActions/getUserDetails.js";
+import userApprovalOtp from "./routes/requests/userActions/approvalOtp.js";
+import userProfilePasswordReset from "./routes/requests/userActions/resetPasswordWithRecords.js";
+import encryptionKeyReset from "./routes/requests/userActions/resetEncryptionKey.js";
+import fetchUserLogs from "./routes/requests/userActions/fetchLog.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
@@ -117,6 +122,16 @@ app.use("/admin/actions/logMgmt/deleteRequest", deleteLogs);
 
 app.use("/admin/actions/logMgmt/downloadRequest", downloadLogs);
 
+app.use("/userDetails", getUserDetails);
+
+app.use("/user/approvals", userApprovalOtp);
+
+app.use("/user/passwordAction", userProfilePasswordReset);
+
+app.use("/user/encryptionKey", encryptionKeyReset);
+
+app.use("/user/logAction", fetchUserLogs);
+
 const formatISTTimestamp = (date) => {
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
@@ -178,7 +193,7 @@ const newUser2 = new adminUser({
   createdAt: createdAt,
   createdAtFormatted: createdAtFormatted,
   createdBy: "System",
-  accountType: "SuperAdmin",
+  accountType: "Admin",
 });
 await newUser2.save();
 

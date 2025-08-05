@@ -104,7 +104,9 @@ const UserLogs = () => {
       );
     }
 
-    setVisibleLogs(selectedLogs);
+    setVisibleLogs(
+      selectedLogs.slice(visibleLogsStart, visibleLogsStart + PAGE_SIZE)
+    );
     setTotalRecords(selectedLogs.length);
   };
 
