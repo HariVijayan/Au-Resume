@@ -240,29 +240,6 @@ input[type="checkbox"]:hover {
   cursor: pointer;
 }
 
-#dv-FooterWrapper {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 5vh;
-  background-color: var(--primary--accent);
-  color: var(--background);
-  flex-shrink: 0;
-  position: absolute;
-  bottom: 0;
-}
-
-#img-FooterImage {
-  height: 35px;
-  width: 35px;
-  padding-right: 10px;
-}
-
-#p-footer {
-  font-size: var(--fs--normal);
-}
-
 .PageDetailsHeader {
   display: flex;
   justify-content: flex-start;

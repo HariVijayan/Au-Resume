@@ -189,7 +189,7 @@ function RouteWrapper() {
         setLoggedInUserType("Analytics");
         navigate("/admin-dashboard/analytics");
       } else if (response?.data?.message === "Valid access token") {
-        navigate("/resume-builder/template-choosing");
+        //navigate("/resume-builder/template-choosing");
       }
     } catch (error) {
       return;
