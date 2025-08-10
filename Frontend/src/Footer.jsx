@@ -14,10 +14,11 @@ const Footer = () => {
         alignItems: "center",
         width: "100%",
         minHeight: "5vh",
+        maxHeight: "10vh",
         flexShrink: "0",
         position: "absolute",
         bottom: "0",
-        backgroundColor: theme.custom.accentColor,
+        backgroundColor: theme.palette.primary.main,
         color: theme.palette.background.default,
         padding: "1rem 0rem",
       }}

@@ -1,50 +1,3 @@
-.AdminConsoleWrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-}
-
-.AdminConsoleMainContent {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  flex-grow: 1;
-  flex-shrink: 0;
-  min-height: 100vh;
-  padding-bottom: 3rem;
-}
-
-.AdminConsoleHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 90%;
-}
-
-.AdminConsoleHeaderImg {
-  width: 100px;
-  height: 100px;
-}
-
-.AdminConsoleHeaderTitle {
-  font-size: var(--fs--max);
-  color: var(--primary--accent);
-}
-
-.AdminConsoleHeading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 90%;
-  margin-top: 2rem;
-}
-
 .AdminConsoleHeading p {
   font-size: var(--fs--huge);
   font-weight: bold;
@@ -132,22 +85,6 @@
 
 .CardContentLink svg {
   fill: var(--primary--accent);
-}
-
-.AdminDashboardLink {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.AdminDashboardLink:hover {
-  color: var(--primary--accent);
-  cursor: pointer;
-}
-
-.AdminDashboardLink svg {
-  fill: var(--primary--accent);
-  cursor: pointer;
 }
 
 .ListAdminsWrapper {

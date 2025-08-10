@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material";
 
 const Error404Page = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
   return (
     <Container maxWidth="xl">
       <Box sx={{ textAlign: "center", width: "100%" }}>
@@ -16,7 +18,11 @@ const Error404Page = () => {
           The site that your're looking for doesn't exist.{" "}
           <Typography
             variant="h5"
-            sx={{ color: "red", cursor: "pointer", paddingLeft: "5px" }}
+            sx={{
+              color: theme.palette.error.main,
+              cursor: "pointer",
+              paddingLeft: "5px",
+            }}
             onClick={() => navigate("/")}
           >
             Click here to go back to main page.
