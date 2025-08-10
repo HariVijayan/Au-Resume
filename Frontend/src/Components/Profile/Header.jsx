@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
@@ -12,9 +12,21 @@ const AdminPanelHeader = ({
   setLogoutUserType,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const logoutUser = () => {
     setLogoutUserType("Admin");
     setLogoutClicked(true);
+  };
+  const navigateToPreviousPage = () => {
+    if (location.pathname === "/admin-dashboard/super-admin") {
+      return;
+    } else if (location.pathname === "/admin-dashboard/admin-general") {
+      return;
+    } else if (location.pathname === "/admin-dashboard/analytics") {
+      return;
+    } else {
+      navigate(-1);
+    }
   };
   const theme = useTheme();
   return (
@@ -59,14 +71,18 @@ const AdminPanelHeader = ({
             ":hover": { color: theme.palette.primary.main },
           }}
           variant="h5"
-          onClick={() => navigate(-1)}
+          onClick={navigateToPreviousPage}
         >
-          <ArrowBackIcon sx={{ fill: theme.palette.primary.main }} />
+          {location.pathname != "/admin-dashboard/super-admin" &&
+            location.pathname != "/admin-dashboard/admin-general" &&
+            location.pathname != "/admin-dashboard/analytics" && (
+              <ArrowBackIcon sx={{ fill: theme.palette.primary.main }} />
+            )}
           {backArrowPageName}
         </Typography>
         <Typography variant="h5" sx={{ display: "flex", gap: "0.5rem" }}>
           Admin Type:{" "}
-          <Typography variant="h5" sx={{ color: theme.palette.error.main }}>
+          <Typography sx={{ color: theme.palette.error.main }}>
             {headerAdminType}
           </Typography>
         </Typography>

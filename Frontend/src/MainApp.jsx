@@ -348,9 +348,12 @@ function RouteWrapper() {
         <Route
           path="/admin-dashboard/super-admin"
           element={
-            <SuperAdminDashboard
+            <AdminPanelTemplate
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Admin Dashboard"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={SuperAdminDashboard}
             />
           }
         />
@@ -409,9 +412,12 @@ function RouteWrapper() {
         <Route
           path="/admin-dashboard/admin-general"
           element={
-            <AdminDashboard
+            <AdminPanelTemplate
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Admin Dashboard"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={AdminDashboard}
             />
           }
         />
@@ -522,9 +528,12 @@ function RouteWrapper() {
         <Route
           path="/admin-dashboard/analytics"
           element={
-            <Analytics
+            <AdminPanelTemplate
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
+              backArrowPageName={"Admin Dashboard"}
+              headerAdminType={loggedInUserType}
+              AdminConsoleContent={Analytics}
             />
           }
         />
