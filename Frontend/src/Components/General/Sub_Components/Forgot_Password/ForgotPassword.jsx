@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Stack from "@mui/material/Stack";
+import Header from "../Header";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -25,12 +27,17 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div id="dv-ForgotPasswordWrapper" className="AuthenticationWrapper">
-      <div id="dv-FPLogoWrapper" className="LogoWrapper">
-        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
-        <p>Department of IST</p>
-      </div>
-      <h2>Verify Email to reset password</h2>
+    <Stack
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        width: "60%",
+        minHeight: "100vh",
+        flexDirection: "column",
+      }}
+    >
+      <Header headerTitle={"Verify Email to reset password"} />
       <div className="AuthenticationDivWrapper">
         <div id="dv-ForgotPassword" className="AuthenticationInputWrapper">
           <input
@@ -61,7 +68,7 @@ const ForgotPassword = () => {
       <button className="AuthenticationButton" onClick={getOtp}>
         Get Otp
       </button>
-    </div>
+    </Stack>
   );
 };
 

@@ -2,7 +2,7 @@ iframe {
   margin-bottom: 2em;
 }
 
-#dv-BodyWrapper button {
+/*button {
   appearance: none;
   border-radius: 5px;
   box-sizing: border-box;
@@ -28,18 +28,18 @@ iframe {
   align-items: center;
 }
 
-#dv-BodyWrapper button :disabled {
+button :disabled {
   pointer-events: none;
 }
 
-#dv-BodyWrapper button :hover {
+button :hover {
   transform: translateY(-2px);
 }
 
-#dv-BodyWrapper button :active {
+button :active {
   box-shadow: none;
   transform: translateY(0);
-}
+}*/
 
 .LeftNavigationButtons svg,
 .RightNavigationButtons svg,
@@ -168,48 +168,6 @@ iframe {
 
 .DownloadButton:hover {
   box-shadow: var(--bt--submit--shadow);
-}
-
-#dv-TemplatesWrapper {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-height: 80vh;
-}
-
-#dv-TemplatesHeader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 95%;
-}
-
-#dv-TemplatesHeading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#dv-TemplatesMenuIcons {
-  margin-left: auto;
-}
-
-#dv-TemplatesImages {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.TemplateImages {
-  height: 500px;
-  width: 350px;
-  border-radius: 25px 25px 25px 25px;
-  box-shadow: var(--general--shadow);
 }
 
 .MainContent {

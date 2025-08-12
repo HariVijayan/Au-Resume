@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Stack from "@mui/material/Stack";
+import Header from "../Header";
 
 const VerifyOTP = () => {
   const [otp, setOtp] = useState("");
@@ -64,12 +66,17 @@ const VerifyOTP = () => {
   };
 
   return (
-    <div id="dv-FPOtpWrapper" className="AuthenticationWrapper">
-      <div id="dv-FPOtpLogoWrapper" className="LogoWrapper">
-        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
-        <p>Department of IST</p>
-      </div>
-      <h2>Verify Otp to change password</h2>
+    <Stack
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        width: "60%",
+        minHeight: "100vh",
+        flexDirection: "column",
+      }}
+    >
+      <Header headerTitle={"Verify Otp to change password"} />
       <div className="AuthenticationDivWrapper">
         <div id="dv-ForgotPasswordOtp" className="AuthenticationInputWrapper">
           <input
@@ -104,7 +111,7 @@ const VerifyOTP = () => {
       <button className="AuthenticationButton" onClick={verifyOtp}>
         Verify Otp
       </button>
-    </div>
+    </Stack>
   );
 };
 

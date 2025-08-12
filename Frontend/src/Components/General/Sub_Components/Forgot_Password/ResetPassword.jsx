@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import Stack from "@mui/material/Stack";
+import Header from "../Header";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -35,12 +37,17 @@ const ResetPassword = () => {
   };
 
   return (
-    <div id="dv-RPWrapper" className="AuthenticationWrapper">
-      <div id="dv-RPLogoWrapper" className="LogoWrapper">
-        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
-        <p>Department of IST</p>
-      </div>
-      <h2>Reset Password</h2>
+    <Stack
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        width: "60%",
+        minHeight: "100vh",
+        flexDirection: "column",
+      }}
+    >
+      <Header headerTitle={"Reset Password"} />
       <div className="AuthenticationDivWrapper">
         <div id="dv-RPPassword" className="AuthenticationInputWrapper">
           <input
@@ -84,7 +91,7 @@ const ResetPassword = () => {
       <button className="AuthenticationButton" onClick={resetPassword}>
         Reset Password
       </button>
-    </div>
+    </Stack>
   );
 };
 

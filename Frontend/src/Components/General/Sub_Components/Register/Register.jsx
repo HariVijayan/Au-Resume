@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Stack from "@mui/material/Stack";
+import Header from "../Header";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -237,12 +239,17 @@ const Register = () => {
   };
 
   return (
-    <div id="dv-RegisterWrapper" className="AuthenticationWrapper">
-      <div id="dv-RegisterLogoWrapper" className="LogoWrapper">
-        <img src="/Au Logo.png" id="img-aulogo" alt="AU Logo"></img>
-        <p>Department of IST</p>
-      </div>
-      <h2>Create your account</h2>
+    <Stack
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        width: "60%",
+        minHeight: "100vh",
+        flexDirection: "column",
+      }}
+    >
+      <Header headerTitle={"Create your account"} />
       <div className="RegistrationDivWrapper">
         <div id="dv-RegisterEmail" className="RegisterInputWrapper">
           <input
@@ -439,7 +446,7 @@ const Register = () => {
           Click here to login
         </span>
       </p>
-    </div>
+    </Stack>
   );
 };
 
