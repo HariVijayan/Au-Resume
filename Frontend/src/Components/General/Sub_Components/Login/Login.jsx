@@ -61,8 +61,8 @@ const Login = ({ setLoggedInUserType }) => {
           navigate("/resume-builder/template-choosing");
         }
       }, 1000); //Login after 1 seconds of showing success message
-    } catch (err) {
-      setServerMessage(err.response?.data?.message || "Login failed");
+    } catch (error) {
+      setServerMessage(error.response?.data?.message || "Login failed");
       setServerMsgType("error");
       setShowServerMsg(true);
     }

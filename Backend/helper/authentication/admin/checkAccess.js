@@ -33,7 +33,7 @@ async function checkAdminAccess(accessToken) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "Session expired. Please log in again.",
+      Reason: "Session expired. Log in again",
     };
   }
 
@@ -52,7 +52,7 @@ async function checkAdminAccess(accessToken) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "Session expired. Please log in again.",
+      Reason: "Session expired. Log in again",
     };
   }
 
@@ -71,7 +71,7 @@ async function checkAdminAccess(accessToken) {
     return {
       Valid: "NO",
       HtmlCode: 403,
-      Reason: "Unauthorised access. Not an admin.",
+      Reason: "Unauthorised access. Not an admin",
     };
   }
 

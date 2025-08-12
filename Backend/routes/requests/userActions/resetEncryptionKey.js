@@ -40,7 +40,7 @@ router.post("/resetEncKey", async (req, res) => {
     );
 
     res.json({
-      message: "Encryption Key has been successfully reset.",
+      message: "Encryption Key has been successfully reset",
     });
   } catch (error) {
     await addLogs(

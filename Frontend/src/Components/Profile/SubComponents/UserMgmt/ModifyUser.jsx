@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const ModifyUser = () => {
   const requestType = "modifyUser";
@@ -19,12 +21,12 @@ const ModifyUser = () => {
   const [needApproval, setNeedApproval] = useState(null);
 
   const [showOtp, setShowOtp] = useState(null);
-  const [otpReqMessage, setOtpReqMessage] = useState("");
-  const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
-  const [otpInput, setOtpInput] = useState("");
 
-  const [finalResult, setFinalResult] = useState("");
-  const [finalResultColor, setFinalResultColor] = useState("red");
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
+
+  const [otpInput, setOtpInput] = useState("");
 
   useEffect(() => {
     if (modifyUserEmail && modifyUserRegNo) {
@@ -44,14 +46,19 @@ const ModifyUser = () => {
         },
         { withCredentials: true }
       );
-      if (response.status === 200) {
-        setUsersList(response.data.usersList);
-        setShowUsers(true);
-        setAccountActions(true);
-        setNeedApproval(true);
-      }
+      setUsersList(response.data.usersList);
+      setShowUsers(true);
+      setAccountActions(true);
+      setNeedApproval(true);
+      setServerMessage("Successfully fetched the user details");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      console.error(error.response.data.message || "Failed to fetch user list");
+      setServerMessage(
+        error.response.data.message || "Failed to fetch user details"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -62,16 +69,16 @@ const ModifyUser = () => {
         { requestType },
         { withCredentials: true }
       );
-      if (response.status === 200) {
-        setShowOtp(true);
-        setOtpReqMessage(
-          "An OTP has been sent to your email. Verify to proceed with the request"
-        );
-        setOtpReqMessageColor("green");
-      }
+      setShowOtp(true);
+      setServerMessage("Otp sent to email successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      setOtpReqMessageColor("red");
-      setOtpReqMessage(response.data.message || "Failed to get OTP");
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate Otp"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -89,21 +96,23 @@ const ModifyUser = () => {
         { withCredentials: true }
       );
 
-      if (response.status === 200) {
-        setFinalResult(
-          `The requested modifications have been performed successfully. Refreshing the page in 5 seconds.`
-        );
-        setFinalResultColor("green");
-        setTimeout(() => {
-          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
-        }, 5000);
-      }
+      setServerMessage(
+        `The requested modification(s) have been performed successfully. Refreshing the page in 5 seconds.`
+      );
+      setServerMsgType("success");
+      setShowServerMsg(true);
+
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
     } catch (error) {
-      setFinalResultColor("red");
-      setFinalResult(
-        error.response.data.message ||
+      setServerMessage(
+        `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
           "Failed to modify user account. Refreshing the page in 5 seconds. Please try again."
       );
+      setServerMsgType("error");
+      setShowServerMsg(true);
+
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
@@ -112,6 +121,24 @@ const ModifyUser = () => {
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">Modify User Account</p>
         <span>
@@ -246,10 +273,6 @@ const ModifyUser = () => {
             </div>
           )}
 
-          {otpReqMessage && (
-            <p style={{ color: `${otpReqMessageColor}` }}>{otpReqMessage}</p>
-          )}
-
           {showOtp && (
             <div className="AdminMgmtOtpWrapper">
               <div className="AdminMgmtOtp">
@@ -270,10 +293,6 @@ const ModifyUser = () => {
                 Confirm changes
               </button>
             </div>
-          )}
-
-          {finalResult && (
-            <p style={{ color: `${finalResultColor}` }}>{finalResult}</p>
           )}
         </div>
       </div>

@@ -21,7 +21,7 @@ async function verifyAdminOtp(adminEmail, otpInput) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "Invalid Otp.",
+      Reason: "Invalid Otp",
     };
   }
 
@@ -39,7 +39,7 @@ async function verifyAdminOtp(adminEmail, otpInput) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "Otp expired.",
+      Reason: "Otp expired",
     };
   }
 

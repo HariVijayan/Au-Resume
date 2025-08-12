@@ -29,9 +29,8 @@ router.post("/password-reset-otp", async (req, res) => {
     const requestNewOtp = await generateOtp(isAdmin, email, "Password Reset");
 
     if (requestNewOtp.Success === "NO") {
-      console.log(requestNewOtp.Reason);
       return res.status(requestNewOtp.HtmlCode).json({
-        message: "Unable to generate otp, try again later.",
+        message: "Unable to generate otp",
       });
     }
 
@@ -57,9 +56,8 @@ router.post("/password-reset-otp", async (req, res) => {
     );
 
     if (sendEmail.Success === "NO") {
-      console.log(sendEmail.Reason);
       return res.status(sendEmail.HtmlCode).json({
-        message: "Please restart the process.",
+        message: "Failed to send otp to user",
       });
     }
 
@@ -73,10 +71,10 @@ router.post("/password-reset-otp", async (req, res) => {
       `Requested password reset. Yet to verify request.`
     );
 
-    res.json({ message: "OTP sent to email" });
+    res.json({ message: "OTP sent to email successfully" });
   } catch (error) {
     await addLogs(
-      false,
+      true,
       true,
       "System",
       "System",

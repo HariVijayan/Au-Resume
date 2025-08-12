@@ -19,7 +19,7 @@ async function getPendingUserOtp(requestedEmail) {
     return {
       Valid: "NO",
       HtmlCode: 429,
-      Reason: "Too many OTP requests. Try again in 1 minute.",
+      Reason: "Too many OTP requests. Try again in 1 minute",
     };
   }
 

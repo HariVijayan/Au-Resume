@@ -32,7 +32,7 @@ async function checkUserOrAdminAccess(requestedEmail, isAdmin) {
         `Access attempt without user account. Potential phising attempt.`
       );
     }
-    return { Valid: "NO", HtmlCode: 404, Reason: "User not found." };
+    return { Valid: "NO", HtmlCode: 404, Reason: "User not found" };
   }
 
   return {

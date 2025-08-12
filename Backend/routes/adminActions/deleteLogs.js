@@ -78,7 +78,7 @@ router.post("/deleteLogs", async (req, res) => {
       `Deleted logs between ${startDateObj} and ${endDateObj} from ${collectionName} table.`
     );
     return res.status(200).json({
-      message: `Logs has been deleted successfully.`,
+      message: `Logs has been deleted successfully`,
     });
   } catch (error) {
     await addLogs(

@@ -33,7 +33,7 @@ async function checkUserAccess(accessToken) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "Session expired. Please log in again.",
+      Reason: "Session expired. Log in again",
     };
   }
 
@@ -52,7 +52,7 @@ async function checkUserAccess(accessToken) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "Session expired. Please log in again.",
+      Reason: "Session expired. Log in again",
     };
   }
 
@@ -71,7 +71,7 @@ async function checkUserAccess(accessToken) {
     return {
       Valid: "NO",
       HtmlCode: 403,
-      Reason: "Unauthorised access. Not an user.",
+      Reason: "Unauthorised access. Not an user",
     };
   }
 

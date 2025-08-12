@@ -1,5 +1,7 @@
 import { use, useEffect, useState } from "react";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const PAGE_SIZE = 50;
 
@@ -17,11 +19,9 @@ const LogActions = () => {
   const [showOtp, setShowOtp] = useState(false);
   const [otpInput, setOtpInput] = useState("");
 
-  const [otpReqMessage, setOtpReqMessage] = useState("");
-  const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
-
-  const [logActionResult, setLogActionResult] = useState("");
-  const [logActionResultColor, setLogActionResultColor] = useState("red");
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   const getLogDetails = async () => {
     try {
@@ -34,8 +34,13 @@ const LogActions = () => {
       setTotalRecords(response.data.toBeAffectedLogs);
       setVisibleLogs(response.data.logs.slice(0, PAGE_SIZE));
       setVisibleLogsStart(0);
+      setServerMessage("Logs fetched successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      console.error("Error fetching log details:", error);
+      setServerMessage(error.response?.data?.message || "Error fetching logs");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       setVisibleLogs([]);
       setTotalRecords(0);
       setVisibleLogsStart(0);
@@ -51,23 +56,16 @@ const LogActions = () => {
         { requestType },
         { withCredentials: true }
       );
-      if (response.statusText === "OK") {
-        setShowOtp(true);
-        setOtpReqMessage(
-          "An OTP has been sent to your email. Verify to proceed with the request"
-        );
-        setOtpReqMessageColor("green");
-      } else {
-        setOtpReqMessageColor("red");
-        setOtpReqMessage(response.data.message);
-      }
+      setShowOtp(true);
+      setServerMessage("Otp sent to email successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      console.log(error);
-      setOtpReqMessageColor("red");
-      setOtpReqMessage(
-        error.data.message ||
-          "Failed to get otp for verification. Refresh the page and try again."
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate Otp"
       );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -79,23 +77,22 @@ const LogActions = () => {
         { withCredentials: true }
       );
 
-      if (response.statusText === "OK") {
-        setLogActionResult(
-          `Logs have been deleted successfully. Refreshing the page in 5 seconds.`
-        );
-        setLogActionResultColor("green");
-        setTimeout(() => {
-          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
-        }, 5000);
-      } else {
-        setLogActionResultColor("red");
-        setLogActionResult(response.data.message);
-      }
-    } catch (error) {
-      setLogActionResultColor("red");
-      setLogActionResult(
-        `Failed to delete logs. Refreshing the page in 5 seconds. Please try again.`
+      setServerMessage(
+        "Log deletion successful. Refreshing the page in 5 seconds"
       );
+      setServerMsgType("success");
+      setShowServerMsg(true);
+
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
+    } catch (error) {
+      setServerMessage(
+        `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
+          "Failed to remove logs. Refreshing the page in 5 seconds"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
@@ -110,31 +107,29 @@ const LogActions = () => {
         { withCredentials: true }
       );
 
-      if (response.statusText === "OK") {
-        const blob = new Blob([response.data], {
-          type: "text/csv",
-        });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${collectionName} ${startDate} to ${endDate}.csv`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-        setLogActionResult(
-          `Logs have been downloaded successfully. Refreshing the page in 5 seconds.`
-        );
-        setLogActionResultColor("green");
-        setTimeout(() => {
-          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
-        }, 5000);
-      } else {
-        setLogActionResultColor("red");
-        setLogActionResult(response.data.message);
-      }
-    } catch (error) {
-      setLogActionResultColor("red");
-      setLogActionResult(
-        `Failed to download logs. Refreshing the page in 5 seconds. Please try again.`
+      const blob = new Blob([response.data], {
+        type: "text/csv",
+      });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${collectionName} ${startDate} to ${endDate}.csv`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+      setServerMessage(
+        "Log downloaded successfully. Refreshing the page in 5 seconds"
       );
+      setServerMsgType("success");
+      setShowServerMsg(true);
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
+    } catch (error) {
+      setServerMessage(
+        `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
+          "Failed to download logs. Refreshing the page in 5 seconds"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
@@ -173,6 +168,24 @@ const LogActions = () => {
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">Log Actions</p>
         <span>
@@ -355,10 +368,6 @@ const LogActions = () => {
           </button>
         )}
 
-      {otpReqMessage && (
-        <p style={{ color: `${otpReqMessageColor}` }}>{otpReqMessage}</p>
-      )}
-
       {showOtp && (
         <div className="AdminMgmtOtpWrapper">
           <div className="AdminMgmtOtp">
@@ -379,10 +388,6 @@ const LogActions = () => {
             {logActionType} {collectionName}
           </button>
         </div>
-      )}
-
-      {logActionResult && (
-        <p style={{ color: `${logActionResultColor}` }}>{logActionResult}</p>
       )}
     </>
   );

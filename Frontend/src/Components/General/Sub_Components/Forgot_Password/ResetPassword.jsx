@@ -3,15 +3,20 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Header from "../Header";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email; // Get email from state
-  const isAdmin = location.state?.isAdmin || false; // Get isAdmin from state
+  const email = location.state?.email;
+  const isAdmin = location.state?.isAdmin || false;
+
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   if (!email) {
     return <p>Please restart the process.</p>;
@@ -20,7 +25,9 @@ const ResetPassword = () => {
   const resetPassword = async (e) => {
     e.preventDefault();
     if (newPassword != confirmPassword) {
-      setError("Passwords doesn't match.");
+      setServerMessage("Password doesn't match");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       return;
     }
     try {
@@ -28,70 +35,96 @@ const ResetPassword = () => {
         "http://localhost:5000/userRequest/reset-password",
         { email, newPassword, isAdmin }
       );
-      setError(response.data.message);
+      setServerMessage("Password reset successful");
+      setServerMsgType("success");
+      setShowServerMsg(true);
 
-      navigate("/"); // Redirect to login page
-    } catch (err) {
-      setError(err.response?.data?.message || "Password reset failed");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000); //Redirect to login page after 1 seconds of showing success message
+    } catch (error) {
+      setServerMessage(
+        error.response?.data?.message || "Password reset failed"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
   return (
-    <Stack
-      sx={{
-        display: "flex",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        width: "60%",
-        minHeight: "100vh",
-        flexDirection: "column",
-      }}
-    >
-      <Header headerTitle={"Reset Password"} />
-      <div className="AuthenticationDivWrapper">
-        <div id="dv-RPPassword" className="AuthenticationInputWrapper">
-          <input
-            type="password"
-            id="in-rp_password"
-            placeholder=" "
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-          <label
-            htmlFor="in-rp_password"
-            className="AuthenticationTextFieldLabel"
-          >
-            Password
-          </label>
+    <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
+      <Stack
+        sx={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          width: "60%",
+          minHeight: "100vh",
+          flexDirection: "column",
+        }}
+      >
+        <Header headerTitle={"Reset Password"} />
+        <div className="AuthenticationDivWrapper">
+          <div id="dv-RPPassword" className="AuthenticationInputWrapper">
+            <input
+              type="password"
+              id="in-rp_password"
+              placeholder=" "
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+            <label
+              htmlFor="in-rp_password"
+              className="AuthenticationTextFieldLabel"
+            >
+              Password
+            </label>
+          </div>
         </div>
-      </div>
 
-      <div className="AuthenticationDivWrapper">
-        <div id="dv-RPConfirmPassword" className="AuthenticationInputWrapper">
-          <input
-            type="password"
-            id="in-rp_confirmpassword"
-            placeholder=" "
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <label
-            htmlFor="in-rp_confirmpassword"
-            className="AuthenticationTextFieldLabel"
-          >
-            Confirm Password
-          </label>
+        <div className="AuthenticationDivWrapper">
+          <div id="dv-RPConfirmPassword" className="AuthenticationInputWrapper">
+            <input
+              type="password"
+              id="in-rp_confirmpassword"
+              placeholder=" "
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <label
+              htmlFor="in-rp_confirmpassword"
+              className="AuthenticationTextFieldLabel"
+            >
+              Confirm Password
+            </label>
+          </div>
         </div>
-      </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <button className="AuthenticationButton" onClick={resetPassword}>
-        Reset Password
-      </button>
-    </Stack>
+        <button className="AuthenticationButton" onClick={resetPassword}>
+          Reset Password
+        </button>
+      </Stack>
+    </>
   );
 };
 

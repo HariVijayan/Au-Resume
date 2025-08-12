@@ -26,7 +26,7 @@ router.post("/registration", async (req, res) => {
         .json({ message: otpVerification.Reason });
     }
 
-    const requestedAccount = accountCheck.PendingUser;
+    const requestedAccount = accountAccessCheck.PendingUser;
     const verifiedUser = new User({
       email: requestedAccount.email,
       password: requestedAccount.password,
@@ -52,11 +52,11 @@ router.post("/registration", async (req, res) => {
     );
 
     res.json({
-      message: "OTP verified. Registration complete. You can now login.",
+      message: "Registration complete. Redirecting to login page",
     });
   } catch (error) {
     await addLogs(
-      false,
+      true,
       true,
       "System",
       "System",

@@ -1,14 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
 import ResumeInputTemplate from "../../../ResumeFormat.jsx";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const PreviewPdf = () => {
   const [pdfUrl, setPdfUrl] = useState("");
   const [isPreviewClicked, setIsPreviewClicked] = useState(false);
 
   const { resumeData } = ResumeInputTemplate();
-
-  const templateType = resumeData.metaData.template;
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   const fetchPdf = async () => {
     const formData = {
@@ -30,13 +33,39 @@ const PreviewPdf = () => {
       const pdfUrl = URL.createObjectURL(blob);
       setPdfUrl(pdfUrl);
       setIsPreviewClicked(true);
+
+      setServerMessage("Successfully fetched resume to preview");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      console.error("Error fetching PDF:", error);
+      setServerMessage(
+        error.response?.data?.message || "Failed to fetch resume for preview"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <div id="dv-PreviewWrapper">
         {isPreviewClicked && (
           <iframe

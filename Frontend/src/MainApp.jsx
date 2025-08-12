@@ -47,12 +47,18 @@ import Analytics from "./Components/Profile/MainDashboard/AnalyticsDashboard.jsx
 import "./Components/General/General_Styles.css";
 import "./Components/Resume_Builder/RB_Styles.css";
 import "./Components/Profile/Profile_Styles.css";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 import ResumeInputTemplate from "./ResumeFormat.jsx";
 
 function RouteWrapper() {
   const { resumeData, setResumeData } = ResumeInputTemplate();
   const [loggedInUserType, setLoggedInUserType] = useState("");
+
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   const forceMultiTabClosureOnLogout = () => {
     const navigate = useNavigate();
@@ -142,7 +148,11 @@ function RouteWrapper() {
         throw new Error("Session invalid");
       }
     } catch (error) {
-      console.error("Session verification failed:", error);
+      setServerMessage(
+        error.response?.data?.message || "Failed to verify admin access"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
       navigate("/");
     }
   };
@@ -156,7 +166,11 @@ function RouteWrapper() {
         { withCredentials: true }
       );
     } catch (error) {
-      console.error("Session verification failed:", error);
+      setServerMessage(
+        error.response?.data?.message || "Failed to verify user access"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
       navigate("/");
     }
   };
@@ -243,13 +257,21 @@ function RouteWrapper() {
           responseType: "arraybuffer",
         }
       );
+
       const blob = new Blob([response.data], { type: "application/pdf" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = "Resume.pdf";
       link.click();
+      setServerMessage("Successfully downloaded resume");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate resume"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -277,9 +299,17 @@ function RouteWrapper() {
 
       localStorage.setItem("flagLogout", Date.now());
       setTimeout(() => localStorage.removeItem("flagLogout"), 100);
-      window.location.href = "/";
+      setServerMessage("Logout successful");
+      setServerMsgType("success");
+      setShowServerMsg(true);
+
+      setTimeout(() => navigate("/"), 100);
     } catch (error) {
-      console.error("Logout failed:", error);
+      setServerMessage(
+        error.response?.data?.message || "Failed to logout user"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -292,7 +322,6 @@ function RouteWrapper() {
   }, [logoutClicked]);
 
   const [overlayType, setOverlayType] = useState("");
-  const [overlayMessage, setOverlayMessage] = useState("");
   const [userPassword, setUserPassword] = useState("");
 
   const fetchPreviousResume = async () => {
@@ -302,15 +331,19 @@ function RouteWrapper() {
         { userPassword },
         { withCredentials: true }
       );
-      if (response.status === 200) {
-        setResumeData(response.data);
-        resetOverlay();
-      }
+
+      setServerMessage("Successfully fetched previous records");
+      setServerMsgType("success");
+      setShowServerMsg(true);
+      setResumeData(response.data);
+      resetOverlay();
     } catch (error) {
       setUserPassword("");
-      setOverlayMessage(
-        error.response?.data?.message || "Error occured. Please try again."
+      setServerMessage(
+        error.response?.data?.message || "Failed to fetch previous records"
       );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -322,27 +355,44 @@ function RouteWrapper() {
         { withCredentials: true }
       );
       setUserPassword("");
-      if (response.status === 200) {
-        setOverlayMessage(
-          "Resume saved to the database successfully after encryption."
-        );
-      }
+      setServerMessage("Successfully saved current details after encryption");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
       setUserPassword("");
-      setOverlayMessage(
-        error.response?.data?.message || "Error occured. Please try again."
+      setServerMessage(
+        error.response?.data?.message || "Failed to save current details"
       );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
   const resetOverlay = () => {
     setUserPassword("");
     setOverlayType("");
-    setOverlayMessage("");
   };
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <Routes>
         <Route path="*" element={<Error404 />} />
         <Route
@@ -719,9 +769,6 @@ function RouteWrapper() {
                   Password
                 </label>
               </div>
-              {overlayMessage && (
-                <p style={{ color: "red" }}>{overlayMessage}</p>
-              )}
               <button
                 className="AuthenticationButton"
                 onClick={fetchPreviousResume}
@@ -765,9 +812,6 @@ function RouteWrapper() {
                   Password
                 </label>
               </div>
-              {overlayMessage && (
-                <p style={{ color: "red" }}>{overlayMessage}</p>
-              )}
               <button
                 className="AuthenticationButton"
                 onClick={saveCurrentResume}

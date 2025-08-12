@@ -26,7 +26,7 @@ router.post("/get-final-users", async (req, res) => {
     });
 
     if (!modifiableUser) {
-      return res.status(400).json({ message: "No such user found." });
+      return res.status(400).json({ message: "No such user found" });
     }
 
     finalUserList.push({

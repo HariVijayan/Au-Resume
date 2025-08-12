@@ -35,11 +35,11 @@ router.post("/forgot-password", async (req, res) => {
     );
 
     res.json({
-      message: "OTP verified successfully. You can now reset your password.",
+      message: "OTP verified successfully. Redirecting to password reset page",
     });
   } catch (error) {
     await addLogs(
-      isAdmin,
+      true,
       true,
       "System",
       "System",

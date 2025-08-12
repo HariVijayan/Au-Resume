@@ -40,7 +40,7 @@ router.post("/register", async (req, res) => {
     ) {
       return res
         .status(429)
-        .json({ message: "Too many OTP requests. Try again in 1 minute." });
+        .json({ message: "Too many OTP requests. Try again in 1 minute" });
     }
 
     const requestNewOtp = await generateOtp(
@@ -50,9 +50,8 @@ router.post("/register", async (req, res) => {
     );
 
     if (requestNewOtp.Success === "NO") {
-      console.log(requestNewOtp.Reason);
       return res.status(requestNewOtp.HtmlCode).json({
-        message: "Unable to generate otp, try again later.",
+        message: "Unable to generate otp",
       });
     }
 
@@ -71,7 +70,7 @@ router.post("/register", async (req, res) => {
 
     if (sendEmail.Success === "NO") {
       return res.status(sendEmail.HtmlCode).json({
-        message: "Please restart the process.",
+        message: "Failed to send otp to user",
       });
     }
 
@@ -107,12 +106,10 @@ router.post("/register", async (req, res) => {
       `Account created. Yet to be verified.`
     );
 
-    res
-      .status(201)
-      .json({ message: "OTP sent. Verify to complete registration." });
+    res.status(200).json({ message: "OTP sent to email successfully" });
   } catch (error) {
     await addLogs(
-      false,
+      true,
       true,
       "System",
       "System",

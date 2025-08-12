@@ -24,7 +24,7 @@ router.post("/login", async (req, res) => {
     }
 
     if (!user) {
-      return res.status(400).json({ message: "User dosen't exist." });
+      return res.status(400).json({ message: "User dosen't exist" });
     }
 
     if (user.lockUntil && user.lockUntil > Date.now()) {
@@ -32,7 +32,7 @@ router.post("/login", async (req, res) => {
         (user.lockUntil - Date.now()) / 60000
       );
       return res.status(403).json({
-        message: `Account locked. Try again in ${remainingLockTime} minutes.`,
+        message: `Account locked. Try again in ${remainingLockTime} minutes`,
       });
     }
 
@@ -52,7 +52,7 @@ router.post("/login", async (req, res) => {
 
         await user.save();
         return res.status(403).json({
-          message: "Too many failed attempts. Account locked for 30 minutes.",
+          message: "Too many failed attempts. Account locked for 30 minutes",
         });
       }
 

@@ -1,11 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-const Analytics = ({ setLogoutClicked, setLogoutUserType }) => {
+const Analytics = () => {
   const navigate = useNavigate();
-  const logoutUser = () => {
-    setLogoutUserType("Admin");
-    setLogoutClicked(true);
-  };
   return (
     <>
       <div className="AdminConsoleActionsWrapper">

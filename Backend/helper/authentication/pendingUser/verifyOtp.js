@@ -19,7 +19,7 @@ async function verifyPendingUserOtp(requestedEmail, otpInput) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "Invalid Otp.",
+      Reason: "Invalid Otp",
     };
   }
 
@@ -37,7 +37,7 @@ async function verifyPendingUserOtp(requestedEmail, otpInput) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "OTP expired.",
+      Reason: "OTP expired",
     };
   }
   await userOtp.deleteMany({ email: requestedEmail });
@@ -55,7 +55,6 @@ async function verifyPendingUserOtp(requestedEmail, otpInput) {
   return {
     Valid: "YES",
     HtmlCode: 200,
-    PendingUser: requestedAccount,
   };
 }
 

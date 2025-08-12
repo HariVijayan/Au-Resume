@@ -3,18 +3,23 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Stack from "@mui/material/Stack";
 import Header from "../Header";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
   const [department, setDept] = useState("Information Science and Technology");
   const [courseType, setCourseType] = useState("");
   const [programme, setProgramme] = useState("");
   const [branch, setBranch] = useState("");
   const [registerNumber, setRegisterNumber] = useState("");
   const navigate = useNavigate();
+
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   const dropdownOptions = {
     courseTypes: ["Under Graduate", "Post Graduate"],
@@ -189,31 +194,39 @@ const Register = () => {
   const registerUser = async (e) => {
     e.preventDefault();
     if (password != confirmPassword) {
-      setError("Passwords doesn't match.");
+      setServerMessage("Passwords doesn't match");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       return;
     }
     if (!password) {
-      setError("Choose your password to continue.");
+      setServerMessage("Choose your password to continue");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       return;
     }
     if (!confirmPassword) {
-      setError("Confirm your password to continue.");
+      setServerMessage("Confirm your password to continue");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       return;
     }
     if (!courseType) {
-      setError("Choose your course type to continue.");
+      setServerMessage("Choose your course type to continue");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       return;
     }
     if (!programme) {
-      setError("Select your programme to continue.");
+      setServerMessage("Select your programme to continue");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       return;
     }
     if (!branch) {
-      setError("Select your branch to continue.");
-      return;
-    }
-    if (!branch) {
-      setError("Select your branch to continue.");
+      setServerMessage("Select your branch to continue");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       return;
     }
     try {
@@ -230,223 +243,253 @@ const Register = () => {
         },
         {}
       );
-      if (response.status === 201) {
+
+      setServerMessage("Otp sent to email successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
+
+      setTimeout(() => {
         navigate("/verify-otp", { state: { email } });
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      }, 1000); //Redirect to otp verification after 1 seconds of showing success message
+    } catch (error) {
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate Otp"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
   return (
-    <Stack
-      sx={{
-        display: "flex",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        width: "60%",
-        minHeight: "100vh",
-        flexDirection: "column",
-      }}
-    >
-      <Header headerTitle={"Create your account"} />
-      <div className="RegistrationDivWrapper">
-        <div id="dv-RegisterEmail" className="RegisterInputWrapper">
-          <input
-            type="email"
-            placeholder=" "
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <label htmlFor="in-register_email" className="RegisterTextFieldLabel">
-            Email
-          </label>
-        </div>
-
-        <div id="dv-RegisterStudentNo" className="RegisterInputWrapper">
-          <input
-            type="number"
-            placeholder=" "
-            value={registerNumber}
-            onChange={(e) => setRegisterNumber(e.target.value)}
-            required
-          />
-          <label
-            htmlFor="in-register_studentno"
-            className="RegisterTextFieldLabel"
-          >
-            Register Number
-          </label>
-        </div>
-      </div>
-
-      <div className="RegistrationDivWrapper">
-        <div className="RegisterDropDownWrapper">
-          <div id="dv-RegisterDept" className="RegisterDropDown">
-            <select
-              value={department}
-              id="se-Department"
-              onChange={(e) => setDept(e.target.value)}
-            >
-              <option value="Information Science and Technology">
-                Information Science and Technology
-              </option>
-              <option value="Biomedical Engineering">
-                Biomedical Engineering
-              </option>
-              <option value="Civil Engineering">Civil Engineering</option>
-              <option value="Computer Science and Engineering">
-                Computer Science and Engineering
-              </option>
-              <option value="Chemistry">
-                Electrical and Electronics Engineering
-              </option>
-              <option value="Electronics and Communication Engineering">
-                Electronics and Communication Engineering
-              </option>
-              <option value="English">English</option>
-              <option value="Geology">Geology</option>
-              <option value="Industrial Engineering">
-                Industrial Engineering
-              </option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Manufacturing Engineering">
-                Manufacturing Engineering
-              </option>
-              <option value="Management Studies">Management Studies</option>
-              <option value="Mechanical Engineering">
-                Mechanical Engineering
-              </option>
-              <option value="Media Sciences">Media Sciences</option>
-              <option value="Medical Physics">Medical Physics</option>
-              <option value="Mining Engineering">Mining Engineering</option>
-              <option value="Physics">Physics</option>
-              <option value="Printing and Packaging Technology">
-                Priniting and Packaging Technology
-              </option>
-            </select>
-            <label htmlFor="se-Department" className="DropDownLabel">
-              Department
-            </label>
-          </div>
-        </div>
-
-        <div className="RegisterDropDownWrapper">
-          <div id="dv-RegisterCourse" className="RegisterDropDown">
-            <select
-              value={courseType}
-              id="se-CourseType"
-              onChange={chooseCourseType}
-            >
-              <option value="">Choose course type</option>
-              {dropdownOptions.courseTypes.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <label htmlFor="se-CourseType" className="DropDownLabel">
-              Course Type
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div className="RegistrationDivWrapper">
-        <div className="RegisterDropDownWrapper">
-          <div id="dv-RegisterProgramme" className="RegisterDropDown">
-            <select
-              value={programme}
-              id="se-Programme"
-              onChange={chooseProgramme}
-              disabled={!courseType}
-            >
-              <option value="">Choose Programme</option>
-              {getProgrammesList().map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <label htmlFor="se-Programme" className="DropDownLabel">
-              Programme
-            </label>
-          </div>
-        </div>
-
-        <div className="RegisterDropDownWrapper">
-          <div id="dv-RegisterBranch" className="RegisterDropDown">
-            <select
-              value={branch}
-              id="se-Branch"
-              onChange={chooseBranch}
-              disabled={!programme}
-            >
-              <option value="">Choose Branch</option>
-              {getBranchesList().map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <label htmlFor="se-Branch" className="DropDownLabel">
-              Branch
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div className="RegistrationDivWrapper">
-        <div id="dv-RegisterPassword" className="RegisterInputWrapper">
-          <input
-            type="password"
-            placeholder=" "
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <label
-            htmlFor="in-register_password"
-            className="RegisterTextFieldLabel"
-          >
-            Password
-          </label>
-        </div>
-
-        <div id="dv-RegisterConfirmPassword" className="RegisterInputWrapper">
-          <input
-            type="password"
-            placeholder=" "
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <label
-            htmlFor="in-register_confirmpassword"
-            className="RegisterTextFieldLabel"
-          >
-            Confirm Password
-          </label>
-        </div>
-      </div>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <button
-        onClick={registerUser}
-        disabled={!branch}
-        className="AuthenticationButton"
+    <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
       >
-        Register
-      </button>
-      <p>
-        Existing User?{" "}
-        <span onClick={navigateToLogin} className="AuthenticationLink">
-          Click here to login
-        </span>
-      </p>
-    </Stack>
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
+      <Stack
+        sx={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          width: "60%",
+          minHeight: "100vh",
+          flexDirection: "column",
+        }}
+      >
+        <Header headerTitle={"Create your account"} />
+        <div className="RegistrationDivWrapper">
+          <div id="dv-RegisterEmail" className="RegisterInputWrapper">
+            <input
+              type="email"
+              placeholder=" "
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label
+              htmlFor="in-register_email"
+              className="RegisterTextFieldLabel"
+            >
+              Email
+            </label>
+          </div>
+
+          <div id="dv-RegisterStudentNo" className="RegisterInputWrapper">
+            <input
+              type="number"
+              placeholder=" "
+              value={registerNumber}
+              onChange={(e) => setRegisterNumber(e.target.value)}
+              required
+            />
+            <label
+              htmlFor="in-register_studentno"
+              className="RegisterTextFieldLabel"
+            >
+              Register Number
+            </label>
+          </div>
+        </div>
+
+        <div className="RegistrationDivWrapper">
+          <div className="RegisterDropDownWrapper">
+            <div id="dv-RegisterDept" className="RegisterDropDown">
+              <select
+                value={department}
+                id="se-Department"
+                onChange={(e) => setDept(e.target.value)}
+              >
+                <option value="Information Science and Technology">
+                  Information Science and Technology
+                </option>
+                <option value="Biomedical Engineering">
+                  Biomedical Engineering
+                </option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Computer Science and Engineering">
+                  Computer Science and Engineering
+                </option>
+                <option value="Chemistry">
+                  Electrical and Electronics Engineering
+                </option>
+                <option value="Electronics and Communication Engineering">
+                  Electronics and Communication Engineering
+                </option>
+                <option value="English">English</option>
+                <option value="Geology">Geology</option>
+                <option value="Industrial Engineering">
+                  Industrial Engineering
+                </option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Manufacturing Engineering">
+                  Manufacturing Engineering
+                </option>
+                <option value="Management Studies">Management Studies</option>
+                <option value="Mechanical Engineering">
+                  Mechanical Engineering
+                </option>
+                <option value="Media Sciences">Media Sciences</option>
+                <option value="Medical Physics">Medical Physics</option>
+                <option value="Mining Engineering">Mining Engineering</option>
+                <option value="Physics">Physics</option>
+                <option value="Printing and Packaging Technology">
+                  Priniting and Packaging Technology
+                </option>
+              </select>
+              <label htmlFor="se-Department" className="DropDownLabel">
+                Department
+              </label>
+            </div>
+          </div>
+
+          <div className="RegisterDropDownWrapper">
+            <div id="dv-RegisterCourse" className="RegisterDropDown">
+              <select
+                value={courseType}
+                id="se-CourseType"
+                onChange={chooseCourseType}
+              >
+                <option value="">Choose course type</option>
+                {dropdownOptions.courseTypes.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="se-CourseType" className="DropDownLabel">
+                Course Type
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div className="RegistrationDivWrapper">
+          <div className="RegisterDropDownWrapper">
+            <div id="dv-RegisterProgramme" className="RegisterDropDown">
+              <select
+                value={programme}
+                id="se-Programme"
+                onChange={chooseProgramme}
+                disabled={!courseType}
+              >
+                <option value="">Choose Programme</option>
+                {getProgrammesList().map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="se-Programme" className="DropDownLabel">
+                Programme
+              </label>
+            </div>
+          </div>
+
+          <div className="RegisterDropDownWrapper">
+            <div id="dv-RegisterBranch" className="RegisterDropDown">
+              <select
+                value={branch}
+                id="se-Branch"
+                onChange={chooseBranch}
+                disabled={!programme}
+              >
+                <option value="">Choose Branch</option>
+                {getBranchesList().map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="se-Branch" className="DropDownLabel">
+                Branch
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div className="RegistrationDivWrapper">
+          <div id="dv-RegisterPassword" className="RegisterInputWrapper">
+            <input
+              type="password"
+              placeholder=" "
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <label
+              htmlFor="in-register_password"
+              className="RegisterTextFieldLabel"
+            >
+              Password
+            </label>
+          </div>
+
+          <div id="dv-RegisterConfirmPassword" className="RegisterInputWrapper">
+            <input
+              type="password"
+              placeholder=" "
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <label
+              htmlFor="in-register_confirmpassword"
+              className="RegisterTextFieldLabel"
+            >
+              Confirm Password
+            </label>
+          </div>
+        </div>
+
+        <button
+          onClick={registerUser}
+          disabled={!branch}
+          className="AuthenticationButton"
+        >
+          Register
+        </button>
+        <p>
+          Existing User?{" "}
+          <span onClick={navigateToLogin} className="AuthenticationLink">
+            Click here to login
+          </span>
+        </p>
+      </Stack>
+    </>
   );
 };
 

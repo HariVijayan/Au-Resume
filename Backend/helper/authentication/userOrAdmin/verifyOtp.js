@@ -36,7 +36,7 @@ async function verifyUserOrAdminOtp(requestedEmail, isAdmin, otpInput) {
     return {
       Valid: "NO",
       HtmlCode: 400,
-      Reason: "Invalid Otp.",
+      Reason: "Invalid Otp",
     };
   }
 
@@ -64,7 +64,7 @@ async function verifyUserOrAdminOtp(requestedEmail, isAdmin, otpInput) {
         "Expired otp provided for verification."
       );
     }
-    return { Valid: "NO", HtmlCode: 400, Reason: "OTP expired." };
+    return { Valid: "NO", HtmlCode: 400, Reason: "OTP expired" };
   }
 
   if (isAdmin) {

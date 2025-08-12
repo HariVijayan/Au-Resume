@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import ListType from "./ListType.jsx";
 import ParaType from "./ParaType.jsx";
-import axios from "axios";
 import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";

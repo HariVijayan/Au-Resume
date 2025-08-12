@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const PAGE_SIZE = 50;
 
@@ -24,7 +26,8 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [serverMessage, setServerMessage] = useState("");
-  const [serverMessageColor, setServerMessageColor] = useState("red");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   const [logsData, setLogsData] = useState({
     DateNewest: [],
@@ -56,9 +59,16 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
         setUserProgramme(response.data.Programme);
         setUserBranch(response.data.Branch);
         setAccountCreated(response.data.Created);
+        setServerMessage("Successfully fetched user's details");
+        setServerMsgType("success");
+        setShowServerMsg(true);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        setServerMessage(
+          error.response?.data?.message || "Failed to fetch user's details"
+        );
+        setServerMsgType("error");
+        setShowServerMsg(true);
       }
     };
     fetchUserDetails();
@@ -66,11 +76,11 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
 
   const generateOtp = async (otpReason) => {
     setRequestType(otpReason);
-    setServerMessage("");
     if (otpReason === "PasswordReset") {
       if (newPassword != confirmPassword) {
-        setServerMessage("Passwords doesn't match.");
-        setServerMessageColor("red");
+        setServerMessage("Passwords doesn't match");
+        setServerMsgType("error");
+        setShowServerMsg(true);
         return;
       }
     }
@@ -80,22 +90,25 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
         { requestType: otpReason, newPassword },
         { withCredentials: true }
       );
-      setServerMessage(response.data.message);
-      setServerMessageColor("green");
       setMainContent("ShowOtp");
       setOtpInput("");
+      setServerMessage("Otp sent to email successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
       setServerMessage(
-        error.response?.data?.message || "Failed to generate OTP"
+        error.response?.data?.message || "Failed to generate Otp"
       );
-      setServerMessageColor("red");
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
   const resetPassword = async () => {
     if (newPassword != confirmPassword) {
-      setServerMessage("Passwords doesn't match.");
-      setServerMessageColor("red");
+      setServerMessage("Passwords doesn't match");
+      setServerMsgType("error");
+      setShowServerMsg(true);
       return;
     }
     try {
@@ -104,15 +117,18 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
         { userEmail, newPassword, otpInput },
         { withCredentials: true }
       );
-      setServerMessage(response.data.message);
-      setServerMessageColor("green");
-      navigate("/");
+      setServerMessage("Password reset successful");
+      setServerMsgType("success");
+      setShowServerMsg(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 1000); //Redirect to login page after 1 seconds of showing success message
     } catch (error) {
       setServerMessage(
-        error.response?.data?.message ||
-          "Failed to reset password. Try again later."
+        error.response?.data?.message || "Password reset failed"
       );
-      setServerMessageColor("red");
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -124,14 +140,15 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
         { withCredentials: true }
       );
       setMainContent("");
-      setServerMessage(response.data.message);
-      setServerMessageColor("green");
+      setServerMessage("Encryption Key reset successful");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
       setServerMessage(
-        error.response?.data?.message ||
-          "Failed to reset encryption key. Try again later."
+        error.response?.data?.message || "Failed to reset encryption key"
       );
-      setServerMessageColor("red");
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -149,7 +166,6 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
         { otpInput },
         { withCredentials: true }
       );
-      console.log(response);
       if (!isMounted) return;
       const {
         timeSortedNewest = [],
@@ -165,7 +181,9 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       setVisibleLogsStart(0);
       setLoading(false);
       setMainContent("ShowLogs");
-      setServerMessage("");
+      setServerMessage("Fetched logs successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
       if (!isMounted) return;
       setLogsData({
@@ -174,11 +192,9 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       });
       setTotalRecords(0);
       setVisibleLogs([]);
-      setServerMessage(
-        error.response?.data?.message ||
-          "Failed to fetch user logs. Try again later."
-      );
-      setServerMessageColor("red");
+      setServerMessage(error.response?.data?.message || "Failed to fetch logs");
+      setServerMsgType("error");
+      setShowServerMsg(true);
     } finally {
       if (isMounted) setLoading(false);
     }
@@ -237,327 +253,353 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
   };
 
   return (
-    <div className="UserProfile">
-      <div className="UserProfileWrapper">
-        <div className="UserProfileInnerWrapper">
-          {loading && <span>Loading content....</span>}
-          {!loading && (
-            <>
-              <div className="UserProfileHeader">
-                <p className="AdminDashboardLink" onClick={() => navigate(-1)}>
+    <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
+      <div className="UserProfile">
+        <div className="UserProfileWrapper">
+          <div className="UserProfileInnerWrapper">
+            {loading && <span>Loading content....</span>}
+            {!loading && (
+              <>
+                <div className="UserProfileHeader">
+                  <p
+                    className="AdminDashboardLink"
+                    onClick={() => navigate(-1)}
+                  >
+                    <svg
+                      className="MenuIconsSvg"
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill="#e3e3e3"
+                    >
+                      <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+                    </svg>
+                    Resume Builder
+                  </p>
+                  <h3 style={{ color: "red" }}>User Profile</h3>
                   <svg
                     className="MenuIconsSvg"
+                    onClick={logoutUser}
                     xmlns="http://www.w3.org/2000/svg"
                     height="24px"
                     viewBox="0 -960 960 960"
                     width="24px"
                     fill="#e3e3e3"
                   >
-                    <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
                   </svg>
-                  Resume Builder
-                </p>
-                <h3 style={{ color: "red" }}>User Profile</h3>
-                <svg
-                  className="MenuIconsSvg"
-                  onClick={logoutUser}
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
-                </svg>
-              </div>
-              <div className="UserProfileBody">
-                <div className="UserDetailsWrapper">
-                  <div className="UserProfileDetails">
-                    <span className="UserDetailsHeading">Email</span>
-                    <span className="UserDetailsValue">{userEmail}</span>
+                </div>
+                <div className="UserProfileBody">
+                  <div className="UserDetailsWrapper">
+                    <div className="UserProfileDetails">
+                      <span className="UserDetailsHeading">Email</span>
+                      <span className="UserDetailsValue">{userEmail}</span>
+                    </div>
+                    <div className="UserProfileDetails">
+                      <span className="UserDetailsHeading">
+                        Register Number
+                      </span>
+                      <span className="UserDetailsValue">{userRegNo}</span>
+                    </div>
+                  </div>
+                  <div className="UserDetailsWrapper">
+                    <div className="UserProfileDetails">
+                      <span className="UserDetailsHeading">Department</span>
+                      <span className="UserDetailsValue">{userDept}</span>
+                    </div>
+                    <div className="UserProfileDetails">
+                      <span className="UserDetailsHeading">Course Type</span>
+                      <span className="UserDetailsValue">{userCourseType}</span>
+                    </div>
+                  </div>
+                  <div className="UserDetailsWrapper">
+                    <div className="UserProfileDetails">
+                      <span className="UserDetailsHeading">Programme</span>
+                      <span className="UserDetailsValue">{userProgramme}</span>
+                    </div>
+                    <div className="UserProfileDetails">
+                      <span className="UserDetailsHeading">Branch</span>
+                      <span className="UserDetailsValue">{userBranch}</span>
+                    </div>
                   </div>
                   <div className="UserProfileDetails">
-                    <span className="UserDetailsHeading">Register Number</span>
-                    <span className="UserDetailsValue">{userRegNo}</span>
+                    <span className="UserDetailsHeading">Account Created</span>
+                    <span className="UserDetailsValue">{accountCreated}</span>
                   </div>
-                </div>
-                <div className="UserDetailsWrapper">
-                  <div className="UserProfileDetails">
-                    <span className="UserDetailsHeading">Department</span>
-                    <span className="UserDetailsValue">{userDept}</span>
-                  </div>
-                  <div className="UserProfileDetails">
-                    <span className="UserDetailsHeading">Course Type</span>
-                    <span className="UserDetailsValue">{userCourseType}</span>
-                  </div>
-                </div>
-                <div className="UserDetailsWrapper">
-                  <div className="UserProfileDetails">
-                    <span className="UserDetailsHeading">Programme</span>
-                    <span className="UserDetailsValue">{userProgramme}</span>
-                  </div>
-                  <div className="UserProfileDetails">
-                    <span className="UserDetailsHeading">Branch</span>
-                    <span className="UserDetailsValue">{userBranch}</span>
-                  </div>
-                </div>
-                <div className="UserProfileDetails">
-                  <span className="UserDetailsHeading">Account Created</span>
-                  <span className="UserDetailsValue">{accountCreated}</span>
-                </div>
-                <div className="UserProfileButtons">
-                  <button
-                    onClick={() => generateOtp("GetLogs")}
-                    className="AddInputButtons"
-                  >
-                    Show Logs
-                  </button>
-                  <button
-                    onClick={() => setMainContent("DisclaimerPassword")}
-                    className="PreviewButton"
-                  >
-                    Reset Login Password
-                  </button>
-                  <button
-                    onClick={() => setMainContent("DisclaimerEncryption")}
-                    className="DownloadButton"
-                  >
-                    Reset Encryption Key
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-          {!loading && mainContent === "DisclaimerPassword" && (
-            <div className="UserProfileContent">
-              <p>
-                Resetting your password will also remove your previously saved
-                resume details and will close this current active session. You
-                need to login again.
-              </p>
-              <div className="AuthenticationDivWrapper">
-                <div id="dv-RPPassword" className="AuthenticationInputWrapper">
-                  <input
-                    type="password"
-                    id="in-rp_password"
-                    placeholder=" "
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                  />
-                  <label
-                    htmlFor="in-rp_password"
-                    className="AuthenticationTextFieldLabel"
-                  >
-                    Password
-                  </label>
-                </div>
-              </div>
-
-              <div className="AuthenticationDivWrapper">
-                <div
-                  id="dv-RPConfirmPassword"
-                  className="AuthenticationInputWrapper"
-                >
-                  <input
-                    type="password"
-                    id="in-rp_confirmpassword"
-                    placeholder=" "
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                  <label
-                    htmlFor="in-rp_confirmpassword"
-                    className="AuthenticationTextFieldLabel"
-                  >
-                    Confirm Password
-                  </label>
-                </div>
-              </div>
-              <button
-                onClick={() => generateOtp("PasswordReset")}
-                className="LeftNavigationButtons"
-              >
-                Continue
-              </button>
-            </div>
-          )}
-          {!loading && mainContent === "DisclaimerEncryption" && (
-            <div className="UserProfileContent">
-              <p>
-                Resetting your encryption key will also remove your previously
-                saved resume details. You will need to re-enter your resume
-                details for all fields from scratch.
-              </p>
-              <button
-                onClick={() => generateOtp("EncryptionKeyReset")}
-                className="LeftNavigationButtons"
-              >
-                Continue
-              </button>
-            </div>
-          )}
-          {!loading && mainContent === "ShowOtp" && (
-            <div className="UserProfileContent">
-              <div className="UserProfileContentOtp">
-                <input
-                  type="text"
-                  placeholder=" "
-                  value={otpInput}
-                  onChange={(e) => setOtpInput(e.target.value)}
-                  required
-                />
-                <label className="UserOtpLabel">Otp</label>
-              </div>
-              <button
-                onClick={implementUserAction}
-                disabled={!otpInput}
-                className="AddInputButtons"
-              >
-                Verify Otp
-              </button>
-            </div>
-          )}
-
-          {!loading && mainContent === "ShowLogs" && (
-            <>
-              <div className="LogDisplayWrapper">
-                <div className="AdminsListHeading">
-                  <p className="AdminTableHeading">User's Logs</p>
-                  <span>
-                    Total records currently:{" "}
-                    <span style={{ color: "red" }}>{totalRecords}</span>
-                  </span>
-                </div>
-
-                <div className="LogListSort">
-                  <div className="RegisterDropDown">
-                    <select
-                      value={sortBy}
-                      id="se-sortBy"
-                      onChange={(e) => {
-                        setSortBy(e.target.value);
-                        setVisibleLogsStart(0);
-                      }}
+                  <div className="UserProfileButtons">
+                    <button
+                      onClick={() => generateOtp("GetLogs")}
+                      className="AddInputButtons"
                     >
-                      <option value="DateNewest">Date: Newest First</option>
-                      <option value="DateOldest">Date: Oldest First</option>
-                    </select>
-                    <label htmlFor="se-sortBy" className="DropDownLabel">
-                      Sort By
+                      Show Logs
+                    </button>
+                    <button
+                      onClick={() => setMainContent("DisclaimerPassword")}
+                      className="PreviewButton"
+                    >
+                      Reset Login Password
+                    </button>
+                    <button
+                      onClick={() => setMainContent("DisclaimerEncryption")}
+                      className="DownloadButton"
+                    >
+                      Reset Encryption Key
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+            {!loading && mainContent === "DisclaimerPassword" && (
+              <div className="UserProfileContent">
+                <p>
+                  Resetting your password will also remove your previously saved
+                  resume details and will close this current active session. You
+                  need to login again.
+                </p>
+                <div className="AuthenticationDivWrapper">
+                  <div
+                    id="dv-RPPassword"
+                    className="AuthenticationInputWrapper"
+                  >
+                    <input
+                      type="password"
+                      id="in-rp_password"
+                      placeholder=" "
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                    />
+                    <label
+                      htmlFor="in-rp_password"
+                      className="AuthenticationTextFieldLabel"
+                    >
+                      Password
                     </label>
                   </div>
                 </div>
 
-                <div className="LogListFilter">
-                  <span onClick={toggleFilters}>
-                    Click to show/hide available filters
-                  </span>
-                </div>
-
-                {showFilters && (
-                  <>
-                    {" "}
-                    <div className="LogFilterWrapper">
-                      <div className="AdminMgmtOtp">
-                        <input
-                          type="text"
-                          placeholder=" "
-                          value={createdByFilter}
-                          onChange={(e) => setCreatedByFilter(e.target.value)}
-                        />
-                        <label className="AdminMgmtTextFieldLabel2">
-                          Created By
-                        </label>
-                      </div>
-                      <div className="AdminMgmtOtp">
-                        <input
-                          type="text"
-                          placeholder=" "
-                          value={logFilter}
-                          onChange={(e) => setLogFilter(e.target.value)}
-                        />
-                        <label className="AdminMgmtTextFieldLabel2">Log</label>
-                      </div>
-                    </div>
-                    <button
-                      onClick={applyFilterAndSort}
-                      className="AddInputButtons"
+                <div className="AuthenticationDivWrapper">
+                  <div
+                    id="dv-RPConfirmPassword"
+                    className="AuthenticationInputWrapper"
+                  >
+                    <input
+                      type="password"
+                      id="in-rp_confirmpassword"
+                      placeholder=" "
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                    <label
+                      htmlFor="in-rp_confirmpassword"
+                      className="AuthenticationTextFieldLabel"
                     >
-                      Filter
-                    </button>
-                  </>
-                )}
+                      Confirm Password
+                    </label>
+                  </div>
+                </div>
+                <button
+                  onClick={() => generateOtp("PasswordReset")}
+                  className="LeftNavigationButtons"
+                >
+                  Continue
+                </button>
               </div>
-              {!loading && !visibleLogs.length && logTypeRequested && (
-                <span style={{ margin: "2rem 0rem" }}>
-                  No logs found for this selection.
-                </span>
-              )}
-
-              {!loading && visibleLogs.length > 0 && (
-                <div className="LogDisplayWrapper">
-                  <div className="AdminsList">
-                    <table className="CurrentAdminsTable">
-                      <thead>
-                        <tr>
-                          <th>Linked Account</th>
-                          <th>Created By</th>
-                          <th>Created At</th>
-                          <th>Log</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {visibleLogs.map((log) => (
-                          <tr key={`${log.createdAt}-${log.logDetails}`}>
-                            <td>{log.logLinkedAccount}</td>
-                            <td>{log.logAddedBy}</td>
-                            <td>{log.createdAtFormatted}</td>
-                            <td>{log.logDetails}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="LogsNavigation">
-                    <button
-                      onClick={handlePrev}
-                      className="LeftNavigationButtons"
-                      disabled={visibleLogsStart === 0}
-                    >
-                      Previous
-                    </button>
-
-                    <span>
-                      Showing {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
-                      {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)} out
-                      of {totalRecords} records.
-                    </span>
-
-                    <button
-                      onClick={handleNext}
-                      className="LeftNavigationButtons"
-                      disabled={
-                        visibleLogsStart + PAGE_SIZE >= totalRecords ||
-                        totalRecords === 0
-                      }
-                    >
-                      Next
-                    </button>
-                  </div>
+            )}
+            {!loading && mainContent === "DisclaimerEncryption" && (
+              <div className="UserProfileContent">
+                <p>
+                  Resetting your encryption key will also remove your previously
+                  saved resume details. You will need to re-enter your resume
+                  details for all fields from scratch.
+                </p>
+                <button
+                  onClick={() => generateOtp("EncryptionKeyReset")}
+                  className="LeftNavigationButtons"
+                >
+                  Continue
+                </button>
+              </div>
+            )}
+            {!loading && mainContent === "ShowOtp" && (
+              <div className="UserProfileContent">
+                <div className="UserProfileContentOtp">
+                  <input
+                    type="text"
+                    placeholder=" "
+                    value={otpInput}
+                    onChange={(e) => setOtpInput(e.target.value)}
+                    required
+                  />
+                  <label className="UserOtpLabel">Otp</label>
                 </div>
-              )}
-            </>
-          )}
+                <button
+                  onClick={implementUserAction}
+                  disabled={!otpInput}
+                  className="AddInputButtons"
+                >
+                  Verify Otp
+                </button>
+              </div>
+            )}
 
-          {!loading && serverMessage != "" && (
-            <p style={{ color: serverMessageColor }}>{serverMessage}</p>
-          )}
+            {!loading && mainContent === "ShowLogs" && (
+              <>
+                <div className="LogDisplayWrapper">
+                  <div className="AdminsListHeading">
+                    <p className="AdminTableHeading">User's Logs</p>
+                    <span>
+                      Total records currently:{" "}
+                      <span style={{ color: "red" }}>{totalRecords}</span>
+                    </span>
+                  </div>
+
+                  <div className="LogListSort">
+                    <div className="RegisterDropDown">
+                      <select
+                        value={sortBy}
+                        id="se-sortBy"
+                        onChange={(e) => {
+                          setSortBy(e.target.value);
+                          setVisibleLogsStart(0);
+                        }}
+                      >
+                        <option value="DateNewest">Date: Newest First</option>
+                        <option value="DateOldest">Date: Oldest First</option>
+                      </select>
+                      <label htmlFor="se-sortBy" className="DropDownLabel">
+                        Sort By
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="LogListFilter">
+                    <span onClick={toggleFilters}>
+                      Click to show/hide available filters
+                    </span>
+                  </div>
+
+                  {showFilters && (
+                    <>
+                      {" "}
+                      <div className="LogFilterWrapper">
+                        <div className="AdminMgmtOtp">
+                          <input
+                            type="text"
+                            placeholder=" "
+                            value={createdByFilter}
+                            onChange={(e) => setCreatedByFilter(e.target.value)}
+                          />
+                          <label className="AdminMgmtTextFieldLabel2">
+                            Created By
+                          </label>
+                        </div>
+                        <div className="AdminMgmtOtp">
+                          <input
+                            type="text"
+                            placeholder=" "
+                            value={logFilter}
+                            onChange={(e) => setLogFilter(e.target.value)}
+                          />
+                          <label className="AdminMgmtTextFieldLabel2">
+                            Log
+                          </label>
+                        </div>
+                      </div>
+                      <button
+                        onClick={applyFilterAndSort}
+                        className="AddInputButtons"
+                      >
+                        Filter
+                      </button>
+                    </>
+                  )}
+                </div>
+                {!loading && !visibleLogs.length && logTypeRequested && (
+                  <span style={{ margin: "2rem 0rem" }}>
+                    No logs found for this selection.
+                  </span>
+                )}
+
+                {!loading && visibleLogs.length > 0 && (
+                  <div className="LogDisplayWrapper">
+                    <div className="AdminsList">
+                      <table className="CurrentAdminsTable">
+                        <thead>
+                          <tr>
+                            <th>Linked Account</th>
+                            <th>Created By</th>
+                            <th>Created At</th>
+                            <th>Log</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {visibleLogs.map((log) => (
+                            <tr key={`${log.createdAt}-${log.logDetails}`}>
+                              <td>{log.logLinkedAccount}</td>
+                              <td>{log.logAddedBy}</td>
+                              <td>{log.createdAtFormatted}</td>
+                              <td>{log.logDetails}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="LogsNavigation">
+                      <button
+                        onClick={handlePrev}
+                        className="LeftNavigationButtons"
+                        disabled={visibleLogsStart === 0}
+                      >
+                        Previous
+                      </button>
+
+                      <span>
+                        Showing {totalRecords === 0 ? 0 : visibleLogsStart + 1}{" "}
+                        - {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)}{" "}
+                        out of {totalRecords} records.
+                      </span>
+
+                      <button
+                        onClick={handleNext}
+                        className="LeftNavigationButtons"
+                        disabled={
+                          visibleLogsStart + PAGE_SIZE >= totalRecords ||
+                          totalRecords === 0
+                        }
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

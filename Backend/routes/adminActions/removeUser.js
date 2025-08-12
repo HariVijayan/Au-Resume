@@ -53,7 +53,7 @@ router.post("/removeUser", async (req, res) => {
         registerNumber: remUserRegNo,
       });
       if (!existingUser) {
-        return res.status(400).json({ message: "User doesn't exists." });
+        return res.status(400).json({ message: "User doesn't exist" });
       }
       if (existingUser) {
         finalUserList.push({
@@ -149,7 +149,7 @@ router.post("/removeUser", async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: `${finalUserList.length} users deleted successfully.` });
+      .json({ message: `${finalUserList.length} users deleted successfully` });
   } catch (error) {
     await addLogs(
       true,

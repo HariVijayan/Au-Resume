@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const PAGE_SIZE = 50;
 
@@ -24,6 +26,10 @@ const UserLogs = () => {
   const [logFilter, setLogFilter] = useState("");
 
   const isAdmin = false;
+
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   useEffect(() => {
     if (!logTypeRequested) return;
@@ -58,9 +64,16 @@ const UserLogs = () => {
         });
         setTotalRecords(totalRecords);
         setVisibleLogsStart(0);
+        setServerMessage("Logs fetched successfully");
+        setServerMsgType("success");
+        setShowServerMsg(true);
       } catch (error) {
         if (!isMounted) return;
-        console.error("Error fetching admin logs:", error);
+        setServerMessage(
+          error.response?.data?.message || "Error fetching logs"
+        );
+        setServerMsgType("error");
+        setShowServerMsg(true);
         setLogsData({
           DateNewest: [],
           DateOldest: [],
@@ -126,6 +139,24 @@ const UserLogs = () => {
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">User Logs</p>
         <span>

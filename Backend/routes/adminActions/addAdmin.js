@@ -62,7 +62,7 @@ router.post("/newAdmin", async (req, res) => {
     if (sendEmail.Success === "NO") {
       return res.status(sendEmail.HtmlCode).json({
         message:
-          "Admin added. System errored while sending credentials. Delete account and add again.",
+          "Admin added. System errored while sending credentials. Delete account and add again",
       });
     }
 
@@ -77,7 +77,7 @@ router.post("/newAdmin", async (req, res) => {
     );
 
     res.json({
-      message: "New admin added successfully.",
+      message: "New admin added successfully",
     });
   } catch (error) {
     await addLogs(
@@ -86,7 +86,7 @@ router.post("/newAdmin", async (req, res) => {
       "System",
       "System",
       "Confidential",
-      "P3",
+      "P4",
       `Failed to add new admin. ${error}`
     );
     res.status(500).json({ message: "Server error" });

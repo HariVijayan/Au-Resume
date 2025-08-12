@@ -44,7 +44,7 @@ router.post("/modifyUser", async (req, res) => {
     });
 
     if (!modifiableUser) {
-      return res.status(400).json({ message: "No such user found." });
+      return res.status(400).json({ message: "No such user found" });
     }
 
     if (accountUnlock) {
@@ -87,16 +87,14 @@ router.post("/modifyUser", async (req, res) => {
       );
 
       if (sendEmail.Success === "NO") {
-        console.log(sendEmail.Reason);
         return res.status(sendEmail.HtmlCode).json({
-          message:
-            "Failed to send new password to the user. Please restart the process.",
+          message: "Failed to send new password to the user",
         });
       }
     }
 
     res.status(200).json({
-      message: "User account modified successfully.",
+      message: "User account modified successfully",
     });
   } catch (error) {
     await addLogs(

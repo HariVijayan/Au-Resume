@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const AddNewUser = () => {
   const requestType = "addNewUser";
@@ -13,12 +15,12 @@ const AddNewUser = () => {
   const [needApprovalMul, setNeedApprovalMul] = useState(null);
 
   const [showOtp, setShowOtp] = useState(null);
-  const [otpReqMessage, setOtpReqMessage] = useState("");
-  const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
-  const [otpInput, setOtpInput] = useState("");
 
-  const [addUserMessage, setAddUserMessage] = useState("");
-  const [addUserMessageColor, setAddUserMessageColor] = useState("red");
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
+
+  const [otpInput, setOtpInput] = useState("");
 
   const [newUserEmail, setNewUserEmail] = useState("");
   const [newUserDept, setNewUserDept] = useState(
@@ -334,29 +336,36 @@ const AddNewUser = () => {
         },
         { withCredentials: true }
       );
-      if (response.status === 200) {
-        setUsersList(response.data.usersList);
-        setShowUsers(true);
-      }
+      setUsersList(response.data.usersList);
+      setShowUsers(true);
+      setServerMessage("Successfully fetched the user list");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      console.error(error.response.data.message || "Failed to fetch user list");
+      setServerMessage(
+        error.response.data.message || "Failed to fetch user list"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
   const getVerificationOtp = async () => {
     if (newAdditionType === "Multiple") {
       if (parseInt(commonRegNoEnd) - parseInt(commonRegNoStart) > 100) {
-        setOtpReqMessageColor("red");
-        setOtpReqMessage(
+        setServerMessage(
           "You can only add upto 100 users at a time. Please reduce the user range and complete in multiple requests if needed."
         );
+        setServerMsgType("error");
+        setShowServerMsg(true);
         return;
       }
       if (parseInt(commonRegNoEnd) < parseInt(commonRegNoStart)) {
-        setOtpReqMessageColor("red");
-        setOtpReqMessage(
+        setServerMessage(
           "The end register number cannot be less than the start register number. Please correct the range."
         );
+        setServerMsgType("error");
+        setShowServerMsg(true);
         return;
       }
     }
@@ -366,16 +375,16 @@ const AddNewUser = () => {
         { requestType },
         { withCredentials: true }
       );
-      if (response.status === 200) {
-        setShowOtp(true);
-        setOtpReqMessage(
-          "An OTP has been sent to your email. Verify to proceed with the request"
-        );
-        setOtpReqMessageColor("green");
-      }
+      setShowOtp(true);
+      setServerMessage("Otp sent to email successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      setOtpReqMessageColor("red");
-      setOtpReqMessage(error.response.data.message || "Failed to get OTP");
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate Otp"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -405,21 +414,23 @@ const AddNewUser = () => {
         { withCredentials: true }
       );
 
-      if (response.status === 200) {
-        setAddUserMessage(
-          `New user(s) have been added to the site successfully. Refreshing the page in 5 seconds.`
-        );
-        setAddUserMessageColor("green");
-        setTimeout(() => {
-          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
-        }, 5000);
-      }
-    } catch (error) {
-      setAddUserMessageColor("red");
-      setAddUserMessage(
-        `${error.response?.data?.message} Refreshing the page in 5 seconds. Please try again.` ||
-          "Failed to add new user(s). Refreshing the page in 5 seconds. Please try again."
+      setServerMessage(
+        `New user(s) have been added to the site successfully. Refreshing the page in 5 seconds.`
       );
+      setServerMsgType("success");
+      setShowServerMsg(true);
+
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
+    } catch (error) {
+      setServerMessage(
+        `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
+          "Failed to add new user(s). Refreshing the page in 5 seconds."
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
+
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
@@ -428,6 +439,24 @@ const AddNewUser = () => {
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">Add New Users</p>
         <span>
@@ -920,10 +949,6 @@ const AddNewUser = () => {
           </div>
         )}
 
-        {otpReqMessage && (
-          <p style={{ color: `${otpReqMessageColor}` }}>{otpReqMessage}</p>
-        )}
-
         {showOtp && (
           <div className="AdminMgmtOtpWrapper">
             <div className="AdminMgmtOtp">
@@ -944,10 +969,6 @@ const AddNewUser = () => {
               Add User
             </button>
           </div>
-        )}
-
-        {addUserMessage && (
-          <p style={{ color: `${addUserMessageColor}` }}>{addUserMessage}</p>
         )}
       </div>
     </>

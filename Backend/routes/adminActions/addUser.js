@@ -57,7 +57,7 @@ router.post("/addNewUser", async (req, res) => {
     if (newAdditionType === "Single") {
       const newUser = await userDBModel.findOne({ email: newUserEmail });
       if (newUser) {
-        return res.status(400).json({ message: "User already exists." });
+        return res.status(400).json({ message: "User already exists" });
       }
       if (!newUser) {
         const newUserPassword = generatePassword();
@@ -93,10 +93,9 @@ router.post("/addNewUser", async (req, res) => {
         );
 
         if (sendEmail.Success === "NO") {
-          console.log(sendEmail.Reason);
           return res.status(sendEmail.HtmlCode).json({
             message:
-              "User added. System errored while sending credentials. Delete account and add again.",
+              "User added. System errored while sending credentials. Delete account and add again",
           });
         }
       }
@@ -115,7 +114,7 @@ router.post("/addNewUser", async (req, res) => {
         const newUser = await userDBModel.findOne({ email: newUserRegNoEmail });
 
         if (newUser) {
-          return res.status(400).json({ message: "User already exists." });
+          return res.status(400).json({ message: "User already exists" });
         }
 
         if (!newUser) {
@@ -155,7 +154,7 @@ router.post("/addNewUser", async (req, res) => {
     );
     return res
       .status(200)
-      .json({ message: `${result.length} users inserted successfully.` });
+      .json({ message: `${result.length} users inserted successfully` });
   } catch (error) {
     await addLogs(
       true,

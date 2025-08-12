@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const RemoveAdmin = () => {
   const navigate = useNavigate();
@@ -12,14 +14,14 @@ const RemoveAdmin = () => {
   const [otpInput, setOtpInput] = useState("");
 
   const [showApproval, setShowApproval] = useState(null);
-  const [otpReqMessage, setOtpReqMessage] = useState("");
-  const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
 
   const [showRemAdminOtp, setShowRemAdminOtp] = useState(null);
-  const [remAdminMessage, setRemAdminMessage] = useState("");
-  const [remAdminMessageColor, setRemAdminMessageColor] = useState("red");
 
   const requestType = "removeAdmin";
+
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -31,8 +33,15 @@ const RemoveAdmin = () => {
         );
         setAdminUsers(response.data.userList);
         setAdminNum(response.data.numAdmins);
+        setServerMessage("Successfully fetched current admins list");
+        setServerMsgType("success");
+        setShowServerMsg(true);
       } catch (error) {
-        console.error("Error fetching admin data:", error);
+        setServerMessage(
+          error.response?.data?.message || "Failed to fetch current admins list"
+        );
+        setServerMsgType("error");
+        setShowServerMsg(true);
       }
     };
     fetchAdmins();
@@ -45,21 +54,16 @@ const RemoveAdmin = () => {
         { requestType },
         { withCredentials: true }
       );
-      if (response.statusText === "OK") {
-        setShowRemAdminOtp(true);
-        setOtpReqMessage(
-          "An OTP has been sent to your email. Verify to proceed with the request"
-        );
-        setOtpReqMessageColor("green");
-      } else {
-        setOtpReqMessageColor("red");
-        setOtpReqMessage(response.data.message);
-      }
+      setShowRemAdminOtp(true);
+      setServerMessage("Otp sent to email successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      setOtpReqMessageColor("red");
-      setOtpReqMessage(
-        "Failed to get otp for verification. Refresh the page and try again."
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate Otp"
       );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -71,24 +75,22 @@ const RemoveAdmin = () => {
         { withCredentials: true }
       );
 
-      if (response.statusText === "OK") {
-        setRemAdminMessage(
-          `The mentioned admin has been removed from the site successfully. Refreshing the page in 5 seconds.`
-        );
-        setRemAdminMessageColor("green");
-        setTimeout(() => {
-          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
-        }, 5000);
-      } else {
-        setRemAdminMessageColor("red");
-        setRemAdminMessage(response.data.message);
-      }
-    } catch (error) {
-      setRemAdminMessageColor("red");
-      setRemAdminMessage(
-        `${error.response.data.message} Refreshing the page in 5 seconds. Please try again.` ||
-          "Failed to remove new admin. Refreshing the page in 5 seconds. Please try again."
+      setServerMessage(
+        "Admin removal successful. Refreshing the page in 5 seconds"
       );
+      setServerMsgType("success");
+      setShowServerMsg(true);
+
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
+    } catch (error) {
+      setServerMessage(
+        `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
+          "Failed to remove admin. Refreshing the page in 5 seconds"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
@@ -105,6 +107,24 @@ const RemoveAdmin = () => {
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">Remove Existing Admins</p>
         <span>
@@ -166,10 +186,6 @@ const RemoveAdmin = () => {
             </div>
           )}
 
-          {otpReqMessage && (
-            <p style={{ color: `${otpReqMessageColor}` }}>{otpReqMessage}</p>
-          )}
-
           {showRemAdminOtp && (
             <div className="AdminMgmtOtpWrapper">
               <div className="AdminMgmtOtp">
@@ -190,12 +206,6 @@ const RemoveAdmin = () => {
                 Remove Admin
               </button>
             </div>
-          )}
-
-          {remAdminMessage && (
-            <p style={{ color: `${remAdminMessageColor}` }}>
-              {remAdminMessage}
-            </p>
           )}
         </div>
       </div>

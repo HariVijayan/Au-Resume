@@ -37,7 +37,7 @@ router.post("/removeAdmin", async (req, res) => {
     });
 
     if (!removeAdmin) {
-      return res.status(400).json({ message: "No such admin found." });
+      return res.status(400).json({ message: "No such admin found" });
     }
 
     const existingSessions = await adminCurrentSession.find({
@@ -73,7 +73,7 @@ router.post("/removeAdmin", async (req, res) => {
     );
 
     res.json({
-      message: "Admin removed successfully.",
+      message: "Admin removed successfully",
     });
   } catch (error) {
     await addLogs(

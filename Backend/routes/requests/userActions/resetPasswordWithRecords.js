@@ -51,7 +51,7 @@ router.post("/resetPassword", async (req, res) => {
     );
 
     res.json({
-      message: "Password updated. Please login with your new password.",
+      message: "Password updated. Redirecting to login page",
     });
   } catch (error) {
     await addLogs(

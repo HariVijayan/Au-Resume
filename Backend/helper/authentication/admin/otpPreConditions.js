@@ -20,7 +20,7 @@ async function getAdminOtp(adminEmail) {
     return {
       Valid: "NO",
       HtmlCode: 429,
-      Reason: "Too many OTP requests. Try again in 1 minute.",
+      Reason: "Too many OTP requests. Try again in 1 minute",
     };
   }
 

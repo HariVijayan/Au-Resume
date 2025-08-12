@@ -32,7 +32,7 @@ router.post("/resume-details", async (req, res) => {
 
     if (hashedPassword != user.password) {
       return res.status(400).json({
-        message: "Unable to fetch the resume. Incorrect Password.",
+        message: "Unable to fetch the resume. Incorrect Password",
       });
     }
     const resumeData = await ResumeData.findOne({
@@ -49,7 +49,7 @@ router.post("/resume-details", async (req, res) => {
         encryptedPayload = JSON.parse(encryptedStr);
       } catch {
         return res.status(410).json({
-          message: "Resume details corrupted. Please save a new one.",
+          message: "Resume details corrupted. Please save a new one",
         });
       }
 

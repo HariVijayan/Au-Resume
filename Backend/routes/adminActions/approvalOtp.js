@@ -47,9 +47,8 @@ router.post("/get-approval-otp", async (req, res) => {
     const requestNewOtp = await generateOtp(true, adminEmail, otpReason);
 
     if (requestNewOtp.Success === "NO") {
-      console.log(requestNewOtp.Reason);
       return res.status(requestNewOtp.HtmlCode).json({
-        message: "Unable to generate otp, try again later.",
+        message: "Unable to generate otp",
       });
     }
 
@@ -78,7 +77,7 @@ router.post("/get-approval-otp", async (req, res) => {
 
     if (sendEmail.Success === "NO") {
       return res.status(sendEmail.HtmlCode).json({
-        message: "Unable to send approval otp, try again later.",
+        message: "Unable to send approval otp",
       });
     }
 

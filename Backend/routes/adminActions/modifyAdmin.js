@@ -51,7 +51,7 @@ router.post("/admin-modifications", async (req, res) => {
     });
 
     if (!adminToBeModified) {
-      return res.status(400).json({ message: "No such admin found." });
+      return res.status(400).json({ message: "No such admin found" });
     }
 
     if (nameChangeNeeded) {
@@ -102,10 +102,8 @@ router.post("/admin-modifications", async (req, res) => {
       );
 
       if (sendEmail.Success === "NO") {
-        console.log(sendEmail.Reason);
         return res.status(sendEmail.HtmlCode).json({
-          message:
-            "Failed to send new password to the admin. Please restart the process.",
+          message: "Failed to send new password to the admin",
         });
       }
     }
@@ -118,7 +116,7 @@ router.post("/admin-modifications", async (req, res) => {
 
       if (adminToBeModified) {
         return res.status(400).json({
-          message: "The mentioned admin already has the provided access type.",
+          message: "The mentioned admin already has the provided access type",
         });
       }
 
@@ -143,7 +141,7 @@ router.post("/admin-modifications", async (req, res) => {
     );
 
     res.status(200).json({
-      message: "Admin modified successfully.",
+      message: "Admin modified successfully",
     });
   } catch (error) {
     await addLogs(

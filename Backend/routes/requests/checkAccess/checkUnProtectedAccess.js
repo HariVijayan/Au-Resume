@@ -29,9 +29,7 @@ router.post("/check-access", async (req, res) => {
     }
 
     if (!session || session.expiresAt < Date.now()) {
-      return res
-        .status(403)
-        .json({ message: "Session expired. Please log in again." });
+      return res.status(403).json({ message: "Session expired. Log in again" });
     }
 
     if (userAccountType === "SuperAdmin") {

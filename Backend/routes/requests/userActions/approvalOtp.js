@@ -51,7 +51,7 @@ router.post("/getApprovalOtp", async (req, res) => {
 
     if (requestNewOtp.Success === "NO") {
       return res.status(requestNewOtp.HtmlCode).json({
-        message: "Unable to generate otp, try again later.",
+        message: "Unable to generate otp",
       });
     }
 
@@ -80,12 +80,12 @@ router.post("/getApprovalOtp", async (req, res) => {
 
     if (sendEmail.Success === "NO") {
       return res.status(sendEmail.HtmlCode).json({
-        message: "Unable to send approval otp, try again later.",
+        message: "Unable to send approval otp",
       });
     }
 
     res.json({
-      message: "An OTP has been sent to your email. Kindly verify to proceed.",
+      message: "An OTP has been sent to your email",
     });
   } catch (error) {
     await addLogs(

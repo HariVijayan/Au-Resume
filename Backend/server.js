@@ -16,7 +16,7 @@ import firstTimeOtp from "./routes/authentication/otp/firstTimeOtp/passwordReset
 import resendOtpNewUser from "./routes/authentication/otp/resendOtp/newUserRegistration.js";
 import resendOtp from "./routes/authentication/otp/resendOtp/passwordReset.js";
 import verifyOtpNewUser from "./routes/authentication/otp/verifyOtp/newRegistration.js";
-import verifyOtp from "./routes/authentication/otp/verifyOtp/verifyOtp.js";
+import verifyOtp from "./routes/authentication/otp/verifyOtp/passwordReset.js";
 import login from "./routes/authentication/login.js";
 import logout from "./routes/authentication/logout.js";
 import checkUnProtectedAccess from "./routes/requests/checkAccess/checkUnProtectedAccess.js";

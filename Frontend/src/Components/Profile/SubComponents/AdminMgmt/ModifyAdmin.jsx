@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const ModifyAdmin = () => {
   const navigate = useNavigate();
@@ -24,14 +26,14 @@ const ModifyAdmin = () => {
   const [newAdminType, setNewAdminType] = useState("");
 
   const [showApproval, setShowApproval] = useState(false);
-  const [otpReqMessage, setOtpReqMessage] = useState("");
-  const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
 
   const [showModifyAdminOtp, setShowModifyAdminOtp] = useState(false);
-  const [modifyAdminMessage, setModifyAdminMessage] = useState("");
-  const [modifyAdminMessageColor, setModifyAdminMessageColor] = useState("red");
 
   const requestType = "modifyAdminType";
+
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -43,8 +45,15 @@ const ModifyAdmin = () => {
         );
         setAdminUsers(response.data.userList);
         setAdminNum(response.data.numAdmins);
+        setServerMessage("Successfully fetched current admins list");
+        setServerMsgType("success");
+        setShowServerMsg(true);
       } catch (error) {
-        console.error("Error fetching admin data:", error);
+        setServerMessage(
+          error.response?.data?.message || "Failed to fetch current admins list"
+        );
+        setServerMsgType("error");
+        setShowServerMsg(true);
       }
     };
     fetchAdmins();
@@ -57,19 +66,16 @@ const ModifyAdmin = () => {
         { requestType },
         { withCredentials: true }
       );
-      if (response.status === 200) {
-        setShowModifyAdminOtp(true);
-        setOtpReqMessage(
-          "An OTP has been sent to your email. Verify to proceed with the request"
-        );
-        setOtpReqMessageColor("green");
-      }
+      setShowModifyAdminOtp(true);
+      setServerMessage("Otp sent to email successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      setOtpReqMessageColor("red");
-      setOtpReqMessage(
-        error.response?.data?.message ||
-          "Failed to get otp for verification. Refresh the page and try again."
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate Otp"
       );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -91,21 +97,22 @@ const ModifyAdmin = () => {
         { withCredentials: true }
       );
 
-      if (response.status === 200) {
-        setModifyAdminMessage(
-          `Admin details modified successfully. Refreshing the page in 5 seconds.`
-        );
-        setModifyAdminMessageColor("green");
-        setTimeout(() => {
-          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
-        }, 5000);
-      }
-    } catch (error) {
-      setModifyAdminMessageColor("red");
-      setModifyAdminMessage(
-        `${error.response?.data?.message} Refreshing the page in 5 seconds. Please try again.` ||
-          "Failed to modify admin. Refreshing the page in 5 seconds. Please try again."
+      setServerMessage(
+        "Admin account modification successful. Refreshing the page in 5 seconds"
       );
+      setServerMsgType("success");
+      setShowServerMsg(true);
+
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
+    } catch (error) {
+      setServerMessage(
+        `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
+          "Failed to modify admin account. Refreshing the page in 5 seconds"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
@@ -142,6 +149,24 @@ const ModifyAdmin = () => {
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading"> Modify Admin Type</p>
         <span>
@@ -289,10 +314,6 @@ const ModifyAdmin = () => {
             </div>
           )}
 
-          {otpReqMessage && (
-            <p style={{ color: `${otpReqMessageColor}` }}>{otpReqMessage}</p>
-          )}
-
           {showModifyAdminOtp && (
             <div className="AdminMgmtOtpWrapper">
               <div className="AdminMgmtOtp">
@@ -318,12 +339,6 @@ const ModifyAdmin = () => {
                 Modify Permissions
               </button>
             </div>
-          )}
-
-          {modifyAdminMessage && (
-            <p style={{ color: `${modifyAdminMessageColor}` }}>
-              {modifyAdminMessage}
-            </p>
           )}
         </div>
       </div>

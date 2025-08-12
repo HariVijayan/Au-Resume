@@ -35,7 +35,7 @@ router.post("/current-resume", async (req, res) => {
 
     if (hashedPassword != user.password) {
       return res.status(400).json({
-        message: "Unable to save the resume. Incorrect Password.",
+        message: "Unable to save the resume. Incorrect Password",
       });
     }
 
@@ -82,7 +82,7 @@ router.post("/current-resume", async (req, res) => {
       `Saved new resume.`
     );
 
-    res.status(200).json({ message: "Resume Saved successfully." });
+    res.status(200).json({ message: "Resume Saved successfully" });
   } catch (error) {
     await addLogs(
       true,

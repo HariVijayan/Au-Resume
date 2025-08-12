@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const AddNewAdmin = () => {
   const [adminUsers, setAdminUsers] = useState([]);
@@ -11,11 +13,10 @@ const AddNewAdmin = () => {
   const [otpInput, setOtpInput] = useState("");
   const [needApproval, setNeedApproval] = useState(null);
   const [addAdminOtp, setAddAdminOtp] = useState(null);
-  const [otpReqMessage, setOtpReqMessage] = useState("");
-  const [otpReqMessageColor, setOtpReqMessageColor] = useState("red");
 
-  const [addAdminMessage, setAddAdminMessage] = useState("");
-  const [addAdminMessageColor, setAddAdminMessageColor] = useState("red");
+  const [serverMessage, setServerMessage] = useState("");
+  const [showServerMsg, setShowServerMsg] = useState(false);
+  const [serverMsgType, setServerMsgType] = useState("error");
 
   const requestType = "addNewAdmin";
 
@@ -29,8 +30,15 @@ const AddNewAdmin = () => {
         );
         setAdminUsers(response.data.userList);
         setAdminNum(response.data.numAdmins);
+        setServerMessage("Successfully fetched current admins list");
+        setServerMsgType("success");
+        setShowServerMsg(true);
       } catch (error) {
-        console.error("Error fetching admin data:", error);
+        setServerMessage(
+          error.response?.data?.message || "Failed to fetch current admins list"
+        );
+        setServerMsgType("error");
+        setShowServerMsg(true);
       }
     };
     fetchAdmins();
@@ -43,22 +51,16 @@ const AddNewAdmin = () => {
         { requestType },
         { withCredentials: true }
       );
-      if (response.statusText === "OK") {
-        setAddAdminOtp(true);
-        setOtpReqMessage(
-          "An OTP has been sent to your email. Verify to proceed with the request"
-        );
-        setOtpReqMessageColor("green");
-      } else {
-        setOtpReqMessageColor("red");
-        setOtpReqMessage(response.data.message);
-      }
+      setAddAdminOtp(true);
+      setServerMessage("Otp sent to email successfully");
+      setServerMsgType("success");
+      setShowServerMsg(true);
     } catch (error) {
-      setOtpReqMessageColor("red");
-      setOtpReqMessage(
-        error.response.data.message ||
-          "Failed to get otp for verification. Refresh the page and try again."
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate Otp"
       );
+      setServerMsgType("error");
+      setShowServerMsg(true);
     }
   };
 
@@ -70,23 +72,22 @@ const AddNewAdmin = () => {
         { withCredentials: true }
       );
 
-      if (response.statusText === "OK") {
-        setAddAdminMessage(
-          `New admin has been added to the site successfully. Refreshing the page in 5 seconds.`
-        );
-        setAddAdminMessageColor("green");
-        setTimeout(() => {
-          window.location.reload(false); // This will trigger a page reload after 5 seconds delay
-        }, 5000);
-      } else {
-        setAddAdminMessageColor("red");
-        setAddAdminMessage(response.data.message);
-      }
-    } catch (error) {
-      setAddAdminMessageColor("red");
-      setAddAdminMessage(
-        "Failed to add new admin. Refreshing the page in 5 seconds. Please try again."
+      setServerMessage(
+        "Admin addition successful. Refreshing the page in 5 seconds"
       );
+      setServerMsgType("success");
+      setShowServerMsg(true);
+
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 5 seconds delay
+      }, 5000);
+    } catch (error) {
+      setServerMessage(
+        `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
+          "Failed to add new admin. Refreshing the page in 5 seconds"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
       setTimeout(() => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
@@ -103,6 +104,24 @@ const AddNewAdmin = () => {
 
   return (
     <>
+      <Snackbar
+        open={showServerMsg}
+        autoHideDuration={5000}
+        onClose={() => setShowServerMsg(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          onClose={() => setShowServerMsg(false)}
+          severity={serverMsgType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {serverMessage}
+        </Alert>
+      </Snackbar>
       <div className="AdminMgmtWrapper">
         <p className="AdminMgmtActionHeading">Add New Admins</p>
         <span>
@@ -178,10 +197,6 @@ const AddNewAdmin = () => {
             </div>
           )}
 
-          {otpReqMessage && (
-            <p style={{ color: `${otpReqMessageColor}` }}>{otpReqMessage}</p>
-          )}
-
           {addAdminOtp && (
             <div className="AdminMgmtOtpWrapper">
               <div className="AdminMgmtOtp">
@@ -202,12 +217,6 @@ const AddNewAdmin = () => {
                 Add Admin
               </button>
             </div>
-          )}
-
-          {addAdminMessage && (
-            <p style={{ color: `${addAdminMessageColor}` }}>
-              {addAdminMessage}
-            </p>
           )}
         </div>
       </div>
