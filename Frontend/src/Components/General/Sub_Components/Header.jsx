@@ -24,13 +24,14 @@ const Header = ({ headerTitle }) => {
             minWidth: "75px",
           }}
         ></Box>
-        <Typography
-          sx={{ xs: { padding: "0rem 1rem" }, md: { padding: "0rem 1rem" } }}
-        >
+        <Typography sx={{ padding: "0rem 1rem", textAlign: "center" }}>
           Department of IST
         </Typography>
       </Box>
-      <Typography variant="h3" sx={{ fontWeight: "bold" }}>
+      <Typography
+        variant="h3"
+        sx={{ fontWeight: "bold", margin: "2rem 0rem", textAlign: "center" }}
+      >
         {headerTitle}
       </Typography>
     </>

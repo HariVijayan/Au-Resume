@@ -85,66 +85,6 @@ body button {
   margin-bottom: auto;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="password"],
-input[type="date"],
-textarea {
-  width: 50%;
-  padding: 12px;
-  border: 2px solid var(--input--border);
-  border-radius: 8px;
-  font-size: var(--fs--normal);
-  outline: none;
-  font-family: "Segoe UI", "Helvetica", "Verdana", "Arial";
-  transition: border-color 0.3s ease-in-out;
-  margin-bottom: 0.5em;
-  background: var(--background);
-  color: var(--primary--color);
-}
-
-/* Chrome, Safari, Edge, Opera - Remove Number Input Arrows */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-input:focus,
-textarea:focus {
-  border-color: var(--primary--accent);
-  /* Highlight color */
-}
-
-.TextFieldLabel {
-  position: absolute;
-  top: 40%;
-  left: 2%;
-  transform: translateY(-50%);
-  font-size: var(--fs--normal);
-  color: var(--primary--label--color);
-  pointer-events: none;
-  transition: all 0.2s ease-in-out;
-  background: var(--background);
-  padding: 0 4px;
-}
-
-input:focus + label,
-input:not(:placeholder-shown) + label,
-textarea:focus + label,
-textarea:not(:placeholder-shown) + label {
-  top: 0;
-  font-size: var(--fs--small);
-  color: var(--primary--accent);
-}
-
 textarea {
   resize: vertical;
   min-height: 25vh;
@@ -155,62 +95,6 @@ textarea {
   width: 100%;
   max-width: 300px;
   margin-bottom: 20px;
-}
-
-select {
-  width: 100%;
-  padding: 12px 14px;
-  padding-right: 40px; /* Space for custom arrow */
-  border: 1px solid var(--input--border);
-  border-radius: 8px;
-  font-size: var(--fs--normal);
-  outline: none;
-  appearance: none; /* Hides default dropdown icon */
-  background: var(--background);
-  color: var(--primary--color);
-  cursor: pointer;
-  transition: border-color 0.3s ease-in-out;
-}
-
-select:focus {
-  border-color: var(--primary--accent);
-}
-
-/* Floating label */
-.DropDownLabel {
-  position: absolute;
-  top: 50%;
-  left: 14px;
-  transform: translateY(-50%);
-  font-size: var(--fs--normal);
-  color: var(--primary--label--color);
-  pointer-events: none;
-  transition: all 0.2s ease-in-out;
-  background: var(--background);
-  padding: 0 4px;
-}
-
-select:focus + .DropDownLabel,
-select:not([value=""]) + .DropDownLabel {
-  top: 0;
-  font-size: var(--fs--small);
-  color: var(--primary--accent);
-}
-
-/* Custom dropdown arrow */
-.dropdown-container::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 14px;
-  transform: translateY(-50%);
-  height: var(--svg--height);
-  width: var(--svg--width);
-  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,0,0,0.6)"><path d="M7 10l5 5 5-5H7z"/></svg>');
-  background-size: contain;
-  background-repeat: no-repeat;
-  pointer-events: none; /* Prevents interaction */
-  transition: transform 0.2s ease-in-out;
 }
 
 input[type="checkbox"] {

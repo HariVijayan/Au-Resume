@@ -7,16 +7,16 @@ const theme = createTheme({
     },
     primary: {
       main: "#377dff",
-      contrastText: "black",
+      contrastText: "#ffffff",
     },
     text: {
-      primary: "black",
+      primary: "#000000",
       secondary: "rgba(0, 0, 0, 0.6)",
     },
     custom: {
       mandatoryInput: "red",
       recommendedInput: "green",
-      optionalInput: "black",
+      optionalInput: "#000000",
     },
     button: {
       general: "#555555",
@@ -61,15 +61,6 @@ const theme = createTheme({
       submitButton: "rgba(4, 150, 96, 0.8) 0 8px 15px",
     },
     accentColor: "#377dff",
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
   },
 });
 

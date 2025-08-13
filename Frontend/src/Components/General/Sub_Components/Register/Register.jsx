@@ -5,8 +5,23 @@ import Stack from "@mui/material/Stack";
 import Header from "../Header";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import dropdownOptions from "./DropdownOptions.js";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import { useTheme } from "@mui/material";
+import {
+  AuthenticationPagesWrapper,
+  DualInputWrapper,
+  DualInputBox,
+} from "../Layouts.jsx";
 
 const Register = () => {
+  const theme = useTheme();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,148 +36,7 @@ const Register = () => {
   const [showServerMsg, setShowServerMsg] = useState(false);
   const [serverMsgType, setServerMsgType] = useState("error");
 
-  const dropdownOptions = {
-    courseTypes: ["Under Graduate", "Post Graduate"],
-    programmes: {
-      "Under Graduate": ["B.E./B.Tech.", "B.Arch."],
-      "Post Graduate": [
-        "M.C.A.",
-        "M.E.",
-        "M.Tech.",
-        "M.Arch.",
-        "M.Plan.",
-        "M.Sc. (Five Years Integrated)",
-        "M.Sc.",
-        "M.B.A.",
-      ],
-    },
-    branches: {
-      "B.E./B.Tech.": [
-        "Aeronautical Engineering",
-        "Agriculture & Irrigation Engineering",
-        "Apparel Technology",
-        "Automobile Engineering",
-        "Bio-Medical Engineering",
-        "Ceramic Technology",
-        "Chemical Engineering",
-        "Civil Engineering",
-        "Computer Science and Engineering",
-        "Electrical and Electronics",
-        "Electronics and Communication",
-        "Electronics and Instrumentation",
-        "Food Technology",
-        "Geo Informatics",
-        "Industrial Bio-Technology",
-        "Industrial Engineering",
-        "Information Technology",
-        "Leather Technology",
-        "Manufacturing Engineering",
-        "Material Science and Engineering",
-        "Mechanical Engineering",
-        "Mining Engineering",
-        "Pharmaceutical Technology",
-        "Production Engineering",
-        "Petroleum Engineering & Technology",
-        "Rubber & Plastics Technology",
-        "Textile Technology",
-        "Printing & Packaging Technology",
-        "Artificial Science & Data Science",
-        "Robotics and Automation",
-      ],
-      "B.Arch.": ["Architecture"],
-      "M.C.A.": ["N/A"],
-      "M.E.": [
-        "Hydrology and Water Ress. Engineering",
-        "Soil Mechs and Foundn. Engineering",
-        "Structural Engineering",
-        "Construction Engineering and Management",
-        "Remote Sensing and Geomatics",
-        "Transportation Engineering",
-        "Environmental Engineering",
-        "Irrigation Water Management",
-        "Environmental Management",
-        "Internal Combustion Engineering",
-        "Thermal Engineering",
-        "Energy Engineering",
-        "Computer Integrated Manufacturing",
-        "Industrial Engineering",
-        "Manufacturing Systems and Mgmt.",
-        "Solar Energy",
-        "Quality Engineering and Mgmt.",
-        "Aeronautical Engineering",
-        "Avionics",
-        "Aerospace",
-        "Automobile Engineering",
-        "Manufacturing Engineering",
-        "Mechatronics",
-        "Applied Electronics",
-        "Biomedical Engineering",
-        "Medical Electronics",
-        "Communication Systems",
-        "V.L.S.I Design",
-        "Communication and Networking",
-        "Wireless Technology",
-        "VLSI and Embedded Systems",
-        "Computer Science and Engineering",
-        "Big Data Analytics",
-        "Software Engineering",
-        "Operation Research",
-        "Multi Media Technology",
-        "Information Technology",
-        "Design Engineering",
-        "Mobility Engineering",
-        "Product Design and Development",
-        "Printing and Packaging Technology",
-        "Instrumentation Engg. Spcl in Industrial Automation",
-        "High Voltage Engineering",
-        "Power Systems Engineering",
-        "Power Electronics and Drives",
-        "Power Engineering and Management",
-        "Control and Instrumentation Engineering",
-        "Embedded Systems and Technologies",
-      ],
-      "M.Tech.": [
-        "Environmental Science and Tech.",
-        "Laser & Electro-Optical Engg.",
-        "Polymer Science and Engg.",
-        "Chemical Engineering",
-        "Ceramic Technology",
-        "Petroleum Refining and Petro-Chemical",
-        "Bio-Technology",
-        "Bio-Pharmaceutical Technology",
-        "Food Technology",
-        "Textile Technology",
-        "Leather Technology",
-        "Footwear Science and Engineering",
-        "Nano Science and Technology",
-        "Industrial Safety and Hazard Management",
-        "Rubber Technology",
-        "Computational Biology",
-        "Information Technology",
-        "Information Technology spcl in AI and Data Science",
-        "Ocean Technology",
-      ],
-      "M.Arch.": ["Landscape Architecture", "Digital Architecture", "General"],
-      "M.Plan.": ["Town and Country Planning"],
-      "M.Sc. (Five Years Integrated)": [
-        "Computer Science",
-        "Information Technology",
-        "Electronic Media",
-      ],
-      "M.Sc.": [
-        "Mathematics",
-        "Material Science",
-        "Medical Physics",
-        "Applied Chemistry",
-        "Applied Geology",
-        "Environmental Science",
-        "Electronics Media",
-        "Multimedia",
-        "Multimedia spcl in Viscom",
-      ],
-      "M.B.A.": ["General Management", "Tourism Management"],
-    },
-  };
+  const [loadingAnim, setLoadingAnim] = useState(false);
 
   const getProgrammesList = () => {
     return dropdownOptions.programmes[courseType] || [];
@@ -191,42 +65,51 @@ const Register = () => {
     navigate("/");
   };
 
-  const registerUser = async (e) => {
-    e.preventDefault();
+  const registerUser = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     if (password != confirmPassword) {
       setServerMessage("Passwords doesn't match");
-      setServerMsgType("error");
+      setServerMsgType("warning");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       return;
     }
     if (!password) {
       setServerMessage("Choose your password to continue");
-      setServerMsgType("error");
+      setServerMsgType("warning");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       return;
     }
     if (!confirmPassword) {
       setServerMessage("Confirm your password to continue");
-      setServerMsgType("error");
+      setServerMsgType("warning");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       return;
     }
     if (!courseType) {
       setServerMessage("Choose your course type to continue");
-      setServerMsgType("error");
+      setServerMsgType("warning");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       return;
     }
     if (!programme) {
       setServerMessage("Select your programme to continue");
-      setServerMsgType("error");
+      setServerMsgType("warning");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       return;
     }
     if (!branch) {
       setServerMessage("Select your branch to continue");
-      setServerMsgType("error");
+      setServerMsgType("warning");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       return;
     }
     try {
@@ -244,6 +127,7 @@ const Register = () => {
         {}
       );
 
+      setLoadingAnim(false);
       setServerMessage("Otp sent to email successfully");
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -252,6 +136,7 @@ const Register = () => {
         navigate("/verify-otp", { state: { email } });
       }, 1000); //Redirect to otp verification after 1 seconds of showing success message
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Failed to generate Otp"
       );
@@ -280,215 +165,186 @@ const Register = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <Stack
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          width: "60%",
-          minHeight: "100vh",
-          flexDirection: "column",
-        }}
-      >
+      <AuthenticationPagesWrapper>
         <Header headerTitle={"Create your account"} />
-        <div className="RegistrationDivWrapper">
-          <div id="dv-RegisterEmail" className="RegisterInputWrapper">
-            <input
+        <DualInputWrapper>
+          <DualInputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="inp-Email"
+              label="Email"
               type="email"
-              placeholder=" "
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
-            <label
-              htmlFor="in-register_email"
-              className="RegisterTextFieldLabel"
-            >
-              Email
-            </label>
-          </div>
-
-          <div id="dv-RegisterStudentNo" className="RegisterInputWrapper">
-            <input
-              type="number"
-              placeholder=" "
+          </DualInputBox>
+          <DualInputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="inp-RegNo"
+              label="Register Number"
               value={registerNumber}
               onChange={(e) => setRegisterNumber(e.target.value)}
-              required
             />
-            <label
-              htmlFor="in-register_studentno"
-              className="RegisterTextFieldLabel"
+          </DualInputBox>
+        </DualInputWrapper>
+
+        <DualInputWrapper>
+          <DualInputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="se-Dept"
+              select
+              label="Department"
+              defaultValue="Information Science and Technology"
+              value={department}
+              onChange={(e) => setDept(e.target.value)}
             >
-              Register Number
-            </label>
-          </div>
-        </div>
+              {dropdownOptions.departments.map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </DualInputBox>
+          <DualInputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="se-Course"
+              select
+              label="Course Type"
+              defaultValue=""
+              value={courseType}
+              onChange={chooseCourseType}
+            >
+              <MenuItem value="">Choose course type</MenuItem>
+              {dropdownOptions.courseTypes.map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </DualInputBox>
+        </DualInputWrapper>
 
-        <div className="RegistrationDivWrapper">
-          <div className="RegisterDropDownWrapper">
-            <div id="dv-RegisterDept" className="RegisterDropDown">
-              <select
-                value={department}
-                id="se-Department"
-                onChange={(e) => setDept(e.target.value)}
-              >
-                <option value="Information Science and Technology">
-                  Information Science and Technology
-                </option>
-                <option value="Biomedical Engineering">
-                  Biomedical Engineering
-                </option>
-                <option value="Civil Engineering">Civil Engineering</option>
-                <option value="Computer Science and Engineering">
-                  Computer Science and Engineering
-                </option>
-                <option value="Chemistry">
-                  Electrical and Electronics Engineering
-                </option>
-                <option value="Electronics and Communication Engineering">
-                  Electronics and Communication Engineering
-                </option>
-                <option value="English">English</option>
-                <option value="Geology">Geology</option>
-                <option value="Industrial Engineering">
-                  Industrial Engineering
-                </option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="Manufacturing Engineering">
-                  Manufacturing Engineering
-                </option>
-                <option value="Management Studies">Management Studies</option>
-                <option value="Mechanical Engineering">
-                  Mechanical Engineering
-                </option>
-                <option value="Media Sciences">Media Sciences</option>
-                <option value="Medical Physics">Medical Physics</option>
-                <option value="Mining Engineering">Mining Engineering</option>
-                <option value="Physics">Physics</option>
-                <option value="Printing and Packaging Technology">
-                  Priniting and Packaging Technology
-                </option>
-              </select>
-              <label htmlFor="se-Department" className="DropDownLabel">
-                Department
-              </label>
-            </div>
-          </div>
+        <DualInputWrapper>
+          <DualInputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="se-Programme"
+              select
+              label="Programme"
+              defaultValue=""
+              value={programme}
+              onChange={chooseProgramme}
+              disabled={!courseType}
+            >
+              <MenuItem value="">Choose Programme</MenuItem>
+              {getProgrammesList().map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </DualInputBox>
+          <DualInputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="se-Branch"
+              select
+              label="Branch"
+              defaultValue=""
+              value={branch}
+              onChange={chooseBranch}
+              disabled={!programme}
+            >
+              <MenuItem value="">Choose Branch</MenuItem>
+              {getBranchesList().map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </DualInputBox>
+        </DualInputWrapper>
 
-          <div className="RegisterDropDownWrapper">
-            <div id="dv-RegisterCourse" className="RegisterDropDown">
-              <select
-                value={courseType}
-                id="se-CourseType"
-                onChange={chooseCourseType}
-              >
-                <option value="">Choose course type</option>
-                {dropdownOptions.courseTypes.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              <label htmlFor="se-CourseType" className="DropDownLabel">
-                Course Type
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div className="RegistrationDivWrapper">
-          <div className="RegisterDropDownWrapper">
-            <div id="dv-RegisterProgramme" className="RegisterDropDown">
-              <select
-                value={programme}
-                id="se-Programme"
-                onChange={chooseProgramme}
-                disabled={!courseType}
-              >
-                <option value="">Choose Programme</option>
-                {getProgrammesList().map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              <label htmlFor="se-Programme" className="DropDownLabel">
-                Programme
-              </label>
-            </div>
-          </div>
-
-          <div className="RegisterDropDownWrapper">
-            <div id="dv-RegisterBranch" className="RegisterDropDown">
-              <select
-                value={branch}
-                id="se-Branch"
-                onChange={chooseBranch}
-                disabled={!programme}
-              >
-                <option value="">Choose Branch</option>
-                {getBranchesList().map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              <label htmlFor="se-Branch" className="DropDownLabel">
-                Branch
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div className="RegistrationDivWrapper">
-          <div id="dv-RegisterPassword" className="RegisterInputWrapper">
-            <input
+        <DualInputWrapper>
+          <DualInputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="inp-Password"
+              label="Password"
               type="password"
-              placeholder=" "
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
-            <label
-              htmlFor="in-register_password"
-              className="RegisterTextFieldLabel"
-            >
-              Password
-            </label>
-          </div>
-
-          <div id="dv-RegisterConfirmPassword" className="RegisterInputWrapper">
-            <input
+          </DualInputBox>
+          <DualInputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="inp-ConfirmPassword"
+              label="Confirm Password"
               type="password"
-              placeholder=" "
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              required
             />
-            <label
-              htmlFor="in-register_confirmpassword"
-              className="RegisterTextFieldLabel"
-            >
-              Confirm Password
-            </label>
-          </div>
-        </div>
+          </DualInputBox>
+        </DualInputWrapper>
 
-        <button
+        <Button
+          variant="contained"
           onClick={registerUser}
-          disabled={!branch}
-          className="AuthenticationButton"
+          disabled={
+            !email ||
+            !password ||
+            !confirmPassword ||
+            !registerNumber ||
+            !department ||
+            !courseType ||
+            !programme ||
+            !branch
+          }
+          size="large"
+          endIcon={<PersonAddAlt1Icon />}
+          loading={loadingAnim}
+          loadingPosition="end"
+          sx={{ margin: "2rem 0rem" }}
+          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
         >
-          Register
-        </button>
-        <p>
-          Existing User?{" "}
-          <span onClick={navigateToLogin} className="AuthenticationLink">
+          Create
+        </Button>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            margin: "2rem 0rem",
+          }}
+        >
+          <Typography textAlign={"center"}>Existing User?</Typography>
+          <Typography
+            onClick={navigateToLogin}
+            sx={{
+              marginLeft: "1rem",
+              cursor: "pointer",
+              color: theme.palette.primary.main,
+              textAlign: "center",
+            }}
+          >
             Click here to login
-          </span>
-        </p>
-      </Stack>
+          </Typography>
+        </Box>
+      </AuthenticationPagesWrapper>
     </>
   );
 };
