@@ -21,6 +21,30 @@ const AuthenticationPagesWrapper = styled(Stack)(() => ({
   },
 }));
 
+const InputWrapper = styled(Box)(() => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "100%",
+  flexDirection: "column",
+}));
+
+const InputBox = styled(Box)(() => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "90%", // Width for mobile screen
+  "@media (min-width:600px)": {
+    width: "80%",
+  },
+  "@media (min-width:900px)": {
+    width: "70%",
+  },
+  "@media (min-width:1200px)": {
+    width: "60%",
+  },
+}));
+
 const DualInputWrapper = styled(Box)(() => ({
   display: "flex",
   justifyContent: "space-between",
@@ -42,4 +66,10 @@ const DualInputBox = styled(Box)(() => ({
   },
 }));
 
-export { AuthenticationPagesWrapper, DualInputWrapper, DualInputBox };
+export {
+  AuthenticationPagesWrapper,
+  InputWrapper,
+  InputBox,
+  DualInputWrapper,
+  DualInputBox,
+};

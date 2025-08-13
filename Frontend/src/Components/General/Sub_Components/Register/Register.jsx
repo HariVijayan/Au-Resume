@@ -316,7 +316,7 @@ const Register = () => {
           endIcon={<PersonAddAlt1Icon />}
           loading={loadingAnim}
           loadingPosition="end"
-          sx={{ margin: "2rem 0rem" }}
+          sx={{ margin: "2rem 0rem", textTransform: "none" }}
           padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
         >
           Create
