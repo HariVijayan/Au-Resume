@@ -13,8 +13,12 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material";
 
 const ResetPassword = () => {
+  const theme = useTheme();
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
@@ -30,9 +34,30 @@ const ResetPassword = () => {
 
   if (!email) {
     return (
-      <Typography sx={{ margin: "2rem", textAlign: "center" }}>
-        Error occurred, please restart the process.
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "2rem 0rem",
+        }}
+      >
+        <Typography textAlign={"center"}>
+          Error occurred, please restrart the process.
+        </Typography>
+        <Typography
+          onClick={() => navigate("/")}
+          sx={{
+            marginLeft: "1rem",
+            cursor: "pointer",
+            color: theme.palette.primary.main,
+            textAlign: "center",
+          }}
+        >
+          Click here to go back.
+        </Typography>
+      </Box>
     );
   }
 

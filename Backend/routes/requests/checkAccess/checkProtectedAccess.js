@@ -1,6 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import currentSession from "../../../models/user/currentSession.js";
+import adminCurrentSession from "../../../models/admin/currentSession.js";
 import addLogs from "../../../helper/functions/addLogs.js";
 
 const router = express.Router();
@@ -16,14 +17,26 @@ router.post("/check-access", async (req, res) => {
       process.env.JWT_SECRET
     );
 
-    const session = await currentSession.findOne({ userId, sessionId });
-    if (!session || session.expiresAt < Date.now()) {
-      return res
-        .status(403)
-        .json({ message: "Session expired. Log in again" });
+    const adminSession = await adminCurrentSession.findOne({
+      userId,
+      sessionId,
+    });
+    if (adminSession) {
+      if (adminSession.expiresAt < Date.now()) {
+        return res
+          .status(403)
+          .json({ message: "Session expired. Log in again" });
+      }
+      res.status(200).json({ message: "Valid access token" });
+    } else {
+      const userSession = await currentSession.findOne({ userId, sessionId });
+      if (!userSession || userSession.expiresAt < Date.now()) {
+        return res
+          .status(403)
+          .json({ message: "Session expired. Log in again" });
+      }
+      res.status(200).json({ message: "Valid access token" });
     }
-
-    res.json({ message: "Valid access token" });
   } catch (error) {
     await addLogs(
       true,

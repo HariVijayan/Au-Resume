@@ -14,8 +14,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ReplayIcon from "@mui/icons-material/Replay";
 import CheckIcon from "@mui/icons-material/Check";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material";
 
 const VerifyOTP = () => {
+  const theme = useTheme();
+
   const [otp, setOtp] = useState("");
   const [countdown, setCountdown] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
@@ -32,9 +36,30 @@ const VerifyOTP = () => {
 
   if (!email) {
     return (
-      <Typography sx={{ margin: "2rem", textAlign: "center" }}>
-        Error occurred, please restart the process.
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "2rem 0rem",
+        }}
+      >
+        <Typography textAlign={"center"}>
+          Error occurred, please restrart the process.
+        </Typography>
+        <Typography
+          onClick={() => navigate("/")}
+          sx={{
+            marginLeft: "1rem",
+            cursor: "pointer",
+            color: theme.palette.primary.main,
+            textAlign: "center",
+          }}
+        >
+          Click here to go back.
+        </Typography>
+      </Box>
     );
   }
 

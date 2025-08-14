@@ -49,11 +49,25 @@ import "./Components/Resume_Builder/RB_Styles.css";
 import "./Components/Profile/Profile_Styles.css";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import {
+  verifySessionForAdminRoutes,
+  verifySessionForProtectedRoutes,
+  verifySessionForUnProtectedRoutes,
+} from "./VerifyUserSession.js";
+import {
+  protectedRoutes,
+  superAdminRoutes,
+  adminRoutes,
+  analyticsAdminRoutes,
+} from "./Routes.js";
 
 import ResumeInputTemplate from "./ResumeFormat.jsx";
+import Overlay from "./Overlay.jsx";
 
 function RouteWrapper() {
-  const { resumeData, setResumeData } = ResumeInputTemplate();
+  const navigate = useNavigate();
+
+  const { resumeData } = ResumeInputTemplate();
   const [loggedInUserType, setLoggedInUserType] = useState("");
 
   const [serverMessage, setServerMessage] = useState("");
@@ -61,8 +75,6 @@ function RouteWrapper() {
   const [serverMsgType, setServerMsgType] = useState("error");
 
   const forceMultiTabClosureOnLogout = () => {
-    const navigate = useNavigate();
-
     useEffect(() => {
       const checkBrowserLocalStorage = (event) => {
         if (event.key === "flagLogout") {
@@ -79,136 +91,6 @@ function RouteWrapper() {
   forceMultiTabClosureOnLogout();
 
   const location = useLocation();
-  const protectedRoutes = [
-    "/resume-builder/template-choosing",
-    "/resume-builder/basic-details",
-    "/resume-builder/experience",
-    "/resume-builder/education/phd",
-    "/resume-builder/education/pg",
-    "/resume-builder/education/ug",
-    "/resume-builder/education/diploma",
-    "/resume-builder/education/school",
-    "/resume-builder/projects",
-    "/resume-builder/skills",
-    "/resume-builder/certifications",
-    "/resume-builder/languages-known",
-    "/resume-builder/custom-input",
-    "/user-profile",
-  ];
-
-  const superAdminRoutes = [
-    "/admin-dashboard/super-admin",
-    "/admin-dashboard/super-admin/admin-management",
-    "/admin-dashboard/super-admin/admin-management/add-admin",
-    "/admin-dashboard/super-admin/admin-management/remove-admin",
-    "/admin-dashboard/super-admin/admin-management/modify-admin",
-  ];
-
-  const adminRoutes = [
-    "/admin-dashboard/admin-general",
-    "/admin-dashboard/user-management",
-    "/admin-dashboard/user-management/add-user",
-    "/admin-dashboard/user-management/remove-user",
-    "/admin-dashboard/user-management/modify-user",
-  ];
-
-  const analyticsAdminRoutes = [
-    "/admin-dashboard/log-management",
-    "/admin-dashboard/log-management/admin-logs",
-    "/admin-dashboard/log-management/user-logs",
-    "/admin-dashboard/log-management/log-actions",
-  ];
-  const navigate = useNavigate();
-
-  const verifySessionForAdminRoutes = async (routeType) => {
-    //Redirect to login page if previous session is invalid or user not an admin. If session is valid and user is admin, no action is taken.
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/verifyAdminSession/check-admin-access",
-        { routeType },
-        { withCredentials: true }
-      );
-
-      if (
-        response?.data?.message ===
-        "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
-      ) {
-        setLoggedInUserType("Super Admin");
-      } else if (
-        response?.data?.message ===
-        "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
-      ) {
-        setLoggedInUserType("Admin");
-      } else if (
-        response?.data?.message ===
-        "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
-      ) {
-        setLoggedInUserType("Analytics");
-      } else {
-        throw new Error("Session invalid");
-      }
-    } catch (error) {
-      setServerMessage(
-        error.response?.data?.message || "Failed to verify admin access"
-      );
-      setServerMsgType("error");
-      setShowServerMsg(true);
-      navigate("/");
-    }
-  };
-
-  const verifySessionForProtectedRoutes = async () => {
-    //Redirect to login page if previous session is invalid. If session is valid, no action is taken.
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/verifySession/protectedRoutes/check-access",
-        {},
-        { withCredentials: true }
-      );
-    } catch (error) {
-      setServerMessage(
-        error.response?.data?.message || "Failed to verify user access"
-      );
-      setServerMsgType("error");
-      setShowServerMsg(true);
-      navigate("/");
-    }
-  };
-
-  const verifySessionForUnProtectedRoutes = async () => {
-    //Redirect to dashboard if there is a previous valid session available. If session is invalid, no action is taken.
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/verifySession/authenticationRoutes/check-access",
-        {},
-        { withCredentials: true }
-      );
-
-      if (
-        response?.data?.message ===
-        "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
-      ) {
-        setLoggedInUserType("Super Admin");
-        navigate("/admin-dashboard/super-admin");
-      } else if (
-        response?.data?.message ===
-        "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
-      ) {
-        setLoggedInUserType("Admin");
-        navigate("/admin-dashboard/admin-general");
-      } else if (
-        response?.data?.message ===
-        "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
-      ) {
-        setLoggedInUserType("Analytics");
-        navigate("/admin-dashboard/analytics");
-      } else if (response?.data?.message === "Valid access token") {
-        navigate("/resume-builder/template-choosing");
-      }
-    } catch (error) {
-      return;
-    }
-  };
 
   useEffect(() => {
     const setRouteBasedElements = () => {
@@ -224,17 +106,50 @@ function RouteWrapper() {
 
     const checkAccessAndSetFooter = async () => {
       if (superAdminRoutes.includes(location.pathname)) {
-        await verifySessionForAdminRoutes("SuperAdmin");
+        const sessionResponse = await verifySessionForAdminRoutes("SuperAdmin");
+        if (sessionResponse.serverResponse === "") {
+          setLoggedInUserType(sessionResponse.userType);
+        } else {
+          setServerMessage(sessionResponse.serverResponse);
+          setServerMsgType("error");
+          setShowServerMsg(true);
+          navigate("/");
+        }
       } else if (adminRoutes.includes(location.pathname)) {
-        await verifySessionForAdminRoutes("Admin");
+        const sessionResponse = await verifySessionForAdminRoutes("Admin");
+        if (sessionResponse.serverResponse === "") {
+          setLoggedInUserType(sessionResponse.userType);
+        } else {
+          setServerMessage(sessionResponse.serverResponse);
+          setServerMsgType("error");
+          setShowServerMsg(true);
+          navigate("/");
+        }
       } else if (analyticsAdminRoutes.includes(location.pathname)) {
-        await verifySessionForAdminRoutes("Analytics");
+        const sessionResponse = await verifySessionForAdminRoutes("Analytics");
+        if (sessionResponse.serverResponse === "") {
+          setLoggedInUserType(sessionResponse.userType);
+        } else {
+          setServerMessage(sessionResponse.serverResponse);
+          setServerMsgType("error");
+          setShowServerMsg(true);
+          navigate("/");
+        }
       } else if (protectedRoutes.includes(location.pathname)) {
-        await verifySessionForProtectedRoutes();
+        const sessionResponse = await verifySessionForProtectedRoutes();
+        if (sessionResponse.serverResponse != "") {
+          setServerMessage(sessionResponse.serverResponse);
+          setServerMsgType("error");
+          setShowServerMsg(true);
+          navigate("/");
+        }
       } else {
-        await verifySessionForUnProtectedRoutes();
+        const sessionResponse = await verifySessionForUnProtectedRoutes();
+        if (sessionResponse.serverResponse === "") {
+          setLoggedInUserType(sessionResponse.userType);
+          navigate(sessionResponse.redirectRoute);
+        }
       }
-
       setRouteBasedElements(); // Only after verification
     };
 
@@ -322,56 +237,6 @@ function RouteWrapper() {
   }, [logoutClicked]);
 
   const [overlayType, setOverlayType] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-
-  const fetchPreviousResume = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/getPrevious/resume-details",
-        { userPassword },
-        { withCredentials: true }
-      );
-
-      setServerMessage("Successfully fetched previous records");
-      setServerMsgType("success");
-      setShowServerMsg(true);
-      setResumeData(response.data);
-      resetOverlay();
-    } catch (error) {
-      setUserPassword("");
-      setServerMessage(
-        error.response?.data?.message || "Failed to fetch previous records"
-      );
-      setServerMsgType("error");
-      setShowServerMsg(true);
-    }
-  };
-
-  const saveCurrentResume = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/saveResume/current-resume",
-        { userPassword, resumeData },
-        { withCredentials: true }
-      );
-      setUserPassword("");
-      setServerMessage("Successfully saved current details after encryption");
-      setServerMsgType("success");
-      setShowServerMsg(true);
-    } catch (error) {
-      setUserPassword("");
-      setServerMessage(
-        error.response?.data?.message || "Failed to save current details"
-      );
-      setServerMsgType("error");
-      setShowServerMsg(true);
-    }
-  };
-
-  const resetOverlay = () => {
-    setUserPassword("");
-    setOverlayType("");
-  };
 
   return (
     <>
@@ -736,96 +601,21 @@ function RouteWrapper() {
           }
         />
       </Routes>
+
       {overlayType === "FetchResume" && (
-        <div className="OverlayWrapper" style={{ display: "flex" }}>
-          <div className="OverlayData" style={{ display: "flex" }}>
-            <div className="ResumeDataActions">
-              <div className="OverlayCloseBtn">
-                <svg
-                  onClick={resetOverlay}
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-                </svg>
-              </div>
-              <h2>Fetch previously stored Resume Data</h2>
-              <div className="AuthenticationInputWrapper">
-                <input
-                  type="password"
-                  id="in-fetch_resume_password"
-                  value={userPassword}
-                  placeholder=" "
-                  onChange={(e) => setUserPassword(e.target.value)}
-                  required
-                />
-                <label
-                  htmlFor="in-fetch_resume_password"
-                  className="AuthenticationTextFieldLabel"
-                >
-                  Password
-                </label>
-              </div>
-              <button
-                className="AuthenticationButton"
-                onClick={fetchPreviousResume}
-              >
-                Fetch
-              </button>
-            </div>
-          </div>
-        </div>
+        <Overlay
+          overlayTitle={"Fetch previously stored Resume Data"}
+          overlayAction={"Fetch"}
+          setOverlayType={setOverlayType}
+        />
       )}
+
       {overlayType === "SaveResume" && (
-        <div className="OverlayWrapper" style={{ display: "flex" }}>
-          <div className="OverlayData" style={{ display: "flex" }}>
-            <div className="ResumeDataActions">
-              <div className="OverlayCloseBtn">
-                <svg
-                  onClick={resetOverlay}
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-                </svg>
-              </div>
-              <h2>Save current Resume Data</h2>
-              <div className="AuthenticationInputWrapper">
-                <input
-                  type="password"
-                  id="in-fetch_resume_password"
-                  value={userPassword}
-                  placeholder=" "
-                  onChange={(e) => setUserPassword(e.target.value)}
-                  required
-                />
-                <label
-                  htmlFor="in-fetch_resume_password"
-                  className="AuthenticationTextFieldLabel"
-                >
-                  Password
-                </label>
-              </div>
-              <button
-                className="AuthenticationButton"
-                onClick={saveCurrentResume}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {overlayType === "" && (
-        <div className="OverlayWrapper" style={{ display: "none" }}>
-          <div className="OverlayData" style={{ display: "none" }}></div>
-        </div>
+        <Overlay
+          overlayTitle={"Save current Resume Data"}
+          overlayAction={"Save"}
+          setOverlayType={setOverlayType}
+        />
       )}
     </>
   );
