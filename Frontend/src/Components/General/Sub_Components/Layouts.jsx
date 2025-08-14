@@ -34,8 +34,10 @@ const InputBox = styled(Box)(() => ({
   justifyContent: "center",
   alignItems: "center",
   width: "90%", // Width for mobile screen
+  flexDirection: "column",
   "@media (min-width:600px)": {
     width: "80%",
+    flexDirection: "row",
   },
   "@media (min-width:900px)": {
     width: "70%",

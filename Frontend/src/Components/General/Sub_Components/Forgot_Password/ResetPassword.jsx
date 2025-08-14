@@ -1,10 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import Stack from "@mui/material/Stack";
 import Header from "../Header";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import {
+  AuthenticationPagesWrapper,
+  InputWrapper,
+  InputBox,
+} from "../Layouts.jsx";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -18,16 +26,26 @@ const ResetPassword = () => {
   const [showServerMsg, setShowServerMsg] = useState(false);
   const [serverMsgType, setServerMsgType] = useState("error");
 
+  const [loadingAnim, setLoadingAnim] = useState(false);
+
   if (!email) {
-    return <p>Please restart the process.</p>;
+    return (
+      <Typography sx={{ margin: "2rem", textAlign: "center" }}>
+        Error occurred, please restart the process.
+      </Typography>
+    );
   }
 
-  const resetPassword = async (e) => {
-    e.preventDefault();
+  const resetPassword = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     if (newPassword != confirmPassword) {
-      setServerMessage("Password doesn't match");
-      setServerMsgType("error");
+      setServerMessage("Passwords doesn't match");
+      setServerMsgType("warning");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       return;
     }
     try {
@@ -35,6 +53,7 @@ const ResetPassword = () => {
         "http://localhost:5000/userRequest/reset-password",
         { email, newPassword, isAdmin }
       );
+      setLoadingAnim(false);
       setServerMessage("Password reset successful");
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -43,6 +62,7 @@ const ResetPassword = () => {
         navigate("/");
       }, 1000); //Redirect to login page after 1 seconds of showing success message
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Password reset failed"
       );
@@ -71,59 +91,52 @@ const ResetPassword = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <Stack
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          width: "60%",
-          minHeight: "100vh",
-          flexDirection: "column",
-        }}
-      >
+      <AuthenticationPagesWrapper>
         <Header headerTitle={"Reset Password"} />
-        <div className="AuthenticationDivWrapper">
-          <div id="dv-RPPassword" className="AuthenticationInputWrapper">
-            <input
+
+        <InputWrapper>
+          <InputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="inp-Password"
+              label="Password"
               type="password"
-              id="in-rp_password"
-              placeholder=" "
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              required
             />
-            <label
-              htmlFor="in-rp_password"
-              className="AuthenticationTextFieldLabel"
-            >
-              Password
-            </label>
-          </div>
-        </div>
+          </InputBox>
+        </InputWrapper>
 
-        <div className="AuthenticationDivWrapper">
-          <div id="dv-RPConfirmPassword" className="AuthenticationInputWrapper">
-            <input
+        <InputWrapper>
+          <InputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="inp-ConfirmPassword"
+              label="Confirm Password"
               type="password"
-              id="in-rp_confirmpassword"
-              placeholder=" "
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              required
             />
-            <label
-              htmlFor="in-rp_confirmpassword"
-              className="AuthenticationTextFieldLabel"
-            >
-              Confirm Password
-            </label>
-          </div>
-        </div>
+          </InputBox>
+        </InputWrapper>
 
-        <button className="AuthenticationButton" onClick={resetPassword}>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={resetPassword}
+          disabled={!newPassword || !confirmPassword}
+          size="large"
+          endIcon={<DoneAllIcon />}
+          loading={loadingAnim}
+          loadingPosition="end"
+          sx={{ margin: "2rem 0rem", textTransform: "none" }}
+          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+        >
           Reset Password
-        </button>
-      </Stack>
+        </Button>
+      </AuthenticationPagesWrapper>
     </>
   );
 };

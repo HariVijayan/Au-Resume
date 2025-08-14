@@ -1,10 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Stack from "@mui/material/Stack";
 import Header from "../Header";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import {
+  AuthenticationPagesWrapper,
+  InputWrapper,
+  InputBox,
+} from "../Layouts.jsx";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import TextField from "@mui/material/TextField";
+import EmailIcon from "@mui/icons-material/Email";
+import Button from "@mui/material/Button";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -15,14 +24,19 @@ const ForgotPassword = () => {
   const [showServerMsg, setShowServerMsg] = useState(false);
   const [serverMsgType, setServerMsgType] = useState("error");
 
-  const getOtp = async (e) => {
-    e.preventDefault();
+  const [loadingAnim, setLoadingAnim] = useState(false);
 
+  const getOtp = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/getFirstOtp/password-reset-otp",
         { email, isAdmin }
       );
+      setLoadingAnim(false);
       setServerMessage("Otp sent to email successfully");
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -31,6 +45,7 @@ const ForgotPassword = () => {
         navigate("/verify-password-otp", { state: { email, isAdmin } });
       }, 1000); //Redirect to otp verification after 1 seconds of showing success message
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Failed to generate Otp"
       );
@@ -59,49 +74,53 @@ const ForgotPassword = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <Stack
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          width: "60%",
-          minHeight: "100vh",
-          flexDirection: "column",
-        }}
-      >
-        <Header headerTitle={"Verify Email to reset password"} />
-        <div className="AuthenticationDivWrapper">
-          <div id="dv-ForgotPassword" className="AuthenticationInputWrapper">
-            <input
+      <AuthenticationPagesWrapper>
+        <Header headerTitle={"Verify email to reset password"} />
+
+        <InputWrapper>
+          <InputBox>
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="inp-Email"
+              label="Email"
               type="email"
-              id="in-fp_email"
-              placeholder=" "
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
-            <label
-              htmlFor="in-fp_email"
-              className="AuthenticationTextFieldLabel"
-            >
-              Email Id
-            </label>
-          </div>
-        </div>
-        <div id="dv-FPAdminCheckbox">
-          <span>System Admin</span>
-          <input
-            type="checkbox"
-            id="in-fp_admin"
-            checked={isAdmin}
-            onChange={(e) => setIsAdmin(e.target.checked)}
-          />
-        </div>
+          </InputBox>
+        </InputWrapper>
 
-        <button className="AuthenticationButton" onClick={getOtp}>
+        <InputWrapper>
+          <InputBox>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isAdmin}
+                  onChange={(e) => setIsAdmin(e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="System Admin"
+              labelPlacement="start"
+            />
+          </InputBox>
+        </InputWrapper>
+
+        <Button
+          variant="contained"
+          onClick={getOtp}
+          disabled={!email}
+          size="large"
+          endIcon={<EmailIcon />}
+          loading={loadingAnim}
+          loadingPosition="end"
+          sx={{ margin: "2rem 0rem", textTransform: "none" }}
+          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+        >
           Get Otp
-        </button>
-      </Stack>
+        </Button>
+      </AuthenticationPagesWrapper>
     </>
   );
 };
