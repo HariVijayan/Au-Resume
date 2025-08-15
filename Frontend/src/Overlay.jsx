@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  Box,
-  DialogTitle,
-  TextField,
-  Button,
-} from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import Box from "@mui/material/Box";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
@@ -15,7 +13,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import BackupIcon from "@mui/icons-material/Backup";
 import ResumeInputTemplate from "./ResumeFormat.jsx";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
 const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
@@ -29,7 +26,6 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
   const [serverMsgType, setServerMsgType] = useState("error");
 
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const fetchPreviousResume = async () => {
     setLoadingAnim(true);
@@ -48,6 +44,9 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       setServerMessage("Successfully fetched previous records");
       setServerMsgType("success");
       setShowServerMsg(true);
+      setTimeout(() => {
+        setOverlayType("");
+      }, 2000); //Remove overlay automatically after 2 seconds
     } catch (error) {
       setUserPassword("");
       setLoadingAnim(false);
@@ -77,6 +76,10 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       );
       setServerMsgType("success");
       setShowServerMsg(true);
+
+      setTimeout(() => {
+        setOverlayType("");
+      }, 2000); //Remove overlay automatically after 2 seconds
     } catch (error) {
       setUserPassword("");
       setLoadingAnim(false);
@@ -123,31 +126,48 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
           margin: "2rem 0rem",
         }}
         open={true}
-        width={{ xs: "90%", sm: "70%", md: "50%" }}
         fullWidth={true}
         maxWidth="md"
+        slotProps={{
+          paper: {
+            sx: {
+              height: "70vh",
+              display: "flex",
+              flexDirection: "column",
+            },
+          },
+        }}
         onClose={() => setOverlayType("")}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+        <Box
+          sx={{ display: "flex", justifyContent: "flex-end", margin: "2rem" }}
+        >
+          <CloseIcon
+            onClick={() => setOverlayType("")}
+            sx={{
+              cursor: "pointer",
+              ":hover": { color: theme.palette.error.main },
+            }}
+          />
+        </Box>
         <DialogTitle
           id="alert-dialog-title"
           sx={{
             display: "flex",
             justifyContent: "space-evenly",
             alignItems: "center",
-            width: "100%",
+            fontWeight: "bold",
           }}
         >
           {overlayTitle}
-          <CloseIcon onClick={() => setOverlayType("")} />
         </DialogTitle>
         <DialogContent
           sx={{
             display: "flex",
             justifyContent: "space-evenly",
             alignItems: "center",
-            width: "100%",
             flexDirection: "column",
           }}
         >
@@ -156,8 +176,8 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              width: "100%",
             }}
+            width={{ xs: "90%", md: "70%", lg: "50%" }}
           >
             <TextField
               sx={{ width: "80%", margin: "2rem 0rem" }}

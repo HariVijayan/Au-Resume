@@ -14,6 +14,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import EmailIcon from "@mui/icons-material/Email";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import WarningIcon from "@mui/icons-material/Warning";
+import { useTheme } from "@mui/material/styles";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -25,6 +28,8 @@ const ForgotPassword = () => {
   const [serverMsgType, setServerMsgType] = useState("error");
 
   const [loadingAnim, setLoadingAnim] = useState(false);
+
+  const theme = useTheme();
 
   const getOtp = async () => {
     setLoadingAnim(true);
@@ -106,6 +111,22 @@ const ForgotPassword = () => {
             />
           </InputBox>
         </InputWrapper>
+
+        <Typography
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: theme.palette.error.main,
+            textAlign: "center",
+          }}
+        >
+          <WarningIcon
+            sx={{ marginRight: "1rem", fill: theme.palette.error.main }}
+          />{" "}
+          When you reset your password, your previously stored resumes (if any)
+          will be deleted.
+        </Typography>
 
         <Button
           variant="contained"
