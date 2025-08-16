@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Stack from "@mui/material/Stack";
 import Header from "../Header";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -18,6 +17,10 @@ import {
   DualInputWrapper,
   DualInputBox,
 } from "../Layouts.jsx";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Register = () => {
   const theme = useTheme();
@@ -37,6 +40,15 @@ const Register = () => {
   const [serverMsgType, setServerMsgType] = useState("error");
 
   const [loadingAnim, setLoadingAnim] = useState(false);
+
+  const [showPasswordIcon, setShowPasswordIcon] = useState(false);
+
+  const showPasswordInput = () => setShowPasswordIcon((show) => !show);
+
+  const [showConfirmPasswordIcon, setShowConfirmPasswordIcon] = useState(false);
+
+  const showConfirmPasswordInput = () =>
+    setShowConfirmPasswordIcon((show) => !show);
 
   const getProgrammesList = () => {
     return dropdownOptions.programmes[courseType] || [];
@@ -277,24 +289,64 @@ const Register = () => {
         <DualInputWrapper>
           <DualInputBox>
             <TextField
-              sx={{ width: "80%", margin: "2rem 0rem" }}
               required
-              id="inp-Password"
+              variant="outlined"
               label="Password"
-              type="password"
+              type={showPasswordIcon ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={
+                          showPasswordIcon
+                            ? "hide the password"
+                            : "display the password"
+                        }
+                        onClick={showPasswordInput}
+                      >
+                        {showPasswordIcon ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              sx={{ width: "80%", margin: "2rem 0rem" }}
             />
           </DualInputBox>
           <DualInputBox>
             <TextField
-              sx={{ width: "80%", margin: "2rem 0rem" }}
               required
-              id="inp-ConfirmPassword"
-              label="Confirm Password"
-              type="password"
+              variant="outlined"
+              label="Password"
+              type={showConfirmPasswordIcon ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={
+                          showConfirmPasswordIcon
+                            ? "hide the password"
+                            : "display the password"
+                        }
+                        onClick={showConfirmPasswordInput}
+                      >
+                        {showConfirmPasswordIcon ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              sx={{ width: "80%", margin: "2rem 0rem" }}
             />
           </DualInputBox>
         </DualInputWrapper>
