@@ -3,6 +3,8 @@ import PreviewPdf from "../PreviewPdf.jsx";
 import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
+import HeaderTemplate from "../Header.jsx";
+import LanguageIcon from "@mui/icons-material/Language";
 
 const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
@@ -31,11 +33,6 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
     }
   };
 
-  const logoutUser = () => {
-    setLogoutUserType("User");
-    setLogoutClicked(true);
-  };
-
   const splitCSValues = (e) => {
     const { value } = e.target;
     let updatedLanguages = { ...resumeData.languages };
@@ -55,77 +52,13 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
 
   return (
     <>
-      <div id="dv-MainContent" className="MainContent">
-        <div id="dv-LanguagesHeader" className="PageDetailsHeader">
-          <span className="RBHeaderText">
-            <span
-              id="sp-rbheading"
-              onClick={() => navigate("/resume-builder/template-choosing")}
-            >
-              Resume Builder
-            </span>
-            <div className="RBHeaderSvgWrapper">
-              <span className="RBHeaderArrow">{" > "}</span>Languages Known
-              <svg
-                className="RBHeaderSvg"
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="m326-240-30-48q80-8 125-43t45-90q0-30-20.5-55T392-512q-23 57-54.5 102T268-332q3 12 6.5 24t7.5 24l-50 15q-3-10-5-17.5t-4-13.5q-26 14-49 21.5t-45 7.5q-32 0-52-21t-20-56q0-53 40-105t103-82q1-19 2-37.5t3-37.5q-28 1-59-.5T79-615l-1-53q26 5 56 6.5t77 1.5q2-18 4.5-35.5t.5-35.5l60 1q-7 17-10 34.5t-6 34.5q58-3 107-9t92-16l1 52q-53 8-103.5 13.5T255-612q-2 14-2.5 29t-2.5 29q28-8 54.5-11t52.5-1q3-10 4.5-20t2.5-20l57 14q-3 8-6.5 16t-6.5 19q51 14 81.5 52t30.5 85q0 70-51.5 117.5T326-240Zm-188-85q17 0 35-7t38-21q-7-38-10-69t-3-59q-38 24-63 59t-25 66q0 13 8.5 22t19.5 9Zm118-65q29-28 50.5-60.5T342-520q-23 0-46.5 4T248-504q-2 26 .5 54t7.5 60Zm446 56q28 0 54.5-13t48.5-37v-106q-23 3-42.5 7t-36.5 9q-45 14-67.5 35T636-390q0 26 18 41t48 15Zm-23 68q-57 0-90-32.5T556-387q0-52 33-85t106-53q23-6 50.5-11t59.5-9q-2-47-22-68.5T721-635q-26 0-51.5 9.5T604-592l-32-56q33-25 77.5-40.5T740-704q71 0 108 44t37 128v257h-67l-6-45q-28 25-61.5 39.5T679-266Z" />
-              </svg>
-            </div>
-          </span>
-        </div>
-        <div id="dv-MenuIcons" className="MenuIcons">
-          <svg
-            className="MenuIconsSvg"
-            onClick={() => setOverlayType("FetchResume")}
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#e3e3e3"
-          >
-            <path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q17-72 85-137t145-65q33 0 56.5 23.5T520-716v242l64-62 56 56-160 160-160-160 56-56 64 62v-242q-76 14-118 73.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41h480q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-48-22-89.5T600-680v-93q74 35 117 103.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H260Zm220-358Z" />
-          </svg>
-          <svg
-            className="MenuIconsSvg"
-            onClick={() => setOverlayType("SaveResume")}
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#e3e3e3"
-          >
-            <path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41h100v80H260Zm220-280Z" />
-          </svg>
-          <svg
-            className="MenuIconsSvg"
-            onClick={() => navigate("/user-profile")}
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#e3e3e3"
-          >
-            <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-          </svg>
-          <svg
-            className="MenuIconsSvg"
-            onClick={logoutUser}
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#e3e3e3"
-          >
-            <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
-          </svg>
-        </div>
-      </div>
+      <HeaderTemplate
+        currentPage={"Languages Known"}
+        setLogoutClicked={setLogoutClicked}
+        setLogoutUserType={setLogoutUserType}
+        setOverlayType={setOverlayType}
+        PageIcon={LanguageIcon}
+      />
       <div id="dv-MainFormAndPreview">
         <div id="dv-MainForm">
           <div id="dv-LanguagesWrapper" className="WrapperClass">

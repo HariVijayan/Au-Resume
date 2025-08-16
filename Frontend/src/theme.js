@@ -14,9 +14,7 @@ const theme = createTheme({
       secondary: "rgba(0, 0, 0, 0.6)",
     },
     custom: {
-      mandatoryInput: "red",
-      recommendedInput: "green",
-      optionalInput: "#000000",
+      brown: "#663b13",
     },
     button: {
       general: "#555555",
