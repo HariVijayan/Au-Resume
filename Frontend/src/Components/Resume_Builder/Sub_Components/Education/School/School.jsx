@@ -1,14 +1,12 @@
 import { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
-import { useNavigate } from "react-router-dom";
 import InfoDiv from "../../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../../Header.jsx";
 import SchoolIcon from "@mui/icons-material/School";
+import NavigationButtons from "../../NavigationButtons.jsx";
 
 const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
-  const navigate = useNavigate();
-
   const { resumeData, updateField } = ResumeInputTemplate();
 
   const [infoDiv, setInfoDiv] = useState("");
@@ -18,14 +16,6 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
       setInfoDiv(" ");
     } else {
       setInfoDiv(currentState);
-    }
-  };
-
-  const changeContent = (navigationType) => {
-    if (navigationType === "previous") {
-      navigate("/resume-builder/education/diploma");
-    } else {
-      navigate("/resume-builder/projects");
     }
   };
 
@@ -376,40 +366,12 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
             />
           )}
 
-          <div id="dv-EducationSchoolButtons" className="NavigationButtons">
-            <button
-              type="button"
-              onClick={() => changeContent("previous")}
-              className="LeftNavigationButtons"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z" />
-              </svg>{" "}
-              Diploma
-            </button>
-            <button
-              type="button"
-              onClick={() => changeContent("next")}
-              className="RightNavigationButtons"
-            >
-              Projects{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
-              </svg>
-            </button>
-          </div>
+          <NavigationButtons
+            PreviousPageName={"Diploma"}
+            PreviousPageLink={`/resume-builder/education/diploma`}
+            NextPageName={"Projects"}
+            NextPageLink={`/resume-builder/projects`}
+          />
         </div>
         <PreviewPdf />
       </div>

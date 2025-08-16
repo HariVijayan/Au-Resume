@@ -2,27 +2,23 @@ import { useState, useEffect } from "react";
 import ListType from "./ListType.jsx";
 import ParaType from "./ParaType.jsx";
 import PreviewPdf from "../PreviewPdf.jsx";
-import { useNavigate } from "react-router-dom";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../Header.jsx";
 import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+import NavigationButtons from "../NavigationButtons.jsx";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import NotesIcon from "@mui/icons-material/Notes";
+import { useTheme } from "@mui/material";
 
 const Experience = ({
   setLogoutClicked,
   setLogoutUserType,
   setOverlayType,
 }) => {
-  const navigate = useNavigate();
-
   const { resumeData, updateField } = ResumeInputTemplate();
-
-  const changeContent = (navigationType) => {
-    if (navigationType === "previous") {
-      navigate("/resume-builder/basic-details");
-    } else {
-      navigate("/resume-builder/education/phd");
-    }
-  };
+  const theme = useTheme();
 
   const [hasChosenAStyle, setHasChosenAStyle] = useState(
     resumeData.experience[0].company != "" ? true : false
@@ -75,41 +71,44 @@ const Experience = ({
       <div id="dv-MainFormAndPreview">
         <div id="dv-MainForm">
           <div id="dv-ExperienceWrapper" className="WrapperClass">
-            <div id="dv-ExperienceStyles" className="StyleChoosingButtons">
-              <button
-                type="button"
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
                 onClick={() => addExperience("ListType")}
-                className="ListInputButton"
+                size="large"
+                startIcon={<FormatListBulletedIcon />}
+                sx={{
+                  margin: "2rem 0rem",
+                  textTransform: "none",
+                  backgroundColor: theme.palette.black.main,
+                }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M360-200v-80h480v80H360Zm0-240v-80h480v80H360Zm0-240v-80h480v80H360ZM200-160q-33 0-56.5-23.5T120-240q0-33 23.5-56.5T200-320q33 0 56.5 23.5T280-240q0 33-23.5 56.5T200-160Zm0-240q-33 0-56.5-23.5T120-480q0-33 23.5-56.5T200-560q33 0 56.5 23.5T280-480q0 33-23.5 56.5T200-400Zm0-240q-33 0-56.5-23.5T120-720q0-33 23.5-56.5T200-800q33 0 56.5 23.5T280-720q0 33-23.5 56.5T200-640Z" />
-                </svg>{" "}
                 List Type
-              </button>
+              </Button>
 
-              <button
-                type="button"
+              <Button
+                variant="contained"
                 onClick={() => addExperience("ParaType")}
-                className="ParaInputButton"
+                size="large"
+                endIcon={<NotesIcon />}
+                sx={{
+                  margin: "2rem 0rem",
+                  textTransform: "none",
+                  backgroundColor: theme.palette.black.main,
+                }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z" />
-                </svg>{" "}
                 Para Type
-              </button>
-            </div>
+              </Button>
+            </Box>
 
             {!hasChosenAStyle && (
               <p>Please select an experience type to begin.</p>
@@ -120,40 +119,12 @@ const Experience = ({
             {renderedStyles.includes("ParaType") && <ParaType />}
           </div>
 
-          <div id="dv-ExperienceButtons" className="NavigationButtons">
-            <button
-              type="button"
-              onClick={() => changeContent("previous")}
-              className="LeftNavigationButtons"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z" />
-              </svg>{" "}
-              Basic Details
-            </button>
-            <button
-              type="button"
-              onClick={() => changeContent("next")}
-              className="RightNavigationButtons"
-            >
-              Ph.D{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
-              </svg>
-            </button>
-          </div>
+          <NavigationButtons
+            PreviousPageName={"Basic Details"}
+            PreviousPageLink={`/resume-builder/basic-details`}
+            NextPageName={"Ph. D"}
+            NextPageLink={`/resume-builder/education/phd`}
+          />
         </div>
         <PreviewPdf />
       </div>

@@ -13,8 +13,13 @@ const theme = createTheme({
       primary: "#000000",
       secondary: "rgba(0, 0, 0, 0.6)",
     },
-    custom: {
-      brown: "#663b13",
+    brown: {
+      main: "#663b13",
+      contrastText: "#ffffff",
+    },
+    black: {
+      main: "#000000",
+      contrastText: "#ffffff",
     },
     button: {
       general: "#555555",

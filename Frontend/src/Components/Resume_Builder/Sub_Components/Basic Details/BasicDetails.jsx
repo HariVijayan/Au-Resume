@@ -1,10 +1,10 @@
 import { useState } from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
-import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../Header.jsx";
 import BadgeIcon from "@mui/icons-material/Badge";
+import NavigationButtons from "../NavigationButtons.jsx";
 
 const BioSummary = ({
   setLogoutClicked,
@@ -13,8 +13,6 @@ const BioSummary = ({
 }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
 
-  const navigate = useNavigate();
-
   const [infoDiv, setInfoDiv] = useState("");
 
   const showOrHideInfoDiv = (currentState) => {
@@ -22,14 +20,6 @@ const BioSummary = ({
       setInfoDiv(" ");
     } else {
       setInfoDiv(currentState);
-    }
-  };
-
-  const changeContent = (navigationType) => {
-    if (navigationType === "previous") {
-      navigate("/resume-builder/basic-details");
-    } else {
-      navigate("/resume-builder/experience");
     }
   };
 
@@ -494,24 +484,12 @@ const BioSummary = ({
             />
           )}
 
-          <div id="dv-BasicDetailsButtons" className="NavigationButtons">
-            <button
-              type="button"
-              onClick={() => changeContent("next")}
-              className="RightNavigationButtons"
-            >
-              Experience{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
-              </svg>
-            </button>
-          </div>
+          <NavigationButtons
+            PreviousPageName={""}
+            PreviousPageLink={``}
+            NextPageName={"Experience"}
+            NextPageLink={`/resume-builder/experience`}
+          />
         </div>
         <PreviewPdf />
       </div>

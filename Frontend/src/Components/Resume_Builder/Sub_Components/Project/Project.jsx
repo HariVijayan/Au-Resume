@@ -1,15 +1,19 @@
 import { useState } from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
-import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../Header.jsx";
 import BuildIcon from "@mui/icons-material/Build";
+import NavigationButtons from "../NavigationButtons.jsx";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import { useTheme } from "@mui/material";
 
 const Project = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
-  const navigate = useNavigate();
-
   const { resumeData, updateField } = ResumeInputTemplate();
+
+  const theme = useTheme();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -18,14 +22,6 @@ const Project = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
       setInfoDiv(" ");
     } else {
       setInfoDiv(currentState);
-    }
-  };
-
-  const changeContent = (navigationType) => {
-    if (navigationType === "previous") {
-      navigate("/resume-builder/education/school");
-    } else {
-      navigate("/resume-builder/skills");
     }
   };
 
@@ -53,25 +49,29 @@ const Project = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
       <div id="dv-MainFormAndPreview">
         <div id="dv-MainForm">
           <div id="dv-ProjectsWrapper" className="WrapperClass">
-            <div id="dv-ProjectsAddInput" className="AddInputButton">
-              <button
-                type="button"
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
                 onClick={addNewProject}
-                className="AddInputButtons"
+                size="large"
+                endIcon={<AddBoxIcon />}
+                sx={{
+                  margin: "2rem 0rem",
+                  textTransform: "none",
+                  backgroundColor: theme.palette.brown.main,
+                }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
               >
-                <svg
-                  className="RBHeaderSvg"
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                </svg>{" "}
                 Add Project
-              </button>
-            </div>
+              </Button>
+            </Box>
 
             {resumeData.projects.map((newProjectEntry, newProjectIndex) => (
               <div
@@ -291,40 +291,12 @@ const Project = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               </div>
             ))}
           </div>
-          <div id="dv-ProjectsButtons" className="NavigationButtons">
-            <button
-              type="button"
-              onClick={() => changeContent("previous")}
-              className="LeftNavigationButtons"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z" />
-              </svg>{" "}
-              School
-            </button>
-            <button
-              type="button"
-              onClick={() => changeContent("next")}
-              className="RightNavigationButtons"
-            >
-              Skills{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
-              </svg>
-            </button>
-          </div>
+          <NavigationButtons
+            PreviousPageName={"School"}
+            PreviousPageLink={`/resume-builder/education/school`}
+            NextPageName={"Skills"}
+            NextPageLink={`/resume-builder/skills`}
+          />
         </div>
         <PreviewPdf />
       </div>

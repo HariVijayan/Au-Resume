@@ -1,10 +1,10 @@
 import { useState } from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
-import { useNavigate } from "react-router-dom";
 import InfoDiv from "../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../Header.jsx";
 import LanguageIcon from "@mui/icons-material/Language";
+import NavigationButtons from "../NavigationButtons.jsx";
 
 const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
@@ -13,8 +13,6 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
     resumeData.languages || ""
   );
 
-  const navigate = useNavigate();
-
   const [infoDiv, setInfoDiv] = useState("");
 
   const showOrHideInfoDiv = (currentState) => {
@@ -22,14 +20,6 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
       setInfoDiv(" ");
     } else {
       setInfoDiv(currentState);
-    }
-  };
-
-  const changeContent = (navigationType) => {
-    if (navigationType === "previous") {
-      navigate("/resume-builder/certifications");
-    } else {
-      navigate("/resume-builder/custom-input");
     }
   };
 
@@ -110,40 +100,12 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               )}
             </div>
           </div>
-          <div id="dv-LanguagesButtons" className="NavigationButtons">
-            <button
-              type="button"
-              onClick={() => changeContent("previous")}
-              className="LeftNavigationButtons"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z" />
-              </svg>{" "}
-              Certifications
-            </button>
-            <button
-              type="button"
-              onClick={() => changeContent("next")}
-              className="RightNavigationButtons"
-            >
-              Custom Input{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
-              </svg>
-            </button>
-          </div>
+          <NavigationButtons
+            PreviousPageName={"Certifications"}
+            PreviousPageLink={`/resume-builder/certifications`}
+            NextPageName={"Custom Input"}
+            NextPageLink={`/resume-builder/custom-input`}
+          />
         </div>
         <PreviewPdf />
       </div>

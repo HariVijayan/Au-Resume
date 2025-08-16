@@ -3,6 +3,9 @@ import axios from "axios";
 import ResumeInputTemplate from "../../../ResumeFormat.jsx";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const PreviewPdf = () => {
   const [pdfUrl, setPdfUrl] = useState("");
@@ -12,6 +15,15 @@ const PreviewPdf = () => {
   const [serverMessage, setServerMessage] = useState("");
   const [showServerMsg, setShowServerMsg] = useState(false);
   const [serverMsgType, setServerMsgType] = useState("error");
+
+  const pdfAction = async () => {
+    if (!isPreviewClicked) {
+      await fetchPdf();
+      setIsPreviewClicked(true);
+    } else {
+      setIsPreviewClicked(false);
+    }
+  };
 
   const fetchPdf = async () => {
     const formData = {
@@ -38,6 +50,7 @@ const PreviewPdf = () => {
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
+      setIsPreviewClicked(false);
       setServerMessage(
         error.response?.data?.message || "Failed to fetch resume for preview"
       );
@@ -75,18 +88,18 @@ const PreviewPdf = () => {
             height="600px"
           ></iframe>
         )}
-        <button type="button" onClick={fetchPdf} className="PreviewButton">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#e3e3e3"
-          >
-            <path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z" />
-          </svg>{" "}
+
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={pdfAction}
+          size="large"
+          endIcon={isPreviewClicked ? <Visibility /> : <VisibilityOff />}
+          sx={{ margin: "2rem 0rem", textTransform: "none" }}
+          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+        >
           Preview
-        </button>
+        </Button>
       </div>
     </>
   );

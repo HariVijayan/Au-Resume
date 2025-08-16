@@ -1,15 +1,18 @@
 import { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
-import { useNavigate } from "react-router-dom";
 import InfoDiv from "../../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../../Header.jsx";
 import SchoolIcon from "@mui/icons-material/School";
+import NavigationButtons from "../../NavigationButtons.jsx";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import { useTheme } from "@mui/material";
 
 const Pg = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
-  const navigate = useNavigate();
-
   const { resumeData, updateField } = ResumeInputTemplate();
+  const theme = useTheme();
 
   const [infoDiv, setInfoDiv] = useState("");
 
@@ -18,14 +21,6 @@ const Pg = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
       setInfoDiv(" ");
     } else {
       setInfoDiv(currentState);
-    }
-  };
-
-  const changeContent = (navigationType) => {
-    if (navigationType === "previous") {
-      navigate("/resume-builder/education/phd");
-    } else {
-      navigate("/resume-builder/education/ug");
     }
   };
 
@@ -54,24 +49,29 @@ const Pg = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
       <div id="dv-MainFormAndPreview">
         <div id="dv-MainForm">
           <div id="dv-EducationPgWrapper" className="WrapperClass">
-            <div id="dv-EducationPgAddInput" className="AddInputButton">
-              <button
-                type="button"
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
                 onClick={addNewPg}
-                className="AddInputButtons"
+                size="large"
+                endIcon={<AddBoxIcon />}
+                sx={{
+                  margin: "2rem 0rem",
+                  textTransform: "none",
+                  backgroundColor: theme.palette.brown.main,
+                }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                </svg>{" "}
                 Add Pg
-              </button>
-            </div>
+              </Button>
+            </Box>
 
             {resumeData.education.postGraduate.map((newPgEntry, newPgIndex) => (
               <div
@@ -326,40 +326,12 @@ const Pg = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               </div>
             ))}
           </div>
-          <div id="dv-EducationPgButtons" className="NavigationButtons">
-            <button
-              type="button"
-              onClick={() => changeContent("previous")}
-              className="LeftNavigationButtons"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z" />
-              </svg>{" "}
-              Ph.D
-            </button>
-            <button
-              type="button"
-              onClick={() => changeContent("next")}
-              className="RightNavigationButtons"
-            >
-              Under Graduate{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
-              </svg>
-            </button>
-          </div>
+          <NavigationButtons
+            PreviousPageName={"Ph. D"}
+            PreviousPageLink={`/resume-builder/education/phd`}
+            NextPageName={"Under Graduate"}
+            NextPageLink={`/resume-builder/education/ug`}
+          />
         </div>
         <PreviewPdf />
       </div>

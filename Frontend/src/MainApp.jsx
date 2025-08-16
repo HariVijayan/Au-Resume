@@ -98,7 +98,7 @@ function RouteWrapper() {
       if (!footer) return;
 
       if (protectedRoutes.includes(location.pathname)) {
-        footer.style.display = "flex";
+        footer.style.display = "none";
       } else {
         footer.style.display = "none";
       }

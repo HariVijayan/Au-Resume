@@ -1,8 +1,1 @@
-{
-  "metaData": {
-    "template": "template1"
-  },
-  "personal": {
-    "name": "Hariiiiiiiiiiiiiiiiiiiiiiiii"
-  }
-}
+null

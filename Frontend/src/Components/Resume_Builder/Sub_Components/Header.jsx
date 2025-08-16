@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { IconButton, useTheme } from "@mui/material";
@@ -18,7 +18,6 @@ const ResumePagesHeader = ({
   PageIcon,
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const logoutUser = () => {
     setLogoutUserType("User");
     setLogoutClicked(true);
@@ -102,28 +101,28 @@ const ResumePagesHeader = ({
           }}
         >
           <IconButton
-            aria-label="fingerprint"
-            sx={{ color: theme.palette.custom.brown }}
+            aria-label="fetch resume"
+            sx={{ color: theme.palette.brown.main }}
             onClick={() => setOverlayType("FetchResume")}
           >
             <CloudDownloadIcon />
           </IconButton>
           <IconButton
-            aria-label="fingerprint"
+            aria-label="save resume"
             color="success"
             onClick={() => setOverlayType("SaveResume")}
           >
             <BackupIcon />
           </IconButton>
           <IconButton
-            aria-label="fingerprint"
+            aria-label="user profile"
             color="primary"
             onClick={() => navigate("/user-profile")}
           >
             <PersonIcon />
           </IconButton>
           <IconButton
-            aria-label="fingerprint"
+            aria-label="logout user"
             color="error"
             onClick={logoutUser}
           >
