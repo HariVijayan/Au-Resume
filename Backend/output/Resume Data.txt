@@ -1,14 +1,9 @@
 {
-  "skills": {
-    "type": "ParaType",
-    "skillSet": "I am a web developer with skills in HTML, CSS, JavaScript, and React"
-  },
-  "certifications": {
-    "type": "ParaType",
-    "certificationSet": "I have completed certifications in Web Development, Cloud Computing, and Machine Learning"
-  },
-  "languages": [
-    "Tamil",
-    "English"
+  "customInput": [
+    {
+      "style": "ParaType",
+      "title": "dsdsds",
+      "paraValues": "dsssssssssssssssssssssssss,sdihdsuibc,,,,,dscjibdcibdcbdcncddusindisc"
+    }
   ]
 }

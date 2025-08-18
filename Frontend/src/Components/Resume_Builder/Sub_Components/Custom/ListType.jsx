@@ -1,19 +1,15 @@
 import { useState } from "react";
-import InfoDiv from "../Info Div/InfoDiv";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import InputInfoDiv from "../InputInfoDiv.jsx";
+import EmergencyIcon from "@mui/icons-material/Emergency";
+import { useTheme } from "@mui/material";
 
 const ListType = () => {
-  const [infoDiv, setInfoDiv] = useState("");
-
   const { resumeData, updateField } = ResumeInputTemplate();
 
-  const showOrHideInfoDiv = (currentState) => {
-    if (infoDiv === currentState) {
-      setInfoDiv(" ");
-    } else {
-      setInfoDiv(currentState);
-    }
-  };
+  const theme = useTheme();
 
   const modifyCustomInput = (e, customInputIndex) => {
     const { name, value } = e.target;
@@ -28,6 +24,10 @@ const ListType = () => {
     updateField("customInput", updatedCustomInput);
   };
 
+  const [showTitleInfo, setShowTitleInfo] = useState(false);
+
+  const [showListInfo, setShowListInfo] = useState(false);
+
   return (
     <>
       {resumeData.customInput.map(
@@ -38,103 +38,79 @@ const ListType = () => {
               id={`dv-CustomListCopy${customInputIndex + 1}`}
               className="SubWrapper"
             >
-              <div
-                id={`dv-CILTitleCopy${customInputIndex + 1}`}
-                className="InputWrapper"
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  width: "100%",
+                  flexWrap: "wrap",
+                }}
               >
-                <input
-                  type="text"
+                <TextField
+                  required
                   name="title"
-                  id={`in-rb_ci_title_copy${customInputIndex + 1}`}
+                  sx={{ width: "80%", margin: "1rem 0rem" }}
                   value={customInputEntry.title}
                   onChange={(e) => modifyCustomInput(e, customInputIndex)}
-                  placeholder=" "
+                  label="Custom Title"
                 />
-                <label
-                  htmlFor={`in-rb_ci_title_copy${customInputIndex + 1}`}
-                  className="TextFieldLabel"
-                >
-                  Custom Title
-                </label>
-                <svg
-                  onClick={() =>
-                    showOrHideInfoDiv(`Title${customInputIndex + 1}`)
-                  }
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="MandatoryInputSvg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                </svg>
-              </div>
 
-              {infoDiv === `Title${customInputIndex + 1}` && (
-                <InfoDiv
+                <EmergencyIcon
+                  sx={{
+                    marginLeft: "2rem",
+                    color: theme.palette.error.main,
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setShowTitleInfo((show) => !show)}
+                />
+              </Box>
+
+              {showTitleInfo && (
+                <InputInfoDiv
                   requirement={"Mandatory"}
-                  explanation={"Provide a title for the custom section"}
                   examples={"Extra Curricular Activities"}
-                  characterLimit={"Upto 30 characters"}
-                  allowedCharacters={"No Restrictions"}
+                  explanation={"Provide a title for the custom section"}
                 />
               )}
 
-              <div
-                id={`dv-CILListCopy${customInputIndex + 1}`}
-                className="InputWrapper"
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  width: "100%",
+                  flexWrap: "wrap",
+                }}
               >
-                <input
-                  type="text"
+                <TextField
+                  required
                   name="listValues"
-                  id={`in-rb_ci_list_copy${customInputIndex + 1}`}
+                  sx={{ width: "80%", margin: "1rem 0rem" }}
                   value={customInputEntry.listValues}
                   onChange={(e) => modifyCustomInput(e, customInputIndex)}
-                  placeholder=" "
+                  label="Custom List"
                 />
-                <label
-                  htmlFor={`in-rb_ci_list_copy${customInputIndex + 1}`}
-                  className="TextFieldLabel"
-                >
-                  Custom List
-                </label>
-                <svg
-                  onClick={() =>
-                    showOrHideInfoDiv(`List${customInputIndex + 1}`)
-                  }
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="MandatoryInputSvg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                </svg>
-              </div>
 
-              {infoDiv === `List${customInputIndex + 1}` && (
-                <InfoDiv
+                <EmergencyIcon
+                  sx={{
+                    marginLeft: "2rem",
+                    color: theme.palette.error.main,
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setShowListInfo((show) => !show)}
+                />
+              </Box>
+
+              {showListInfo && (
+                <InputInfoDiv
                   requirement={"Mandatory"}
-                  explanation={
-                    "List all the custom values, separated by commas"
-                  }
                   examples={
                     "High School Football team captain, Part of Bharat Scouts"
                   }
-                  characterLimit={"Upto 120 characters"}
-                  allowedCharacters={"No Restrictions"}
-                />
-              )}
-
-              {infoDiv === " " && (
-                <InfoDiv
-                  requirement={""}
-                  explanation={""}
-                  examples={""}
-                  characterLimit={""}
-                  allowedCharacters={""}
+                  explanation={
+                    "List all the custom values, separated by commas"
+                  }
                 />
               )}
             </div>

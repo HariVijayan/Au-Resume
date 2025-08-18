@@ -69,7 +69,7 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
                   sx={{ width: "80%", margin: "1rem 0rem" }}
                   value={languageValue}
                   onChange={splitCSValues}
-                  label="Certifications List"
+                  label="Languages Known"
                 />
 
                 <EmergencyIcon
