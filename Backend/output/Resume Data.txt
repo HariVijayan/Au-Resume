@@ -1,16 +1,14 @@
 {
-  "education": {
-    "hsc": {
-      "name": "ffddf",
-      "year": "22133",
-      "grade": "2332",
-      "additionalInfo": "dffdfdfd"
-    },
-    "sslc": {
-      "name": "dvfdvdfvfdv",
-      "year": "32332",
-      "grade": "43434",
-      "additionalInfo": "vffdvfdvffvd"
-    }
-  }
+  "skills": {
+    "type": "ParaType",
+    "skillSet": "I am a web developer with skills in HTML, CSS, JavaScript, and React"
+  },
+  "certifications": {
+    "type": "ParaType",
+    "certificationSet": "I have completed certifications in Web Development, Cloud Computing, and Machine Learning"
+  },
+  "languages": [
+    "Tamil",
+    "English"
+  ]
 }

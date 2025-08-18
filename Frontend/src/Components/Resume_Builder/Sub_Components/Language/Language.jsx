@@ -6,6 +6,12 @@ import HeaderTemplate from "../Header.jsx";
 import LanguageIcon from "@mui/icons-material/Language";
 import NavigationButtons from "../NavigationButtons.jsx";
 
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import InputInfoDiv from "../InputInfoDiv.jsx";
+import EmergencyIcon from "@mui/icons-material/Emergency";
+import { useTheme } from "@mui/material";
+
 const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
 
@@ -13,15 +19,7 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
     resumeData.languages || ""
   );
 
-  const [infoDiv, setInfoDiv] = useState("");
-
-  const showOrHideInfoDiv = (currentState) => {
-    if (infoDiv === currentState) {
-      setInfoDiv(" ");
-    } else {
-      setInfoDiv(currentState);
-    }
-  };
+  const theme = useTheme();
 
   const splitCSValues = (e) => {
     const { value } = e.target;
@@ -40,6 +38,10 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
     updateField("languages", updatedLanguages);
   };
 
+  const [showInputInfo, setShowInputInfo] = useState(false);
+
+  const showInfoDiv = () => setShowInputInfo((show) => !show);
+
   return (
     <>
       <HeaderTemplate
@@ -53,49 +55,40 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         <div id="dv-MainForm">
           <div id="dv-LanguagesWrapper" className="WrapperClass">
             <div className="SubWrapper">
-              <div id="dv-LanguagesSet" className="InputWrapper">
-                <input
-                  type="text"
-                  id="in-rb_lan_list"
-                  name="languages"
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  width: "100%",
+                  flexWrap: "wrap",
+                }}
+              >
+                <TextField
+                  required
+                  sx={{ width: "80%", margin: "1rem 0rem" }}
                   value={languageValue}
                   onChange={splitCSValues}
-                  placeholder=" "
+                  label="Certifications List"
                 />
-                <label htmlFor="in-rb_lan_list" className="TextFieldLabel">
-                  Languages Known
-                </label>
-                <svg
-                  onClick={() => showOrHideInfoDiv("Languages")}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="MandatoryInputSvg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#e3e3e3"
-                >
-                  <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                </svg>
-              </div>
 
-              {infoDiv === "Languages" && (
-                <InfoDiv
+                <EmergencyIcon
+                  sx={{
+                    marginLeft: "2rem",
+                    color: theme.palette.error.main,
+                    cursor: "pointer",
+                  }}
+                  onClick={showInfoDiv}
+                />
+              </Box>
+
+              {showInputInfo && (
+                <InputInfoDiv
                   requirement={"Mandatory"}
+                  examples={"Tamil, English"}
                   explanation={
                     "List the languages you know, separated by commas"
                   }
-                  examples={"Tamil, English"}
-                  characterLimit={"Upto 50 characters"}
-                  allowedCharacters={"No Restrictions"}
-                />
-              )}
-              {infoDiv === " " && (
-                <InfoDiv
-                  requirement={""}
-                  explanation={""}
-                  examples={""}
-                  characterLimit={""}
-                  allowedCharacters={""}
                 />
               )}
             </div>

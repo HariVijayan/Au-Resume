@@ -1,6 +1,5 @@
 import { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
-import InfoDiv from "../../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../../Header.jsx";
 import SchoolIcon from "@mui/icons-material/School";
