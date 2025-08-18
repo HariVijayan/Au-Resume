@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PreviewPdf from "../PreviewPdf.jsx";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../Header.jsx";
@@ -11,17 +10,7 @@ const BioSummary = ({
   setLogoutUserType,
   setOverlayType,
 }) => {
-  const { resumeData, updateField } = ResumeInputTemplate();
-
-  const [infoDiv, setInfoDiv] = useState("");
-
-  const showOrHideInfoDiv = (currentState) => {
-    if (infoDiv === currentState) {
-      setInfoDiv(" ");
-    } else {
-      setInfoDiv(currentState);
-    }
-  };
+  const { resumeData } = ResumeInputTemplate();
 
   return (
     <>

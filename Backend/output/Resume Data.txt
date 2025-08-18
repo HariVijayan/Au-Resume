@@ -1,5 +1,16 @@
 {
-  "personal": {
-    "name": "gcghvjhvj"
+  "education": {
+    "hsc": {
+      "name": "ffddf",
+      "year": "22133",
+      "grade": "2332",
+      "additionalInfo": "dffdfdfd"
+    },
+    "sslc": {
+      "name": "dvfdvdfvfdv",
+      "year": "32332",
+      "grade": "43434",
+      "additionalInfo": "vffdvfdvffvd"
+    }
   }
 }
