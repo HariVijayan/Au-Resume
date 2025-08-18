@@ -1,266 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style></style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="header" class="main_div">
-        <div id="headertop">
-            <h2 id="name">{{personal.name}}</h2>
-            <h3 id="smallbio">{{personal.bio}}</h3>
-
-        </div>
-        <p id="p-contactinfo">
-            {{#if personal.mobile}} {{personal.mobile}} {{/if}} {{#if personal.email}} | {{personal.email}}{{/if}} {{#if links.linkedinDisplayName}} | <a id="linkedinlink" href="{{links.linkedinUrl}}">{{links.linkedinDisplayName}}</a>{{/if}} {{#if links.githubDisplayName}} | <a id="githublink" href="{{links.githubUrl}}">{{links.githubDisplayName}}</a>{{/if}} {{#if links.websiteDisplayName}} | <a id="custombiolink" href="{{links.websiteUrl}}">{{links.websiteDisplayName}}</a>{{/if}} {{#if personal.location}} | {{personal.location}}{{/if}}
-        </p>
+      <div id="headertop">
+        <h2 id="name">{{personal.name}}</h2>
+        <h3 id="smallbio">{{personal.bio}}</h3>
+      </div>
+      <p id="p-contactinfo">
+        {{#if personal.mobile}} {{personal.mobile}} {{/if}} {{#if
+        personal.email}} | {{personal.email}}{{/if}} {{#if
+        links.linkedinUserName}} |
+        <a
+          id="linkedinlink"
+          href="https://www.linkedin.com/{{links.linkedinUserName}}"
+          >linkedin.com/{{links.linkedinUserName}}</a
+        >{{/if}} {{#if links.githubUserName}} |
+        <a id="githublink" href="https://github.com/{{links.githubUserName}}"
+          >github.com/{{links.githubUserName}}</a
+        >{{/if}} {{#if links.websiteDisplayName}} |
+        <a id="custombiolink" href="{{links.websiteUrl}}"
+          >{{links.websiteDisplayName}}</a
+        >{{/if}} {{#if personal.location}} | {{personal.location}}{{/if}}
+      </p>
     </div>
     <div id="summary" class="main_div">
-        {{#if summary}}
-        <h2 id="h2-summary">SUMMARY</h2>
-        <p id="p-summary">{{summary}}</p>
-        {{/if}}
+      {{#if summary}}
+      <h2 id="h2-summary">SUMMARY</h2>
+      <p id="p-summary">{{summary}}</p>
+      {{/if}}
     </div>
     <div id="experience" class="main_div">
-        {{#if experience}}
-        <h2 id="h2-experience">EXPERIENCE</h2>
+      {{#if experience}}
+      <h2 id="h2-experience">EXPERIENCE</h2>
 
-        {{#each experience}} {{#if (eq style "ListType")}}
-        <div class="experience_main_div">
-            <div id="experiencetab1" class="experience_sub_div1">
-                <div id="experiencecompanyinfo">
-                    <h3 id="h3-experiencecompany" class="experience_company">{{company}}{{#if location}},{{/if}}</h3>
-                    &nbsp;
-                    <p id="p-experiencelocation" class="experience_location">{{location}}</p>
-                </div>
-                <p id="p-experienceyear" class="experience_period">{{year}}</p>
-            </div>
-            <div id="experiencetab2" class="experience_sub_div2">
-                <p id="p-experiencedesignation" class="experience_designation">{{designation}}</p>
-                {{#if team}}
-                <p id="p-experienceteamname" class="experience_custom_field">&nbsp;in {{team}}</p>
-                {{/if}}
-            </div>
-            <div id="experiencetab3" class="experience_sub_div3">
-                <ul id="ul-experienceroles">
-                    {{#each roles}}
-                    <li>{{this}}</li>
-                    {{/each}}
-                </ul>
-            </div>
+      {{#each experience}} {{#if (eq style "ListType")}}
+      <div class="experience_main_div">
+        <div id="experiencetab1" class="experience_sub_div1">
+          <div id="experiencecompanyinfo">
+            <h3 id="h3-experiencecompany" class="experience_company">
+              {{company}}{{#if location}},{{/if}}
+            </h3>
+            &nbsp;
+            <p id="p-experiencelocation" class="experience_location">
+              {{location}}
+            </p>
+          </div>
+          <p id="p-experienceyear" class="experience_period">{{year}}</p>
         </div>
-        {{/if}} {{#if (eq style "ParaType")}}
-        <div class="experience_main_div">
-            <div id="experiencetab1" class="experience_sub_div1">
-                <div id="experiencecompanyinfo">
-                    <h3 id="h3-experiencecompany" class="experience_company">{{company}}{{#if location}},{{/if}}</h3>
-                    &nbsp;
-                    <p id="p-experiencelocation" class="experience_location">{{location}}</p>
-                </div>
-                <p id="p-experienceyear" class="experience_period">{{year}}</p>
-            </div>
-            <div id="experiencetab2" class="experience_sub_div2">
-                <p id="p-experiencedesignation" class="experience_designation">{{designation}}</p>
-                {{#if team}}
-                <p id="p-experienceteamname" class="experience_custom_field">&nbsp;in {{team}}</p>
-                {{/if}}
-            </div>
-            <div id="experiencetab3" class="experience_sub_div3">
-                <p id="p-experiencedescription">{{description}}</p>
-            </div>
+        <div id="experiencetab2" class="experience_sub_div2">
+          <p id="p-experiencedesignation" class="experience_designation">
+            {{designation}}
+          </p>
+          {{#if team}}
+          <p id="p-experienceteamname" class="experience_custom_field">
+            &nbsp;in {{team}}
+          </p>
+          {{/if}}
         </div>
-        {{/if}} {{/each}} {{/if}}
-
+        <div id="experiencetab3" class="experience_sub_div3">
+          <ul id="ul-experienceroles">
+            {{#each roles}}
+            <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+      {{/if}} {{#if (eq style "ParaType")}}
+      <div class="experience_main_div">
+        <div id="experiencetab1" class="experience_sub_div1">
+          <div id="experiencecompanyinfo">
+            <h3 id="h3-experiencecompany" class="experience_company">
+              {{company}}{{#if location}},{{/if}}
+            </h3>
+            &nbsp;
+            <p id="p-experiencelocation" class="experience_location">
+              {{location}}
+            </p>
+          </div>
+          <p id="p-experienceyear" class="experience_period">{{year}}</p>
+        </div>
+        <div id="experiencetab2" class="experience_sub_div2">
+          <p id="p-experiencedesignation" class="experience_designation">
+            {{designation}}
+          </p>
+          {{#if team}}
+          <p id="p-experienceteamname" class="experience_custom_field">
+            &nbsp;in {{team}}
+          </p>
+          {{/if}}
+        </div>
+        <div id="experiencetab3" class="experience_sub_div3">
+          <p id="p-experiencedescription">{{description}}</p>
+        </div>
+      </div>
+      {{/if}} {{/each}} {{/if}}
     </div>
     <div id="education" class="main_div">
-        {{#if education}}
-        <h2 id="h2-education">EDUCATION</h2>
+      {{#if education}}
+      <h2 id="h2-education">EDUCATION</h2>
 
-        {{#each education.phd}}
-        <div id="phd" class="education_main_div">
-            <div id="phdtab1" class="education_sub_div1">
-                <h3 id="h3-phdname" class="education_name_heading">{{name}}&nbsp;{{#if additionalInfo}}
-                    <p id="p-phdaddl" class="education_custom_field">({{additionalInfo}})</p>{{/if}}</h3>
-                <p id="p-phdyear" class="education_period">{{year}}</p>
-            </div>
-            <div id="phdtab2" class="education_sub_div2">
-                <p id="p-phduni" class="education_university">{{university}}</p>
-                {{#if expertise}}
-                <p id="p-phdexp" class="education_custom_field"><strong>Expertise:</strong> {{expertise}}</p>{{/if}}
-            </div>
+      {{#each education.phd}}
+      <div id="phd" class="education_main_div">
+        <div id="phdtab1" class="education_sub_div1">
+          <h3 id="h3-phdname" class="education_name_heading">
+            {{name}}&nbsp;{{#if additionalInfo}}
+            <p id="p-phdaddl" class="education_custom_field">
+              ({{additionalInfo}})
+            </p>
+            {{/if}}
+          </h3>
+          <p id="p-phdyear" class="education_period">{{year}}</p>
         </div>
-        {{/each}} {{#each education.postGraduate}}
-        <div id="pg-degree" class="education_main_div">
-            <div id="pgdegreetab1" class="education_sub_div1">
-                <h3 id="h3-pgdegreename" class="education_name_heading">{{name}}&nbsp;{{#if additionalInfo}}
-                    <p id="p-pgdegreeaddl" class="education_custom_field">({{additionalInfo}})</p>{{/if}}</h3>
-                <p id="p-pgdegreeyear" class="education_period">{{year}}</p>
-            </div>
-            <div id="pgdegreetab2" class="education_sub_div2">
-                <p id="p-pgdegreeuni" class="education_university">{{university}}</p>
-                {{#if cgpa}}
-                <p id="p-pgdegreecgpa" class="education_custom_field"><strong>CGPA:</strong> {{cgpa}}</p>{{/if}}
-            </div>
+        <div id="phdtab2" class="education_sub_div2">
+          <p id="p-phduni" class="education_university">{{university}}</p>
+          {{#if expertise}}
+          <p id="p-phdexp" class="education_custom_field">
+            <strong>Expertise:</strong> {{expertise}}
+          </p>
+          {{/if}}
         </div>
-        {{/each}} {{#each education.underGraduate}}
-        <div id="ug-degree" class="education_main_div">
-            <div id="ugdegreetab1" class="education_sub_div1">
-                <h3 id="h3-ugdegreename" class="education_name_heading">{{name}}&nbsp;{{#if additionalInfo}}
-                    <p id="p-ugdegreeaddl" class="education_custom_field">({{additionalInfo}})</p>{{/if}}</h3>
-                <p id="p-ugdegreeyear" class="education_period">{{year}}</p>
-            </div>
-            <div id="ugdegreetab2" class="education_sub_div2">
-                <p id="p-ugdegreeuni" class="education_university">{{university}}</p>
-                {{#if cgpa}}
-                <p id="p-ugdegreecgpa" class="education_custom_field"><strong>CGPA:</strong> {{cgpa}}</p>{{/if}}
-            </div>
+      </div>
+      {{/each}} {{#each education.postGraduate}}
+      <div id="pg-degree" class="education_main_div">
+        <div id="pgdegreetab1" class="education_sub_div1">
+          <h3 id="h3-pgdegreename" class="education_name_heading">
+            {{name}}&nbsp;{{#if additionalInfo}}
+            <p id="p-pgdegreeaddl" class="education_custom_field">
+              ({{additionalInfo}})
+            </p>
+            {{/if}}
+          </h3>
+          <p id="p-pgdegreeyear" class="education_period">{{year}}</p>
         </div>
-        {{/each}} {{#each education.diploma}}
-        <div id="diploma" class="education_main_div">
-            <div id="diplomatab1" class="education_sub_div1">
-                <h3 id="h3-diplomaname" class="education_name_heading">{{name}}&nbsp;{{#if additionalInfo}}&nbsp;
-                    <p id="p-diplomaaddl" class="education_custom_field">({{additionalInfo}}){{/if}}</p>
-                </h3>
-                <p id="p-diplomayear" class="education_period">{{year}}</p>
-            </div>
-            <div id="diplomatab2" class="education_sub_div2">
-                <p id="p-diplomauni" class="education_university">{{university}}</p>
-                {{#if cgpa}}
-                <p id="p-diplomacgpa" class="education_custom_field"><strong>CGPA:</strong> {{cgpa}}</p>{{/if}}
-            </div>
+        <div id="pgdegreetab2" class="education_sub_div2">
+          <p id="p-pgdegreeuni" class="education_university">{{university}}</p>
+          {{#if cgpa}}
+          <p id="p-pgdegreecgpa" class="education_custom_field">
+            <strong>CGPA:</strong> {{cgpa}}
+          </p>
+          {{/if}}
         </div>
-        {{/each}} {{#if education.hsc}}
-        <div id="hsc" class="education_main_div">
-            <div id="hsctab1" class="education_sub_div1">
-                <h3 id="h3-hscname" class="education_name_heading">HSC&nbsp;{{#if education.hsc.additionalInfo}}&nbsp;
-                    <p id="p-hscaddl" class="education_custom_field">({{education.hsc.additionalInfo}}){{/if}}</p>
-                </h3>
-                <p id="p-hscyear" class="education_period">{{education.hsc.year}}</p>
-            </div>
-            <div id="hsctab2" class="education_sub_div2">
-                <p id="p-hscschool" class="education_university">{{education.hsc.name}}</p>
-                {{#if education.hsc.grade}}
-                <p id="p-hscgrade" class="education_custom_field"><strong>Grade:</strong> {{education.hsc.grade}}</p>{{/if}}
-            </div>
+      </div>
+      {{/each}} {{#each education.underGraduate}}
+      <div id="ug-degree" class="education_main_div">
+        <div id="ugdegreetab1" class="education_sub_div1">
+          <h3 id="h3-ugdegreename" class="education_name_heading">
+            {{name}}&nbsp;{{#if additionalInfo}}
+            <p id="p-ugdegreeaddl" class="education_custom_field">
+              ({{additionalInfo}})
+            </p>
+            {{/if}}
+          </h3>
+          <p id="p-ugdegreeyear" class="education_period">{{year}}</p>
         </div>
-        {{/if}} {{#if education.sslc}}
-        <div id="sslc" class="education_main_div">
-            <div id="sslctab1" class="education_sub_div1">
-                <h3 id="h3-sslcname" class="education_name_heading">SSLC&nbsp;{{#if education.sslc.additionalInfo}}&nbsp;
-                    <p id="p-sslcaddl" class="education_custom_field">({{education.sslc.additionalInfo}}){{/if}}</p>
-                </h3>
-                <p id="p-sslcyear" class="education_period">{{education.sslc.year}}</p>
-            </div>
-            <div id="sslctab2" class="education_sub_div2">
-                <p id="p-sslcschool" class="education_university">{{education.sslc.name}}</p>
-                {{#if education.sslc.grade}}
-                <p id="p-sslcgrade" class="education_custom_field"><strong>Grade:</strong> {{education.sslc.grade}}</p>{{/if}}
-            </div>
+        <div id="ugdegreetab2" class="education_sub_div2">
+          <p id="p-ugdegreeuni" class="education_university">{{university}}</p>
+          {{#if cgpa}}
+          <p id="p-ugdegreecgpa" class="education_custom_field">
+            <strong>CGPA:</strong> {{cgpa}}
+          </p>
+          {{/if}}
         </div>
-        {{/if}} {{/if}}
+      </div>
+      {{/each}} {{#each education.diploma}}
+      <div id="diploma" class="education_main_div">
+        <div id="diplomatab1" class="education_sub_div1">
+          <h3 id="h3-diplomaname" class="education_name_heading">
+            {{name}}&nbsp;{{#if additionalInfo}}&nbsp;
+            <p id="p-diplomaaddl" class="education_custom_field">
+              ({{additionalInfo}}){{/if}}
+            </p>
+          </h3>
+          <p id="p-diplomayear" class="education_period">{{year}}</p>
+        </div>
+        <div id="diplomatab2" class="education_sub_div2">
+          <p id="p-diplomauni" class="education_university">{{university}}</p>
+          {{#if cgpa}}
+          <p id="p-diplomacgpa" class="education_custom_field">
+            <strong>CGPA:</strong> {{cgpa}}
+          </p>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}} {{#if education.hsc}}
+      <div id="hsc" class="education_main_div">
+        <div id="hsctab1" class="education_sub_div1">
+          <h3 id="h3-hscname" class="education_name_heading">
+            HSC&nbsp;{{#if education.hsc.additionalInfo}}&nbsp;
+            <p id="p-hscaddl" class="education_custom_field">
+              ({{education.hsc.additionalInfo}}){{/if}}
+            </p>
+          </h3>
+          <p id="p-hscyear" class="education_period">{{education.hsc.year}}</p>
+        </div>
+        <div id="hsctab2" class="education_sub_div2">
+          <p id="p-hscschool" class="education_university">
+            {{education.hsc.name}}
+          </p>
+          {{#if education.hsc.grade}}
+          <p id="p-hscgrade" class="education_custom_field">
+            <strong>Grade:</strong> {{education.hsc.grade}}
+          </p>
+          {{/if}}
+        </div>
+      </div>
+      {{/if}} {{#if education.sslc}}
+      <div id="sslc" class="education_main_div">
+        <div id="sslctab1" class="education_sub_div1">
+          <h3 id="h3-sslcname" class="education_name_heading">
+            SSLC&nbsp;{{#if education.sslc.additionalInfo}}&nbsp;
+            <p id="p-sslcaddl" class="education_custom_field">
+              ({{education.sslc.additionalInfo}}){{/if}}
+            </p>
+          </h3>
+          <p id="p-sslcyear" class="education_period">
+            {{education.sslc.year}}
+          </p>
+        </div>
+        <div id="sslctab2" class="education_sub_div2">
+          <p id="p-sslcschool" class="education_university">
+            {{education.sslc.name}}
+          </p>
+          {{#if education.sslc.grade}}
+          <p id="p-sslcgrade" class="education_custom_field">
+            <strong>Grade:</strong> {{education.sslc.grade}}
+          </p>
+          {{/if}}
+        </div>
+      </div>
+      {{/if}} {{/if}}
     </div>
 
     <div id="projects" class="main_div">
-        {{#if projects}}
-        <h2 id="h2-projects">PROJECTS</h2>
+      {{#if projects}}
+      <h2 id="h2-projects">PROJECTS</h2>
 
-        {{#each projects}}
-        <div class="project_main_div">
-            <div id="projecttab1" class="project_sub_div1">
-                <h3 id="h3-projectname" class="project_name">{{name}}</h3>
-                {{#if link}}
-                <div id="projectlink">
-                    <h3 id="h3-projectlink">Link :&nbsp;</h3>
-                    <a id="p-projectlink" class="project_link" href="{{this.project_link}}">{{link}}</a>
-                </div>
-                {{/if}}
-            </div>
-            <div id="projecttab2" class="project_sub_div2">
-                {{#if description}}
-                <p id="p-projectdescription" class="project_description">{{description}}</p>
-                {{/if}} {{#if techStack}}
-                <p id="p-projecttech" class="project_tech">Tech Stack: {{techStack}}</p>
-                {{/if}}
-            </div>
+      {{#each projects}}
+      <div class="project_main_div">
+        <div id="projecttab1" class="project_sub_div1">
+          <h3 id="h3-projectname" class="project_name">{{name}}</h3>
+          {{#if link}}
+          <div id="projectlink">
+            <h3 id="h3-projectlink">Link :&nbsp;</h3>
+            <a
+              id="p-projectlink"
+              class="project_link"
+              href="{{this.project_link}}"
+              >{{link}}</a
+            >
+          </div>
+          {{/if}}
         </div>
-        {{/each}} {{/if}}
+        <div id="projecttab2" class="project_sub_div2">
+          {{#if description}}
+          <p id="p-projectdescription" class="project_description">
+            {{description}}
+          </p>
+          {{/if}} {{#if techStack}}
+          <p id="p-projecttech" class="project_tech">
+            Tech Stack: {{techStack}}
+          </p>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}} {{/if}}
     </div>
 
     <div id="skills" class="main_div">
-        {{#if skills}}
-        <h2 id="h2-skills">SKILLS</h2>
+      {{#if skills}}
+      <h2 id="h2-skills">SKILLS</h2>
 
-        {{#if (eq skills.type "ListType")}}
-        <div id="skillsstyle1">
-            <ul id="ul-skillsstyle1">
-                {{#each skills.skillSet}}
-                <li>{{this}}</li>
-                {{/each}}
-            </ul>
-        </div>
-        {{/if}} {{#if (eq skills.type "ParaType")}}
-        <div id="skillsstyle2">
-            <p id="p-skillset">{{skills.skillSet}}</p>
-        </div>
-        {{/if}} {{/if}}
-
+      {{#if (eq skills.type "ListType")}}
+      <div id="skillsstyle1">
+        <ul id="ul-skillsstyle1">
+          {{#each skills.skillSet}}
+          <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/if}} {{#if (eq skills.type "ParaType")}}
+      <div id="skillsstyle2">
+        <p id="p-skillset">{{skills.skillSet}}</p>
+      </div>
+      {{/if}} {{/if}}
     </div>
 
     <div id="certifications" class="main_div">
-        {{#if certifications}}
-        <h2 id="h2-certification">CERTIFICATIONS</h2>
+      {{#if certifications}}
+      <h2 id="h2-certification">CERTIFICATIONS</h2>
 
-        {{#if (eq certifications.type "ListType")}}
-        <div id="certificationstyle1">
-            <ul id="ul-certificationstyle1">
-                {{#each certifications.certificationSet}}
-                <li>{{this}}</li>
-                {{/each}}
-            </ul>
-        </div>
-        {{/if}} {{#if (eq certifications.type "ParaType")}}
-        <div id="certificationstyle2">
-            <p id="p-certificationset">{{certifications.certificationSet}}</p>
-        </div>
-        {{/if}} {{/if}}
-
+      {{#if (eq certifications.type "ListType")}}
+      <div id="certificationstyle1">
+        <ul id="ul-certificationstyle1">
+          {{#each certifications.certificationSet}}
+          <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/if}} {{#if (eq certifications.type "ParaType")}}
+      <div id="certificationstyle2">
+        <p id="p-certificationset">{{certifications.certificationSet}}</p>
+      </div>
+      {{/if}} {{/if}}
     </div>
 
     <div id="languages" class="main_div">
-        {{#if languages.length}}
-        <h2 id="h2-languages">LANGUAGE PROFICIENCY</h2>
-        <div id="languagesubdiv">
-            <ul id="ul-languages">
-                {{#each languages}}
-                <li>{{this}}</li>
-                {{/each}}
-            </ul>
-        </div>
-        {{/if}}
+      {{#if languages.length}}
+      <h2 id="h2-languages">LANGUAGE PROFICIENCY</h2>
+      <div id="languagesubdiv">
+        <ul id="ul-languages">
+          {{#each languages}}
+          <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/if}}
     </div>
 
     {{#each customInput}}
     <div id="customdiv" class="main_div">
-        <h2 id="h2-customtitle">{{title}}</h2>
-        {{#if (eq style "ListType")}}
-        <div id="customdivstyle1">
-            <ul id="ul-customdivstyle1">
-                {{#each listValues}}
-                <li>{{this}}</li>
-                {{/each}}
-            </ul>
-        </div>
-        {{/if}} {{#if (eq style "ParaType")}}
-        <div id="customdivstyle2">
-            <p id="p-custompara">{{paraValues}}</p>
-        </div>
-        {{/if}}
+      <h2 id="h2-customtitle">{{title}}</h2>
+      {{#if (eq style "ListType")}}
+      <div id="customdivstyle1">
+        <ul id="ul-customdivstyle1">
+          {{#each listValues}}
+          <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/if}} {{#if (eq style "ParaType")}}
+      <div id="customdivstyle2">
+        <p id="p-custompara">{{paraValues}}</p>
+      </div>
+      {{/if}}
     </div>
     {{/each}}
-
-</body>
-
+  </body>
 </html>

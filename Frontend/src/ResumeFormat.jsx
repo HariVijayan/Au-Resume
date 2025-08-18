@@ -13,10 +13,8 @@ const ResumeInputTemplate = create((set) => ({
       location: "",
     },
     links: {
-      linkedinDisplayName: "",
-      linkedinUrl: "",
-      githubDisplayName: "",
-      githubUrl: "",
+      linkedinUserName: "",
+      githubUserName: "",
       websiteDisplayName: "",
       websiteUrl: "",
     },

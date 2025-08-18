@@ -4,6 +4,8 @@ import ResumeInputTemplate from "../../../ResumeFormat.jsx";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
@@ -46,7 +48,7 @@ const PreviewPdf = () => {
       setPdfUrl(pdfUrl);
       setIsPreviewClicked(true);
 
-      setServerMessage("Successfully fetched resume to preview");
+      setServerMessage("Successfully fetched resume for preview");
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
@@ -79,14 +81,25 @@ const PreviewPdf = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <div id="dv-PreviewWrapper">
+      <Stack
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "40%",
+          margin: "2rem 0rem",
+          minHeight: "80vh",
+        }}
+      >
         {isPreviewClicked && (
-          <iframe
+          <Box
+            component="iframe"
             src={pdfUrl}
             width="100%"
             title="PDF Viewer"
-            height="600px"
-          ></iframe>
+            sx={{ height: "100", minHeight: "500px" }}
+          ></Box>
         )}
 
         <Button
@@ -100,7 +113,7 @@ const PreviewPdf = () => {
         >
           Preview
         </Button>
-      </div>
+      </Stack>
     </>
   );
 };
