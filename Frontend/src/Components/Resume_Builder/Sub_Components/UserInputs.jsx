@@ -8,17 +8,29 @@ import ResumeInputTemplate from "../../../ResumeFormat.jsx";
 import { useTheme } from "@mui/material";
 import InputInfoDiv from "./InputInfoDiv.jsx";
 import { useLocation } from "react-router-dom";
+import {
+  modifyCustomList,
+  modifyCustomPara,
+  modifySkillsList,
+  modifySkillsPara,
+  modifyCertificationsList,
+  modifyCertificationsPara,
+  modifyLanguagesList,
+} from "./InputMethods.js";
 
 const UserInputs = ({
-  inputType,
-  inputLabel,
-  requirement,
-  explanation,
-  examples,
-  inputValue,
-  inputOnchange,
+  inputType, //For all inputs
+  inputLabel, //For all inputs
+  requirement, //For all inputs
+  explanation, //For all inputs
+  examples, //For all inputs
+  inputValue, //For all inputs
+  inputOnchange, //For single time inputs that can be present once
+  onChangeType, //For dynamic inputs that can have duplicate copies (Single time inputs will be having "Regular" value)
+  onChangeEntry, //For dynamic inputs that can have duplicate copies
+  textfieldName, //For dynamic inputs that can have duplicate copies
 }) => {
-  const { updateField } = ResumeInputTemplate();
+  const { resumeData, updateField } = ResumeInputTemplate();
   const [showInputInfo, setShowInputInfo] = useState(false);
   const [isInputRequired, setIsInputRequired] = useState(false);
 
@@ -34,6 +46,30 @@ const UserInputs = ({
       setIsInputRequired(false);
     }
   }, [location.pathname]);
+
+  const updateDynamicInputs = (e) => {
+    if (onChangeType === "CustomList") {
+      modifyCustomList(e, onChangeEntry, resumeData, updateField);
+    }
+    if (onChangeType === "CustomPara") {
+      modifyCustomPara(e, onChangeEntry, resumeData, updateField);
+    }
+    if (onChangeType === "SkillsList") {
+      modifySkillsList(e, onChangeEntry, resumeData, updateField);
+    }
+    if (onChangeType === "SkillsPara") {
+      modifySkillsPara(e, onChangeEntry, resumeData, updateField);
+    }
+    if (onChangeType === "CertificationsList") {
+      modifyCertificationsList(e, onChangeEntry, resumeData, updateField);
+    }
+    if (onChangeType === "CertificationsPara") {
+      modifyCertificationsPara(e, onChangeEntry, resumeData, updateField);
+    }
+    if (onChangeType === "Languages") {
+      modifyLanguagesList(e, onChangeEntry, resumeData, updateField);
+    }
+  };
   return (
     <>
       <Box
@@ -45,7 +81,7 @@ const UserInputs = ({
           flexWrap: "wrap",
         }}
       >
-        {inputType === "text" && (
+        {inputType === "text" && onChangeType === "Regular" && (
           <TextField
             required={isInputRequired}
             sx={{ width: "80%", margin: "1rem 0rem" }}
@@ -55,7 +91,7 @@ const UserInputs = ({
           />
         )}
 
-        {inputType === "email" && (
+        {inputType === "email" && onChangeType === "Regular" && (
           <TextField
             required={isInputRequired}
             type="email"
@@ -66,7 +102,7 @@ const UserInputs = ({
           />
         )}
 
-        {inputType === "url" && (
+        {inputType === "url" && onChangeType === "Regular" && (
           <TextField
             required={isInputRequired}
             type="url"
@@ -77,7 +113,7 @@ const UserInputs = ({
           />
         )}
 
-        {inputType === "textarea" && (
+        {inputType === "textarea" && onChangeType === "Regular" && (
           <TextField
             required={isInputRequired}
             multiline
@@ -86,6 +122,17 @@ const UserInputs = ({
             value={inputValue}
             label={inputLabel}
             onChange={(e) => updateField(inputOnchange, e.target.value)}
+          />
+        )}
+
+        {onChangeType != "Regular" && (
+          <TextField
+            required={isInputRequired}
+            name={textfieldName}
+            sx={{ width: "80%", margin: "1rem 0rem" }}
+            value={inputValue}
+            label={inputLabel}
+            onChange={(e) => updateDynamicInputs(e)}
           />
         )}
 

@@ -39,6 +39,9 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               examples={"Kendriya Vidyalaya"}
               inputValue={resumeData.education.hsc.name}
               inputOnchange={"education.hsc.name"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -49,6 +52,9 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               examples={"2021 - 2023"}
               inputValue={resumeData.education.hsc.year}
               inputOnchange={"education.hsc.year"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -59,6 +65,9 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               examples={"9.5, 95%"}
               inputValue={resumeData.education.hsc.grade}
               inputOnchange={"education.hsc.grade"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -71,6 +80,9 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               examples={"State Board, NCERT Board"}
               inputValue={resumeData.education.hsc.additionalInfo}
               inputOnchange={"education.hsc.additionalInfo"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -81,6 +93,9 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               examples={"Kendriya Vidyalaya"}
               inputValue={resumeData.education.sslc.name}
               inputOnchange={"education.sslc.name"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -91,6 +106,9 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               examples={"2017 - 2019"}
               inputValue={resumeData.education.sslc.year}
               inputOnchange={"education.sslc.year"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -101,6 +119,9 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               examples={"9.5, 95%"}
               inputValue={resumeData.education.sslc.grade}
               inputOnchange={"education.sslc.grade"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -113,6 +134,9 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               examples={"State Board, NCERT Board"}
               inputValue={resumeData.education.sslc.additionalInfo}
               inputOnchange={"education.sslc.additionalInfo"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
           </div>
           <NavigationButtons

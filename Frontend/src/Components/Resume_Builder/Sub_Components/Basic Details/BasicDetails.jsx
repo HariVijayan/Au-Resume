@@ -33,6 +33,9 @@ const BioSummary = ({
               examples={"John Doe"}
               inputValue={resumeData.personal.name}
               inputOnchange={"personal.name"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -43,6 +46,9 @@ const BioSummary = ({
               examples={"Developer | Designer | Freelancer"}
               inputValue={resumeData.personal.bio}
               inputOnchange={"personal.bio"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -53,6 +59,9 @@ const BioSummary = ({
               examples={"+91 9876543210"}
               inputValue={resumeData.personal.mobile}
               inputOnchange={"personal.mobile"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -63,6 +72,9 @@ const BioSummary = ({
               examples={"john@gmail.com"}
               inputValue={resumeData.personal.email}
               inputOnchange={"personal.email"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -73,6 +85,9 @@ const BioSummary = ({
               examples={"Chennai, India"}
               inputValue={resumeData.personal.location}
               inputOnchange={"personal.location"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -83,6 +98,9 @@ const BioSummary = ({
               examples={"in/john_doe"}
               inputValue={resumeData.links.linkedinUserName}
               inputOnchange={"links.linkedinUserName"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -93,6 +111,9 @@ const BioSummary = ({
               examples={"john_doe"}
               inputValue={resumeData.links.githubUserName}
               inputOnchange={"links.githubUserName"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -105,6 +126,9 @@ const BioSummary = ({
               examples={"My Portfolio"}
               inputValue={resumeData.links.websiteDisplayName}
               inputOnchange={"links.websiteDisplayName"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -117,6 +141,9 @@ const BioSummary = ({
               examples={"https://www.myportfolio.com"}
               inputValue={resumeData.links.websiteUrl}
               inputOnchange={"links.websiteUrl"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
 
             <UserInputs
@@ -129,6 +156,9 @@ const BioSummary = ({
               }
               inputValue={resumeData.summary}
               inputOnchange={"summary"}
+              onChangeType={"Regular"}
+              onChangeEntry={""}
+              textfieldName={""}
             />
           </div>
 

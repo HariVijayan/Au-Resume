@@ -1,9 +1,10 @@
 {
-  "customInput": [
-    {
-      "style": "ParaType",
-      "title": "dsdsds",
-      "paraValues": "dsssssssssssssssssssssssss,sdihdsuibc,,,,,dscjibdcibdcbdcncddusindisc"
-    }
+  "languages": [
+    "Tdnonfdv",
+    "vmvnjvn",
+    "preoire",
+    "errrver",
+    "kvmkomvot",
+    "imrtmbrt"
   ]
 }
