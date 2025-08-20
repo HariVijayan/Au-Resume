@@ -8,6 +8,10 @@ import ResumeInputTemplate from "../../../ResumeFormat.jsx";
 import { useTheme } from "@mui/material";
 import InputInfoDiv from "./InputInfoDiv.jsx";
 import { useLocation } from "react-router-dom";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { format } from "date-fns";
 import {
   modifyCustomList,
   modifyCustomPara,
@@ -17,6 +21,8 @@ import {
   modifyCertificationsPara,
   modifyLanguagesList,
   modifyProjects,
+  modifyDiploma,
+  modifyDiplomaYear,
 } from "./InputMethods.js";
 
 const UserInputs = ({
@@ -48,32 +54,63 @@ const UserInputs = ({
     }
   }, [location.pathname]);
 
+  const [dateInput, setDateInput] = useState(null);
+
   const updateDynamicInputs = (e) => {
     if (onChangeType === "CustomList") {
       modifyCustomList(e, onChangeEntry, resumeData, updateField);
+      return;
     }
     if (onChangeType === "CustomPara") {
       modifyCustomPara(e, onChangeEntry, resumeData, updateField);
+      return;
     }
     if (onChangeType === "SkillsList") {
       modifySkillsList(e, onChangeEntry, resumeData, updateField);
+      return;
     }
     if (onChangeType === "SkillsPara") {
       modifySkillsPara(e, onChangeEntry, resumeData, updateField);
+      return;
     }
     if (onChangeType === "CertificationsList") {
       modifyCertificationsList(e, onChangeEntry, resumeData, updateField);
+      return;
     }
     if (onChangeType === "CertificationsPara") {
       modifyCertificationsPara(e, onChangeEntry, resumeData, updateField);
+      return;
     }
     if (onChangeType === "Languages") {
       modifyLanguagesList(e, onChangeEntry, resumeData, updateField);
+      return;
     }
     if (onChangeType === "Projects") {
       modifyProjects(e, onChangeEntry, resumeData, updateField);
+      return;
+    }
+    if (
+      onChangeType === "Diploma" &&
+      (inputType === "monthYearStart" || inputType === "monthYearEnd")
+    ) {
+      modifyDiplomaYear(
+        textfieldName,
+        e,
+        onChangeEntry,
+        resumeData,
+        updateField
+      );
+      return;
+    }
+    if (
+      onChangeType === "Diploma" &&
+      (inputType != "monthYearStart" || inputType != "monthYearEnd")
+    ) {
+      modifyDiploma(e, onChangeEntry, resumeData, updateField);
+      return;
     }
   };
+
   return (
     <>
       <Box
@@ -150,6 +187,40 @@ const UserInputs = ({
             label={inputLabel}
             onChange={(e) => updateDynamicInputs(e)}
           />
+        )}
+
+        {inputType === "monthYearStart" && onChangeType != "Regular" && (
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              views={["year", "month"]}
+              label={inputLabel}
+              value={dateInput}
+              onChange={(newValue) => {
+                setDateInput(newValue);
+                const formatted = newValue ? format(newValue, "MMM yyyy") : "";
+                updateDynamicInputs(formatted);
+              }}
+              sx={{ margin: "1rem 0rem", width: "80%" }}
+              renderInput={(params) => <TextField {...params} />}
+            />{" "}
+          </LocalizationProvider>
+        )}
+
+        {inputType === "monthYearEnd" && onChangeType != "Regular" && (
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              views={["year", "month"]}
+              label={inputLabel}
+              value={dateInput}
+              onChange={(newValue) => {
+                setDateInput(newValue);
+                const formatted = newValue ? format(newValue, "MMM yyyy") : "";
+                updateDynamicInputs(formatted);
+              }}
+              sx={{ margin: "1rem 0rem", width: "80%" }}
+              renderInput={(params) => <TextField {...params} />}
+            />{" "}
+          </LocalizationProvider>
         )}
 
         {requirement === "Mandatory" && (

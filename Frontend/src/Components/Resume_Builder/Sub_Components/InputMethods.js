@@ -129,6 +129,26 @@ const modifyProjects = (e, newProjectIndex, resumeData, updateField) => {
   updateField("projects", updatedProjects);
 };
 
+const modifyDiploma = (e, newDiplomaIndex, resumeData, updateField) => {
+  const { name, value } = e.target;
+
+  let updatedDiploma = [...resumeData.education.diploma];
+  updatedDiploma[newDiplomaIndex][name] = value;
+  updateField("education.diploma", updatedDiploma);
+};
+
+const modifyDiplomaYear = (
+  fieldName,
+  value,
+  newDiplomaIndex,
+  resumeData,
+  updateField
+) => {
+  let updatedDiploma = [...resumeData.education.diploma];
+  updatedDiploma[newDiplomaIndex][fieldName] = value;
+  updateField("education.diploma", updatedDiploma);
+};
+
 export {
   modifyCustomList,
   modifyCustomPara,
@@ -138,4 +158,6 @@ export {
   modifyCertificationsPara,
   modifyLanguagesList,
   modifyProjects,
+  modifyDiploma,
+  modifyDiplomaYear,
 };

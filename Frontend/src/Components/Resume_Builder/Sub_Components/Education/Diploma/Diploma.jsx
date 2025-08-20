@@ -1,6 +1,4 @@
-import { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
-import InfoDiv from "../../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../../Header.jsx";
 import SchoolIcon from "@mui/icons-material/School";
@@ -10,19 +8,11 @@ import Button from "@mui/material/Button";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useTheme } from "@mui/material";
 
+import UserInputs from "../../UserInputs.jsx";
+
 const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
   const theme = useTheme();
-
-  const [infoDiv, setInfoDiv] = useState("");
-
-  const showOrHideInfoDiv = (currentState) => {
-    if (infoDiv === currentState) {
-      setInfoDiv(" ");
-    } else {
-      setInfoDiv(currentState);
-    }
-  };
 
   const addNewDiploma = (e) => {
     e.preventDefault();
@@ -80,262 +70,93 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
                   id={`dv-EducationDiplomaCopy${newDiplomaIndex + 1}`}
                   className="SubWrapper"
                 >
-                  <div
-                    id={`dv-EduDiplomaNameCopy${newDiplomaIndex + 1}`}
-                    className="InputWrapper"
-                  >
-                    <input
-                      type="text"
-                      id={`in-rb_edu_dipl_name${newDiplomaIndex + 1}`}
-                      name="diploma_name"
-                      value={newDiplomaEntry.name}
-                      onChange={(e) => {
-                        let updatedDiploma = [...resumeData.education.diploma];
-                        updatedDiploma[newDiplomaIndex].name = e.target.value;
-                        updateField("education.diploma", updatedDiploma);
-                      }}
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor={`in-rb_edu_dipl_name${newDiplomaIndex + 1}`}
-                      className="TextFieldLabel"
-                    >
-                      Name
-                    </label>
-                    <svg
-                      onClick={() =>
-                        showOrHideInfoDiv(`Diploma Name${newDiplomaIndex}`)
-                      }
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="MandatoryInputSvg"
-                      height="24px"
-                      viewBox="0 -960 960 960"
-                      width="24px"
-                      fill="#e3e3e3"
-                    >
-                      <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                    </svg>
-                  </div>
+                  <UserInputs
+                    inputType={"text"}
+                    inputLabel={"Name"}
+                    requirement={"Mandatory"}
+                    explanation={
+                      "Complete name of the diploma with specialization if any"
+                    }
+                    examples={"Diploma in Information Technology"}
+                    inputValue={newDiplomaEntry.name}
+                    inputOnchange={""}
+                    onChangeType={"Diploma"}
+                    onChangeEntry={newDiplomaIndex}
+                    textfieldName={"name"}
+                  />
 
-                  {infoDiv === `Diploma Name${newDiplomaIndex}` && (
-                    <InfoDiv
-                      requirement={"Mandatory"}
-                      explanation={
-                        "Complete name of the diploma with specialization if any"
-                      }
-                      examples={"Diploma in Information Technology"}
-                      characterLimit={"Upto 40 characters"}
-                      allowedCharacters={"No Restrictions"}
-                    />
-                  )}
+                  <UserInputs
+                    inputType={"text"}
+                    inputLabel={"University"}
+                    requirement={"Mandatory"}
+                    explanation={"The university which awarded the diploma"}
+                    examples={"Anna University"}
+                    inputValue={newDiplomaEntry.university}
+                    inputOnchange={""}
+                    onChangeType={"Diploma"}
+                    onChangeEntry={newDiplomaIndex}
+                    textfieldName={"university"}
+                  />
 
-                  <div
-                    id={`dv-EduDiplomaUniCopy${newDiplomaIndex + 1}`}
-                    className="InputWrapper"
-                  >
-                    <input
-                      type="text"
-                      id={`in-rb_edu_dipl_uni${newDiplomaIndex + 1}`}
-                      name="diploma_university"
-                      value={newDiplomaEntry.university}
-                      onChange={(e) => {
-                        let updatedDiploma = [...resumeData.education.diploma];
-                        updatedDiploma[newDiplomaIndex].university =
-                          e.target.value;
-                        updateField("education.diploma", updatedDiploma);
-                      }}
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor={`in-rb_edu_dipl_uni${newDiplomaIndex + 1}`}
-                      className="TextFieldLabel"
-                    >
-                      University
-                    </label>
-                    <svg
-                      onClick={() =>
-                        showOrHideInfoDiv(
-                          `Diploma University${newDiplomaIndex}`
-                        )
-                      }
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="MandatoryInputSvg"
-                      height="24px"
-                      viewBox="0 -960 960 960"
-                      width="24px"
-                      fill="#e3e3e3"
-                    >
-                      <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                    </svg>
-                  </div>
+                  <UserInputs
+                    inputType={"monthYearStart"}
+                    inputLabel={"Starting Period"}
+                    requirement={"Mandatory"}
+                    explanation={
+                      "The starting month and year from which you started pursuing this diploma"
+                    }
+                    examples={"May 2023"}
+                    inputValue={newDiplomaEntry.startYear}
+                    inputOnchange={""}
+                    onChangeType={"Diploma"}
+                    onChangeEntry={newDiplomaIndex}
+                    textfieldName={"startYear"}
+                  />
 
-                  {infoDiv === `Diploma University${newDiplomaIndex}` && (
-                    <InfoDiv
-                      requirement={"Mandatory"}
-                      explanation={"The university which awarded the diploma"}
-                      examples={"Anna University"}
-                      characterLimit={"Upto 40 characters"}
-                      allowedCharacters={"No Restrictions"}
-                    />
-                  )}
+                  <UserInputs
+                    inputType={"monthYearStart"}
+                    inputLabel={"Ending Period"}
+                    requirement={"Mandatory"}
+                    explanation={
+                      "The ending month and year from which you finished pursuing this diploma"
+                    }
+                    examples={"May 2025"}
+                    inputValue={newDiplomaEntry.endYear}
+                    inputOnchange={""}
+                    onChangeType={"Diploma"}
+                    onChangeEntry={newDiplomaIndex}
+                    textfieldName={"endYear"}
+                  />
 
-                  <div
-                    id={`dv-EduDiplomaYearCopy${newDiplomaIndex + 1}`}
-                    className="InputWrapper"
-                  >
-                    <input
-                      type="text"
-                      id={`in-rb_edu_dipl_year${newDiplomaIndex + 1}`}
-                      name="diploma_year"
-                      value={newDiplomaEntry.year}
-                      onChange={(e) => {
-                        let updatedDiploma = [...resumeData.education.diploma];
-                        updatedDiploma[newDiplomaIndex].year = e.target.value;
-                        updateField("education.diploma", updatedDiploma);
-                      }}
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor={`in-rb_edu_dipl_year${newDiplomaIndex + 1}`}
-                      className="TextFieldLabel"
-                    >
-                      Year
-                    </label>
-                    <svg
-                      onClick={() =>
-                        showOrHideInfoDiv(`Diploma Period${newDiplomaIndex}`)
-                      }
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="MandatoryInputSvg"
-                      height="24px"
-                      viewBox="0 -960 960 960"
-                      width="24px"
-                      fill="#e3e3e3"
-                    >
-                      <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                    </svg>
-                  </div>
+                  <UserInputs
+                    inputType={"text"}
+                    inputLabel={"Cgpa"}
+                    requirement={"Mandatory"}
+                    explanation={
+                      "Current or overall CGPA achieved in the course"
+                    }
+                    examples={"9.5"}
+                    inputValue={newDiplomaEntry.cgpa}
+                    inputOnchange={""}
+                    onChangeType={"Diploma"}
+                    onChangeEntry={newDiplomaIndex}
+                    textfieldName={"cgpa"}
+                  />
 
-                  {infoDiv === `Diploma Period${newDiplomaIndex}` && (
-                    <InfoDiv
-                      requirement={"Mandatory"}
-                      explanation={
-                        "The period of your time pursuing this diploma"
-                      }
-                      examples={"2021 - 2023"}
-                      characterLimit={"Upto 15 characters"}
-                      allowedCharacters={"Numbers, Hyphens"}
-                    />
-                  )}
-
-                  <div
-                    id={`dv-EduDiplomaCgpaCopy${newDiplomaIndex + 1}`}
-                    className="InputWrapper"
-                  >
-                    <input
-                      type="text"
-                      id={`in-rb_edu_dipl_cgpa${newDiplomaIndex + 1}`}
-                      name="diploma_cgpa"
-                      value={newDiplomaEntry.cgpa}
-                      onChange={(e) => {
-                        let updatedDiploma = [...resumeData.education.diploma];
-                        updatedDiploma[newDiplomaIndex].cgpa = e.target.value;
-                        updateField("education.diploma", updatedDiploma);
-                      }}
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor={`in-rb_edu_dipl_cgpa${newDiplomaIndex + 1}`}
-                      className="TextFieldLabel"
-                    >
-                      CGPA
-                    </label>
-                    <svg
-                      onClick={() =>
-                        showOrHideInfoDiv(`Diploma CGPA${newDiplomaIndex}`)
-                      }
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="MandatoryInputSvg"
-                      height="24px"
-                      viewBox="0 -960 960 960"
-                      width="24px"
-                      fill="#e3e3e3"
-                    >
-                      <path d="M440-120v-264L254-197l-57-57 187-186H120v-80h264L197-706l57-57 186 187v-264h80v264l186-187 57 57-187 186h264v80H576l187 186-57 57-186-187v264h-80Z" />
-                    </svg>
-                  </div>
-
-                  {infoDiv === `Diploma CGPA${newDiplomaIndex}` && (
-                    <InfoDiv
-                      requirement={"Mandatory"}
-                      explanation={
-                        "Current or overall CGPA achieved in the course"
-                      }
-                      examples={"9.5"}
-                      characterLimit={"Upto 5 characters"}
-                      allowedCharacters={"Numbers, Period"}
-                    />
-                  )}
-
-                  <div
-                    id={`dv-EduDiplomaAddlCopy${newDiplomaIndex + 1}`}
-                    className="InputWrapper"
-                  >
-                    <input
-                      type="text"
-                      name="diploma_additional_info"
-                      id={`in-rb_edu_dipl_addl${newDiplomaIndex + 1}`}
-                      value={newDiplomaEntry.additionalInfo}
-                      onChange={(e) => {
-                        let updatedDiploma = [...resumeData.education.diploma];
-                        updatedDiploma[newDiplomaIndex].additionalInfo =
-                          e.target.value;
-                        updateField("education.diploma", updatedDiploma);
-                      }}
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor={`in-rb_edu_dipl_addl${newDiplomaIndex + 1}`}
-                      className="TextFieldLabel"
-                    >
-                      Additional Info
-                    </label>
-                    <svg
-                      onClick={() =>
-                        showOrHideInfoDiv(`Diploma Addl${newDiplomaIndex}`)
-                      }
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="OptionalInputSvg"
-                      height="24px"
-                      viewBox="0 -960 960 960"
-                      width="24px"
-                      fill="#e3e3e3"
-                    >
-                      <path d="M240-440v-80h480v80H240Z" />
-                    </svg>
-                  </div>
-
-                  {infoDiv === `Diploma Addl${newDiplomaIndex}` && (
-                    <InfoDiv
-                      requirement={"Optional"}
-                      explanation={
-                        "Any other important and relevant information related to this course"
-                      }
-                      examples={"Distinction Grade"}
-                      characterLimit={"Upto 40 characters"}
-                      allowedCharacters={"No Restrictions"}
-                    />
-                  )}
-
-                  {infoDiv === " " && (
-                    <InfoDiv
-                      requirement={""}
-                      explanation={""}
-                      examples={""}
-                      characterLimit={""}
-                      allowedCharacters={""}
-                    />
-                  )}
+                  <UserInputs
+                    inputType={"text"}
+                    inputLabel={"Additional Info"}
+                    requirement={"Optional"}
+                    explanation={
+                      "Any other important and relevant information related to this course"
+                    }
+                    examples={"Distinction Grade"}
+                    inputValue={newDiplomaEntry.additionalInfo}
+                    inputOnchange={""}
+                    onChangeType={"Diploma"}
+                    onChangeEntry={newDiplomaIndex}
+                    textfieldName={"additionalInfo"}
+                  />
                 </div>
               )
             )}

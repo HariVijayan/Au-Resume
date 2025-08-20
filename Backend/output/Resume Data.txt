@@ -1,25 +1,22 @@
 {
-  "projects": [
-    {
-      "name": "sdsdcdd",
-      "displayLink": "bgffdvfdvdfv",
-      "linkUrl": "https://www.google.com",
-      "description": "fvbgfggb",
-      "techStack": "fgbgfgbf,fbggfb,fgbgfb,fgbgbf,fgfggfbfbg"
-    },
-    {
-      "name": "gdgdffdggd",
-      "description": "tyyntyynnttynny",
-      "techStack": "brtl;btrbbt,tbrtrb,btr,brt,trb,trbtrbbtr",
-      "displayLink": "dgfgdfgdg",
-      "linkUrl": "https://www.google.com"
-    },
-    {
-      "name": "yuuynnuuyn",
-      "description": "ny5rterrergwgw",
-      "techStack": "ryhyyrhhr,rhrhyrh,ryhryhryhrh",
-      "displayLink": "nyuuynuynu",
-      "linkUrl": "https://www.google.com"
-    }
-  ]
+  "education": {
+    "diploma": [
+      {
+        "name": "dgbdgbg",
+        "university": "dfgdgssfgs",
+        "startYear": "Mar 2015",
+        "endYear": "Dec 2043",
+        "cgpa": "57",
+        "additionalInfo": "ththdhdgh"
+      },
+      {
+        "name": "tdgdghhg",
+        "university": "hdggddhggdh",
+        "cgpa": "35353",
+        "additionalInfo": "dhggggdgdh",
+        "startYear": "Nov 2019",
+        "endYear": "Sep 2016"
+      }
+    ]
+  }
 }

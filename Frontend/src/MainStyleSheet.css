@@ -49,14 +49,6 @@ body svg {
   width: var(--svg--width);
 }
 
-body button {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem 0rem;
-}
-
 ::-webkit-input-placeholder {
   font-family: "Segoe UI", "Helvetica", "Verdana", "Arial";
 }
