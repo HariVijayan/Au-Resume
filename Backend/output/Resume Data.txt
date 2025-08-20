@@ -1,10 +1,25 @@
 {
-  "languages": [
-    "Tdnonfdv",
-    "vmvnjvn",
-    "preoire",
-    "errrver",
-    "kvmkomvot",
-    "imrtmbrt"
+  "projects": [
+    {
+      "name": "sdsdcdd",
+      "displayLink": "bgffdvfdvdfv",
+      "linkUrl": "https://www.google.com",
+      "description": "fvbgfggb",
+      "techStack": "fgbgfgbf,fbggfb,fgbgfb,fgbgbf,fgfggfbfbg"
+    },
+    {
+      "name": "gdgdffdggd",
+      "description": "tyyntyynnttynny",
+      "techStack": "brtl;btrbbt,tbrtrb,btr,brt,trb,trbtrbbtr",
+      "displayLink": "dgfgdfgdg",
+      "linkUrl": "https://www.google.com"
+    },
+    {
+      "name": "yuuynnuuyn",
+      "description": "ny5rterrergwgw",
+      "techStack": "ryhyyrhhr,rhrhyrh,ryhryhryhrh",
+      "displayLink": "nyuuynuynu",
+      "linkUrl": "https://www.google.com"
+    }
   ]
 }

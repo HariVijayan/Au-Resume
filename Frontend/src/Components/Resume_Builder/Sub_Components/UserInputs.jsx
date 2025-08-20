@@ -16,6 +16,7 @@ import {
   modifyCertificationsList,
   modifyCertificationsPara,
   modifyLanguagesList,
+  modifyProjects,
 } from "./InputMethods.js";
 
 const UserInputs = ({
@@ -68,6 +69,9 @@ const UserInputs = ({
     }
     if (onChangeType === "Languages") {
       modifyLanguagesList(e, onChangeEntry, resumeData, updateField);
+    }
+    if (onChangeType === "Projects") {
+      modifyProjects(e, onChangeEntry, resumeData, updateField);
     }
   };
   return (
@@ -125,9 +129,21 @@ const UserInputs = ({
           />
         )}
 
-        {onChangeType != "Regular" && (
+        {inputType === "text" && onChangeType != "Regular" && (
           <TextField
             required={isInputRequired}
+            name={textfieldName}
+            sx={{ width: "80%", margin: "1rem 0rem" }}
+            value={inputValue}
+            label={inputLabel}
+            onChange={(e) => updateDynamicInputs(e)}
+          />
+        )}
+
+        {inputType === "url" && onChangeType != "Regular" && (
+          <TextField
+            required={isInputRequired}
+            type="url"
             name={textfieldName}
             sx={{ width: "80%", margin: "1rem 0rem" }}
             value={inputValue}

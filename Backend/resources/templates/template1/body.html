@@ -245,14 +245,11 @@
       <div class="project_main_div">
         <div id="projecttab1" class="project_sub_div1">
           <h3 id="h3-projectname" class="project_name">{{name}}</h3>
-          {{#if link}}
+          {{#if linkUrl}}
           <div id="projectlink">
             <h3 id="h3-projectlink">Link :&nbsp;</h3>
-            <a
-              id="p-projectlink"
-              class="project_link"
-              href="{{this.project_link}}"
-              >{{link}}</a
+            <a id="p-projectlink" class="project_link" href="{{this.linkUrl}}"
+              >{{displayLink}}</a
             >
           </div>
           {{/if}}

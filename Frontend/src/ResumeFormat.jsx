@@ -84,7 +84,8 @@ const ResumeInputTemplate = create((set) => ({
     projects: [
       {
         name: "",
-        link: "",
+        displayLink: "",
+        linkUrl: "",
         description: "",
         techStack: "",
       },

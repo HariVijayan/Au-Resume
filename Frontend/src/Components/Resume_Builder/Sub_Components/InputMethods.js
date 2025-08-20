@@ -121,6 +121,14 @@ const modifyLanguagesList = (e, setLanguageValue, resumeData, updateField) => {
   updateField("languages", updatedLanguages);
 };
 
+const modifyProjects = (e, newProjectIndex, resumeData, updateField) => {
+  const { name, value } = e.target;
+
+  let updatedProjects = [...resumeData.projects];
+  updatedProjects[newProjectIndex][name] = value;
+  updateField("projects", updatedProjects);
+};
+
 export {
   modifyCustomList,
   modifyCustomPara,
@@ -129,4 +137,5 @@ export {
   modifyCertificationsList,
   modifyCertificationsPara,
   modifyLanguagesList,
+  modifyProjects,
 };
