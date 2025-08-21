@@ -99,11 +99,11 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
                   />
 
                   <UserInputs
-                    inputType={"monthYearStart"}
+                    inputType={"yearStart"}
                     inputLabel={"Starting Period"}
                     requirement={"Mandatory"}
                     explanation={
-                      "The starting month and year from which you started pursuing this diploma"
+                      "The starting year from which you started pursuing this diploma"
                     }
                     examples={"May 2023"}
                     inputValue={newDiplomaEntry.startYear}
@@ -114,11 +114,11 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
                   />
 
                   <UserInputs
-                    inputType={"monthYearStart"}
+                    inputType={"yearEnd"}
                     inputLabel={"Ending Period"}
                     requirement={"Mandatory"}
                     explanation={
-                      "The ending month and year from which you finished pursuing this diploma"
+                      "The ending year from which you finished pursuing this diploma"
                     }
                     examples={"May 2025"}
                     inputValue={newDiplomaEntry.endYear}

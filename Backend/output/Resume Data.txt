@@ -1,21 +1,21 @@
 {
   "education": {
-    "diploma": [
+    "phd": [
       {
-        "name": "dgbdgbg",
-        "university": "dfgdgssfgs",
-        "startYear": "Mar 2015",
-        "endYear": "Dec 2043",
-        "cgpa": "57",
-        "additionalInfo": "ththdhdgh"
+        "name": "wwecwec",
+        "university": "wecwecwwec",
+        "startYear": "2022",
+        "endYear": "2030",
+        "specialization": "weceew,cweec,cwe,wcweewwe",
+        "additionalInfo": "wcecwewweewc"
       },
       {
-        "name": "tdgdghhg",
-        "university": "hdggddhggdh",
-        "cgpa": "35353",
-        "additionalInfo": "dhggggdgdh",
-        "startYear": "Nov 2019",
-        "endYear": "Sep 2016"
+        "name": "wceceewcce",
+        "university": "wecwewecew",
+        "additionalInfo": "ewccwcewec",
+        "startYear": "2031",
+        "endYear": "2095",
+        "specialization": "ecceecwce,wcecweec,cecce"
       }
     ]
   }

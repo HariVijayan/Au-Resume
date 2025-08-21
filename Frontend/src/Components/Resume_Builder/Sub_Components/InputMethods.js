@@ -149,6 +149,26 @@ const modifyDiplomaYear = (
   updateField("education.diploma", updatedDiploma);
 };
 
+const modifyPhd = (e, newPhdIndex, resumeData, updateField) => {
+  const { name, value } = e.target;
+
+  let updatedPhd = [...resumeData.education.phd];
+  updatedPhd[newPhdIndex][name] = value;
+  updateField("education.phd", updatedPhd);
+};
+
+const modifyPhdYear = (
+  fieldName,
+  value,
+  newPhdIndex,
+  resumeData,
+  updateField
+) => {
+  let updatedPhd = [...resumeData.education.phd];
+  updatedPhd[newPhdIndex][fieldName] = value;
+  updateField("education.phd", updatedPhd);
+};
+
 export {
   modifyCustomList,
   modifyCustomPara,
@@ -158,6 +178,8 @@ export {
   modifyCertificationsPara,
   modifyLanguagesList,
   modifyProjects,
+  modifyPhd,
+  modifyPhdYear,
   modifyDiploma,
   modifyDiplomaYear,
 };

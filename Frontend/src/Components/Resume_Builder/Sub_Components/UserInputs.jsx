@@ -21,6 +21,8 @@ import {
   modifyCertificationsPara,
   modifyLanguagesList,
   modifyProjects,
+  modifyPhd,
+  modifyPhdYear,
   modifyDiploma,
   modifyDiplomaYear,
 } from "./InputMethods.js";
@@ -54,7 +56,9 @@ const UserInputs = ({
     }
   }, [location.pathname]);
 
-  const [dateInput, setDateInput] = useState(null);
+  const [monthYearInput, setMonthYearInput] = useState(null);
+
+  const [yearInput, setYearInput] = useState(null);
 
   const updateDynamicInputs = (e) => {
     if (onChangeType === "CustomList") {
@@ -89,25 +93,29 @@ const UserInputs = ({
       modifyProjects(e, onChangeEntry, resumeData, updateField);
       return;
     }
-    if (
-      onChangeType === "Diploma" &&
-      (inputType === "monthYearStart" || inputType === "monthYearEnd")
-    ) {
-      modifyDiplomaYear(
-        textfieldName,
-        e,
-        onChangeEntry,
-        resumeData,
-        updateField
-      );
-      return;
+    if (onChangeType === "Phd") {
+      if (inputType === "yearStart" || inputType === "yearEnd") {
+        modifyPhdYear(textfieldName, e, onChangeEntry, resumeData, updateField);
+        return;
+      } else {
+        modifyPhd(e, onChangeEntry, resumeData, updateField);
+        return;
+      }
     }
-    if (
-      onChangeType === "Diploma" &&
-      (inputType != "monthYearStart" || inputType != "monthYearEnd")
-    ) {
-      modifyDiploma(e, onChangeEntry, resumeData, updateField);
-      return;
+    if (onChangeType === "Diploma") {
+      if (inputType === "yearStart" || inputType === "yearEnd") {
+        modifyDiplomaYear(
+          textfieldName,
+          e,
+          onChangeEntry,
+          resumeData,
+          updateField
+        );
+        return;
+      } else {
+        modifyDiploma(e, onChangeEntry, resumeData, updateField);
+        return;
+      }
     }
   };
 
@@ -194,9 +202,9 @@ const UserInputs = ({
             <DatePicker
               views={["year", "month"]}
               label={inputLabel}
-              value={dateInput}
+              value={monthYearInput}
               onChange={(newValue) => {
-                setDateInput(newValue);
+                setMonthYearInput(newValue);
                 const formatted = newValue ? format(newValue, "MMM yyyy") : "";
                 updateDynamicInputs(formatted);
               }}
@@ -211,10 +219,44 @@ const UserInputs = ({
             <DatePicker
               views={["year", "month"]}
               label={inputLabel}
-              value={dateInput}
+              value={monthYearInput}
               onChange={(newValue) => {
-                setDateInput(newValue);
+                setMonthYearInput(newValue);
                 const formatted = newValue ? format(newValue, "MMM yyyy") : "";
+                updateDynamicInputs(formatted);
+              }}
+              sx={{ margin: "1rem 0rem", width: "80%" }}
+              renderInput={(params) => <TextField {...params} />}
+            />{" "}
+          </LocalizationProvider>
+        )}
+
+        {inputType === "yearStart" && onChangeType != "Regular" && (
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              views={["year"]}
+              label={inputLabel}
+              value={yearInput}
+              onChange={(newValue) => {
+                setYearInput(newValue);
+                const formatted = newValue ? format(newValue, "yyyy") : "";
+                updateDynamicInputs(formatted);
+              }}
+              sx={{ margin: "1rem 0rem", width: "80%" }}
+              renderInput={(params) => <TextField {...params} />}
+            />{" "}
+          </LocalizationProvider>
+        )}
+
+        {inputType === "yearEnd" && onChangeType != "Regular" && (
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              views={["year"]}
+              label={inputLabel}
+              value={yearInput}
+              onChange={(newValue) => {
+                setYearInput(newValue);
+                const formatted = newValue ? format(newValue, "yyyy") : "";
                 updateDynamicInputs(formatted);
               }}
               sx={{ margin: "1rem 0rem", width: "80%" }}

@@ -115,13 +115,15 @@
             </p>
             {{/if}}
           </h3>
-          <p id="p-phdyear" class="education_period">{{year}}</p>
+          <p id="p-phdyear" class="education_period">
+            {{startYear}} - {{endYear}}
+          </p>
         </div>
         <div id="phdtab2" class="education_sub_div2">
           <p id="p-phduni" class="education_university">{{university}}</p>
-          {{#if expertise}}
+          {{#if specialization}}
           <p id="p-phdexp" class="education_custom_field">
-            <strong>Expertise:</strong> {{expertise}}
+            <strong>Specialization:</strong> {{specialization}}
           </p>
           {{/if}}
         </div>
