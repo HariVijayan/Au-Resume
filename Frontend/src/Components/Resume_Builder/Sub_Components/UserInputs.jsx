@@ -23,6 +23,10 @@ import {
   modifyProjects,
   modifyPhd,
   modifyPhdYear,
+  modifyPg,
+  modifyPgYear,
+  modifyUg,
+  modifyUgYear,
   modifyDiploma,
   modifyDiplomaYear,
 } from "./InputMethods.js";
@@ -99,6 +103,24 @@ const UserInputs = ({
         return;
       } else {
         modifyPhd(e, onChangeEntry, resumeData, updateField);
+        return;
+      }
+    }
+    if (onChangeType === "Pg") {
+      if (inputType === "yearStart" || inputType === "yearEnd") {
+        modifyPgYear(textfieldName, e, onChangeEntry, resumeData, updateField);
+        return;
+      } else {
+        modifyPg(e, onChangeEntry, resumeData, updateField);
+        return;
+      }
+    }
+    if (onChangeType === "Ug") {
+      if (inputType === "yearStart" || inputType === "yearEnd") {
+        modifyUgYear(textfieldName, e, onChangeEntry, resumeData, updateField);
+        return;
+      } else {
+        modifyUg(e, onChangeEntry, resumeData, updateField);
         return;
       }
     }

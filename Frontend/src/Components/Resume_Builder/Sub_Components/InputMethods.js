@@ -169,6 +169,46 @@ const modifyPhdYear = (
   updateField("education.phd", updatedPhd);
 };
 
+const modifyPg = (e, newPgIndex, resumeData, updateField) => {
+  const { name, value } = e.target;
+
+  let updatedPg = [...resumeData.education.postGraduate];
+  updatedPg[newPgIndex][name] = value;
+  updateField("education.postGraduate", updatedPg);
+};
+
+const modifyPgYear = (
+  fieldName,
+  value,
+  newPgIndex,
+  resumeData,
+  updateField
+) => {
+  let updatedPg = [...resumeData.education.postGraduate];
+  updatedPg[newPgIndex][fieldName] = value;
+  updateField("education.postGraduate", updatedPg);
+};
+
+const modifyUg = (e, newUgIndex, resumeData, updateField) => {
+  const { name, value } = e.target;
+
+  let updatedUg = [...resumeData.education.underGraduate];
+  updatedUg[newUgIndex][name] = value;
+  updateField("education.underGraduate", updatedUg);
+};
+
+const modifyUgYear = (
+  fieldName,
+  value,
+  newUgIndex,
+  resumeData,
+  updateField
+) => {
+  let updatedUg = [...resumeData.education.underGraduate];
+  updatedUg[newUgIndex][fieldName] = value;
+  updateField("education.underGraduate", updatedUg);
+};
+
 export {
   modifyCustomList,
   modifyCustomPara,
@@ -180,6 +220,10 @@ export {
   modifyProjects,
   modifyPhd,
   modifyPhdYear,
+  modifyPg,
+  modifyPgYear,
+  modifyUg,
+  modifyUgYear,
   modifyDiploma,
   modifyDiplomaYear,
 };

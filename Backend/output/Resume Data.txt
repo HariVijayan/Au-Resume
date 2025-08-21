@@ -1,21 +1,16 @@
 {
   "education": {
-    "phd": [
+    "underGraduate": [
       {
-        "name": "wwecwec",
-        "university": "wecwecwwec",
+        "name": "sdsffdsdsdfs",
+        "university": "dsdsdsds",
+        "cgpa": "dssddssd",
+        "additionalInfo": "dssddsdsds",
         "startYear": "2022",
-        "endYear": "2030",
-        "specialization": "weceew,cweec,cwe,wcweewwe",
-        "additionalInfo": "wcecwewweewc"
+        "endYear": "2031"
       },
       {
-        "name": "wceceewcce",
-        "university": "wecwewecew",
-        "additionalInfo": "ewccwcewec",
-        "startYear": "2031",
-        "endYear": "2095",
-        "specialization": "ecceecwce,wcecweec,cecce"
+        "name": "sfddfsdsfsfd"
       }
     ]
   }

@@ -1,6 +1,4 @@
-import { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
-import InfoDiv from "../../Info Div/InfoDiv.jsx";
 import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../../Header.jsx";
 import SchoolIcon from "@mui/icons-material/School";
@@ -15,16 +13,6 @@ import UserInputs from "../../UserInputs.jsx";
 const Phd = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
   const theme = useTheme();
-
-  const [infoDiv, setInfoDiv] = useState("");
-
-  const showOrHideInfoDiv = (currentState) => {
-    if (infoDiv === currentState) {
-      setInfoDiv(" ");
-    } else {
-      setInfoDiv(currentState);
-    }
-  };
 
   const addNewPhd = (e) => {
     e.preventDefault();
@@ -109,7 +97,7 @@ const Phd = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
 
                 <UserInputs
                   inputType={"yearStart"}
-                  inputLabel={"Starting Period"}
+                  inputLabel={"Starting Year"}
                   requirement={"Mandatory"}
                   explanation={
                     "The starting year from which you started pursuing this phd"
@@ -124,7 +112,7 @@ const Phd = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
 
                 <UserInputs
                   inputType={"yearEnd"}
-                  inputLabel={"Ending Period"}
+                  inputLabel={"Ending Year"}
                   requirement={"Mandatory"}
                   explanation={
                     "The ending year from which you finished pursuing this phd"

@@ -100,7 +100,7 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
 
                   <UserInputs
                     inputType={"yearStart"}
-                    inputLabel={"Starting Period"}
+                    inputLabel={"Starting Year"}
                     requirement={"Mandatory"}
                     explanation={
                       "The starting year from which you started pursuing this diploma"
@@ -115,7 +115,7 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
 
                   <UserInputs
                     inputType={"yearEnd"}
-                    inputLabel={"Ending Period"}
+                    inputLabel={"Ending Year"}
                     requirement={"Mandatory"}
                     explanation={
                       "The ending year from which you finished pursuing this diploma"

@@ -34,7 +34,8 @@ const ResumeInputTemplate = create((set) => ({
         {
           name: "",
           university: "",
-          year: "",
+          startYear: "",
+          endYear: "",
           cgpa: "",
           additionalInfo: "",
         },
