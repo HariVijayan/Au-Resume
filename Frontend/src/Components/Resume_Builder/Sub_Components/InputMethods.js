@@ -20,6 +20,40 @@ const modifyCustomPara = (e, customInputIndex, resumeData, updateField) => {
   updateField("customInput", updatedCustomInput);
 };
 
+const modifyExpList = (e, experienceIndex, resumeData, updateField) => {
+  const { name, value } = e.target;
+  let updatedExperience = [...resumeData.experience];
+
+  if (name === "roles") {
+    updatedExperience[experienceIndex][name] = value.split(",");
+  } else {
+    updatedExperience[experienceIndex][name] = value;
+  }
+
+  updateField("experience", updatedExperience);
+};
+
+const modifyExpPara = (e, experienceIndex, resumeData, updateField) => {
+  const { name, value } = e.target;
+  let updatedExperience = [...resumeData.experience];
+
+  updatedExperience[experienceIndex][name] = value;
+
+  updateField("experience", updatedExperience);
+};
+
+const modifyExpYear = (
+  fieldName,
+  value,
+  experienceIndex,
+  resumeData,
+  updateField
+) => {
+  let updatedExperience = [...resumeData.experience];
+  updatedExperience[experienceIndex][fieldName] = value;
+  updateField("experience", updatedExperience);
+};
+
 const modifySkillsList = (e, setSkillsetValue, resumeData, updateField) => {
   let { value } = e.target;
   let updatedSkills = { ...resumeData.skills };
@@ -210,6 +244,9 @@ const modifyUgYear = (
 };
 
 export {
+  modifyExpList,
+  modifyExpPara,
+  modifyExpYear,
   modifyCustomList,
   modifyCustomPara,
   modifySkillsList,

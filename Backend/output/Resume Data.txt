@@ -1,17 +1,45 @@
 {
-  "education": {
-    "underGraduate": [
-      {
-        "name": "sdsffdsdsdfs",
-        "university": "dsdsdsds",
-        "cgpa": "dssddssd",
-        "additionalInfo": "dssddsdsds",
-        "startYear": "2022",
-        "endYear": "2031"
-      },
-      {
-        "name": "sfddfsdsfsfd"
-      }
-    ]
-  }
+  "experience": [
+    {
+      "style": "ListType",
+      "company": "sddssd",
+      "location": "sddsdssd",
+      "designation": "dsdsds",
+      "team": "dsdsdsds",
+      "roles": [
+        "sddsds",
+        "dds",
+        "ds",
+        "ds",
+        "sdsd"
+      ],
+      "startYear": "Feb 2022",
+      "endYear": "Nov 2031"
+    },
+    {
+      "style": "ParaType",
+      "company": "sddssddssdsdgfgfgj",
+      "location": "sddsdsdsklnkn",
+      "designation": "daadnjbnjbjhb",
+      "team": "kpokopkpok",
+      "roles": "yuuyuuy",
+      "description": "dssdfssddsgngfnghg",
+      "startYear": "Oct 2026",
+      "endYear": "Mar 2035"
+    }
+  ],
+  "skills": {
+    "type": "ParaType"
+  },
+  "certifications": {
+    "type": "ParaType"
+  },
+  "customInput": [
+    {
+      "style": "ListType"
+    },
+    {
+      "style": "ParaType"
+    }
+  ]
 }

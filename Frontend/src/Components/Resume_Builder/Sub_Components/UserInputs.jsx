@@ -13,6 +13,9 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { format } from "date-fns";
 import {
+  modifyExpList,
+  modifyExpPara,
+  modifyExpYear,
   modifyCustomList,
   modifyCustomPara,
   modifySkillsList,
@@ -65,6 +68,25 @@ const UserInputs = ({
   const [yearInput, setYearInput] = useState(null);
 
   const updateDynamicInputs = (e) => {
+    if (onChangeType === "ExpList") {
+      if (inputType === "monthYearStart" || inputType === "monthYearEnd") {
+        modifyExpYear(textfieldName, e, onChangeEntry, resumeData, updateField);
+        return;
+      } else {
+        modifyExpList(e, onChangeEntry, resumeData, updateField);
+        return;
+      }
+    }
+    if (onChangeType === "ExpPara") {
+      if (inputType === "monthYearStart" || inputType === "monthYearEnd") {
+        modifyExpYear(textfieldName, e, onChangeEntry, resumeData, updateField);
+        return;
+      } else {
+        modifyExpPara(e, onChangeEntry, resumeData, updateField);
+        return;
+      }
+    }
+
     if (onChangeType === "CustomList") {
       modifyCustomList(e, onChangeEntry, resumeData, updateField);
       return;
