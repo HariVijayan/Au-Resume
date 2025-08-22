@@ -123,23 +123,6 @@
   margin: 2rem 0rem;
 }
 
-.CurrentAdminsTable {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.CurrentAdminsTable tr,
-td,
-th {
-  padding: 10px;
-  text-align: center;
-}
-
-.CurrentAdminsTable td,
-th {
-  border: 1px solid var(--primary--accent);
-}
-
 .AdminMgmtWrapper {
   display: flex;
   flex-direction: column;

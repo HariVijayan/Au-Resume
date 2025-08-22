@@ -217,8 +217,8 @@ for (let i = 1; i <= 25; i++) {
   await newAdminErrorLog.save();
 
   const userLog = new userLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
+    logLinkedAccount: "harijv0310@gmail.com",
+    logAddedBy: "harijv0310@gmail.com",
     logCategory: "Public",
     logPriority: "P4",
     logDetails: `User log number: ${i}`,
@@ -226,8 +226,8 @@ for (let i = 1; i <= 25; i++) {
   await userLog.save();
 
   const userErrorLog = new userErrorLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
+    logLinkedAccount: "harijv0310@gmail.com",
+    logAddedBy: "harijv0310@gmail.com",
     logCategory: "Public",
     logPriority: "P4",
     logDetails: `User error log number: ${i}`,
@@ -255,8 +255,8 @@ for (let i = 26; i <= 50; i++) {
   await newAdminErrorLog.save();
 
   const userLog = new userLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
+    logLinkedAccount: "harijv0310@gmail.com",
+    logAddedBy: "harijv0310@gmail.com",
     logCategory: "Public",
     logPriority: "P3",
     logDetails: `User log number: ${i}`,
@@ -264,8 +264,8 @@ for (let i = 26; i <= 50; i++) {
   await userLog.save();
 
   const userErrorLog = new userErrorLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
+    logLinkedAccount: "harijv0310@gmail.com",
+    logAddedBy: "harijv0310@gmail.com",
     logCategory: "Public",
     logPriority: "P3",
     logDetails: `User error log number: ${i}`,
@@ -293,7 +293,7 @@ for (let i = 51; i <= 75; i++) {
   await newAdminErrorLog.save();
 
   const userLog = new userLogs({
-    logLinkedAccount: "System",
+    logLinkedAccount: "harijv0310@gmail.com",
     logAddedBy: "System",
     logCategory: "Public",
     logPriority: "P2",
@@ -302,7 +302,7 @@ for (let i = 51; i <= 75; i++) {
   await userLog.save();
 
   const userErrorLog = new userErrorLogs({
-    logLinkedAccount: "System",
+    logLinkedAccount: "harijv0310@gmail.com",
     logAddedBy: "System",
     logCategory: "Public",
     logPriority: "P2",
@@ -331,7 +331,7 @@ for (let i = 76; i <= 105; i++) {
   await newAdminErrorLog.save();
 
   const userLog = new userLogs({
-    logLinkedAccount: "System",
+    logLinkedAccount: "harijv0310@gmail.com",
     logAddedBy: "System",
     logCategory: "Public",
     logPriority: "P1",
@@ -340,7 +340,7 @@ for (let i = 76; i <= 105; i++) {
   await userLog.save();
 
   const userErrorLog = new userErrorLogs({
-    logLinkedAccount: "System",
+    logLinkedAccount: "harijv0310@gmail.com",
     logAddedBy: "System",
     logCategory: "Public",
     logPriority: "P1",

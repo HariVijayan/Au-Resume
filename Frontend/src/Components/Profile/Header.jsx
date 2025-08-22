@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -51,7 +52,9 @@ const AdminPanelHeader = ({
         >
           AU Resume Builder
         </Typography>
-        <LogoutIcon onClick={logoutUser} sx={{ cursor: "pointer" }} />
+        <IconButton aria-label="logout user" color="error" onClick={logoutUser}>
+          <LogoutIcon />
+        </IconButton>
       </Box>
       <Box
         sx={{

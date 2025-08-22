@@ -3,11 +3,40 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import LogoutIcon from "@mui/icons-material/Logout";
+import TableRowsIcon from "@mui/icons-material/TableRows";
+import PasswordIcon from "@mui/icons-material/Password";
+import KeyIcon from "@mui/icons-material/Key";
+import CheckIcon from "@mui/icons-material/Check";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import FilterListAltIcon from "@mui/icons-material/FilterListAlt";
 
 const PAGE_SIZE = 50;
 
 const User = ({ setLogoutClicked, setLogoutUserType }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
   const [userRegNo, setUserRegNo] = useState("");
@@ -16,6 +45,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
   const [userProgramme, setUserProgramme] = useState("");
   const [userBranch, setUserBranch] = useState("");
   const [accountCreated, setAccountCreated] = useState("");
+  const [loadingAnim, setLoadingAnim] = useState(false);
 
   const [requestType, setRequestType] = useState("");
 
@@ -24,6 +54,15 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [showPasswordIcon, setShowPasswordIcon] = useState(false);
+
+  const showPasswordInput = () => setShowPasswordIcon((show) => !show);
+
+  const [showConfirmPasswordIcon, setShowConfirmPasswordIcon] = useState(false);
+
+  const showConfirmPasswordInput = () =>
+    setShowConfirmPasswordIcon((show) => !show);
 
   const [serverMessage, setServerMessage] = useState("");
   const [showServerMsg, setShowServerMsg] = useState(false);
@@ -45,6 +84,10 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
   const [logFilter, setLogFilter] = useState("");
 
   useEffect(() => {
+    setLoadingAnim(true);
+    setServerMessage("Fetching user details");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     const fetchUserDetails = async () => {
       try {
         const response = await axios.post(
@@ -63,7 +106,9 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
         setServerMsgType("success");
         setShowServerMsg(true);
         setLoading(false);
+        setLoadingAnim(false);
       } catch (error) {
+        setLoadingAnim(false);
         setServerMessage(
           error.response?.data?.message || "Failed to fetch user's details"
         );
@@ -75,27 +120,36 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
   }, [location.pathname]);
 
   const generateOtp = async (otpReason) => {
-    setRequestType(otpReason);
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
+
     if (otpReason === "PasswordReset") {
       if (newPassword != confirmPassword) {
         setServerMessage("Passwords doesn't match");
         setServerMsgType("error");
         setShowServerMsg(true);
+        setLoadingAnim(false);
         return;
       }
     }
+
     try {
       const response = await axios.post(
         "http://localhost:5000/user/approvals/getApprovalOtp",
         { requestType: otpReason, newPassword },
         { withCredentials: true }
       );
+      setRequestType(otpReason);
       setMainContent("ShowOtp");
       setOtpInput("");
       setServerMessage("Otp sent to email successfully");
       setServerMsgType("success");
       setShowServerMsg(true);
+      setLoadingAnim(false);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Failed to generate Otp"
       );
@@ -105,10 +159,16 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
   };
 
   const resetPassword = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
+
     if (newPassword != confirmPassword) {
       setServerMessage("Passwords doesn't match");
       setServerMsgType("error");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       return;
     }
     try {
@@ -120,10 +180,12 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       setServerMessage("Password reset successful");
       setServerMsgType("success");
       setShowServerMsg(true);
+      setLoadingAnim(false);
       setTimeout(() => {
         navigate("/");
       }, 1000); //Redirect to login page after 1 seconds of showing success message
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Password reset failed"
       );
@@ -133,6 +195,10 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
   };
 
   const resetEncryptionKey = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/user/encryptionKey/resetEncKey",
@@ -143,7 +209,12 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       setServerMessage("Encryption Key reset successful");
       setServerMsgType("success");
       setShowServerMsg(true);
+      setLoadingAnim(false);
+      setTimeout(() => {
+        window.location.reload(false); // This will trigger a page reload after 3 seconds delay
+      }, 3000);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Failed to reset encryption key"
       );
@@ -159,6 +230,11 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
     setVisibleLogsStart(0);
     setCreatedByFilter("");
     setLogFilter("");
+
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
 
     try {
       const response = await axios.post(
@@ -184,7 +260,9 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       setServerMessage("Fetched logs successfully");
       setServerMsgType("success");
       setShowServerMsg(true);
+      setLoadingAnim(false);
     } catch (error) {
+      setLoadingAnim(false);
       if (!isMounted) return;
       setLogsData({
         DateNewest: [],
@@ -272,333 +350,853 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <div className="UserProfile">
-        <div className="UserProfileWrapper">
-          <div className="UserProfileInnerWrapper">
-            {loading && <span>Loading content....</span>}
-            {!loading && (
-              <>
-                <div className="UserProfileHeader">
-                  <p
-                    className="AdminDashboardLink"
-                    onClick={() => navigate(-1)}
-                  >
-                    <svg
-                      className="MenuIconsSvg"
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="24px"
-                      viewBox="0 -960 960 960"
-                      width="24px"
-                      fill="#e3e3e3"
-                    >
-                      <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
-                    </svg>
-                    Resume Builder
-                  </p>
-                  <h3 style={{ color: "red" }}>User Profile</h3>
-                  <svg
-                    className="MenuIconsSvg"
-                    onClick={logoutUser}
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24px"
-                    viewBox="0 -960 960 960"
-                    width="24px"
-                    fill="#e3e3e3"
-                  >
-                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
-                  </svg>
-                </div>
-                <div className="UserProfileBody">
-                  <div className="UserDetailsWrapper">
-                    <div className="UserProfileDetails">
-                      <span className="UserDetailsHeading">Email</span>
-                      <span className="UserDetailsValue">{userEmail}</span>
-                    </div>
-                    <div className="UserProfileDetails">
-                      <span className="UserDetailsHeading">
-                        Register Number
-                      </span>
-                      <span className="UserDetailsValue">{userRegNo}</span>
-                    </div>
-                  </div>
-                  <div className="UserDetailsWrapper">
-                    <div className="UserProfileDetails">
-                      <span className="UserDetailsHeading">Department</span>
-                      <span className="UserDetailsValue">{userDept}</span>
-                    </div>
-                    <div className="UserProfileDetails">
-                      <span className="UserDetailsHeading">Course Type</span>
-                      <span className="UserDetailsValue">{userCourseType}</span>
-                    </div>
-                  </div>
-                  <div className="UserDetailsWrapper">
-                    <div className="UserProfileDetails">
-                      <span className="UserDetailsHeading">Programme</span>
-                      <span className="UserDetailsValue">{userProgramme}</span>
-                    </div>
-                    <div className="UserProfileDetails">
-                      <span className="UserDetailsHeading">Branch</span>
-                      <span className="UserDetailsValue">{userBranch}</span>
-                    </div>
-                  </div>
-                  <div className="UserProfileDetails">
-                    <span className="UserDetailsHeading">Account Created</span>
-                    <span className="UserDetailsValue">{accountCreated}</span>
-                  </div>
-                  <div className="UserProfileButtons">
-                    <button
-                      onClick={() => generateOtp("GetLogs")}
-                      className="AddInputButtons"
-                    >
-                      Show Logs
-                    </button>
-                    <button
-                      onClick={() => setMainContent("DisclaimerPassword")}
-                      className="PreviewButton"
-                    >
-                      Reset Login Password
-                    </button>
-                    <button
-                      onClick={() => setMainContent("DisclaimerEncryption")}
-                      className="DownloadButton"
-                    >
-                      Reset Encryption Key
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
-            {!loading && mainContent === "DisclaimerPassword" && (
-              <div className="UserProfileContent">
-                <p>
-                  Resetting your password will also remove your previously saved
-                  resume details and will close this current active session. You
-                  need to login again.
-                </p>
-                <div className="AuthenticationDivWrapper">
-                  <div
-                    id="dv-RPPassword"
-                    className="AuthenticationInputWrapper"
-                  >
-                    <input
-                      type="password"
-                      id="in-rp_password"
-                      placeholder=" "
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      required
-                    />
-                    <label
-                      htmlFor="in-rp_password"
-                      className="AuthenticationTextFieldLabel"
-                    >
-                      Password
-                    </label>
-                  </div>
-                </div>
+      <Stack
+        id="PageWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          minHeight: "100vh",
+          flexDirection: "column",
+          margin: "2rem 0rem",
+          width: "100%",
+        }}
+      >
+        {loading && (
+          <Typography textAlign={"center"}>Loading please wait...</Typography>
+        )}
+        {!loading && (
+          <>
+            <Box
+              id="HeaderWrapper"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "90%",
+                margin: "2rem 0rem",
+                gap: "1rem",
+              }}
+              flexDirection={{ xs: "column", sm: "row" }}
+            >
+              <Typography
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  ":hover": { color: theme.palette.primary.main },
+                }}
+                variant="h5"
+                onClick={() => navigate(-1)}
+              >
+                <ArrowBackIcon sx={{ fill: theme.palette.primary.main }} />
+                Resume Builder
+              </Typography>
 
-                <div className="AuthenticationDivWrapper">
-                  <div
-                    id="dv-RPConfirmPassword"
-                    className="AuthenticationInputWrapper"
+              <Typography
+                sx={{
+                  color: theme.palette.secondary.main,
+                }}
+                variant="h4"
+              >
+                User Profile
+              </Typography>
+
+              <IconButton
+                aria-label="logout user"
+                color="error"
+                onClick={logoutUser}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </Box>
+            <Box
+              id="ContentWrapper"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "90%",
+                margin: "2rem 0rem",
+                flexDirection: "column",
+              }}
+            >
+              <Box
+                id="UserDetailsWrapper"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                  flexDirection: "column",
+                  margin: "2rem 0rem",
+                }}
+              >
+                <Box
+                  id="DualUserDetails"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                  flexDirection={{ xs: "column", md: "row" }}
+                >
+                  <Box
+                    id="UserDetails"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      margin: "2rem 0em",
+                      borderBottom: "2px solid black",
+                      flexWrap: "wrap",
+                    }}
+                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
                   >
-                    <input
-                      type="password"
-                      id="in-rp_confirmpassword"
-                      placeholder=" "
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                    />
-                    <label
-                      htmlFor="in-rp_confirmpassword"
-                      className="AuthenticationTextFieldLabel"
+                    <Typography
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontWeight: "bold",
+                      }}
                     >
-                      Confirm Password
-                    </label>
-                  </div>
-                </div>
-                <button
-                  onClick={() => generateOtp("PasswordReset")}
-                  className="LeftNavigationButtons"
+                      Email
+                    </Typography>
+                    <Typography>{userEmail}</Typography>
+                  </Box>
+                  <Box
+                    id="UserDetails"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      margin: "2rem 0em",
+                      borderBottom: "2px solid black",
+                      flexWrap: "wrap",
+                    }}
+                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                  >
+                    <Typography
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Register Number
+                    </Typography>
+                    <Typography>{userRegNo}</Typography>
+                  </Box>
+                </Box>
+                <Box
+                  id="DualUserDetails"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                  flexDirection={{ xs: "column", md: "row" }}
                 >
-                  Continue
-                </button>
-              </div>
-            )}
-            {!loading && mainContent === "DisclaimerEncryption" && (
-              <div className="UserProfileContent">
-                <p>
-                  Resetting your encryption key will also remove your previously
-                  saved resume details. You will need to re-enter your resume
-                  details for all fields from scratch.
-                </p>
-                <button
-                  onClick={() => generateOtp("EncryptionKeyReset")}
-                  className="LeftNavigationButtons"
+                  <Box
+                    id="UserDetails"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      margin: "2rem 0em",
+                      borderBottom: "2px solid black",
+                      flexWrap: "wrap",
+                    }}
+                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                  >
+                    <Typography
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Department
+                    </Typography>
+                    <Typography>{userDept}</Typography>
+                  </Box>
+                  <Box
+                    id="UserDetails"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      margin: "2rem 0em",
+                      borderBottom: "2px solid black",
+                      flexWrap: "wrap",
+                    }}
+                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                  >
+                    <Typography
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Course Type
+                    </Typography>
+                    <Typography>{userCourseType}</Typography>
+                  </Box>
+                </Box>
+                <Box
+                  id="DualUserDetails"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                  flexDirection={{ xs: "column", md: "row" }}
                 >
-                  Continue
-                </button>
-              </div>
-            )}
-            {!loading && mainContent === "ShowOtp" && (
-              <div className="UserProfileContent">
-                <div className="UserProfileContentOtp">
-                  <input
+                  <Box
+                    id="UserDetails"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      margin: "2rem 0em",
+                      borderBottom: "2px solid black",
+                      flexWrap: "wrap",
+                    }}
+                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                  >
+                    <Typography
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Programme
+                    </Typography>
+                    <Typography>{userProgramme}</Typography>
+                  </Box>
+                  <Box
+                    id="UserDetails"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      margin: "2rem 0em",
+                      borderBottom: "2px solid black",
+                      flexWrap: "wrap",
+                    }}
+                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                  >
+                    <Typography
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Branch
+                    </Typography>
+                    <Typography>{userBranch}</Typography>
+                  </Box>
+                </Box>
+                <Box
+                  id="UserDetails"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    margin: "2rem 0em",
+                    borderBottom: "2px solid black",
+                    flexWrap: "wrap",
+                  }}
+                  width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                >
+                  <Typography
+                    sx={{
+                      color: theme.palette.primary.main,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Account Created
+                  </Typography>
+                  <Typography>{accountCreated}</Typography>
+                </Box>
+              </Box>
+
+              <Box
+                id="UserActionButtonsWrapper"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  width: "100%",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => generateOtp("GetLogs")}
+                  size="large"
+                  disabled={
+                    requestType === "PasswordReset" ||
+                    requestType === "EncryptionKeyReset"
+                  }
+                  endIcon={<TableRowsIcon />}
+                  loading={loadingAnim}
+                  loadingPosition="end"
+                  sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                >
+                  Show Logs
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setMainContent("DisclaimerPassword")}
+                  size="large"
+                  disabled={
+                    requestType === "GetLogs" ||
+                    requestType === "EncryptionKeyReset"
+                  }
+                  endIcon={<PasswordIcon />}
+                  loading={loadingAnim}
+                  loadingPosition="end"
+                  sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                >
+                  Reset Password
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setMainContent("DisclaimerEncryption")}
+                  size="large"
+                  disabled={
+                    requestType === "GetLogs" || requestType === "PasswordReset"
+                  }
+                  endIcon={<KeyIcon />}
+                  loading={loadingAnim}
+                  loadingPosition="end"
+                  sx={{
+                    margin: "2rem 0rem",
+                    textTransform: "none",
+                    backgroundColor: theme.palette.brown.main,
+                  }}
+                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                >
+                  Reset Encryption Key
+                </Button>
+              </Box>
+
+              {!loading && mainContent === "DisclaimerPassword" && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "1rem",
+                    flexDirection: "column",
+                    margin: "2rem 0rem",
+                  }}
+                  width={{ xs: "100%", md: "50%", lg: "40%" }}
+                >
+                  <Typography sx={{ textAlign: "center" }}>
+                    Resetting your password will also remove your previously
+                    saved resume details and will close this current active
+                    session. You need to login again.
+                  </Typography>
+
+                  <TextField
+                    required
+                    variant="outlined"
+                    label="Password"
+                    type={showPasswordIcon ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label={
+                                showPasswordIcon
+                                  ? "hide the password"
+                                  : "display the password"
+                              }
+                              onClick={showPasswordInput}
+                            >
+                              {showPasswordIcon ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{ width: "80%", margin: "2rem 0rem" }}
+                  />
+
+                  <TextField
+                    required
+                    variant="outlined"
+                    label="Confirm Password"
+                    type={showConfirmPasswordIcon ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label={
+                                showConfirmPasswordIcon
+                                  ? "hide the password"
+                                  : "display the password"
+                              }
+                              onClick={showConfirmPasswordInput}
+                            >
+                              {showConfirmPasswordIcon ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{ width: "80%", margin: "2rem 0rem" }}
+                  />
+
+                  <Button
+                    variant="outlined"
+                    onClick={() => generateOtp("PasswordReset")}
+                    size="large"
+                    endIcon={<CheckIcon />}
+                    loading={loadingAnim}
+                    loadingPosition="end"
+                    sx={{
+                      margin: "2rem 0rem",
+                      textTransform: "none",
+                    }}
+                    padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                  >
+                    Continue
+                  </Button>
+                </Box>
+              )}
+              {!loading && mainContent === "DisclaimerEncryption" && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "1rem",
+                    flexDirection: "column",
+                    margin: "2rem 0rem",
+                  }}
+                  width={{ xs: "100%", md: "50%", lg: "40%" }}
+                >
+                  <Typography sx={{ textAlign: "center" }}>
+                    Resetting your encryption key will also remove your
+                    previously saved resume details. You will need to re-enter
+                    your resume details for all fields from scratch.
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    onClick={() => generateOtp("EncryptionKeyReset")}
+                    size="large"
+                    endIcon={<CheckIcon />}
+                    loading={loadingAnim}
+                    loadingPosition="end"
+                    sx={{
+                      margin: "2rem 0rem",
+                      textTransform: "none",
+                    }}
+                    padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                  >
+                    Continue
+                  </Button>
+                </Box>
+              )}
+              {!loading && mainContent === "ShowOtp" && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "1rem",
+                    flexDirection: "column",
+                    margin: "2rem 0rem",
+                  }}
+                  width={{ xs: "100%", md: "50%", lg: "40%" }}
+                >
+                  <TextField
+                    sx={{ width: "80%", margin: "2rem 0rem" }}
+                    required
+                    id="inp-otp"
+                    label="Otp"
                     type="text"
-                    placeholder=" "
                     value={otpInput}
                     onChange={(e) => setOtpInput(e.target.value)}
-                    required
                   />
-                  <label className="UserOtpLabel">Otp</label>
-                </div>
-                <button
-                  onClick={implementUserAction}
-                  disabled={!otpInput}
-                  className="AddInputButtons"
-                >
-                  Verify Otp
-                </button>
-              </div>
-            )}
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={implementUserAction}
+                    disabled={!otpInput || !requestType}
+                    size="large"
+                    endIcon={<DoneAllIcon />}
+                    loading={loadingAnim}
+                    loadingPosition="end"
+                    sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                    padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                  >
+                    Verify Otp
+                  </Button>
+                </Box>
+              )}
 
-            {!loading && mainContent === "ShowLogs" && (
-              <>
-                <div className="LogDisplayWrapper">
-                  <div className="AdminsListHeading">
-                    <p className="AdminTableHeading">User's Logs</p>
-                    <span>
-                      Total records currently:{" "}
-                      <span style={{ color: "red" }}>{totalRecords}</span>
-                    </span>
-                  </div>
+              {!loading && mainContent === "ShowLogs" && (
+                <>
+                  <Box
+                    id="LogActionsWrapper"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-end",
+                      width: "100%",
+                      flexDirection: "column",
+                      margin: "2rem 0rem",
+                    }}
+                  >
+                    <Box
+                      id="LogActionsHeading"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: "bold" }}>
+                        User's Logs
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography>Total records currently:</Typography>
+                        <Typography sx={{ color: "red", marginLeft: "1rem" }}>
+                          {totalRecords}
+                        </Typography>
+                      </Box>
+                    </Box>
 
-                  <div className="LogListSort">
-                    <div className="RegisterDropDown">
-                      <select
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        margin: "2rem 0rem",
+                      }}
+                      width={{ xs: "100%", md: "50%", lg: "40%" }}
+                    >
+                      <TextField
+                        sx={{ width: "80%", margin: "2rem 0rem" }}
+                        required
+                        id="se-sortby"
+                        select
+                        label="Sort By"
+                        defaultValue="DateNewest"
                         value={sortBy}
-                        id="se-sortBy"
                         onChange={(e) => {
                           setSortBy(e.target.value);
                           setVisibleLogsStart(0);
                         }}
                       >
-                        <option value="DateNewest">Date: Newest First</option>
-                        <option value="DateOldest">Date: Oldest First</option>
-                      </select>
-                      <label htmlFor="se-sortBy" className="DropDownLabel">
-                        Sort By
-                      </label>
-                    </div>
-                  </div>
+                        <MenuItem value={"DateNewest"}>
+                          Date: Newest First
+                        </MenuItem>
+                        <MenuItem value={"DateOldest"}>
+                          Date: Oldest First
+                        </MenuItem>
+                      </TextField>
+                    </Box>
 
-                  <div className="LogListFilter">
-                    <span onClick={toggleFilters}>
-                      Click to show/hide available filters
-                    </span>
-                  </div>
-
-                  {showFilters && (
-                    <>
-                      {" "}
-                      <div className="LogFilterWrapper">
-                        <div className="AdminMgmtOtp">
-                          <input
-                            type="text"
-                            placeholder=" "
-                            value={createdByFilter}
-                            onChange={(e) => setCreatedByFilter(e.target.value)}
-                          />
-                          <label className="AdminMgmtTextFieldLabel2">
-                            Created By
-                          </label>
-                        </div>
-                        <div className="AdminMgmtOtp">
-                          <input
-                            type="text"
-                            placeholder=" "
-                            value={logFilter}
-                            onChange={(e) => setLogFilter(e.target.value)}
-                          />
-                          <label className="AdminMgmtTextFieldLabel2">
-                            Log
-                          </label>
-                        </div>
-                      </div>
-                      <button
-                        onClick={applyFilterAndSort}
-                        className="AddInputButtons"
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        width: "100%",
+                        margin: "2rem 0rem",
+                      }}
+                    >
+                      <Button
+                        variant="outlined"
+                        onClick={toggleFilters}
+                        size="large"
+                        endIcon={
+                          showFilters ? <VisibilityOff /> : <Visibility />
+                        }
+                        sx={{
+                          margin: "2rem 0rem",
+                          textTransform: "none",
+                        }}
+                        padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
                       >
-                        Filter
-                      </button>
+                        {showFilters ? "Hide Filters" : "Show Filters"}
+                      </Button>
+                    </Box>
+
+                    {showFilters && (
+                      <>
+                        {" "}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: "100%",
+                            margin: "2rem 0rem",
+                            flexWrap: "wrap",
+                          }}
+                          justifyContent={{ xs: "center", md: "flex-start" }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              flexWrap: "wrap",
+                            }}
+                            width={{ xs: "100%", md: "50%", lg: "40%" }}
+                          >
+                            <TextField
+                              sx={{ width: "80%", margin: "2rem 0rem" }}
+                              required
+                              id="inp-createdBy"
+                              label="Created By"
+                              value={createdByFilter}
+                              onChange={(e) =>
+                                setCreatedByFilter(e.target.value)
+                              }
+                            />
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              flexWrap: "wrap",
+                            }}
+                            width={{ xs: "100%", md: "50%", lg: "40%" }}
+                          >
+                            <TextField
+                              sx={{ width: "80%", margin: "2rem 0rem" }}
+                              required
+                              id="inp-log"
+                              label="Log Value"
+                              value={logFilter}
+                              onChange={(e) => setLogFilter(e.target.value)}
+                            />
+                          </Box>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={applyFilterAndSort}
+                            size="large"
+                            endIcon={<FilterListAltIcon />}
+                            sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                          >
+                            Filter Logs
+                          </Button>
+                        </Box>
+                      </>
+                    )}
+                  </Box>
+
+                  {!loading && !visibleLogs.length && logTypeRequested && (
+                    <Typography
+                      sx={{ margin: "2rem 0rem", textAlign: "center" }}
+                    >
+                      No logs found for this selection.
+                    </Typography>
+                  )}
+
+                  {!loading && visibleLogs.length > 0 && (
+                    <>
+                      <TableContainer
+                        component={Paper}
+                        sx={{ width: "100%", overflowX: "auto" }}
+                      >
+                        <Table
+                          stickyHeader
+                          sx={{ minWidth: 650 }}
+                          aria-label="logs table"
+                        >
+                          <TableHead>
+                            <TableRow>
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  border: `1px solid ${theme.palette.primary.main}`,
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Linked Account
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  border: `1px solid ${theme.palette.primary.main}`,
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Created By
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  border: `1px solid ${theme.palette.primary.main}`,
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Created At
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  border: `1px solid ${theme.palette.primary.main}`,
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Log
+                              </TableCell>
+                            </TableRow>
+                          </TableHead>
+
+                          <TableBody>
+                            {visibleLogs.map((log) => (
+                              <TableRow
+                                key={`${log.createdAt}-${log.logDetails}`}
+                                hover
+                              >
+                                <TableCell
+                                  align="center"
+                                  sx={{
+                                    border: `1px solid ${theme.palette.primary.main}`,
+                                  }}
+                                >
+                                  {log.logLinkedAccount}
+                                </TableCell>
+                                <TableCell
+                                  align="center"
+                                  sx={{
+                                    border: `1px solid ${theme.palette.primary.main}`,
+                                  }}
+                                >
+                                  {log.logAddedBy}
+                                </TableCell>
+                                <TableCell
+                                  align="center"
+                                  sx={{
+                                    border: `1px solid ${theme.palette.primary.main}`,
+                                  }}
+                                >
+                                  {log.createdAtFormatted}
+                                </TableCell>
+                                <TableCell
+                                  align="center"
+                                  sx={{
+                                    border: `1px solid ${theme.palette.primary.main}`,
+                                  }}
+                                >
+                                  {log.logDetails}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                          gap: "1rem",
+                          width: "100%",
+                          margin: "2rem 0rem",
+                        }}
+                        flexDirection={{ xs: "column", lg: "row" }}
+                      >
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={handlePrev}
+                          disabled={visibleLogsStart === 0}
+                          size="large"
+                          endIcon={<KeyboardDoubleArrowLeftIcon />}
+                          loading={loadingAnim}
+                          loadingPosition="end"
+                          sx={{
+                            margin: "2rem 0rem",
+                            textTransform: "none",
+                            backgroundColor: theme.palette.black.main,
+                          }}
+                          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                        >
+                          Previous
+                        </Button>
+
+                        <Typography>
+                          Showing{" "}
+                          {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
+                          {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)}{" "}
+                          out of {totalRecords} records.
+                        </Typography>
+
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleNext}
+                          disabled={
+                            visibleLogsStart + PAGE_SIZE >= totalRecords ||
+                            totalRecords === 0
+                          }
+                          size="large"
+                          endIcon={<KeyboardDoubleArrowRightIcon />}
+                          loading={loadingAnim}
+                          loadingPosition="end"
+                          sx={{
+                            margin: "2rem 0rem",
+                            textTransform: "none",
+                            backgroundColor: theme.palette.black.main,
+                          }}
+                          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                        >
+                          Next
+                        </Button>
+                      </Box>
                     </>
                   )}
-                </div>
-                {!loading && !visibleLogs.length && logTypeRequested && (
-                  <span style={{ margin: "2rem 0rem" }}>
-                    No logs found for this selection.
-                  </span>
-                )}
-
-                {!loading && visibleLogs.length > 0 && (
-                  <div className="LogDisplayWrapper">
-                    <div className="AdminsList">
-                      <table className="CurrentAdminsTable">
-                        <thead>
-                          <tr>
-                            <th>Linked Account</th>
-                            <th>Created By</th>
-                            <th>Created At</th>
-                            <th>Log</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {visibleLogs.map((log) => (
-                            <tr key={`${log.createdAt}-${log.logDetails}`}>
-                              <td>{log.logLinkedAccount}</td>
-                              <td>{log.logAddedBy}</td>
-                              <td>{log.createdAtFormatted}</td>
-                              <td>{log.logDetails}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="LogsNavigation">
-                      <button
-                        onClick={handlePrev}
-                        className="LeftNavigationButtons"
-                        disabled={visibleLogsStart === 0}
-                      >
-                        Previous
-                      </button>
-
-                      <span>
-                        Showing {totalRecords === 0 ? 0 : visibleLogsStart + 1}{" "}
-                        - {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)}{" "}
-                        out of {totalRecords} records.
-                      </span>
-
-                      <button
-                        onClick={handleNext}
-                        className="LeftNavigationButtons"
-                        disabled={
-                          visibleLogsStart + PAGE_SIZE >= totalRecords ||
-                          totalRecords === 0
-                        }
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+                </>
+              )}
+            </Box>
+          </>
+        )}
+      </Stack>
     </>
   );
 };

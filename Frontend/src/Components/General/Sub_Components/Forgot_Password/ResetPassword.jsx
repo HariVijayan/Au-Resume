@@ -169,7 +169,7 @@ const ResetPassword = () => {
             <TextField
               required
               variant="outlined"
-              label="Password"
+              label="Confirm Password"
               type={showConfirmPasswordIcon ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
