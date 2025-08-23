@@ -7,6 +7,7 @@ import NavigationButtons from "../NavigationButtons.jsx";
 import UserInputs from "../UserInputs.jsx";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import Footer from "../Footer.jsx";
 
 const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const { resumeData } = ResumeInputTemplate();
@@ -92,6 +93,7 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         </Box>
         <PreviewPdf />
       </Stack>
+      <Footer />
     </>
   );
 };

@@ -2,30 +2,29 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./MainStyleSheet.css";
 import MainApp from "./MainApp.jsx";
-import Footer from "./Footer.jsx";
+import Footer from "./Components/Resume_Builder/Sub_Components/Footer.jsx";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme.js";
-import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 
 createRoot(document.getElementById("dv-MainWrapper")).render(
   <ThemeProvider theme={theme}>
     <StrictMode>
       <>
-        <Container
+        <Box
           id="PageWrapper"
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            padding: "2vh 0vh",
+            margin: "2vh 0vh 0vh 0vh",
+            minHeight: "98vh",
           }}
-          maxWidth="xl"
         >
           <MainApp />
-        </Container>
-        <Footer />
+        </Box>
       </>
     </StrictMode>
   </ThemeProvider>

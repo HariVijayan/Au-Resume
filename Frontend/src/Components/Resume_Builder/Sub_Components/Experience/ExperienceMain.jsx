@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Footer from "../Footer.jsx";
 
 const Experience = ({
   setLogoutClicked,
@@ -196,6 +197,7 @@ const Experience = ({
         </Box>
         <PreviewPdf />
       </Stack>
+      <Footer />
     </>
   );
 };

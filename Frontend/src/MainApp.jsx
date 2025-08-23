@@ -93,18 +93,7 @@ function RouteWrapper() {
   const location = useLocation();
 
   useEffect(() => {
-    const setRouteBasedElements = () => {
-      const footer = document.getElementById("FooterWrapper");
-      if (!footer) return;
-
-      if (protectedRoutes.includes(location.pathname)) {
-        footer.style.display = "flex";
-      } else {
-        footer.style.display = "none";
-      }
-    };
-
-    const checkAccessAndSetFooter = async () => {
+    const checkUserAccess = async () => {
       if (superAdminRoutes.includes(location.pathname)) {
         const sessionResponse = await verifySessionForAdminRoutes("SuperAdmin");
         if (sessionResponse.serverResponse === "") {
@@ -150,11 +139,10 @@ function RouteWrapper() {
           navigate(sessionResponse.redirectRoute);
         }
       }
-      setRouteBasedElements(); // Only after verification
     };
 
-    checkAccessAndSetFooter(); // Single deterministic call per route change
-  }, [location.pathname]); // Only watch for path change, not DOM changes
+    checkUserAccess();
+  }, [location.pathname]);
 
   const downloadResume = async () => {
     const formData = {

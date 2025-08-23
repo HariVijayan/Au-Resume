@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useTheme } from "@mui/material";
 import Stack from "@mui/material/Stack";
-
+import Footer from "../../Footer.jsx";
 import UserInputs from "../../UserInputs.jsx";
 
 const Ug = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
@@ -212,6 +212,7 @@ const Ug = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         </Box>
         <PreviewPdf />
       </Stack>
+      <Footer />
     </>
   );
 };

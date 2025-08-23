@@ -17,7 +17,6 @@ const Footer = () => {
         color: theme.palette.background.default,
         padding: "1rem 0rem",
       }}
-      marginTop={{ xs: "3rem", md: "5rem" }}
       flexDirection={{ xs: "column", md: "row" }}
     >
       <Box

@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useTheme } from "@mui/material";
 import Stack from "@mui/material/Stack";
-
+import Footer from "../../Footer.jsx";
 import UserInputs from "../../UserInputs.jsx";
 
 const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
@@ -210,6 +210,7 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         </Box>
         <PreviewPdf />
       </Stack>
+      <Footer />
     </>
   );
 };

@@ -6,7 +6,14 @@ const InputInfoDiv = ({ requirement, examples, explanation }) => {
   const theme = useTheme();
   return (
     <>
-      <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          width: "80%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
         <Box
           sx={{
             borderLeft: `6px solid ${theme.palette.primary.main}`,
@@ -29,6 +36,7 @@ const InputInfoDiv = ({ requirement, examples, explanation }) => {
               display: "flex",
               justifyContent: "flex-start",
               alignItems: "flex-start",
+              flexWrap: "wrap",
             }}
           >
             <Typography sx={{ fontWeight: "bold" }}>Requirement:</Typography>
@@ -62,6 +70,7 @@ const InputInfoDiv = ({ requirement, examples, explanation }) => {
               display: "flex",
               justifyContent: "flex-start",
               alignItems: "flex-start",
+              flexWrap: "wrap",
             }}
           >
             {explanation && (
@@ -82,6 +91,7 @@ const InputInfoDiv = ({ requirement, examples, explanation }) => {
               display: "flex",
               justifyContent: "flex-start",
               alignItems: "flex-start",
+              flexWrap: "wrap",
             }}
           >
             {examples && (

@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import NotesIcon from "@mui/icons-material/Notes";
 import { useTheme } from "@mui/material";
+import Footer from "../Footer.jsx";
 
 const Skills = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const { resumeData, updateField } = ResumeInputTemplate();
@@ -148,6 +149,7 @@ const Skills = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         </Box>
         <PreviewPdf />
       </Stack>
+      <Footer />
     </>
   );
 };

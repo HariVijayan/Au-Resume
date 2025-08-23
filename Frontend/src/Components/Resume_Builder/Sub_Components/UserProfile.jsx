@@ -30,6 +30,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import FilterListAltIcon from "@mui/icons-material/FilterListAlt";
+import Footer from "./Footer";
 
 const PAGE_SIZE = 50;
 
@@ -1114,7 +1115,6 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        flexWrap: "wrap",
                         gap: "1rem",
                         width: "100%",
                         margin: "2rem 0rem",
@@ -1180,6 +1180,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
               </>
             )}
           </Box>
+          <Footer />
         </>
       )}
     </>

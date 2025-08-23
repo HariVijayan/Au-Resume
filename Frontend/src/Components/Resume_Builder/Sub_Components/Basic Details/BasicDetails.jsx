@@ -6,6 +6,7 @@ import NavigationButtons from "../NavigationButtons.jsx";
 import UserInputs from "../UserInputs.jsx";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import Footer from "../Footer.jsx";
 
 const BioSummary = ({
   setLogoutClicked,
@@ -203,6 +204,7 @@ const BioSummary = ({
         </Box>
         <PreviewPdf />
       </Stack>
+      <Footer />
     </>
   );
 };

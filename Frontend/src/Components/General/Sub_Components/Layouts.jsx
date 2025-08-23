@@ -8,7 +8,6 @@ const AuthenticationPagesWrapper = styled(Stack)(() => ({
   alignItems: "center",
   minHeight: "100vh",
   flexDirection: "column",
-  margin: "2rem 0rem",
   width: "90%", // Layout width for mobile screen
   "@media (min-width:600px)": {
     width: "80%",

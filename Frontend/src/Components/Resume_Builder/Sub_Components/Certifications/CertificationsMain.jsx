@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import Footer from "../Footer.jsx";
 
 const Cerifications = ({
   setLogoutClicked,
@@ -153,6 +154,7 @@ const Cerifications = ({
         </Box>
         <PreviewPdf />
       </Stack>
+      <Footer />
     </>
   );
 };
