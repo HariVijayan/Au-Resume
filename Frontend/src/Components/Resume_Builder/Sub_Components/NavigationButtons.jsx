@@ -16,7 +16,7 @@ const NavigationButtons = ({
   return (
     <>
       <Box
-        id="ResumeBuilderNavButtons"
+        id="LeftContentNavButtons"
         sx={{
           display: "flex",
           justifyContent: PreviousPageName != "" ? "space-between" : "flex-end",

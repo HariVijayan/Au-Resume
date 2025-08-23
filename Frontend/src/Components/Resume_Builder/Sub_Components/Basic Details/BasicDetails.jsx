@@ -47,7 +47,7 @@ const BioSummary = ({
           width={{ xs: "90%", md: "50%" }}
         >
           <Box
-            id="ResumeBuilderInputs"
+            id="BasicDetailsInputs"
             sx={{
               display: "flex",
               justifyContent: "space-around",

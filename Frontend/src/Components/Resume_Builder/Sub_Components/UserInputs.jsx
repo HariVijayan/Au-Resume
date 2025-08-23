@@ -166,9 +166,10 @@ const UserInputs = ({
   return (
     <>
       <Box
+        id={inputLabel}
         sx={{
           display: "flex",
-          justifyContent: "flex-start",
+          justifyContent: "center",
           alignItems: "center",
           width: "100%",
           flexWrap: "wrap",

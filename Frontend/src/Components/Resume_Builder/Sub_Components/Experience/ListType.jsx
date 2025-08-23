@@ -1,6 +1,7 @@
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 
 import UserInputs from "../UserInputs.jsx";
+import Box from "@mui/material/Box";
 
 const ListType = () => {
   const { resumeData } = ResumeInputTemplate();
@@ -10,10 +11,18 @@ const ListType = () => {
       {resumeData.experience.map(
         (newExperienceEntry, newExperienceIndex) =>
           newExperienceEntry.style === "ListType" && (
-            <div
+            <Box
               key={newExperienceIndex}
-              id={`dv-ExperienceListCopy${newExperienceIndex + 1}`}
-              className="SubWrapper"
+              id={`ExperienceInput${newExperienceIndex + 1}List`}
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+                flexDirection: "column",
+                margin: "2rem 0rem",
+              }}
             >
               <UserInputs
                 inputType={"text"}
@@ -115,7 +124,7 @@ const ListType = () => {
                 onChangeEntry={newExperienceIndex}
                 textfieldName={"roles"}
               />
-            </div>
+            </Box>
           )
       )}
     </>
