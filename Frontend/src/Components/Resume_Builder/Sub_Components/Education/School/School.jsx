@@ -1,23 +1,14 @@
-import { useState } from "react";
 import PreviewPdf from "../../PreviewPdf.jsx";
 import ResumeInputTemplate from "../../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../../Header.jsx";
 import SchoolIcon from "@mui/icons-material/School";
 import NavigationButtons from "../../NavigationButtons.jsx";
 import UserInputs from "../../UserInputs.jsx";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 
 const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
-  const { resumeData, updateField } = ResumeInputTemplate();
-
-  const [infoDiv, setInfoDiv] = useState("");
-
-  const showOrHideInfoDiv = (currentState) => {
-    if (infoDiv === currentState) {
-      setInfoDiv(" ");
-    } else {
-      setInfoDiv(currentState);
-    }
-  };
+  const { resumeData } = ResumeInputTemplate();
 
   return (
     <>
@@ -28,9 +19,39 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         setOverlayType={setOverlayType}
         PageIcon={SchoolIcon}
       />
-      <div id="dv-MainFormAndPreview">
-        <div id="dv-MainForm">
-          <div id="dv-EducationSchoolWrapper" className="WrapperClass">
+      <Stack
+        id="ContentWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "90%",
+          flexWrap: "wrap",
+        }}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box
+          id="LeftContent"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+          width={{ xs: "90%", md: "50%" }}
+        >
+          <Box
+            id="SchoolInputs"
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
             <UserInputs
               inputType={"text"}
               inputLabel={"HSC School Name"}
@@ -138,16 +159,16 @@ const School = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
               onChangeEntry={""}
               textfieldName={""}
             />
-          </div>
+          </Box>
           <NavigationButtons
             PreviousPageName={"Diploma"}
             PreviousPageLink={`/resume-builder/education/diploma`}
             NextPageName={"Projects"}
             NextPageLink={`/resume-builder/projects`}
           />
-        </div>
+        </Box>
         <PreviewPdf />
-      </div>
+      </Stack>
     </>
   );
 };

@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useTheme } from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 import UserInputs from "../../UserInputs.jsx";
 
@@ -36,10 +37,41 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         setOverlayType={setOverlayType}
         PageIcon={SchoolIcon}
       />
-      <div id="dv-MainFormAndPreview">
-        <div id="dv-MainForm">
-          <div id="dv-EducationDiplomaWrapper" className="WrapperClass">
+      <Stack
+        id="ContentWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "90%",
+          flexWrap: "wrap",
+        }}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box
+          id="LeftContent"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+          width={{ xs: "90%", md: "50%" }}
+        >
+          <Box
+            id="InputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
             <Box
+              id="AddNewInputs"
               sx={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -65,10 +97,18 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
 
             {resumeData.education.diploma.map(
               (newDiplomaEntry, newDiplomaIndex) => (
-                <div
+                <Box
                   key={newDiplomaIndex}
-                  id={`dv-EducationDiplomaCopy${newDiplomaIndex + 1}`}
-                  className="SubWrapper"
+                  id={`DiplomaInput${newDiplomaIndex + 1}`}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    alignItems: "center",
+                    width: "100%",
+                    flexWrap: "wrap",
+                    flexDirection: "column",
+                    margin: "2rem 0rem",
+                  }}
                 >
                   <UserInputs
                     inputType={"text"}
@@ -157,19 +197,19 @@ const Diploma = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
                     onChangeEntry={newDiplomaIndex}
                     textfieldName={"additionalInfo"}
                   />
-                </div>
+                </Box>
               )
             )}
-          </div>
+          </Box>
           <NavigationButtons
             PreviousPageName={"Under Graduate"}
             PreviousPageLink={`/resume-builder/education/ug`}
             NextPageName={"School"}
             NextPageLink={`/resume-builder/education/school`}
           />
-        </div>
+        </Box>
         <PreviewPdf />
-      </div>
+      </Stack>
     </>
   );
 };

@@ -23,6 +23,7 @@ const NavigationButtons = ({
           alignItems: "center",
           width: "100%",
         }}
+        gap="1rem"
       >
         {PreviousPageName != "" && (
           <Button
