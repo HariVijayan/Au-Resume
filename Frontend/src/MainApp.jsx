@@ -94,11 +94,11 @@ function RouteWrapper() {
 
   useEffect(() => {
     const setRouteBasedElements = () => {
-      const footer = document.getElementById("dv-FooterWrapper");
+      const footer = document.getElementById("FooterWrapper");
       if (!footer) return;
 
       if (protectedRoutes.includes(location.pathname)) {
-        footer.style.display = "none";
+        footer.style.display = "flex";
       } else {
         footer.style.display = "none";
       }

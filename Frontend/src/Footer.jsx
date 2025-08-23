@@ -7,21 +7,17 @@ const Footer = () => {
   return (
     <Box
       component="footer"
-      id="dv-FooterWrapper"
+      id="FooterWrapper"
       sx={{
-        display: "none",
+        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        minHeight: "5vh",
-        maxHeight: "10vh",
-        flexShrink: "0",
-        position: "absolute",
-        bottom: "0",
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.background.default,
         padding: "1rem 0rem",
       }}
+      marginTop={{ xs: "3rem", md: "5rem" }}
       flexDirection={{ xs: "column", md: "row" }}
     >
       <Box

@@ -1132,62 +1132,70 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
                       <Box
                         sx={{
                           display: "flex",
-                          justifyContent: "space-between",
                           alignItems: "center",
                           flexWrap: "wrap",
                           gap: "1rem",
                           width: "100%",
                           margin: "2rem 0rem",
+                          flexWrap: "wrap",
                         }}
-                        flexDirection={{ xs: "column", lg: "row" }}
+                        justifyContent={{ xs: "center", sm: "space-between" }}
                       >
-                        <Button
-                          variant="contained"
-                          color="secondary"
+                        <IconButton
+                          aria-label="previous logs"
+                          sx={{ color: theme.palette.black.main }}
                           onClick={handlePrev}
                           disabled={visibleLogsStart === 0}
-                          size="large"
-                          endIcon={<KeyboardDoubleArrowLeftIcon />}
-                          loading={loadingAnim}
-                          loadingPosition="end"
-                          sx={{
-                            margin: "2rem 0rem",
-                            textTransform: "none",
-                            backgroundColor: theme.palette.black.main,
-                          }}
-                          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
                         >
-                          Previous
-                        </Button>
+                          <KeyboardDoubleArrowLeftIcon />
+                        </IconButton>
 
-                        <Typography>
-                          Showing{" "}
-                          {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
-                          {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)}{" "}
-                          out of {totalRecords} records.
-                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography>
+                            {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
+                            {Math.min(
+                              visibleLogsStart + PAGE_SIZE,
+                              totalRecords
+                            )}{" "}
+                            of
+                          </Typography>
 
-                        <Button
-                          variant="contained"
-                          color="secondary"
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography
+                              sx={{ color: "red", marginLeft: "0.5rem" }}
+                            >
+                              {totalRecords}
+                            </Typography>
+
+                            <Typography sx={{ marginLeft: "0.5rem" }}>
+                              records.
+                            </Typography>
+                          </Box>
+                        </Box>
+
+                        <IconButton
+                          aria-label="next logs"
+                          sx={{ color: theme.palette.black.main }}
                           onClick={handleNext}
                           disabled={
                             visibleLogsStart + PAGE_SIZE >= totalRecords ||
                             totalRecords === 0
                           }
-                          size="large"
-                          endIcon={<KeyboardDoubleArrowRightIcon />}
-                          loading={loadingAnim}
-                          loadingPosition="end"
-                          sx={{
-                            margin: "2rem 0rem",
-                            textTransform: "none",
-                            backgroundColor: theme.palette.black.main,
-                          }}
-                          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
                         >
-                          Next
-                        </Button>
+                          <KeyboardDoubleArrowRightIcon />
+                        </IconButton>
                       </Box>
                     </>
                   )}
