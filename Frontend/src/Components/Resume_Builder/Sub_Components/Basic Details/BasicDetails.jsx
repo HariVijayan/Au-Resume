@@ -4,6 +4,8 @@ import HeaderTemplate from "../Header.jsx";
 import BadgeIcon from "@mui/icons-material/Badge";
 import NavigationButtons from "../NavigationButtons.jsx";
 import UserInputs from "../UserInputs.jsx";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 
 const BioSummary = ({
   setLogoutClicked,
@@ -22,9 +24,39 @@ const BioSummary = ({
         PageIcon={BadgeIcon}
       />
 
-      <div id="dv-MainFormAndPreview">
-        <div id="dv-MainForm">
-          <div id="dv-BasicDetailsWrapper" className="WrapperClass">
+      <Stack
+        id="ContentWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "90%",
+          flexWrap: "wrap",
+        }}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box
+          id="LeftContent"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+          width={{ xs: "90%", md: "50%" }}
+        >
+          <Box
+            id="ResumeBuilderInputs"
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
             <UserInputs
               inputType={"text"}
               inputLabel={"Name"}
@@ -160,7 +192,7 @@ const BioSummary = ({
               onChangeEntry={""}
               textfieldName={""}
             />
-          </div>
+          </Box>
 
           <NavigationButtons
             PreviousPageName={""}
@@ -168,9 +200,9 @@ const BioSummary = ({
             NextPageName={"Experience"}
             NextPageLink={`/resume-builder/experience`}
           />
-        </div>
+        </Box>
         <PreviewPdf />
-      </div>
+      </Stack>
     </>
   );
 };

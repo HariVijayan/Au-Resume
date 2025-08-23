@@ -12,6 +12,7 @@ createRoot(document.getElementById("dv-MainWrapper")).render(
     <StrictMode>
       <>
         <Container
+          id="PageWrapper"
           sx={{
             display: "flex",
             flexDirection: "column",

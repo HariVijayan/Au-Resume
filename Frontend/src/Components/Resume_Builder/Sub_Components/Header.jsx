@@ -26,6 +26,7 @@ const ResumePagesHeader = ({
   return (
     <>
       <Box
+        id="HeaderWrapper"
         sx={{
           display: "flex",
           justifyContent: "space-between",

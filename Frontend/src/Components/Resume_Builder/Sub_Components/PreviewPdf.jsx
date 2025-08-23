@@ -82,15 +82,16 @@ const PreviewPdf = () => {
         </Alert>
       </Snackbar>
       <Stack
+        id="RightContent"
         sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          width: "40%",
           margin: "2rem 0rem",
           minHeight: "80vh",
         }}
+        width={{ xs: "90%", md: "40%" }}
       >
         {isPreviewClicked && (
           <Box
