@@ -7,6 +7,8 @@ import HeaderTemplate from "../Header.jsx";
 import SurfingIcon from "@mui/icons-material/Surfing";
 import NavigationButtons from "../NavigationButtons.jsx";
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import NotesIcon from "@mui/icons-material/Notes";
@@ -55,15 +57,47 @@ const Skills = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         setOverlayType={setOverlayType}
         PageIcon={SurfingIcon}
       />
-      <div id="dv-MainFormAndPreview">
-        <div id="dv-MainForm">
-          <div id="dv-SkillsWrapper" className="WrapperClass">
+      <Stack
+        id="ContentWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "90%",
+          flexWrap: "wrap",
+        }}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box
+          id="LeftContent"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+          width={{ xs: "90%", md: "50%" }}
+        >
+          <Box
+            id="InputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
             <Box
+              id="InputTypeOptions"
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 width: "100%",
+                gap: "1rem",
               }}
             >
               <Button
@@ -98,20 +132,22 @@ const Skills = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
             </Box>
 
             {skillType === "Default" && (
-              <p>Please select a skill type to begin.</p>
+              <Typography sx={{ margin: "15rem 1rem", textAlign: "center" }}>
+                Please select an skill type to begin.
+              </Typography>
             )}
             {skillType === "ListType" && <ListType />}
             {skillType === "ParaType" && <ParaType />}
-          </div>
+          </Box>
           <NavigationButtons
             PreviousPageName={"Projects"}
             PreviousPageLink={`/resume-builder/projects`}
             NextPageName={"Certifications"}
             NextPageLink={`/resume-builder/certifications`}
           />
-        </div>
+        </Box>
         <PreviewPdf />
-      </div>
+      </Stack>
     </>
   );
 };

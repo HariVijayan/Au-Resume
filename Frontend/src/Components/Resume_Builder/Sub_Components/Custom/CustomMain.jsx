@@ -6,11 +6,13 @@ import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import HeaderTemplate from "../Header.jsx";
 import NavigationButtons from "../NavigationButtons.jsx";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import NotesIcon from "@mui/icons-material/Notes";
 import { useTheme } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const CustomDiv = ({
   setSubmitClicked,
@@ -66,15 +68,47 @@ const CustomDiv = ({
         setOverlayType={setOverlayType}
         PageIcon={AddTaskIcon}
       />
-      <div id="dv-MainFormAndPreview">
-        <div id="dv-MainForm">
-          <div id="dv-CustomInputWrapper" className="WrapperClass">
+      <Stack
+        id="ContentWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "90%",
+          flexWrap: "wrap",
+        }}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box
+          id="LeftContent"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+          width={{ xs: "90%", md: "50%" }}
+        >
+          <Box
+            id="InputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
             <Box
+              id="InputTypeOptions"
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 width: "100%",
+                gap: "1rem",
               }}
             >
               <Button
@@ -109,13 +143,47 @@ const CustomDiv = ({
             </Box>
 
             {!hasChosenAStyle && (
-              <p>Please select a custom input type to begin.</p>
+              <Typography sx={{ margin: "15rem 1rem", textAlign: "center" }}>
+                Please select an custom input type to begin.
+              </Typography>
             )}
 
-            {renderedStyles.includes("ListType") && <ListType />}
+            {hasChosenAStyle && (
+              <>
+                {renderedStyles.includes("ListType") && (
+                  <>
+                    <Typography
+                      sx={{
+                        margin: "2rem 1rem",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: theme.palette.primary.main,
+                      }}
+                    >
+                      --- List Type ---
+                    </Typography>
+                    <ListType />
+                  </>
+                )}
 
-            {renderedStyles.includes("ParaType") && <ParaType />}
-          </div>
+                {renderedStyles.includes("ParaType") && (
+                  <>
+                    <Typography
+                      sx={{
+                        margin: "2rem 1rem",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: theme.palette.primary.main,
+                      }}
+                    >
+                      --- Para Type ---
+                    </Typography>
+                    <ParaType />
+                  </>
+                )}
+              </>
+            )}
+          </Box>
           <NavigationButtons
             PreviousPageName={"Languages"}
             PreviousPageLink={`/resume-builder/languages-known`}
@@ -123,9 +191,9 @@ const CustomDiv = ({
             NextPageLink={""}
             setSubmitClicked={setSubmitClicked}
           />
-        </div>
+        </Box>
         <PreviewPdf />
-      </div>
+      </Stack>
     </>
   );
 };

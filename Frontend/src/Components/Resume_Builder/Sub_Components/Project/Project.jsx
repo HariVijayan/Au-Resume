@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useTheme } from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 import UserInputs from "../UserInputs.jsx";
 
@@ -36,10 +37,41 @@ const Project = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         setOverlayType={setOverlayType}
         PageIcon={BuildIcon}
       />
-      <div id="dv-MainFormAndPreview">
-        <div id="dv-MainForm">
-          <div id="dv-ProjectsWrapper" className="WrapperClass">
+      <Stack
+        id="ContentWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "90%",
+          flexWrap: "wrap",
+        }}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box
+          id="LeftContent"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+          width={{ xs: "90%", md: "50%" }}
+        >
+          <Box
+            id="InputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
             <Box
+              id="AddNewInputs"
               sx={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -64,10 +96,18 @@ const Project = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
             </Box>
 
             {resumeData.projects.map((newProjectEntry, newProjectIndex) => (
-              <div
+              <Box
                 key={newProjectIndex}
-                id={`dv-ProjectCopy${newProjectIndex + 1}`}
-                className="SubWrapper"
+                id={`ProjectInput${newProjectIndex + 1}`}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  width: "100%",
+                  flexWrap: "wrap",
+                  flexDirection: "column",
+                  margin: "2rem 0rem",
+                }}
               >
                 <UserInputs
                   inputType={"text"}
@@ -141,18 +181,18 @@ const Project = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
                   onChangeEntry={newProjectIndex}
                   textfieldName={"techStack"}
                 />
-              </div>
+              </Box>
             ))}
-          </div>
+          </Box>
           <NavigationButtons
             PreviousPageName={"School"}
             PreviousPageLink={`/resume-builder/education/school`}
             NextPageName={"Skills"}
             NextPageLink={`/resume-builder/skills`}
           />
-        </div>
+        </Box>
         <PreviewPdf />
-      </div>
+      </Stack>
     </>
   );
 };

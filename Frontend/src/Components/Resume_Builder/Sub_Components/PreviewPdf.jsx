@@ -99,7 +99,7 @@ const PreviewPdf = () => {
             src={pdfUrl}
             width="100%"
             title="PDF Viewer"
-            sx={{ height: "100", minHeight: "500px" }}
+            sx={{ minHeight: "600px" }}
           ></Box>
         )}
 

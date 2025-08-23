@@ -6,11 +6,13 @@ import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import HeaderTemplate from "../Header.jsx";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import NavigationButtons from "../NavigationButtons.jsx";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import NotesIcon from "@mui/icons-material/Notes";
 import { useTheme } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 const Cerifications = ({
   setLogoutClicked,
@@ -59,15 +61,47 @@ const Cerifications = ({
         setOverlayType={setOverlayType}
         PageIcon={HowToRegIcon}
       />
-      <div id="dv-MainFormAndPreview">
-        <div id="dv-MainForm">
-          <div id="dv-CertificationsWrapper" className="WrapperClass">
+      <Stack
+        id="ContentWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "90%",
+          flexWrap: "wrap",
+        }}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box
+          id="LeftContent"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+          width={{ xs: "90%", md: "50%" }}
+        >
+          <Box
+            id="InputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
             <Box
+              id="InputTypeOptions"
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 width: "100%",
+                gap: "1rem",
               }}
             >
               <Button
@@ -102,11 +136,13 @@ const Cerifications = ({
             </Box>
 
             {certificationType === "Default" && (
-              <p>Please select a certification type to begin.</p>
+              <Typography sx={{ margin: "15rem 1rem", textAlign: "center" }}>
+                Please select an certification type to begin.
+              </Typography>
             )}
             {certificationType === "ListType" && <ListType />}
             {certificationType === "ParaType" && <ParaType />}
-          </div>
+          </Box>
 
           <NavigationButtons
             PreviousPageName={"Skills"}
@@ -114,9 +150,9 @@ const Cerifications = ({
             NextPageName={"Languages"}
             NextPageLink={`/resume-builder/languages-known`}
           />
-        </div>
+        </Box>
         <PreviewPdf />
-      </div>
+      </Stack>
     </>
   );
 };

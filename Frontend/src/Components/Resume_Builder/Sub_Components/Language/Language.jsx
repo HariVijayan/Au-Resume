@@ -5,6 +5,8 @@ import HeaderTemplate from "../Header.jsx";
 import LanguageIcon from "@mui/icons-material/Language";
 import NavigationButtons from "../NavigationButtons.jsx";
 import UserInputs from "../UserInputs.jsx";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 
 const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const { resumeData } = ResumeInputTemplate();
@@ -22,10 +24,51 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
         setOverlayType={setOverlayType}
         PageIcon={LanguageIcon}
       />
-      <div id="dv-MainFormAndPreview">
-        <div id="dv-MainForm">
-          <div id="dv-LanguagesWrapper" className="WrapperClass">
-            <div className="SubWrapper">
+      <Stack
+        id="ContentWrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "90%",
+          flexWrap: "wrap",
+        }}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box
+          id="LeftContent"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+          width={{ xs: "90%", md: "50%" }}
+        >
+          <Box
+            id="InputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="LanguageInput"
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+                flexDirection: "column",
+                margin: "15rem 0rem",
+              }}
+            >
               <UserInputs
                 inputType={"text"}
                 inputLabel={"Languages Known"}
@@ -38,17 +81,17 @@ const Language = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
                 onChangeEntry={setLanguageValue}
                 textfieldName={""}
               />
-            </div>
-          </div>
+            </Box>
+          </Box>
           <NavigationButtons
             PreviousPageName={"Certifications"}
             PreviousPageLink={`/resume-builder/certifications`}
             NextPageName={"Custom Input"}
             NextPageLink={`/resume-builder/custom-input`}
           />
-        </div>
+        </Box>
         <PreviewPdf />
-      </div>
+      </Stack>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import UserInputs from "../UserInputs.jsx";
+import Box from "@mui/material/Box";
 
 const ListType = () => {
   const { resumeData } = ResumeInputTemplate();
@@ -10,7 +11,18 @@ const ListType = () => {
   );
 
   return (
-    <div id="dv-CertificationListType" className="SubWrapper">
+    <Box
+      id="CertificationList"
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        width: "100%",
+        flexWrap: "wrap",
+        flexDirection: "column",
+        margin: "15rem 0rem",
+      }}
+    >
       <UserInputs
         inputType={"text"}
         inputLabel={"Certifications List"}
@@ -25,7 +37,7 @@ const ListType = () => {
         onChangeEntry={setCertificationSetValue}
         textfieldName={""}
       />
-    </div>
+    </Box>
   );
 };
 

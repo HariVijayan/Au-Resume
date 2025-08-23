@@ -110,6 +110,7 @@ const Experience = ({
                 justifyContent: "space-between",
                 alignItems: "center",
                 width: "100%",
+                gap: "1rem",
               }}
             >
               <Button

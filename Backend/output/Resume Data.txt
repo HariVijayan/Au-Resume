@@ -1,1 +1,16 @@
-null
+{
+  "customInput": [
+    {
+      "style": "ListType"
+    },
+    {
+      "style": "ListType"
+    },
+    {
+      "style": "ParaType"
+    },
+    {
+      "style": "ParaType"
+    }
+  ]
+}

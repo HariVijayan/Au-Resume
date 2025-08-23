@@ -1,5 +1,6 @@
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import UserInputs from "../UserInputs.jsx";
+import Box from "@mui/material/Box";
 
 const ListType = () => {
   const { resumeData } = ResumeInputTemplate();
@@ -9,10 +10,18 @@ const ListType = () => {
       {resumeData.customInput.map(
         (customInputEntry, customInputIndex) =>
           customInputEntry.style === "ListType" && (
-            <div
+            <Box
               key={customInputIndex}
-              id={`dv-CustomListCopy${customInputIndex + 1}`}
-              className="SubWrapper"
+              id={`CustomInput${customInputIndex + 1}List`}
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+                flexDirection: "column",
+                margin: "2rem 0rem",
+              }}
             >
               <UserInputs
                 inputType={"text"}
@@ -41,7 +50,7 @@ const ListType = () => {
                 onChangeEntry={customInputIndex}
                 textfieldName={"listValues"}
               />
-            </div>
+            </Box>
           )
       )}
     </>

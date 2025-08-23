@@ -6,7 +6,6 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Table from "@mui/material/Table";
@@ -350,253 +349,108 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <Stack
-        id="PageWrapper"
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          minHeight: "100vh",
-          flexDirection: "column",
-          margin: "2rem 0rem",
-          width: "100%",
-        }}
-      >
-        {loading && (
-          <Typography textAlign={"center"}>Loading please wait...</Typography>
-        )}
-        {!loading && (
-          <>
-            <Box
-              id="HeaderWrapper"
+      {loading && (
+        <Typography textAlign={"center"}>Loading please wait...</Typography>
+      )}
+      {!loading && (
+        <>
+          <Box
+            id="HeaderWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "90%",
+              margin: "2rem 0rem",
+              gap: "1rem",
+            }}
+            flexDirection={{ xs: "column", sm: "row" }}
+          >
+            <Typography
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 alignItems: "center",
-                width: "90%",
-                margin: "2rem 0rem",
-                gap: "1rem",
+                cursor: "pointer",
+                ":hover": { color: theme.palette.primary.main },
               }}
-              flexDirection={{ xs: "column", sm: "row" }}
+              variant="h5"
+              onClick={() => navigate(-1)}
             >
-              <Typography
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  ":hover": { color: theme.palette.primary.main },
-                }}
-                variant="h5"
-                onClick={() => navigate(-1)}
-              >
-                <ArrowBackIcon sx={{ fill: theme.palette.primary.main }} />
-                Resume Builder
-              </Typography>
+              <ArrowBackIcon sx={{ fill: theme.palette.primary.main }} />
+              Resume Builder
+            </Typography>
 
-              <Typography
-                sx={{
-                  color: theme.palette.secondary.main,
-                }}
-                variant="h4"
-              >
-                User Profile
-              </Typography>
+            <Typography
+              sx={{
+                color: theme.palette.secondary.main,
+              }}
+              variant="h4"
+            >
+              User Profile
+            </Typography>
 
-              <IconButton
-                aria-label="logout user"
-                color="error"
-                onClick={logoutUser}
-              >
-                <LogoutIcon />
-              </IconButton>
-            </Box>
+            <IconButton
+              aria-label="logout user"
+              color="error"
+              onClick={logoutUser}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Box>
+          <Box
+            id="ContentWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "90%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
             <Box
-              id="ContentWrapper"
+              id="UserDetailsWrapper"
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                width: "90%",
-                margin: "2rem 0rem",
+                width: "100%",
                 flexDirection: "column",
+                margin: "2rem 0rem",
               }}
             >
               <Box
-                id="UserDetailsWrapper"
+                id="DualUserDetails"
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "space-around",
                   alignItems: "center",
                   width: "100%",
-                  flexDirection: "column",
-                  margin: "2rem 0rem",
                 }}
+                flexDirection={{ xs: "column", md: "row" }}
               >
                 <Box
-                  id="DualUserDetails"
+                  id="UserDetails"
                   sx={{
                     display: "flex",
-                    justifyContent: "space-around",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    width: "100%",
+                    margin: "2rem 0em",
+                    borderBottom: "2px solid black",
+                    flexWrap: "wrap",
                   }}
-                  flexDirection={{ xs: "column", md: "row" }}
+                  width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
                 >
-                  <Box
-                    id="UserDetails"
+                  <Typography
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      margin: "2rem 0em",
-                      borderBottom: "2px solid black",
-                      flexWrap: "wrap",
+                      color: theme.palette.primary.main,
+                      fontWeight: "bold",
                     }}
-                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
                   >
-                    <Typography
-                      sx={{
-                        color: theme.palette.primary.main,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Email
-                    </Typography>
-                    <Typography>{userEmail}</Typography>
-                  </Box>
-                  <Box
-                    id="UserDetails"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      margin: "2rem 0em",
-                      borderBottom: "2px solid black",
-                      flexWrap: "wrap",
-                    }}
-                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
-                  >
-                    <Typography
-                      sx={{
-                        color: theme.palette.primary.main,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Register Number
-                    </Typography>
-                    <Typography>{userRegNo}</Typography>
-                  </Box>
-                </Box>
-                <Box
-                  id="DualUserDetails"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    width: "100%",
-                  }}
-                  flexDirection={{ xs: "column", md: "row" }}
-                >
-                  <Box
-                    id="UserDetails"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      margin: "2rem 0em",
-                      borderBottom: "2px solid black",
-                      flexWrap: "wrap",
-                    }}
-                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
-                  >
-                    <Typography
-                      sx={{
-                        color: theme.palette.primary.main,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Department
-                    </Typography>
-                    <Typography>{userDept}</Typography>
-                  </Box>
-                  <Box
-                    id="UserDetails"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      margin: "2rem 0em",
-                      borderBottom: "2px solid black",
-                      flexWrap: "wrap",
-                    }}
-                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
-                  >
-                    <Typography
-                      sx={{
-                        color: theme.palette.primary.main,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Course Type
-                    </Typography>
-                    <Typography>{userCourseType}</Typography>
-                  </Box>
-                </Box>
-                <Box
-                  id="DualUserDetails"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    width: "100%",
-                  }}
-                  flexDirection={{ xs: "column", md: "row" }}
-                >
-                  <Box
-                    id="UserDetails"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      margin: "2rem 0em",
-                      borderBottom: "2px solid black",
-                      flexWrap: "wrap",
-                    }}
-                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
-                  >
-                    <Typography
-                      sx={{
-                        color: theme.palette.primary.main,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Programme
-                    </Typography>
-                    <Typography>{userProgramme}</Typography>
-                  </Box>
-                  <Box
-                    id="UserDetails"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      margin: "2rem 0em",
-                      borderBottom: "2px solid black",
-                      flexWrap: "wrap",
-                    }}
-                    width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
-                  >
-                    <Typography
-                      sx={{
-                        color: theme.palette.primary.main,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Branch
-                    </Typography>
-                    <Typography>{userBranch}</Typography>
-                  </Box>
+                    Email
+                  </Typography>
+                  <Typography>{userEmail}</Typography>
                 </Box>
                 <Box
                   id="UserDetails"
@@ -616,278 +470,667 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    Account Created
+                    Register Number
                   </Typography>
-                  <Typography>{accountCreated}</Typography>
+                  <Typography>{userRegNo}</Typography>
                 </Box>
               </Box>
-
               <Box
-                id="UserActionButtonsWrapper"
+                id="DualUserDetails"
                 sx={{
                   display: "flex",
                   justifyContent: "space-around",
                   alignItems: "center",
                   width: "100%",
+                }}
+                flexDirection={{ xs: "column", md: "row" }}
+              >
+                <Box
+                  id="UserDetails"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    margin: "2rem 0em",
+                    borderBottom: "2px solid black",
+                    flexWrap: "wrap",
+                  }}
+                  width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                >
+                  <Typography
+                    sx={{
+                      color: theme.palette.primary.main,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Department
+                  </Typography>
+                  <Typography>{userDept}</Typography>
+                </Box>
+                <Box
+                  id="UserDetails"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    margin: "2rem 0em",
+                    borderBottom: "2px solid black",
+                    flexWrap: "wrap",
+                  }}
+                  width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                >
+                  <Typography
+                    sx={{
+                      color: theme.palette.primary.main,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Course Type
+                  </Typography>
+                  <Typography>{userCourseType}</Typography>
+                </Box>
+              </Box>
+              <Box
+                id="DualUserDetails"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+                flexDirection={{ xs: "column", md: "row" }}
+              >
+                <Box
+                  id="UserDetails"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    margin: "2rem 0em",
+                    borderBottom: "2px solid black",
+                    flexWrap: "wrap",
+                  }}
+                  width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                >
+                  <Typography
+                    sx={{
+                      color: theme.palette.primary.main,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Programme
+                  </Typography>
+                  <Typography>{userProgramme}</Typography>
+                </Box>
+                <Box
+                  id="UserDetails"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    margin: "2rem 0em",
+                    borderBottom: "2px solid black",
+                    flexWrap: "wrap",
+                  }}
+                  width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+                >
+                  <Typography
+                    sx={{
+                      color: theme.palette.primary.main,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Branch
+                  </Typography>
+                  <Typography>{userBranch}</Typography>
+                </Box>
+              </Box>
+              <Box
+                id="UserDetails"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  margin: "2rem 0em",
+                  borderBottom: "2px solid black",
+                  flexWrap: "wrap",
+                }}
+                width={{ xs: "100%", sm: "70%", md: "40%", lg: "30%" }}
+              >
+                <Typography
+                  sx={{
+                    color: theme.palette.primary.main,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Account Created
+                </Typography>
+                <Typography>{accountCreated}</Typography>
+              </Box>
+            </Box>
+
+            <Box
+              id="UserActionButtonsWrapper"
+              sx={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+                gap: "1rem",
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={() => generateOtp("GetLogs")}
+                size="large"
+                disabled={
+                  requestType === "PasswordReset" ||
+                  requestType === "EncryptionKeyReset"
+                }
+                endIcon={<TableRowsIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Show Logs
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setMainContent("DisclaimerPassword")}
+                size="large"
+                disabled={
+                  requestType === "GetLogs" ||
+                  requestType === "EncryptionKeyReset"
+                }
+                endIcon={<PasswordIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Reset Password
+              </Button>
+
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setMainContent("DisclaimerEncryption")}
+                size="large"
+                disabled={
+                  requestType === "GetLogs" || requestType === "PasswordReset"
+                }
+                endIcon={<KeyIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{
+                  margin: "2rem 0rem",
+                  textTransform: "none",
+                  backgroundColor: theme.palette.brown.main,
+                }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Reset Encryption Key
+              </Button>
+            </Box>
+
+            {!loading && mainContent === "DisclaimerPassword" && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                   flexWrap: "wrap",
                   gap: "1rem",
+                  flexDirection: "column",
+                  margin: "2rem 0rem",
                 }}
+                width={{ xs: "100%", md: "50%", lg: "40%" }}
               >
-                <Button
-                  variant="contained"
-                  onClick={() => generateOtp("GetLogs")}
-                  size="large"
-                  disabled={
-                    requestType === "PasswordReset" ||
-                    requestType === "EncryptionKeyReset"
-                  }
-                  endIcon={<TableRowsIcon />}
-                  loading={loadingAnim}
-                  loadingPosition="end"
-                  sx={{ margin: "2rem 0rem", textTransform: "none" }}
-                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
-                >
-                  Show Logs
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => setMainContent("DisclaimerPassword")}
-                  size="large"
-                  disabled={
-                    requestType === "GetLogs" ||
-                    requestType === "EncryptionKeyReset"
-                  }
-                  endIcon={<PasswordIcon />}
-                  loading={loadingAnim}
-                  loadingPosition="end"
-                  sx={{ margin: "2rem 0rem", textTransform: "none" }}
-                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
-                >
-                  Reset Password
-                </Button>
+                <Typography sx={{ textAlign: "center" }}>
+                  Resetting your password will also remove your previously saved
+                  resume details and will close this current active session. You
+                  need to login again.
+                </Typography>
+
+                <TextField
+                  required
+                  variant="outlined"
+                  label="Password"
+                  type={showPasswordIcon ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label={
+                              showPasswordIcon
+                                ? "hide the password"
+                                : "display the password"
+                            }
+                            onClick={showPasswordInput}
+                          >
+                            {showPasswordIcon ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                />
+
+                <TextField
+                  required
+                  variant="outlined"
+                  label="Confirm Password"
+                  type={showConfirmPasswordIcon ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label={
+                              showConfirmPasswordIcon
+                                ? "hide the password"
+                                : "display the password"
+                            }
+                            onClick={showConfirmPasswordInput}
+                          >
+                            {showConfirmPasswordIcon ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                />
 
                 <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => setMainContent("DisclaimerEncryption")}
+                  variant="outlined"
+                  onClick={() => generateOtp("PasswordReset")}
                   size="large"
-                  disabled={
-                    requestType === "GetLogs" || requestType === "PasswordReset"
-                  }
-                  endIcon={<KeyIcon />}
+                  endIcon={<CheckIcon />}
                   loading={loadingAnim}
                   loadingPosition="end"
                   sx={{
                     margin: "2rem 0rem",
                     textTransform: "none",
-                    backgroundColor: theme.palette.brown.main,
                   }}
                   padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
                 >
-                  Reset Encryption Key
+                  Continue
                 </Button>
               </Box>
+            )}
+            {!loading && mainContent === "DisclaimerEncryption" && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                  flexDirection: "column",
+                  margin: "2rem 0rem",
+                }}
+                width={{ xs: "100%", md: "50%", lg: "40%" }}
+              >
+                <Typography sx={{ textAlign: "center" }}>
+                  Resetting your encryption key will also remove your previously
+                  saved resume details. You will need to re-enter your resume
+                  details for all fields from scratch.
+                </Typography>
+                <Button
+                  variant="outlined"
+                  onClick={() => generateOtp("EncryptionKeyReset")}
+                  size="large"
+                  endIcon={<CheckIcon />}
+                  loading={loadingAnim}
+                  loadingPosition="end"
+                  sx={{
+                    margin: "2rem 0rem",
+                    textTransform: "none",
+                  }}
+                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                >
+                  Continue
+                </Button>
+              </Box>
+            )}
+            {!loading && mainContent === "ShowOtp" && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                  flexDirection: "column",
+                  margin: "2rem 0rem",
+                }}
+                width={{ xs: "100%", md: "50%", lg: "40%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-otp"
+                  label="Otp"
+                  type="text"
+                  value={otpInput}
+                  onChange={(e) => setOtpInput(e.target.value)}
+                />
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={implementUserAction}
+                  disabled={!otpInput || !requestType}
+                  size="large"
+                  endIcon={<DoneAllIcon />}
+                  loading={loadingAnim}
+                  loadingPosition="end"
+                  sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                >
+                  Verify Otp
+                </Button>
+              </Box>
+            )}
 
-              {!loading && mainContent === "DisclaimerPassword" && (
+            {!loading && mainContent === "ShowLogs" && (
+              <>
                 <Box
+                  id="LogActionsWrapper"
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: "1rem",
+                    alignItems: "flex-end",
+                    width: "100%",
                     flexDirection: "column",
                     margin: "2rem 0rem",
                   }}
-                  width={{ xs: "100%", md: "50%", lg: "40%" }}
                 >
-                  <Typography sx={{ textAlign: "center" }}>
-                    Resetting your password will also remove your previously
-                    saved resume details and will close this current active
-                    session. You need to login again.
-                  </Typography>
-
-                  <TextField
-                    required
-                    variant="outlined"
-                    label="Password"
-                    type={showPasswordIcon ? "text" : "password"}
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    slotProps={{
-                      input: {
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label={
-                                showPasswordIcon
-                                  ? "hide the password"
-                                  : "display the password"
-                              }
-                              onClick={showPasswordInput}
-                            >
-                              {showPasswordIcon ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      },
-                    }}
-                    sx={{ width: "80%", margin: "2rem 0rem" }}
-                  />
-
-                  <TextField
-                    required
-                    variant="outlined"
-                    label="Confirm Password"
-                    type={showConfirmPasswordIcon ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    slotProps={{
-                      input: {
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label={
-                                showConfirmPasswordIcon
-                                  ? "hide the password"
-                                  : "display the password"
-                              }
-                              onClick={showConfirmPasswordInput}
-                            >
-                              {showConfirmPasswordIcon ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      },
-                    }}
-                    sx={{ width: "80%", margin: "2rem 0rem" }}
-                  />
-
-                  <Button
-                    variant="outlined"
-                    onClick={() => generateOtp("PasswordReset")}
-                    size="large"
-                    endIcon={<CheckIcon />}
-                    loading={loadingAnim}
-                    loadingPosition="end"
-                    sx={{
-                      margin: "2rem 0rem",
-                      textTransform: "none",
-                    }}
-                    padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
-                  >
-                    Continue
-                  </Button>
-                </Box>
-              )}
-              {!loading && mainContent === "DisclaimerEncryption" && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: "1rem",
-                    flexDirection: "column",
-                    margin: "2rem 0rem",
-                  }}
-                  width={{ xs: "100%", md: "50%", lg: "40%" }}
-                >
-                  <Typography sx={{ textAlign: "center" }}>
-                    Resetting your encryption key will also remove your
-                    previously saved resume details. You will need to re-enter
-                    your resume details for all fields from scratch.
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    onClick={() => generateOtp("EncryptionKeyReset")}
-                    size="large"
-                    endIcon={<CheckIcon />}
-                    loading={loadingAnim}
-                    loadingPosition="end"
-                    sx={{
-                      margin: "2rem 0rem",
-                      textTransform: "none",
-                    }}
-                    padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
-                  >
-                    Continue
-                  </Button>
-                </Box>
-              )}
-              {!loading && mainContent === "ShowOtp" && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: "1rem",
-                    flexDirection: "column",
-                    margin: "2rem 0rem",
-                  }}
-                  width={{ xs: "100%", md: "50%", lg: "40%" }}
-                >
-                  <TextField
-                    sx={{ width: "80%", margin: "2rem 0rem" }}
-                    required
-                    id="inp-otp"
-                    label="Otp"
-                    type="text"
-                    value={otpInput}
-                    onChange={(e) => setOtpInput(e.target.value)}
-                  />
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={implementUserAction}
-                    disabled={!otpInput || !requestType}
-                    size="large"
-                    endIcon={<DoneAllIcon />}
-                    loading={loadingAnim}
-                    loadingPosition="end"
-                    sx={{ margin: "2rem 0rem", textTransform: "none" }}
-                    padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
-                  >
-                    Verify Otp
-                  </Button>
-                </Box>
-              )}
-
-              {!loading && mainContent === "ShowLogs" && (
-                <>
                   <Box
-                    id="LogActionsWrapper"
+                    id="LogActionsHeading"
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
-                      alignItems: "flex-end",
+                      alignItems: "center",
                       width: "100%",
-                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography sx={{ fontWeight: "bold" }}>
+                      User's Logs
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography>Total records currently:</Typography>
+                      <Typography sx={{ color: "red", marginLeft: "1rem" }}>
+                        {totalRecords}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      margin: "2rem 0rem",
+                    }}
+                    width={{ xs: "100%", md: "50%", lg: "40%" }}
+                  >
+                    <TextField
+                      sx={{ width: "80%", margin: "2rem 0rem" }}
+                      required
+                      id="se-sortby"
+                      select
+                      label="Sort By"
+                      defaultValue="DateNewest"
+                      value={sortBy}
+                      onChange={(e) => {
+                        setSortBy(e.target.value);
+                        setVisibleLogsStart(0);
+                      }}
+                    >
+                      <MenuItem value={"DateNewest"}>
+                        Date: Newest First
+                      </MenuItem>
+                      <MenuItem value={"DateOldest"}>
+                        Date: Oldest First
+                      </MenuItem>
+                    </TextField>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      width: "100%",
                       margin: "2rem 0rem",
                     }}
                   >
+                    <Button
+                      variant="outlined"
+                      onClick={toggleFilters}
+                      size="large"
+                      endIcon={showFilters ? <VisibilityOff /> : <Visibility />}
+                      sx={{
+                        margin: "2rem 0rem",
+                        textTransform: "none",
+                      }}
+                      padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                    >
+                      {showFilters ? "Hide Filters" : "Show Filters"}
+                    </Button>
+                  </Box>
+
+                  {showFilters && (
+                    <>
+                      {" "}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "100%",
+                          margin: "2rem 0rem",
+                          flexWrap: "wrap",
+                        }}
+                        justifyContent={{ xs: "center", md: "flex-start" }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flexWrap: "wrap",
+                          }}
+                          width={{ xs: "100%", md: "50%", lg: "40%" }}
+                        >
+                          <TextField
+                            sx={{ width: "80%", margin: "2rem 0rem" }}
+                            required
+                            id="inp-createdBy"
+                            label="Created By"
+                            value={createdByFilter}
+                            onChange={(e) => setCreatedByFilter(e.target.value)}
+                          />
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flexWrap: "wrap",
+                          }}
+                          width={{ xs: "100%", md: "50%", lg: "40%" }}
+                        >
+                          <TextField
+                            sx={{ width: "80%", margin: "2rem 0rem" }}
+                            required
+                            id="inp-log"
+                            label="Log Value"
+                            value={logFilter}
+                            onChange={(e) => setLogFilter(e.target.value)}
+                          />
+                        </Box>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={applyFilterAndSort}
+                          size="large"
+                          endIcon={<FilterListAltIcon />}
+                          sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                          padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                        >
+                          Filter Logs
+                        </Button>
+                      </Box>
+                    </>
+                  )}
+                </Box>
+
+                {!loading && !visibleLogs.length && logTypeRequested && (
+                  <Typography sx={{ margin: "2rem 0rem", textAlign: "center" }}>
+                    No logs found for this selection.
+                  </Typography>
+                )}
+
+                {!loading && visibleLogs.length > 0 && (
+                  <>
+                    <TableContainer
+                      component={Paper}
+                      sx={{ width: "100%", overflowX: "auto" }}
+                    >
+                      <Table
+                        stickyHeader
+                        sx={{ minWidth: 650 }}
+                        aria-label="logs table"
+                      >
+                        <TableHead>
+                          <TableRow>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Linked Account
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Created By
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Created At
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Log
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                          {visibleLogs.map((log) => (
+                            <TableRow
+                              key={`${log.createdAt}-${log.logDetails}`}
+                              hover
+                            >
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  border: `1px solid ${theme.palette.primary.main}`,
+                                }}
+                              >
+                                {log.logLinkedAccount}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  border: `1px solid ${theme.palette.primary.main}`,
+                                }}
+                              >
+                                {log.logAddedBy}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  border: `1px solid ${theme.palette.primary.main}`,
+                                }}
+                              >
+                                {log.createdAtFormatted}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  border: `1px solid ${theme.palette.primary.main}`,
+                                }}
+                              >
+                                {log.logDetails}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                     <Box
-                      id="LogActionsHeading"
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
                         alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: "1rem",
                         width: "100%",
+                        margin: "2rem 0rem",
+                        flexWrap: "wrap",
                       }}
+                      justifyContent={{ xs: "center", sm: "space-between" }}
                     >
-                      <Typography sx={{ fontWeight: "bold" }}>
-                        User's Logs
-                      </Typography>
+                      <IconButton
+                        aria-label="previous logs"
+                        sx={{ color: theme.palette.black.main }}
+                        onClick={handlePrev}
+                        disabled={visibleLogsStart === 0}
+                      >
+                        <KeyboardDoubleArrowLeftIcon />
+                      </IconButton>
+
                       <Box
                         sx={{
                           display: "flex",
@@ -895,260 +1138,11 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
                           alignItems: "center",
                         }}
                       >
-                        <Typography>Total records currently:</Typography>
-                        <Typography sx={{ color: "red", marginLeft: "1rem" }}>
-                          {totalRecords}
+                        <Typography>
+                          {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
+                          {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)}{" "}
+                          of
                         </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        margin: "2rem 0rem",
-                      }}
-                      width={{ xs: "100%", md: "50%", lg: "40%" }}
-                    >
-                      <TextField
-                        sx={{ width: "80%", margin: "2rem 0rem" }}
-                        required
-                        id="se-sortby"
-                        select
-                        label="Sort By"
-                        defaultValue="DateNewest"
-                        value={sortBy}
-                        onChange={(e) => {
-                          setSortBy(e.target.value);
-                          setVisibleLogsStart(0);
-                        }}
-                      >
-                        <MenuItem value={"DateNewest"}>
-                          Date: Newest First
-                        </MenuItem>
-                        <MenuItem value={"DateOldest"}>
-                          Date: Oldest First
-                        </MenuItem>
-                      </TextField>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        width: "100%",
-                        margin: "2rem 0rem",
-                      }}
-                    >
-                      <Button
-                        variant="outlined"
-                        onClick={toggleFilters}
-                        size="large"
-                        endIcon={
-                          showFilters ? <VisibilityOff /> : <Visibility />
-                        }
-                        sx={{
-                          margin: "2rem 0rem",
-                          textTransform: "none",
-                        }}
-                        padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
-                      >
-                        {showFilters ? "Hide Filters" : "Show Filters"}
-                      </Button>
-                    </Box>
-
-                    {showFilters && (
-                      <>
-                        {" "}
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            width: "100%",
-                            margin: "2rem 0rem",
-                            flexWrap: "wrap",
-                          }}
-                          justifyContent={{ xs: "center", md: "flex-start" }}
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              flexWrap: "wrap",
-                            }}
-                            width={{ xs: "100%", md: "50%", lg: "40%" }}
-                          >
-                            <TextField
-                              sx={{ width: "80%", margin: "2rem 0rem" }}
-                              required
-                              id="inp-createdBy"
-                              label="Created By"
-                              value={createdByFilter}
-                              onChange={(e) =>
-                                setCreatedByFilter(e.target.value)
-                              }
-                            />
-                          </Box>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              flexWrap: "wrap",
-                            }}
-                            width={{ xs: "100%", md: "50%", lg: "40%" }}
-                          >
-                            <TextField
-                              sx={{ width: "80%", margin: "2rem 0rem" }}
-                              required
-                              id="inp-log"
-                              label="Log Value"
-                              value={logFilter}
-                              onChange={(e) => setLogFilter(e.target.value)}
-                            />
-                          </Box>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={applyFilterAndSort}
-                            size="large"
-                            endIcon={<FilterListAltIcon />}
-                            sx={{ margin: "2rem 0rem", textTransform: "none" }}
-                            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
-                          >
-                            Filter Logs
-                          </Button>
-                        </Box>
-                      </>
-                    )}
-                  </Box>
-
-                  {!loading && !visibleLogs.length && logTypeRequested && (
-                    <Typography
-                      sx={{ margin: "2rem 0rem", textAlign: "center" }}
-                    >
-                      No logs found for this selection.
-                    </Typography>
-                  )}
-
-                  {!loading && visibleLogs.length > 0 && (
-                    <>
-                      <TableContainer
-                        component={Paper}
-                        sx={{ width: "100%", overflowX: "auto" }}
-                      >
-                        <Table
-                          stickyHeader
-                          sx={{ minWidth: 650 }}
-                          aria-label="logs table"
-                        >
-                          <TableHead>
-                            <TableRow>
-                              <TableCell
-                                align="center"
-                                sx={{
-                                  border: `1px solid ${theme.palette.primary.main}`,
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Linked Account
-                              </TableCell>
-                              <TableCell
-                                align="center"
-                                sx={{
-                                  border: `1px solid ${theme.palette.primary.main}`,
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Created By
-                              </TableCell>
-                              <TableCell
-                                align="center"
-                                sx={{
-                                  border: `1px solid ${theme.palette.primary.main}`,
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Created At
-                              </TableCell>
-                              <TableCell
-                                align="center"
-                                sx={{
-                                  border: `1px solid ${theme.palette.primary.main}`,
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Log
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-
-                          <TableBody>
-                            {visibleLogs.map((log) => (
-                              <TableRow
-                                key={`${log.createdAt}-${log.logDetails}`}
-                                hover
-                              >
-                                <TableCell
-                                  align="center"
-                                  sx={{
-                                    border: `1px solid ${theme.palette.primary.main}`,
-                                  }}
-                                >
-                                  {log.logLinkedAccount}
-                                </TableCell>
-                                <TableCell
-                                  align="center"
-                                  sx={{
-                                    border: `1px solid ${theme.palette.primary.main}`,
-                                  }}
-                                >
-                                  {log.logAddedBy}
-                                </TableCell>
-                                <TableCell
-                                  align="center"
-                                  sx={{
-                                    border: `1px solid ${theme.palette.primary.main}`,
-                                  }}
-                                >
-                                  {log.createdAtFormatted}
-                                </TableCell>
-                                <TableCell
-                                  align="center"
-                                  sx={{
-                                    border: `1px solid ${theme.palette.primary.main}`,
-                                  }}
-                                >
-                                  {log.logDetails}
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          flexWrap: "wrap",
-                          gap: "1rem",
-                          width: "100%",
-                          margin: "2rem 0rem",
-                          flexWrap: "wrap",
-                        }}
-                        justifyContent={{ xs: "center", sm: "space-between" }}
-                      >
-                        <IconButton
-                          aria-label="previous logs"
-                          sx={{ color: theme.palette.black.main }}
-                          onClick={handlePrev}
-                          disabled={visibleLogsStart === 0}
-                        >
-                          <KeyboardDoubleArrowLeftIcon />
-                        </IconButton>
 
                         <Box
                           sx={{
@@ -1157,54 +1151,37 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
                             alignItems: "center",
                           }}
                         >
-                          <Typography>
-                            {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
-                            {Math.min(
-                              visibleLogsStart + PAGE_SIZE,
-                              totalRecords
-                            )}{" "}
-                            of
+                          <Typography
+                            sx={{ color: "red", marginLeft: "0.5rem" }}
+                          >
+                            {totalRecords}
                           </Typography>
 
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Typography
-                              sx={{ color: "red", marginLeft: "0.5rem" }}
-                            >
-                              {totalRecords}
-                            </Typography>
-
-                            <Typography sx={{ marginLeft: "0.5rem" }}>
-                              records.
-                            </Typography>
-                          </Box>
+                          <Typography sx={{ marginLeft: "0.5rem" }}>
+                            records.
+                          </Typography>
                         </Box>
-
-                        <IconButton
-                          aria-label="next logs"
-                          sx={{ color: theme.palette.black.main }}
-                          onClick={handleNext}
-                          disabled={
-                            visibleLogsStart + PAGE_SIZE >= totalRecords ||
-                            totalRecords === 0
-                          }
-                        >
-                          <KeyboardDoubleArrowRightIcon />
-                        </IconButton>
                       </Box>
-                    </>
-                  )}
-                </>
-              )}
-            </Box>
-          </>
-        )}
-      </Stack>
+
+                      <IconButton
+                        aria-label="next logs"
+                        sx={{ color: theme.palette.black.main }}
+                        onClick={handleNext}
+                        disabled={
+                          visibleLogsStart + PAGE_SIZE >= totalRecords ||
+                          totalRecords === 0
+                        }
+                      >
+                        <KeyboardDoubleArrowRightIcon />
+                      </IconButton>
+                    </Box>
+                  </>
+                )}
+              </>
+            )}
+          </Box>
+        </>
+      )}
     </>
   );
 };

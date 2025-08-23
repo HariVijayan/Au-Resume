@@ -1,5 +1,6 @@
 import ResumeInputTemplate from "../../../../ResumeFormat.jsx";
 import UserInputs from "../UserInputs.jsx";
+import Box from "@mui/material/Box";
 
 const ParaType = () => {
   const { resumeData } = ResumeInputTemplate();
@@ -8,10 +9,18 @@ const ParaType = () => {
       {resumeData.customInput.map(
         (customInputEntry, customInputIndex) =>
           customInputEntry.style === "ParaType" && (
-            <div
+            <Box
               key={customInputIndex}
-              id={`dv-CustomParaCopy${customInputIndex + 1}`}
-              className="SubWrapper"
+              id={`CustomInput${customInputIndex + 1}Para`}
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+                flexDirection: "column",
+                margin: "2rem 0rem",
+              }}
             >
               <UserInputs
                 inputType={"text"}
@@ -40,7 +49,7 @@ const ParaType = () => {
                 onChangeEntry={customInputIndex}
                 textfieldName={"paraValues"}
               />
-            </div>
+            </Box>
           )
       )}
     </>
