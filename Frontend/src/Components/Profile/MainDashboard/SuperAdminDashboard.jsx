@@ -1,97 +1,343 @@
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import LaunchIcon from "@mui/icons-material/Launch";
+import { Box } from "@mui/material";
 
 const SuperAdmin = () => {
   const navigate = useNavigate();
   return (
-    <>
-      <div className="AdminConsoleActionsWrapper">
-        <div
-          className="AdminConsoleActionCard"
-          onClick={() =>
-            navigate("/admin-dashboard/super-admin/admin-management")
-          }
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
+        width: "100%",
+        margin: "5rem 0rem",
+        gap: "3rem",
+      }}
+      flexDirection={{ xs: "column", md: "row" }}
+    >
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          flexDirection: "column",
+          borderRadius: "12px",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          "@media (min-width:900px)": {
+            width: "30%",
+          },
+          ":hover": {
+            transform: "translateY(-10px)",
+            boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)",
+          },
+        }}
+        id="AdminMgmtCard"
+        onClick={() =>
+          navigate("/admin-dashboard/super-admin/admin-management")
+        }
+      >
+        <CardHeader
+          title="Admin Management"
+          sx={{
+            width: "100%",
+            textAlign: "center",
+            padding: "16px 0px",
+            background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+            color: "#fff",
+          }}
+        />
+        <CardActionArea>
+          <CardContent>
+            <List>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    <PersonAddAlt1Icon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Add New Admins"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    {" "}
+                    <PersonRemoveIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Remove Existing Admins"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    {" "}
+                    <AdminPanelSettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Modify Admin Permissions"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </CardContent>
+        </CardActionArea>
+        <CardActions
+          sx={{ display: "flex", justifyContent: "flex-end", width: "90%" }}
         >
-          <div className="CardTitle">Admin Management</div>
-          <div className="CardContent">
-            <ul className="CardContentList">
-              <li>Add New Admins</li>
-              <li>Remove Existing Admins</li>
-              <li>Modify Admin Permissions</li>
-            </ul>
-          </div>
-          <div className="CardLink">
-            <span className="CardContentLink">
-              Open{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
-              </svg>
-            </span>
-          </div>
-        </div>
+          <Button color="primary" endIcon={<LaunchIcon />}>
+            Open
+          </Button>
+        </CardActions>
+      </Card>
 
-        <div
-          className="AdminConsoleActionCard"
-          onClick={() => navigate("/admin-dashboard/user-management")}
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          flexDirection: "column",
+          borderRadius: "12px",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          "@media (min-width:900px)": {
+            width: "30%",
+          },
+          ":hover": {
+            transform: "translateY(-10px)",
+            boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)",
+          },
+        }}
+        onClick={() => navigate("/admin-dashboard/user-management")}
+      >
+        <CardHeader
+          title="User Management"
+          sx={{
+            width: "100%",
+            textAlign: "center",
+            padding: "16px 0px",
+            background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+            color: "#fff",
+          }}
+        />
+        <CardActionArea>
+          <CardContent>
+            <List>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    <PersonAddAlt1Icon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Add New Users"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    {" "}
+                    <PersonRemoveIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Remove Existing Users"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    {" "}
+                    <AdminPanelSettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Modify User Details"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </CardContent>
+        </CardActionArea>
+        <CardActions
+          sx={{ display: "flex", justifyContent: "flex-end", width: "90%" }}
         >
-          <div className="CardTitle">User Management</div>
-          <div className="CardContent">
-            <ul className="CardContentList">
-              <li>Add New Users</li>
-              <li>Remove Existing Users</li>
-              <li>Modify User Details</li>
-            </ul>
-          </div>
-          <div className="CardLink">
-            <span className="CardContentLink">
-              Open{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
-              </svg>
-            </span>
-          </div>
-        </div>
+          <Button color="primary" endIcon={<LaunchIcon />}>
+            Open
+          </Button>
+        </CardActions>
+      </Card>
 
-        <div
-          className="AdminConsoleActionCard"
-          onClick={() => navigate("/admin-dashboard/log-management")}
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          flexDirection: "column",
+          borderRadius: "12px",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          "@media (min-width:900px)": {
+            width: "30%",
+          },
+          ":hover": {
+            transform: "translateY(-10px)",
+            boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)",
+          },
+        }}
+        width={{ xs: "100%", md: "30%" }}
+        onClick={() => navigate("/admin-dashboard/log-management")}
+      >
+        <CardHeader
+          title="Log Management"
+          sx={{
+            width: "100%",
+            textAlign: "center",
+            padding: "16px 0px",
+            background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+            color: "#fff",
+          }}
+        />
+        <CardActionArea>
+          <CardContent>
+            <List>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    <PersonAddAlt1Icon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="View Admin Logs"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    {" "}
+                    <PersonRemoveIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="View User Logs"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    {" "}
+                    <AdminPanelSettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Log Actions"
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </CardContent>
+        </CardActionArea>
+        <CardActions
+          sx={{ display: "flex", justifyContent: "flex-end", width: "90%" }}
         >
-          <div className="CardTitle">Logs Management</div>
-          <div className="CardContent">
-            <ul className="CardContentList">
-              <li>View Admin Logs</li>
-              <li>View Users Logs</li>
-              <li>Log Actions</li>
-            </ul>
-          </div>
-          <div className="CardLink">
-            <span className="CardContentLink">
-              Open{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
-              </svg>
-            </span>
-          </div>
-        </div>
-      </div>
-    </>
+          <Button color="primary" endIcon={<LaunchIcon />}>
+            Open
+          </Button>
+        </CardActions>
+      </Card>
+    </Box>
   );
 };
 

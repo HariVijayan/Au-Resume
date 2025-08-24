@@ -18,36 +18,40 @@ const AdminPanelHeader = ({
     setLogoutUserType("Admin");
     setLogoutClicked(true);
   };
-  const navigateToPreviousPage = () => {
-    if (location.pathname === "/admin-dashboard/super-admin") {
-      return;
-    } else if (location.pathname === "/admin-dashboard/admin-general") {
-      return;
-    } else if (location.pathname === "/admin-dashboard/analytics") {
-      return;
-    } else {
-      navigate(-1);
-    }
-  };
   const theme = useTheme();
   return (
-    <>
+    <Box
+      id="HeaderWrapper"
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        flexWrap: "wrap",
+        width: "90%",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          width: "90%",
+          flexWrap: "wrap",
         }}
       >
         <Box
           component="img"
           src="/Au Logo.png"
           alt="AU Logo"
-          sx={{ width: "100px", height: "100px" }}
+          sx={{
+            width: "7vw",
+            height: "auto",
+            maxHeight: "100px",
+            minHeight: "40px",
+          }}
+          // width={{ xs: "30px", sm: "50px", md: "75px", lg: "100px" }}
         ></Box>
         <Typography
-          variant="h3"
+          variant="h4"
           sx={{ color: theme.palette.primary.main, fontWeight: "bold" }}
         >
           AU Resume Builder
@@ -59,38 +63,59 @@ const AdminPanelHeader = ({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
           alignItems: "center",
-          width: "90%",
           marginTop: "2rem",
+          flexWrap: "wrap",
+          gap: "2rem",
         }}
+        justifyContent={{ xs: "center", sm: "space-between" }}
       >
-        <Typography
+        {location.pathname != "/admin-dashboard/super-admin" &&
+        location.pathname != "/admin-dashboard/admin-general" &&
+        location.pathname != "/admin-dashboard/analytics" ? (
+          <Typography
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+              ":hover": { color: theme.palette.primary.main },
+            }}
+            onClick={() => navigate(-1)}
+          >
+            <ArrowBackIcon
+              sx={{ ":hover": { fill: theme.palette.primary.main } }}
+            />
+            {backArrowPageName}
+          </Typography>
+        ) : (
+          <Typography
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            Admin Dashboard
+          </Typography>
+        )}
+
+        <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            cursor: "pointer",
-            ":hover": { color: theme.palette.primary.main },
+            gap: "0.5rem",
           }}
-          variant="h5"
-          onClick={navigateToPreviousPage}
         >
-          {location.pathname != "/admin-dashboard/super-admin" &&
-            location.pathname != "/admin-dashboard/admin-general" &&
-            location.pathname != "/admin-dashboard/analytics" && (
-              <ArrowBackIcon sx={{ fill: theme.palette.primary.main }} />
-            )}
-          {backArrowPageName}
-        </Typography>
-        <Typography variant="h5" sx={{ display: "flex", gap: "0.5rem" }}>
-          Admin Type:{" "}
+          <Typography>Admin Type:</Typography>
+
           <Typography sx={{ color: theme.palette.error.main }}>
             {headerAdminType}
           </Typography>
-        </Typography>
+        </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

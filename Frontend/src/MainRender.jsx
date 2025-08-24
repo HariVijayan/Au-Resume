@@ -16,7 +16,7 @@ createRoot(document.getElementById("dv-MainWrapper")).render(
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
             alignItems: "center",
             width: "100%",
             margin: "2vh 0vh 0vh 0vh",
