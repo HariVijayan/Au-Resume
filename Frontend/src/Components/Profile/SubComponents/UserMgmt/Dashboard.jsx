@@ -13,6 +13,7 @@ const UserMgmt = () => {
   const navigate = useNavigate();
   return (
     <Box
+      id="CardWrapper"
       sx={{
         display: "flex",
         justifyContent: "space-between",
@@ -42,7 +43,6 @@ const UserMgmt = () => {
             boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)",
           },
         }}
-        id="AdminMgmtCard"
         onClick={() => navigate("/admin-dashboard/user-management/add-user")}
       >
         <CardHeader

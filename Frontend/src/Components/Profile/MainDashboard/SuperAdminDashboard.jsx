@@ -24,6 +24,7 @@ const SuperAdmin = () => {
   const navigate = useNavigate();
   return (
     <Box
+      id="CardWrapper"
       sx={{
         display: "flex",
         justifyContent: "space-between",
@@ -53,7 +54,6 @@ const SuperAdmin = () => {
             boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)",
           },
         }}
-        id="AdminMgmtCard"
         onClick={() =>
           navigate("/admin-dashboard/super-admin/admin-management")
         }

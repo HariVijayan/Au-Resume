@@ -23,6 +23,7 @@ const Admin = () => {
   const navigate = useNavigate();
   return (
     <Box
+      id="CardWrapper"
       sx={{
         display: "flex",
         justifyContent: "space-evenly",
