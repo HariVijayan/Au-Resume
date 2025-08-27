@@ -3,9 +3,29 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  useTheme,
+} from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  TextField,
+} from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import Paper from "@mui/material/Paper";
 
 const RemoveAdmin = () => {
-  const navigate = useNavigate();
   const [adminUsers, setAdminUsers] = useState([]);
   const [numAdmins, setAdminNum] = useState(0);
   const [remAdminEmail, setRemAdminEmail] = useState("");
@@ -23,8 +43,15 @@ const RemoveAdmin = () => {
   const [showServerMsg, setShowServerMsg] = useState(false);
   const [serverMsgType, setServerMsgType] = useState("error");
 
+  const [loadingAnim, setLoadingAnim] = useState(false);
+  const theme = useTheme();
+
   useEffect(() => {
     const fetchAdmins = async () => {
+      setLoadingAnim(true);
+      setServerMessage("Processing your request...");
+      setServerMsgType("info");
+      setShowServerMsg(true);
       try {
         const response = await axios.post(
           "http://localhost:5000/superAdmin/fetchAdmin/adminListGrouped",
@@ -33,10 +60,12 @@ const RemoveAdmin = () => {
         );
         setAdminUsers(response.data.userList);
         setAdminNum(response.data.numAdmins);
+        setLoadingAnim(false);
         setServerMessage("Successfully fetched current admins list");
         setServerMsgType("success");
         setShowServerMsg(true);
       } catch (error) {
+        setLoadingAnim(false);
         setServerMessage(
           error.response?.data?.message || "Failed to fetch current admins list"
         );
@@ -48,6 +77,10 @@ const RemoveAdmin = () => {
   }, [location.pathname]);
 
   const getVerificationOtp = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
@@ -55,10 +88,13 @@ const RemoveAdmin = () => {
         { withCredentials: true }
       );
       setShowRemAdminOtp(true);
+      setShowApproval(false);
+      setLoadingAnim(false);
       setServerMessage("Otp sent to email successfully");
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Failed to generate Otp"
       );
@@ -68,13 +104,17 @@ const RemoveAdmin = () => {
   };
 
   const removeAdminFromDB = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/superAdmin/actions/existingAdmin/removeAdmin",
         { remAdminEmail, adminType, otpInput },
         { withCredentials: true }
       );
-
+      setLoadingAnim(false);
       setServerMessage(
         "Admin removal successful. Refreshing the page in 5 seconds"
       );
@@ -85,6 +125,7 @@ const RemoveAdmin = () => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
           "Failed to remove admin. Refreshing the page in 5 seconds"
@@ -125,127 +166,397 @@ const RemoveAdmin = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <div className="AdminMgmtWrapper">
-        <p className="AdminMgmtActionHeading">Remove Existing Admins</p>
-        <span>
+      <Box
+        id="AdminActionsWrapper"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "2rem 0rem",
+        }}
+      >
+        <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+          Remove Existing Admins
+        </Typography>
+        <Typography sx={{ textAlign: "center" }}>
           (Scroll down to see the list of current admins to remove one)
-        </span>
-        <div className="AdminMgmtActions">
-          <div className="AdminConsoleInputsWrapper">
-            <div className="AdminMgmtInputWrapper">
-              <input
-                type="email"
-                placeholder=" "
-                value={remAdminEmail}
-                onChange={(e) => setRemAdminEmail(e.target.value)}
-                required
+        </Typography>
+        <Box
+          id="InputsWrapper"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            margin: "2rem 0rem",
+          }}
+          flexDirection={{ xs: "column", md: "row" }}
+        >
+          <Box
+            id="AdminEmailInput"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            width={{ xs: "100%", md: "40%" }}
+          >
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="inp-email"
+              label="Email"
+              type="email"
+              value={remAdminEmail}
+              onChange={(e) => setRemAdminEmail(e.target.value)}
+            />
+          </Box>
+
+          <Box
+            id="AdminTypeInput"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            width={{ xs: "100%", md: "40%" }}
+          >
+            <TextField
+              sx={{ width: "80%", margin: "2rem 0rem" }}
+              required
+              id="se-adminType"
+              select
+              label="Admin Type"
+              defaultValue=""
+              value={adminType}
+              onChange={(e) => setAdminType(e.target.value)}
+            >
+              <MenuItem value="SuperAdmin">Super Admin</MenuItem>
+              <MenuItem value="Admin">Admin</MenuItem>
+              <MenuItem value="Analytics">Analytics</MenuItem>
+            </TextField>
+          </Box>
+        </Box>
+
+        {showApproval && (
+          <Box
+            id="ApprovalWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="ApprovalStatement"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={approval}
+                    onChange={(e) => setApproval(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="I affirm and authorize the above mentioned person to be
+                  removed as an admin from this site"
+                labelPlacement="end"
               />
-              <label className="AdminMgmtTextFieldLabel3">Email</label>
-            </div>
-
-            <div className="AdminMgmtInputWrapper">
-              <div className="AdminMgmtDropDown">
-                <select
-                  value={adminType}
-                  id="se-adminType"
-                  onChange={(e) => setAdminType(e.target.value)}
-                >
-                  <option value="">Choose AdminType</option>
-                  <option value="SuperAdmin">Super Admin</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Analytics">Analytics</option>
-                </select>
-                <label htmlFor="se-adminType" className="DropDownLabel">
-                  Admin Type
-                </label>
-              </div>
-            </div>
-          </div>
-
-          {showApproval && (
-            <div className="AdminMgmtApprovalWrapper">
-              <div className="AdminMgmtApproval">
-                <input
-                  type="checkbox"
-                  checked={approval}
-                  onChange={(e) => setApproval(e.target.checked)}
-                />
-                <span>
-                  I affirm and authorize the above mentioned person to be
-                  removed as an admin from this site.
-                </span>
-              </div>
-              <button
-                style={{ marginTop: "2rem" }}
+            </Box>
+            <Box
+              id="ApprovalButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
                 onClick={getVerificationOtp}
                 disabled={!approval || !remAdminEmail || !adminType}
-                className="PreviewButton"
+                size="large"
+                endIcon={<CheckIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
               >
                 Approve
-              </button>
-            </div>
-          )}
+              </Button>
+            </Box>
+          </Box>
+        )}
 
-          {showRemAdminOtp && (
-            <div className="AdminMgmtOtpWrapper">
-              <div className="AdminMgmtOtp">
-                <input
-                  type="text"
-                  placeholder=" "
-                  value={otpInput}
-                  onChange={(e) => setOtpInput(e.target.value)}
-                  required
-                />
-                <label className="AdminMgmtTextFieldLabel2">Otp</label>
-              </div>
-              <button
+        {showRemAdminOtp && (
+          <Box
+            id="OtpWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="OtpInput"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={{ xs: "100%", md: "50%" }}
+            >
+              <TextField
+                sx={{ width: "80%", margin: "2rem 0rem" }}
+                required
+                id="inp-otp"
+                label="Otp"
+                type="text"
+                value={otpInput}
+                onChange={(e) => setOtpInput(e.target.value)}
+              />
+            </Box>
+            <Box
+              id="SubmitButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="success"
                 onClick={removeAdminFromDB}
                 disabled={!otpInput}
-                className="AddInputButtons"
+                size="large"
+                endIcon={<PersonRemoveIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
               >
                 Remove Admin
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="ListAdminsWrapper">
-        <div className="AdminsListHeading">
-          <p className="AdminTableHeading">Current Admins List</p>
-          <span>
-            Total number of admins currently:{" "}
-            <span style={{ color: "red" }}>{numAdmins}</span>
-          </span>
-        </div>
-        <div className="AdminsList">
-          <table className="CurrentAdminsTable">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Admin Type</th>
-                <th>Created At</th>
-                <th>Created By</th>
-                <th>Failed Logins</th>
-                <th>Locked Until</th>
-              </tr>
-            </thead>
-            <tbody>
-              {adminUsers.map((admin, index) => (
-                <tr key={index}>
-                  <td>{admin.name}</td>
-                  <td>{admin.email}</td>
-                  <td>{admin.accountType}</td>
-                  <td>{admin.createdAtFormatted}</td>
-                  <td>{admin.createdBy}</td>
-                  <td>{admin.failedLoginAttempts}</td>
-                  <td>{admin.lockUntilFormatted}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+              </Button>
+            </Box>
+          </Box>
+        )}
+      </Box>
+      <Box
+        id="TableWrapper"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "2rem 0rem",
+        }}
+      >
+        <Box
+          id="TableHeading"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            flexWrap: "wrap",
+          }}
+        >
+          <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+            Current Admins List
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ textAlign: "center" }}>
+              Total number of admins currently:
+            </Typography>
+            <Typography
+              sx={{
+                textAlign: "center",
+                marginLeft: "0.5rem",
+                color: theme.palette.error.main,
+              }}
+            >
+              {numAdmins}
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          id="TableContent"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            margin: "2rem 0rem",
+          }}
+        >
+          <TableContainer
+            component={Paper}
+            sx={{ width: "100%", overflowX: "auto" }}
+          >
+            <Table
+              stickyHeader
+              sx={{ minWidth: 650 }}
+              aria-label="admin list table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      border: `1px solid ${theme.palette.primary.main}`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Name
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      border: `1px solid ${theme.palette.primary.main}`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Email
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      border: `1px solid ${theme.palette.primary.main}`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Admin Type
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      border: `1px solid ${theme.palette.primary.main}`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Created At
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      border: `1px solid ${theme.palette.primary.main}`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Created By
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      border: `1px solid ${theme.palette.primary.main}`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Failed Logins
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      border: `1px solid ${theme.palette.primary.main}`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Locked Until
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {adminUsers.map((admin) => (
+                  <TableRow key={`${admin.name}-${admin.email}`} hover>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        border: `1px solid ${theme.palette.primary.main}`,
+                      }}
+                    >
+                      {admin.name}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        border: `1px solid ${theme.palette.primary.main}`,
+                      }}
+                    >
+                      {admin.email}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        border: `1px solid ${theme.palette.primary.main}`,
+                      }}
+                    >
+                      {admin.accountType}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        border: `1px solid ${theme.palette.primary.main}`,
+                      }}
+                    >
+                      {admin.createdAtFormatted}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        border: `1px solid ${theme.palette.primary.main}`,
+                      }}
+                    >
+                      {admin.createdBy}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        border: `1px solid ${theme.palette.primary.main}`,
+                      }}
+                    >
+                      {admin.failedLoginAttempts}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        border: `1px solid ${theme.palette.primary.main}`,
+                      }}
+                    >
+                      {admin.lockUntilFormatted}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
     </>
   );
 };
