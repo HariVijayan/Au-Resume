@@ -1,109 +1,185 @@
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import LaunchIcon from "@mui/icons-material/Launch";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const AdminMgmt = () => {
   const navigate = useNavigate();
   return (
-    <>
-      <div className="AdminConsoleActionsWrapper">
-        <div
-          className="AdminConsoleActionCard"
-          onClick={() =>
-            navigate("/admin-dashboard/super-admin/admin-management/add-admin")
-          }
-        >
-          <div className="CardTitle">Add New Admins</div>
-          <div className="CardContent">
-            <span>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
+        width: "100%",
+        margin: "5rem 0rem",
+        gap: "3rem",
+      }}
+      flexDirection={{ xs: "column", md: "row" }}
+    >
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          flexDirection: "column",
+          borderRadius: "12px",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          "@media (min-width:900px)": {
+            width: "30%",
+          },
+          ":hover": {
+            transform: "translateY(-10px)",
+            boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)",
+          },
+        }}
+        id="AdminMgmtCard"
+        onClick={() =>
+          navigate("/admin-dashboard/super-admin/admin-management/add-admin")
+        }
+      >
+        <CardHeader
+          title="Add Admin"
+          sx={{
+            width: "100%",
+            textAlign: "center",
+            padding: "16px 0px",
+            background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+            color: "#fff",
+          }}
+        />
+        <CardActionArea>
+          <CardContent>
+            <Typography sx={{ textAlign: "justify" }}>
               Use this to add new admins to manage this site. Please note that
               you've to manually verify your identity through an OTP sent to
               your registered email to save changes. It will be recorded that
               you're the one who is adding this new admin.
-            </span>
-          </div>
-          <div className="CardLink">
-            <span className="CardContentLink">
-              Open{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
-              </svg>
-            </span>
-          </div>
-        </div>
-
-        <div
-          className="AdminConsoleActionCard"
-          onClick={() =>
-            navigate(
-              "/admin-dashboard/super-admin/admin-management/remove-admin"
-            )
-          }
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions
+          sx={{ display: "flex", justifyContent: "flex-end", width: "90%" }}
         >
-          <div className="CardTitle">Remove Existing Admins</div>
-          <div className="CardContent">
-            <span>
+          <Button color="primary" endIcon={<LaunchIcon />}>
+            Open
+          </Button>
+        </CardActions>
+      </Card>
+
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          flexDirection: "column",
+          borderRadius: "12px",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          "@media (min-width:900px)": {
+            width: "30%",
+          },
+          ":hover": {
+            transform: "translateY(-10px)",
+            boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)",
+          },
+        }}
+        onClick={() =>
+          navigate("/admin-dashboard/super-admin/admin-management/remove-admin")
+        }
+      >
+        <CardHeader
+          title="Remove Admin"
+          sx={{
+            width: "100%",
+            textAlign: "center",
+            padding: "16px 0px",
+            background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+            color: "#fff",
+          }}
+        />
+        <CardActionArea>
+          <CardContent>
+            <Typography sx={{ textAlign: "justify" }}>
               Use this to remove existing admins from this site. Please note
               that you've to manually verify your identity through an OTP sent
               to your registered email to save changes. It will be recorded that
               you're the one who removed this existing admin.
-            </span>
-          </div>
-          <div className="CardLink">
-            <span className="CardContentLink">
-              Open{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
-              </svg>
-            </span>
-          </div>
-        </div>
-
-        <div
-          className="AdminConsoleActionCard"
-          onClick={() =>
-            navigate(
-              "/admin-dashboard/super-admin/admin-management/modify-admin"
-            )
-          }
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions
+          sx={{ display: "flex", justifyContent: "flex-end", width: "90%" }}
         >
-          <div className="CardTitle">Modify Admin Permissions</div>
-          <div className="CardContent">
-            <span>
+          <Button color="primary" endIcon={<LaunchIcon />}>
+            Open
+          </Button>
+        </CardActions>
+      </Card>
+
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          flexDirection: "column",
+          borderRadius: "12px",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          "@media (min-width:900px)": {
+            width: "30%",
+          },
+          ":hover": {
+            transform: "translateY(-10px)",
+            boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)",
+          },
+        }}
+        width={{ xs: "100%", md: "30%" }}
+        onClick={() =>
+          navigate("/admin-dashboard/super-admin/admin-management/modify-admin")
+        }
+      >
+        <CardHeader
+          title="Modify Admin"
+          sx={{
+            width: "100%",
+            textAlign: "center",
+            padding: "16px 0px",
+            background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+            color: "#fff",
+          }}
+        />
+        <CardActionArea>
+          <CardContent>
+            <Typography sx={{ textAlign: "justify" }}>
               Use this to elevate existing admin's permissions to be super
               admins or limit existing admin's permissions to be having
               analytics only (ViewOnly) access. You can also use this to reset
               password, unlock account or change the name of existing admin
               accounts.
-            </span>
-          </div>
-          <div className="CardLink">
-            <span className="CardContentLink">
-              Open{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#e3e3e3"
-              >
-                <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z" />
-              </svg>
-            </span>
-          </div>
-        </div>
-      </div>
-    </>
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions
+          sx={{ display: "flex", justifyContent: "flex-end", width: "90%" }}
+        >
+          <Button color="primary" endIcon={<LaunchIcon />}>
+            Open
+          </Button>
+        </CardActions>
+      </Card>
+    </Box>
   );
 };
 

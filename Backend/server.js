@@ -182,7 +182,7 @@ const newUser = new adminUser({
   createdAt: createdAt,
   createdAtFormatted: createdAtFormatted,
   createdBy: "System",
-  accountType: "Analytics",
+  accountType: "SuperAdmin",
 });
 await newUser.save();
 
