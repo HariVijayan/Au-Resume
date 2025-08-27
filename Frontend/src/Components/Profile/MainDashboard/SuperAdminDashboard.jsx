@@ -14,7 +14,11 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import LaunchIcon from "@mui/icons-material/Launch";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const SuperAdmin = () => {
   const navigate = useNavigate();
@@ -216,7 +220,7 @@ const SuperAdmin = () => {
                 >
                   <ListItemIcon>
                     {" "}
-                    <AdminPanelSettingsIcon />
+                    <ManageAccountsIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary="Modify User Details"
@@ -280,7 +284,7 @@ const SuperAdmin = () => {
                   }}
                 >
                   <ListItemIcon>
-                    <PersonAddAlt1Icon />
+                    <LockPersonIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary="View Admin Logs"
@@ -299,7 +303,7 @@ const SuperAdmin = () => {
                 >
                   <ListItemIcon>
                     {" "}
-                    <PersonRemoveIcon />
+                    <FolderSharedIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary="View User Logs"
@@ -318,7 +322,7 @@ const SuperAdmin = () => {
                 >
                   <ListItemIcon>
                     {" "}
-                    <AdminPanelSettingsIcon />
+                    <DownloadIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary="Log Actions"
