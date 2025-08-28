@@ -2,9 +2,38 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  useTheme,
+} from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  TextField,
+} from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import Paper from "@mui/material/Paper";
+import dropdownOptions from "../../../General/Sub_Components/Register/DropdownOptions.js";
+import WarningIcon from "@mui/icons-material/Warning";
+import PersonIcon from '@mui/icons-material/Person';
+import GroupIcon from '@mui/icons-material/Group';
 
 const AddNewUser = () => {
   const requestType = "addNewUser";
+
+  const [loadingAnim, setLoadingAnim] = useState(false);
+
+  const theme = useTheme();
 
   const [usersList, setUsersList] = useState([]);
   const [newAdditionType, setNewAdditionType] = useState("");
@@ -44,149 +73,6 @@ const AddNewUser = () => {
   const [commonRegNoStart, setCommonRegNoStart] = useState("");
   const [commonRegNoEnd, setCommonRegNoEnd] = useState("");
   const [skipRegNo, setSkipRegNoEnd] = useState("");
-
-  const dropdownOptions = {
-    courseTypes: ["Under Graduate", "Post Graduate"],
-    programmes: {
-      "Under Graduate": ["B.E./B.Tech.", "B.Arch."],
-      "Post Graduate": [
-        "M.C.A.",
-        "M.E.",
-        "M.Tech.",
-        "M.Arch.",
-        "M.Plan.",
-        "M.Sc. (Five Years Integrated)",
-        "M.Sc.",
-        "M.B.A.",
-      ],
-    },
-    branches: {
-      "B.E./B.Tech.": [
-        "Aeronautical Engineering",
-        "Agriculture & Irrigation Engineering",
-        "Apparel Technology",
-        "Automobile Engineering",
-        "Bio-Medical Engineering",
-        "Ceramic Technology",
-        "Chemical Engineering",
-        "Civil Engineering",
-        "Computer Science and Engineering",
-        "Electrical and Electronics",
-        "Electronics and Communication",
-        "Electronics and Instrumentation",
-        "Food Technology",
-        "Geo Informatics",
-        "Industrial Bio-Technology",
-        "Industrial Engineering",
-        "Information Technology",
-        "Leather Technology",
-        "Manufacturing Engineering",
-        "Material Science and Engineering",
-        "Mechanical Engineering",
-        "Mining Engineering",
-        "Pharmaceutical Technology",
-        "Production Engineering",
-        "Petroleum Engineering & Technology",
-        "Rubber & Plastics Technology",
-        "Textile Technology",
-        "Printing & Packaging Technology",
-        "Artificial Science & Data Science",
-        "Robotics and Automation",
-      ],
-      "B.Arch.": ["Architecture"],
-      "M.C.A.": ["N/A"],
-      "M.E.": [
-        "Hydrology and Water Ress. Engineering",
-        "Soil Mechs and Foundn. Engineering",
-        "Structural Engineering",
-        "Construction Engineering and Management",
-        "Remote Sensing and Geomatics",
-        "Transportation Engineering",
-        "Environmental Engineering",
-        "Irrigation Water Management",
-        "Environmental Management",
-        "Internal Combustion Engineering",
-        "Thermal Engineering",
-        "Energy Engineering",
-        "Computer Integrated Manufacturing",
-        "Industrial Engineering",
-        "Manufacturing Systems and Mgmt.",
-        "Solar Energy",
-        "Quality Engineering and Mgmt.",
-        "Aeronautical Engineering",
-        "Avionics",
-        "Aerospace",
-        "Automobile Engineering",
-        "Manufacturing Engineering",
-        "Mechatronics",
-        "Applied Electronics",
-        "Biomedical Engineering",
-        "Medical Electronics",
-        "Communication Systems",
-        "V.L.S.I Design",
-        "Communication and Networking",
-        "Wireless Technology",
-        "VLSI and Embedded Systems",
-        "Computer Science and Engineering",
-        "Big Data Analytics",
-        "Software Engineering",
-        "Operation Research",
-        "Multi Media Technology",
-        "Information Technology",
-        "Design Engineering",
-        "Mobility Engineering",
-        "Product Design and Development",
-        "Printing and Packaging Technology",
-        "Instrumentation Engg. Spcl in Industrial Automation",
-        "High Voltage Engineering",
-        "Power Systems Engineering",
-        "Power Electronics and Drives",
-        "Power Engineering and Management",
-        "Control and Instrumentation Engineering",
-        "Embedded Systems and Technologies",
-      ],
-      "M.Tech.": [
-        "Environmental Science and Tech.",
-        "Laser & Electro-Optical Engg.",
-        "Polymer Science and Engg.",
-        "Chemical Engineering",
-        "Ceramic Technology",
-        "Petroleum Refining and Petro-Chemical",
-        "Bio-Technology",
-        "Bio-Pharmaceutical Technology",
-        "Food Technology",
-        "Textile Technology",
-        "Leather Technology",
-        "Footwear Science and Engineering",
-        "Nano Science and Technology",
-        "Industrial Safety and Hazard Management",
-        "Rubber Technology",
-        "Computational Biology",
-        "Information Technology",
-        "Information Technology spcl in AI and Data Science",
-        "Ocean Technology",
-      ],
-      "M.Arch.": ["Landscape Architecture", "Digital Architecture", "General"],
-      "M.Plan.": ["Town and Country Planning"],
-      "M.Sc. (Five Years Integrated)": [
-        "Computer Science",
-        "Information Technology",
-        "Electronic Media",
-      ],
-      "M.Sc.": [
-        "Mathematics",
-        "Material Science",
-        "Medical Physics",
-        "Applied Chemistry",
-        "Applied Geology",
-        "Environmental Science",
-        "Electronics Media",
-        "Multimedia",
-        "Multimedia spcl in Viscom",
-      ],
-      "M.B.A.": ["General Management", "Tourism Management"],
-    },
-  };
 
   const getProgrammesList = (actionType) => {
     if (actionType === "Single") {
@@ -313,6 +199,10 @@ const AddNewUser = () => {
   };
 
   const getFinalUserList = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/userMgmt/addUser/get-final-users",
@@ -338,10 +228,12 @@ const AddNewUser = () => {
       );
       setUsersList(response.data.usersList);
       setShowUsers(true);
+      setLoadingAnim(false);
       setServerMessage("Successfully fetched the user list");
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response.data.message || "Failed to fetch user list"
       );
@@ -351,8 +243,13 @@ const AddNewUser = () => {
   };
 
   const getVerificationOtp = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     if (newAdditionType === "Multiple") {
       if (parseInt(commonRegNoEnd) - parseInt(commonRegNoStart) > 100) {
+        setLoadingAnim(false);
         setServerMessage(
           "You can only add upto 100 users at a time. Please reduce the user range and complete in multiple requests if needed."
         );
@@ -361,6 +258,7 @@ const AddNewUser = () => {
         return;
       }
       if (parseInt(commonRegNoEnd) < parseInt(commonRegNoStart)) {
+        setLoadingAnim(false);
         setServerMessage(
           "The end register number cannot be less than the start register number. Please correct the range."
         );
@@ -376,10 +274,14 @@ const AddNewUser = () => {
         { withCredentials: true }
       );
       setShowOtp(true);
+      setLoadingAnim(false);
+      setNeedApprovalSingle(false);
+      setNeedApprovalMul(false);
       setServerMessage("Otp sent to email successfully");
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Failed to generate Otp"
       );
@@ -389,6 +291,10 @@ const AddNewUser = () => {
   };
 
   const addUserToDB = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/userMgmt/newUser/addNewUser",
@@ -413,7 +319,7 @@ const AddNewUser = () => {
         },
         { withCredentials: true }
       );
-
+      setLoadingAnim(false);
       setServerMessage(
         `New user(s) have been added to the site successfully. Refreshing the page in 5 seconds.`
       );
@@ -424,6 +330,7 @@ const AddNewUser = () => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
           "Failed to add new user(s). Refreshing the page in 5 seconds."
@@ -457,520 +364,915 @@ const AddNewUser = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <div className="AdminMgmtWrapper">
-        <p className="AdminMgmtActionHeading">Add New Users</p>
-        <span>
+      <Box
+        id="AdminActionsWrapper"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "2rem 0rem",
+        }}
+      >
+        <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+          Add New Users
+        </Typography>
+        <Typography sx={{ textAlign: "center" }}>
           (Cross verify each user's details [email, register number]
           individually before adding them as new users)
-        </span>
-        <div className="UserMgmtButtons">
-          <button
-            className="LeftNavigationButtons"
+        </Typography>
+        <Box
+          id="UserAdditionType"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            margin: "2rem 0rem",
+            gap: "1rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <Button
+            variant="contained"
             onClick={() => modifyAddUserOperation("Single")}
+            size="large"
+            endIcon={<PersonIcon />}
+            sx={{
+              margin: "2rem 0rem",
+              textTransform: "none",
+              backgroundColor: `${theme.palette.brown.main}`,
+            }}
+            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24px"
-              viewBox="0 -960 960 960"
-              width="24px"
-              fill="#e3e3e3"
-            >
-              <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-            </svg>
             Single User
-          </button>
-          <button
-            className="RightNavigationButtons"
+          </Button>
+          <Button
+            variant="contained"
             onClick={() => modifyAddUserOperation("Multiple")}
+            size="large"
+            endIcon={<GroupIcon />}
+            sx={{
+              margin: "2rem 0rem",
+              textTransform: "none",
+              backgroundColor: `${theme.palette.black.main}`,
+            }}
+            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
           >
-            Multiple Users
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24px"
-              viewBox="0 -960 960 960"
-              width="24px"
-              fill="#e3e3e3"
-            >
-              <path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z" />
-            </svg>
-          </button>
-        </div>
+            Multiple User
+          </Button>
+        </Box>
+
         {newAdditionType === "Single" && (
-          <div className="AddSingleUserWrapper">
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterInputWrapper">
-                <input
+          <Box
+            id="SingleUserInputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="InputRow1"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="UserEmailInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-email"
+                  label="Email"
                   type="email"
-                  placeholder=" "
                   value={newUserEmail}
                   onChange={(e) => setNewUserEmail(e.target.value)}
-                  required
                 />
-                <label
-                  htmlFor="in-register_email"
-                  className="RegisterTextFieldLabel"
-                >
-                  Email
-                </label>
-              </div>
+              </Box>
 
-              <div className="RegisterInputWrapper">
-                <input
-                  type="number"
-                  placeholder=" "
+              <Box
+                id="UserRegNoInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-regno"
+                  label="Register Number"
                   value={newUserRegNo}
                   onChange={(e) => setNewUserRegNo(e.target.value)}
-                  required
                 />
-                <label
-                  htmlFor="in-register_studentno"
-                  className="RegisterTextFieldLabel"
+              </Box>
+            </Box>
+
+            <Box
+              id="InputRow2"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="UserDeptInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-Dept"
+                  select
+                  label="Department"
+                  defaultValue="Information Science and Technology"
+                  value={newUserDept}
+                  onChange={(e) => setNewUserDept(e.target.value)}
                 >
-                  Register Number
-                </label>
-              </div>
-            </div>
+                  {dropdownOptions.departments.map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
 
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterDropDownWrapper">
-                <div className="RegisterDropDown">
-                  <select
-                    value={newUserDept}
-                    id="se-Department"
-                    onChange={(e) => setNewUserDept(e.target.value)}
-                  >
-                    <option value="Information Science and Technology">
-                      Information Science and Technology
-                    </option>
-                    <option value="Biomedical Engineering">
-                      Biomedical Engineering
-                    </option>
-                    <option value="Civil Engineering">Civil Engineering</option>
-                    <option value="Computer Science and Engineering">
-                      Computer Science and Engineering
-                    </option>
-                    <option value="Chemistry">
-                      Electrical and Electronics Engineering
-                    </option>
-                    <option value="Electronics and Communication Engineering">
-                      Electronics and Communication Engineering
-                    </option>
-                    <option value="English">English</option>
-                    <option value="Geology">Geology</option>
-                    <option value="Industrial Engineering">
-                      Industrial Engineering
-                    </option>
-                    <option value="Mathematics">Mathematics</option>
-                    <option value="Manufacturing Engineering">
-                      Manufacturing Engineering
-                    </option>
-                    <option value="Management Studies">
-                      Management Studies
-                    </option>
-                    <option value="Mechanical Engineering">
-                      Mechanical Engineering
-                    </option>
-                    <option value="Media Sciences">Media Sciences</option>
-                    <option value="Medical Physics">Medical Physics</option>
-                    <option value="Mining Engineering">
-                      Mining Engineering
-                    </option>
-                    <option value="Physics">Physics</option>
-                    <option value="Printing and Packaging Technology">
-                      Priniting and Packaging Technology
-                    </option>
-                  </select>
-                  <label htmlFor="se-Department" className="DropDownLabel">
-                    Department
-                  </label>
-                </div>
-              </div>
+              <Box
+                id="UserCourseInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-course"
+                  select
+                  label="Course Type"
+                  defaultValue=""
+                  value={newUserCourseType}
+                  onChange={(e) => chooseCourseType(e.target.value, "Single")}
+                >
+                  {dropdownOptions.courseTypes.map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+            </Box>
 
-              <div className="RegisterDropDownWrapper">
-                <div className="RegisterDropDown">
-                  <select
-                    value={newUserCourseType}
-                    id="se-CourseType"
-                    onChange={(e) => chooseCourseType(e.target.value, "Single")}
-                  >
-                    <option value="">Choose course type</option>
-                    {dropdownOptions.courseTypes.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="se-CourseType" className="DropDownLabel">
-                    Course Type
-                  </label>
-                </div>
-              </div>
-            </div>
+            <Box
+              id="InputRow3"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="UserProgrammeInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-programme"
+                  select
+                  label="Programme"
+                  defaultValue=""
+                  value={newUserProgramme}
+                  onChange={(e) => chooseProgramme(e.target.value, "Single")}
+                  disabled={!newUserCourseType}
+                >
+                  <MenuItem value="">Choose Programme</MenuItem>
+                  {getProgrammesList("Single").map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
 
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterDropDownWrapper">
-                <div className="RegisterDropDown">
-                  <select
-                    value={newUserProgramme}
-                    id="se-Programme"
-                    onChange={(e) => chooseProgramme(e.target.value, "Single")}
-                    disabled={!newUserCourseType}
-                  >
-                    <option value="">Choose Programme</option>
-                    {getProgrammesList("Single").map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="se-Programme" className="DropDownLabel">
-                    Programme
-                  </label>
-                </div>
-              </div>
-
-              <div className="RegisterDropDownWrapper">
-                <div id="dv-RegisterBranch" className="RegisterDropDown">
-                  <select
-                    value={newUserBranch}
-                    id="se-Branch"
-                    onChange={(e) => chooseBranch(e.target.value, "Single")}
-                    disabled={!newUserProgramme}
-                  >
-                    <option value="">Choose Branch</option>
-                    {getBranchesList("Single").map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="se-Branch" className="DropDownLabel">
-                    Branch
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+              <Box
+                id="UserBranchInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-branch"
+                  select
+                  label="Branch"
+                  defaultValue=""
+                  value={newUserBranch}
+                  onChange={(e) => chooseBranch(e.target.value, "Single")}
+                  disabled={!newUserProgramme}
+                >
+                  <MenuItem value="">Choose Branch</MenuItem>
+                  {getBranchesList("Single").map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+            </Box>
+          </Box>
         )}
+
         {newAdditionType === "Multiple" && (
-          <div className="AddMultipleUserWrapper">
-            <div className="AuthenticationInputWrapper">
-              <input
-                type="number"
-                placeholder=" "
+          <Box
+            id="MultipleUserInputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              flexDirection: "column",
+            }}
+          >
+            <Typography
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: theme.palette.error.main,
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              <WarningIcon
+                sx={{ marginRight: "0.5rem", fill: theme.palette.error.main }}
+              />{" "}
+              For multiple user addition, passwords won't be released to users
+              personally, to reduce load on backend server. Users have to
+              manually reset password. Notify users to reset password through
+              "Forgot Password" option in login page.
+            </Typography>
+            <Box
+              id="RegNoPrefixInput"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={{ xs: "100%", md: "30%" }}
+            >
+              <TextField
+                sx={{ width: "80%", margin: "2rem 0rem" }}
+                required
+                id="inp-regnoprefix"
+                label="Reg. No. Prefix"
                 value={commonRegNoPrefix}
                 onChange={(e) => setCommonRegNoPrefix(e.target.value)}
-                required
               />
-              <label className="AuthenticationTextFieldLabel">
-                Reg No. Prefix
-              </label>
-            </div>
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterInputWrapper">
-                <input
-                  type="number"
-                  placeholder=" "
+            </Box>
+            <Box
+              id="InputRow1"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="RegNoStartInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-regnostart"
+                  label="Reg. No. Start"
                   value={commonRegNoStart}
                   onChange={(e) => setCommonRegNoStart(e.target.value)}
-                  required
                 />
-                <label
-                  htmlFor="in-register_studentno"
-                  className="RegisterTextFieldLabel"
-                >
-                  Reg No. Start
-                </label>
-              </div>
-              <div className="RegisterInputWrapper">
-                <input
-                  type="number"
-                  placeholder=" "
+              </Box>
+
+              <Box
+                id="RegNoEndInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-regnoend"
+                  label="Reg. No. End"
                   value={commonRegNoEnd}
                   onChange={(e) => setCommonRegNoEnd(e.target.value)}
-                  required
                 />
-                <label
-                  htmlFor="in-register_studentno"
-                  className="RegisterTextFieldLabel"
-                >
-                  Reg No. End
-                </label>
-              </div>
-            </div>
+              </Box>
+            </Box>
 
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterInputWrapper">
-                <input
-                  type="text"
-                  placeholder=" "
+            <Box
+              id="InputRow2"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="SkipRegNoInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  id="inp-skipregno"
+                  label="Skip Reg. No."
                   value={skipRegNo}
                   onChange={(e) => setSkipRegNoEnd(e.target.value)}
-                  required
                 />
-                <label className="RegisterTextFieldLabel">Skip Reg No</label>
-              </div>
-              <div className="RegisterInputWrapper">
-                <input
-                  type="text"
-                  placeholder=" "
+              </Box>
+
+              <Box
+                id="EmailSuffixInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-emailsuffix"
+                  label="Email Suffix"
                   value={commonEmailSuffix}
                   onChange={(e) => setCommonEmailSuffix(e.target.value)}
-                  required
                 />
-                <label className="RegisterTextFieldLabel">
-                  Common Email Suffix
-                </label>
-              </div>
-            </div>
+              </Box>
+            </Box>
 
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterDropDownWrapper">
-                <div className="RegisterDropDown">
-                  <select
-                    value={commonUserDept}
-                    id="se-Department"
-                    onChange={(e) => setCommonUserDept(e.target.value)}
-                  >
-                    <option value="Information Science and Technology">
-                      Information Science and Technology
-                    </option>
-                    <option value="Biomedical Engineering">
-                      Biomedical Engineering
-                    </option>
-                    <option value="Civil Engineering">Civil Engineering</option>
-                    <option value="Computer Science and Engineering">
-                      Computer Science and Engineering
-                    </option>
-                    <option value="Chemistry">
-                      Electrical and Electronics Engineering
-                    </option>
-                    <option value="Electronics and Communication Engineering">
-                      Electronics and Communication Engineering
-                    </option>
-                    <option value="English">English</option>
-                    <option value="Geology">Geology</option>
-                    <option value="Industrial Engineering">
-                      Industrial Engineering
-                    </option>
-                    <option value="Mathematics">Mathematics</option>
-                    <option value="Manufacturing Engineering">
-                      Manufacturing Engineering
-                    </option>
-                    <option value="Management Studies">
-                      Management Studies
-                    </option>
-                    <option value="Mechanical Engineering">
-                      Mechanical Engineering
-                    </option>
-                    <option value="Media Sciences">Media Sciences</option>
-                    <option value="Medical Physics">Medical Physics</option>
-                    <option value="Mining Engineering">
-                      Mining Engineering
-                    </option>
-                    <option value="Physics">Physics</option>
-                    <option value="Printing and Packaging Technology">
-                      Priniting and Packaging Technology
-                    </option>
-                  </select>
-                  <label htmlFor="se-Department" className="DropDownLabel">
-                    Department
-                  </label>
-                </div>
-              </div>
+            <Box
+              id="InputRow3"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="DepartmentInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-dept"
+                  select
+                  label="Department"
+                  defaultValue="Information Science and Technology"
+                  value={commonUserDept}
+                  onChange={(e) => setCommonUserDept(e.target.value)}
+                >
+                  {dropdownOptions.departments.map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
 
-              <div className="RegisterDropDownWrapper">
-                <div className="RegisterDropDown">
-                  <select
-                    value={commonUserCourseType}
-                    id="se-CourseType"
-                    onChange={(e) =>
-                      chooseCourseType(e.target.value, "Multiple")
-                    }
-                  >
-                    <option value="">Choose course type</option>
-                    {dropdownOptions.courseTypes.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="se-CourseType" className="DropDownLabel">
-                    Course Type
-                  </label>
-                </div>
-              </div>
-            </div>
+              <Box
+                id="CourseTypeInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-courseType"
+                  select
+                  label="Course Type"
+                  defaultValue=""
+                  value={commonUserCourseType}
+                  onChange={(e) => chooseCourseType(e.target.value, "Multiple")}
+                >
+                  <MenuItem value="">Choose course type</MenuItem>
+                  {dropdownOptions.courseTypes.map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+            </Box>
 
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterDropDownWrapper">
-                <div className="RegisterDropDown">
-                  <select
-                    value={commonUserProgramme}
-                    id="se-Programme"
-                    onChange={(e) =>
-                      chooseProgramme(e.target.value, "Multiple")
-                    }
-                    disabled={!commonUserCourseType}
-                  >
-                    <option value="">Choose Programme</option>
-                    {getProgrammesList("Multiple").map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="se-Programme" className="DropDownLabel">
-                    Programme
-                  </label>
-                </div>
-              </div>
+            <Box
+              id="InputRow4"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="ProgrammeInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-programme"
+                  select
+                  label="Programme"
+                  defaultValue=""
+                  value={commonUserProgramme}
+                  onChange={(e) => chooseProgramme(e.target.value, "Multiple")}
+                  disabled={!commonUserCourseType}
+                >
+                  <MenuItem value="">Choose Programme</MenuItem>
+                  {getProgrammesList("Multiple").map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
 
-              <div className="RegisterDropDownWrapper">
-                <div id="dv-RegisterBranch" className="RegisterDropDown">
-                  <select
-                    value={commonUserBranch}
-                    id="se-Branch"
-                    onChange={(e) => chooseBranch(e.target.value, "Multiple")}
-                    disabled={!commonUserProgramme}
-                  >
-                    <option value="">Choose Branch</option>
-                    {getBranchesList("Multiple").map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="se-Branch" className="DropDownLabel">
-                    Branch
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+              <Box
+                id="BranchInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-branch"
+                  select
+                  label="Branch"
+                  defaultValue=""
+                  value={commonUserBranch}
+                  onChange={(e) => chooseBranch(e.target.value, "Multiple")}
+                  disabled={!commonUserProgramme}
+                >
+                  <MenuItem value="">Choose Branch</MenuItem>
+                  {getBranchesList("Multiple").map((option, index) => (
+                    <MenuItem key={index} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+            </Box>
+          </Box>
         )}
 
         {showUsers && (
-          <div className="ListAdminsWrapper">
-            <div className="AdminsListHeading">
-              <p className="AdminTableHeading">The below users will be added</p>
-            </div>
-            <div className="AdminsList">
-              <table className="CurrentAdminsTable">
-                <thead>
-                  <tr>
-                    <th>Reg No.</th>
-                    <th>Email</th>
-                    <th>Dept.</th>
-                    <th>Course Type</th>
-                    <th>Programme</th>
-                    <th>Branch</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {usersList.map((user, index) => (
-                    <tr key={index}>
-                      <td>{user.registerNumber}</td>
-                      <td>{user.email}</td>
-                      <td>{user.department}</td>
-                      <td>{user.courseType}</td>
-                      <td>{user.programme}</td>
-                      <td>{user.branch}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <Box
+            id="TableWrapper"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+            }}
+          >
+            <Box
+              id="TableHeading"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
+            >
+              <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+                The below users will be added
+              </Typography>
+            </Box>
+            <Box
+              id="TableContent"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+            >
+              <TableContainer
+                component={Paper}
+                sx={{ width: "100%", overflowX: "auto" }}
+              >
+                <Table
+                  stickyHeader
+                  sx={{ minWidth: 650 }}
+                  aria-label="admin list table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Reg No.
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Email
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Dept.
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Course Type
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Programme
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Branch
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    {usersList.map((user) => (
+                      <TableRow
+                        key={`${user.registerNumber}-${user.email}`}
+                        hover
+                      >
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.registerNumber}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.email}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.department}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.courseType}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.programme}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.branch}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Box>
         )}
 
         {needApprovalSingle && (
-          <div className="AdminMgmtApprovalWrapper">
-            <div className="AdminMgmtApproval">
-              <input
-                type="checkbox"
-                checked={approval}
-                onChange={(e) => setApproval(e.target.checked)}
-              />
-              <span>
-                I affirm and authorize the above mentioned person to be a new
-                user of this site.
-              </span>
-            </div>
-            <button
-              style={{ marginTop: "2rem" }}
-              onClick={getVerificationOtp}
-              disabled={
-                !approval ||
-                !newUserEmail ||
-                !newUserRegNo ||
-                !newUserDept ||
-                !newUserCourseType ||
-                !newUserProgramme ||
-                !newUserBranch
-              }
-              className="PreviewButton"
+          <Box
+            id="ApprovalWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="ApprovalStatement"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
             >
-              Approve
-            </button>
-          </div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={approval}
+                    onChange={(e) => setApproval(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="I affirm and authorize the above mentioned person to be a new
+                user of this site"
+                labelPlacement="end"
+              />
+            </Box>
+            <Box
+              id="ApprovalButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={getVerificationOtp}
+                disabled={
+                  !approval ||
+                  !newUserEmail ||
+                  !newUserRegNo ||
+                  !newUserDept ||
+                  !newUserCourseType ||
+                  !newUserProgramme ||
+                  !newUserBranch
+                }
+                size="large"
+                endIcon={<CheckIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Approve
+              </Button>
+            </Box>
+          </Box>
         )}
 
         {needApprovalMul && (
-          <div className="AdminMgmtApprovalWrapper">
-            <div className="AdminMgmtApproval">
-              <input
-                type="checkbox"
-                checked={approval}
-                onChange={(e) => setApproval(e.target.checked)}
-              />
-              <span>
-                I affirm and authorize the above mentioned persons to be a new
-                user of this site.
-              </span>
-            </div>
-            <button
-              style={{ marginTop: "2rem" }}
-              onClick={getVerificationOtp}
-              disabled={
-                !approval ||
-                !commonEmailSuffix ||
-                !commonRegNoStart ||
-                !commonRegNoEnd ||
-                !commonUserDept ||
-                !commonUserCourseType ||
-                !commonUserProgramme ||
-                !commonUserBranch
-              }
-              className="PreviewButton"
+          <Box
+            id="ApprovalWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="ApprovalStatement"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
             >
-              Approve
-            </button>
-          </div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={approval}
+                    onChange={(e) => setApproval(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="I affirm and authorize the above mentioned persons to be a new
+                user of this site"
+                labelPlacement="end"
+              />
+            </Box>
+            <Box
+              id="ApprovalButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={getVerificationOtp}
+                disabled={
+                  !approval ||
+                  !commonEmailSuffix ||
+                  !commonRegNoStart ||
+                  !commonRegNoEnd ||
+                  !commonUserDept ||
+                  !commonUserCourseType ||
+                  !commonUserProgramme ||
+                  !commonUserBranch
+                }
+                size="large"
+                endIcon={<CheckIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Approve
+              </Button>
+            </Box>
+          </Box>
         )}
 
         {showOtp && (
-          <div className="AdminMgmtOtpWrapper">
-            <div className="AdminMgmtOtp">
-              <input
+          <Box
+            id="OtpWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="OtpInput"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={{ xs: "100%", md: "50%" }}
+            >
+              <TextField
+                sx={{ width: "80%", margin: "2rem 0rem" }}
+                required
+                id="inp-otp"
+                label="Otp"
                 type="text"
-                placeholder=" "
                 value={otpInput}
                 onChange={(e) => setOtpInput(e.target.value)}
-                required
               />
-              <label className="AdminMgmtTextFieldLabel2">Otp</label>
-            </div>
-            <button
-              onClick={addUserToDB}
-              disabled={!otpInput}
-              className="AddInputButtons"
+            </Box>
+            <Box
+              id="SubmitButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
             >
-              Add User
-            </button>
-          </div>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={addUserToDB}
+                disabled={!otpInput}
+                size="large"
+                endIcon={<PersonAddAlt1Icon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Add Users
+              </Button>
+            </Box>
+          </Box>
         )}
-      </div>
+      </Box>
     </>
   );
 };
