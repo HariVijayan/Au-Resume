@@ -2,9 +2,29 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  useTheme,
+} from "@mui/material";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import Paper from "@mui/material/Paper";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 const ModifyUser = () => {
   const requestType = "modifyUser";
+
+  const [loadingAnim, setLoadingAnim] = useState(false);
+
+  const theme = useTheme();
 
   const [modifyUserEmail, setModifyUserEmail] = useState("");
   const [modifyUserRegNo, setModifyUserRegNo] = useState("");
@@ -31,12 +51,19 @@ const ModifyUser = () => {
   useEffect(() => {
     if (modifyUserEmail && modifyUserRegNo) {
       setShowGetListButton(true);
+      setServerMessage("Click on 'Get user list' button to fetch user list");
+      setServerMsgType("info");
+      setShowServerMsg(true);
     } else {
       setShowGetListButton(false);
     }
   }, [modifyUserEmail, modifyUserRegNo]);
 
   const getFinalUserList = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/userMgmt/modifyUser/get-final-users",
@@ -50,10 +77,12 @@ const ModifyUser = () => {
       setShowUsers(true);
       setAccountActions(true);
       setNeedApproval(true);
+      setLoadingAnim(false);
       setServerMessage("Successfully fetched the user details");
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response.data.message || "Failed to fetch user details"
       );
@@ -63,6 +92,10 @@ const ModifyUser = () => {
   };
 
   const getVerificationOtp = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
@@ -70,10 +103,13 @@ const ModifyUser = () => {
         { withCredentials: true }
       );
       setShowOtp(true);
+      setLoadingAnim(false);
+      setNeedApproval(false);
       setServerMessage("Otp sent to email successfully");
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Failed to generate Otp"
       );
@@ -83,6 +119,10 @@ const ModifyUser = () => {
   };
 
   const modifyUserDetails = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/userMgmt/modifyAccount/modifyUser",
@@ -95,7 +135,7 @@ const ModifyUser = () => {
         },
         { withCredentials: true }
       );
-
+      setLoadingAnim(false);
       setServerMessage(
         `The requested modification(s) have been performed successfully. Refreshing the page in 5 seconds.`
       );
@@ -106,6 +146,7 @@ const ModifyUser = () => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
           "Failed to modify user account. Refreshing the page in 5 seconds. Please try again."
@@ -139,126 +180,390 @@ const ModifyUser = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <div className="AdminMgmtWrapper">
-        <p className="AdminMgmtActionHeading">Modify User Account</p>
-        <span>
-          (Cross verify each user's details [email, register number] before
-          making changes in the account.)
-        </span>
-        <div className="AdminMgmtActions">
-          <div className="AdminConsoleInputsWrapper">
-            <div className="AdminMgmtInputWrapper">
-              <input
+
+      <Box
+        id="AdminActionsWrapper"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "2rem 0rem",
+        }}
+      >
+        <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+          Modify User Account
+        </Typography>
+        <Typography sx={{ textAlign: "center" }}>
+          (Cross verify user's details [email, register number] before making
+          changes in the account.)
+        </Typography>
+
+        <Box
+          id="InputsWrapper"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            flexDirection: "column",
+          }}
+        >
+          <Box
+            id="InputRow1"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+            }}
+            justifyContent={{ xs: "center", md: "space-evenly" }}
+            flexDirection={{ xs: "column", md: "row" }}
+          >
+            <Box
+              id="UserEmailInput"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={{ xs: "100%", md: "30%" }}
+            >
+              <TextField
+                sx={{ width: "80%", margin: "2rem 0rem" }}
+                required
+                id="inp-email"
+                label="Email"
                 type="email"
-                placeholder=" "
                 value={modifyUserEmail}
                 onChange={(e) => setModifyUserEmail(e.target.value)}
-                required
               />
-              <label className="AdminMgmtTextFieldLabel3">Email</label>
-            </div>
+            </Box>
 
-            <div className="AdminMgmtInputWrapper">
-              <input
-                type="number"
-                placeholder=" "
+            <Box
+              id="UserRegNoInput"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={{ xs: "100%", md: "30%" }}
+            >
+              <TextField
+                sx={{ width: "80%", margin: "2rem 0rem" }}
+                required
+                id="inp-regno"
+                label="Register Number"
                 value={modifyUserRegNo}
                 onChange={(e) => setModifyUserRegNo(e.target.value)}
-                required
               />
-              <label className="AdminMgmtTextFieldLabel3">
-                Register Number
-              </label>
-            </div>
-          </div>
+            </Box>
+          </Box>
+        </Box>
 
-          {showGetListButton && (
-            <button
-              style={{ marginTop: "2rem" }}
-              onClick={getFinalUserList}
-              className="DownloadButton"
+        {showGetListButton && (
+          <Button
+            variant="contained"
+            size="large"
+            endIcon={<GetAppIcon />}
+            loading={loadingAnim}
+            loadingPosition="end"
+            sx={{ margin: "2rem 0rem", textTransform: "none" }}
+            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+            onClick={getFinalUserList}
+          >
+            Get User List
+          </Button>
+        )}
+
+        {showUsers && (
+          <Box
+            id="TableWrapper"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+            }}
+          >
+            <Box
+              id="TableHeading"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
             >
-              Get User Details
-            </button>
-          )}
+              <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+                The changes will be made in this user's account
+              </Typography>
+            </Box>
+            <Box
+              id="TableContent"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+            >
+              <TableContainer
+                component={Paper}
+                sx={{ width: "100%", overflowX: "auto" }}
+              >
+                <Table
+                  stickyHeader
+                  sx={{ minWidth: 650 }}
+                  aria-label="admin list table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Reg No.
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Email
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Dept.
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Course Type
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Programme
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Branch
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
 
-          {showUsers && (
-            <div className="ListAdminsWrapper">
-              <div className="AdminsListHeading">
-                <p className="AdminTableHeading">
-                  The changes will be made in this user's account
-                </p>
-              </div>
-              <div className="AdminsList">
-                <table className="CurrentAdminsTable">
-                  <thead>
-                    <tr>
-                      <th>Reg No.</th>
-                      <th>Email</th>
-                      <th>Dept.</th>
-                      <th>Course Type</th>
-                      <th>Programme</th>
-                      <th>Branch</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {usersList.map((user, index) => (
-                      <tr key={index}>
-                        <td>{user.registerNumber}</td>
-                        <td>{user.email}</td>
-                        <td>{user.department}</td>
-                        <td>{user.courseType}</td>
-                        <td>{user.programme}</td>
-                        <td>{user.branch}</td>
-                      </tr>
+                  <TableBody>
+                    {usersList.map((user) => (
+                      <TableRow
+                        key={`${user.registerNumber}-${user.email}`}
+                        hover
+                      >
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.registerNumber}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.email}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.department}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.courseType}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.programme}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.branch}
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Box>
+        )}
 
-          {accountActions && (
-            <>
-              <h4>Choose an action to perform on the account</h4>
-              <div className="AdminMgmtModifyActions">
-                <div className="AdminMgmtModifyActionsLeft">
-                  <input
-                    type="checkbox"
-                    id="in-modify_admin_password_reset"
-                    checked={passwordReset}
-                    onChange={(e) => setPasswordReset(e.target.checked)}
+        {accountActions && (
+          <>
+            <Box
+              id="InputsWrapper"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                flexDirection: "column",
+              }}
+            >
+              <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+                Choose an action to perform on the account
+              </Typography>
+              <Box
+                id="InputRow1"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  margin: "2rem 0rem",
+                }}
+                justifyContent={{ xs: "center", md: "space-evenly" }}
+                flexDirection={{ xs: "column", md: "row" }}
+              >
+                <Box
+                  id="PasswordResetChbx"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  width={{ xs: "100%", md: "30%" }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={passwordReset}
+                        onChange={(e) => setPasswordReset(e.target.checked)}
+                        color="primary"
+                      />
+                    }
+                    label="Password Reset"
+                    labelPlacement="end"
                   />
-                  <span>Password Reset</span>
-                </div>
-                <div className="AdminMgmtModifyActionsRight">
-                  <span>Unlock Account</span>
-                  <input
-                    type="checkbox"
-                    id="in-modify_admin_account_unlock"
-                    checked={accountUnlock}
-                    onChange={(e) => setAccountUnlock(e.target.checked)}
-                  />
-                </div>
-              </div>
-            </>
-          )}
+                </Box>
 
-          {needApproval && (
-            <div className="AdminMgmtApprovalWrapper">
-              <div className="AdminMgmtApproval">
-                <input
-                  type="checkbox"
-                  checked={approval}
-                  onChange={(e) => setApproval(e.target.checked)}
-                />
-                <span>
-                  I affirm and authorize the above mentioned changes to be
-                  reflected in the user's account.
-                </span>
-              </div>
-              <button
-                style={{ marginTop: "2rem" }}
+                <Box
+                  id="UnlockAccountChbx"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  width={{ xs: "100%", md: "30%" }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={accountUnlock}
+                        onChange={(e) => setAccountUnlock(e.target.checked)}
+                        color="primary"
+                      />
+                    }
+                    label="Unlock Account"
+                    labelPlacement="end"
+                  />
+                </Box>
+              </Box>
+            </Box>
+          </>
+        )}
+
+        {needApproval && (
+          <Box
+            id="ApprovalWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="ApprovalStatement"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={approval}
+                    onChange={(e) => setApproval(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="I affirm and authorize the above mentioned changes to be
+                  reflected in the user's account"
+                labelPlacement="end"
+              />
+            </Box>
+            <Box
+              id="ApprovalButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
                 onClick={getVerificationOtp}
                 disabled={
                   !approval ||
@@ -266,36 +571,77 @@ const ModifyUser = () => {
                   !modifyUserRegNo ||
                   !(passwordReset || accountUnlock)
                 }
-                className="PreviewButton"
+                size="large"
+                endIcon={<CheckIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
               >
                 Approve
-              </button>
-            </div>
-          )}
+              </Button>
+            </Box>
+          </Box>
+        )}
 
-          {showOtp && (
-            <div className="AdminMgmtOtpWrapper">
-              <div className="AdminMgmtOtp">
-                <input
-                  type="text"
-                  placeholder=" "
-                  value={otpInput}
-                  onChange={(e) => setOtpInput(e.target.value)}
-                  required
-                />
-                <label className="AdminMgmtTextFieldLabel2">Otp</label>
-              </div>
-              <button
+        {showOtp && (
+          <Box
+            id="OtpWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="OtpInput"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={{ xs: "100%", md: "50%" }}
+            >
+              <TextField
+                sx={{ width: "80%", margin: "2rem 0rem" }}
+                required
+                id="inp-otp"
+                label="Otp"
+                type="text"
+                value={otpInput}
+                onChange={(e) => setOtpInput(e.target.value)}
+              />
+            </Box>
+            <Box
+              id="SubmitButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="success"
                 onClick={modifyUserDetails}
                 disabled={!otpInput}
-                className="AddInputButtons"
+                size="large"
+                endIcon={<DoneAllIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
               >
-                Confirm changes
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+                Confirm Changes
+              </Button>
+            </Box>
+          </Box>
+        )}
+      </Box>
     </>
   );
 };

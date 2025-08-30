@@ -13,13 +13,7 @@ import {
   TableRow,
   useTheme,
 } from "@mui/material";
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import Paper from "@mui/material/Paper";
 import PersonIcon from "@mui/icons-material/Person";
@@ -304,7 +298,7 @@ const RemoveUser = () => {
           individually before removing them from the site.)
         </Typography>
         <Box
-          id="UserAdditionType"
+          id="UserRemovalType"
           sx={{
             display: "flex",
             justifyContent: "space-between",
