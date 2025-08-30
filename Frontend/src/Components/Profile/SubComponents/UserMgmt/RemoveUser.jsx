@@ -2,9 +2,37 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  useTheme,
+} from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  TextField,
+} from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import Paper from "@mui/material/Paper";
+import PersonIcon from "@mui/icons-material/Person";
+import GroupIcon from "@mui/icons-material/Group";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import GetAppIcon from "@mui/icons-material/GetApp";
 
 const RemoveUser = () => {
   const requestType = "removeNewUser";
+
+  const [loadingAnim, setLoadingAnim] = useState(false);
+
+  const theme = useTheme();
 
   const [usersList, setUsersList] = useState([]);
   const [opertationType, setOpertationType] = useState("");
@@ -43,10 +71,33 @@ const RemoveUser = () => {
       commonRegNoEnd
     ) {
       setShowGetListButton(true);
-    }
-    if (opertationType === "Single" && remUserEmail && remUserRegNo) {
+      setServerMessage("Click on 'Get user list' button to fetch user list");
+      setServerMsgType("info");
+      setShowServerMsg(true);
+    } else if (opertationType === "Single" && remUserEmail && remUserRegNo) {
       setShowGetListButton(true);
+      setServerMessage("Click on 'Get user list' button to fetch user list");
+      setServerMsgType("info");
+      setShowServerMsg(true);
     } else if (opertationType != "Single" && opertationType != "Multiple") {
+      setShowUsers(false);
+      setNeedApprovalSingle(false);
+      setNeedApprovalMul(false);
+      setShowGetListButton(false);
+    } else if (
+      (opertationType === "Single" && !remUserEmail) ||
+      (opertationType === "Single" && !remUserRegNo)
+    ) {
+      setShowUsers(false);
+      setNeedApprovalSingle(false);
+      setNeedApprovalMul(false);
+      setShowGetListButton(false);
+    } else if (
+      (opertationType === "Multiple" && !commonEmailSuffix) ||
+      (opertationType === "Multiple" && !commonRegNoPrefix) ||
+      (opertationType === "Multiple" && !commonRegNoStart) ||
+      (opertationType === "Multiple" && !commonRegNoEnd)
+    ) {
       setShowUsers(false);
       setNeedApprovalSingle(false);
       setNeedApprovalMul(false);
@@ -77,6 +128,10 @@ const RemoveUser = () => {
   };
 
   const getFinalUserList = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/userMgmt/removeUser/get-final-users",
@@ -94,7 +149,7 @@ const RemoveUser = () => {
       );
       setUsersList(response.data.usersList);
       setShowUsers(true);
-
+      setLoadingAnim(false);
       setServerMessage("Successfully fetched the user list");
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -108,6 +163,7 @@ const RemoveUser = () => {
         setNeedApprovalSingle(false);
       }
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response.data.message || "Failed to fetch user list"
       );
@@ -135,6 +191,10 @@ const RemoveUser = () => {
         return;
       }
     }
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
@@ -142,10 +202,14 @@ const RemoveUser = () => {
         { withCredentials: true }
       );
       setShowOtp(true);
+      setNeedApprovalMul(false);
+      setNeedApprovalSingle(false);
+      setLoadingAnim(false);
       setServerMessage("Otp sent to email successfully");
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         error.response?.data?.message || "Failed to generate Otp"
       );
@@ -155,6 +219,10 @@ const RemoveUser = () => {
   };
 
   const removeUserFromDB = async () => {
+    setLoadingAnim(true);
+    setServerMessage("Processing your request...");
+    setServerMsgType("info");
+    setShowServerMsg(true);
     try {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/userMgmt/existingUser/removeUser",
@@ -171,7 +239,7 @@ const RemoveUser = () => {
         },
         { withCredentials: true }
       );
-
+      setLoadingAnim(false);
       setServerMessage(
         `User(s) have been removed from the site successfully. Refreshing the page in 5 seconds.`
       );
@@ -182,6 +250,7 @@ const RemoveUser = () => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
     } catch (error) {
+      setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
           "Failed to remove user(s). Refreshing the page in 5 seconds."
@@ -215,276 +284,628 @@ const RemoveUser = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <div className="AdminMgmtWrapper">
-        <p className="AdminMgmtActionHeading">Remove Existing Users</p>
-        <span>
+
+      <Box
+        id="AdminActionsWrapper"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "2rem 0rem",
+        }}
+      >
+        <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+          Remove Existing Users
+        </Typography>
+        <Typography sx={{ textAlign: "center" }}>
           (Cross verify each user's details [email, register number]
           individually before removing them from the site.)
-        </span>
-        <div className="UserMgmtButtons">
-          <button
-            className="LeftNavigationButtons"
+        </Typography>
+        <Box
+          id="UserAdditionType"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            margin: "2rem 0rem",
+            gap: "1rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <Button
+            variant="contained"
             onClick={() => modifyAddUserOperation("Single")}
+            size="large"
+            endIcon={<PersonIcon />}
+            sx={{
+              margin: "2rem 0rem",
+              textTransform: "none",
+              backgroundColor: `${theme.palette.brown.main}`,
+            }}
+            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24px"
-              viewBox="0 -960 960 960"
-              width="24px"
-              fill="#e3e3e3"
-            >
-              <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-            </svg>
             Single User
-          </button>
-          <button
-            className="RightNavigationButtons"
+          </Button>
+          <Button
+            variant="contained"
             onClick={() => modifyAddUserOperation("Multiple")}
+            size="large"
+            endIcon={<GroupIcon />}
+            sx={{
+              margin: "2rem 0rem",
+              textTransform: "none",
+              backgroundColor: `${theme.palette.black.main}`,
+            }}
+            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
           >
-            Multiple Users
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24px"
-              viewBox="0 -960 960 960"
-              width="24px"
-              fill="#e3e3e3"
-            >
-              <path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z" />
-            </svg>
-          </button>
-        </div>
+            Multiple User
+          </Button>
+        </Box>
+
         {opertationType === "Single" && (
-          <div className="AddSingleUserWrapper">
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterInputWrapper">
-                <input
+          <Box
+            id="SingleUserInputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="InputRow1"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="UserEmailInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-email"
+                  label="Email"
                   type="email"
-                  placeholder=" "
                   value={remUserEmail}
                   onChange={(e) => setRemUserEmail(e.target.value)}
-                  required
                 />
-                <label
-                  htmlFor="in-register_email"
-                  className="RegisterTextFieldLabel"
-                >
-                  Email
-                </label>
-              </div>
+              </Box>
 
-              <div className="RegisterInputWrapper">
-                <input
-                  type="number"
-                  placeholder=" "
+              <Box
+                id="UserRegNoInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-regno"
+                  label="Register Number"
                   value={remUserRegNo}
                   onChange={(e) => setRemUserRegNo(e.target.value)}
-                  required
                 />
-                <label
-                  htmlFor="in-register_studentno"
-                  className="RegisterTextFieldLabel"
-                >
-                  Register Number
-                </label>
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
         )}
+
         {opertationType === "Multiple" && (
-          <div className="AddMultipleUserWrapper">
-            <div className="AuthenticationInputWrapper">
-              <input
-                type="number"
-                placeholder=" "
+          <Box
+            id="MultipleUserInputsWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="RegNoPrefixInput"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={{ xs: "100%", md: "30%" }}
+            >
+              <TextField
+                sx={{ width: "80%", margin: "2rem 0rem" }}
+                required
+                id="inp-regnoprefix"
+                label="Reg. No. Prefix"
                 value={commonRegNoPrefix}
                 onChange={(e) => setCommonRegNoPrefix(e.target.value)}
-                required
               />
-              <label className="AuthenticationTextFieldLabel">
-                Reg No. Prefix
-              </label>
-            </div>
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterInputWrapper">
-                <input
-                  type="number"
-                  placeholder=" "
+            </Box>
+            <Box
+              id="InputRow1"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="RegNoStartInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-regnostart"
+                  label="Reg. No. Start"
                   value={commonRegNoStart}
                   onChange={(e) => setCommonRegNoStart(e.target.value)}
-                  required
                 />
-                <label
-                  htmlFor="in-register_studentno"
-                  className="RegisterTextFieldLabel"
-                >
-                  Reg No. Start
-                </label>
-              </div>
-              <div className="RegisterInputWrapper">
-                <input
-                  type="number"
-                  placeholder=" "
+              </Box>
+
+              <Box
+                id="RegNoEndInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-regnoend"
+                  label="Reg. No. End"
                   value={commonRegNoEnd}
                   onChange={(e) => setCommonRegNoEnd(e.target.value)}
-                  required
                 />
-                <label
-                  htmlFor="in-register_studentno"
-                  className="RegisterTextFieldLabel"
-                >
-                  Reg No. End
-                </label>
-              </div>
-            </div>
+              </Box>
+            </Box>
 
-            <div className="RegistrationDivWrapper">
-              <div className="RegisterInputWrapper">
-                <input
-                  type="text"
-                  placeholder=" "
+            <Box
+              id="InputRow2"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+              justifyContent={{ xs: "center", md: "space-evenly" }}
+              flexDirection={{ xs: "column", md: "row" }}
+            >
+              <Box
+                id="SkipRegNoInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  id="inp-skipregno"
+                  label="Skip Reg. No."
                   value={skipRegNo}
                   onChange={(e) => setSkipRegNoEnd(e.target.value)}
-                  required
                 />
-                <label className="RegisterTextFieldLabel">Skip Reg No</label>
-              </div>
-              <div className="RegisterInputWrapper">
-                <input
-                  type="text"
-                  placeholder=" "
+              </Box>
+
+              <Box
+                id="EmailSuffixInput"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "100%", md: "30%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="inp-emailsuffix"
+                  label="Email Suffix"
                   value={commonEmailSuffix}
                   onChange={(e) => setCommonEmailSuffix(e.target.value)}
-                  required
                 />
-                <label className="RegisterTextFieldLabel">
-                  Common Email Suffix
-                </label>
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
         )}
 
         {showGetListButton && (
-          <button
-            style={{ marginTop: "2rem" }}
+          <Button
+            variant="contained"
+            size="large"
+            endIcon={<GetAppIcon />}
+            loading={loadingAnim}
+            loadingPosition="end"
+            sx={{ margin: "2rem 0rem", textTransform: "none" }}
+            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
             onClick={getFinalUserList}
-            className="DownloadButton"
           >
             Get User List
-          </button>
+          </Button>
         )}
 
         {showUsers && (
-          <div className="ListAdminsWrapper">
-            <div className="AdminsListHeading">
-              <p className="AdminTableHeading">
+          <Box
+            id="TableWrapper"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+            }}
+          >
+            <Box
+              id="TableHeading"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
+            >
+              <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
                 The below users will be removed
-              </p>
-            </div>
-            <div className="AdminsList">
-              <table className="CurrentAdminsTable">
-                <thead>
-                  <tr>
-                    <th>Reg No.</th>
-                    <th>Email</th>
-                    <th>Dept.</th>
-                    <th>Course Type</th>
-                    <th>Programme</th>
-                    <th>Branch</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {usersList.map((user, index) => (
-                    <tr key={index}>
-                      <td>{user.registerNumber}</td>
-                      <td>{user.email}</td>
-                      <td>{user.department}</td>
-                      <td>{user.courseType}</td>
-                      <td>{user.programme}</td>
-                      <td>{user.branch}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+              </Typography>
+            </Box>
+            <Box
+              id="TableContent"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                margin: "2rem 0rem",
+              }}
+            >
+              <TableContainer
+                component={Paper}
+                sx={{ width: "100%", overflowX: "auto" }}
+              >
+                <Table
+                  stickyHeader
+                  sx={{ minWidth: 650 }}
+                  aria-label="admin list table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Reg No.
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Email
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Dept.
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Course Type
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Programme
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: `1px solid ${theme.palette.primary.main}`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Branch
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    {usersList.map((user) => (
+                      <TableRow
+                        key={`${user.registerNumber}-${user.email}`}
+                        hover
+                      >
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.registerNumber}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.email}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.department}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.courseType}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.programme}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            border: `1px solid ${theme.palette.primary.main}`,
+                          }}
+                        >
+                          {user.branch}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Box>
         )}
 
         {needApprovalSingle && (
-          <div className="AdminMgmtApprovalWrapper">
-            <div className="AdminMgmtApproval">
-              <input
-                type="checkbox"
-                checked={approval}
-                onChange={(e) => setApproval(e.target.checked)}
-              />
-              <span>
-                I affirm and authorize the above mentioned person to be removed
-                from this site.
-              </span>
-            </div>
-            <button
-              style={{ marginTop: "2rem" }}
-              onClick={getVerificationOtp}
-              disabled={!approval || !remUserEmail || !remUserRegNo}
-              className="PreviewButton"
+          <Box
+            id="ApprovalWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="ApprovalStatement"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
             >
-              Approve
-            </button>
-          </div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={approval}
+                    onChange={(e) => setApproval(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="I affirm and authorize the above mentioned person to be removed
+                from this site"
+                labelPlacement="end"
+              />
+            </Box>
+            <Box
+              id="ApprovalButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={getVerificationOtp}
+                disabled={!approval || !remUserEmail || !remUserRegNo}
+                size="large"
+                endIcon={<CheckIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Approve
+              </Button>
+            </Box>
+          </Box>
         )}
 
         {needApprovalMul && (
-          <div className="AdminMgmtApprovalWrapper">
-            <div className="AdminMgmtApproval">
-              <input
-                type="checkbox"
-                checked={approval}
-                onChange={(e) => setApproval(e.target.checked)}
-              />
-              <span>
-                I affirm and authorize the above mentioned persons to be removed
-                from this site.
-              </span>
-            </div>
-            <button
-              style={{ marginTop: "2rem" }}
-              onClick={getVerificationOtp}
-              disabled={
-                !approval ||
-                !commonEmailSuffix ||
-                !commonRegNoStart ||
-                !commonRegNoEnd
-              }
-              className="PreviewButton"
+          <Box
+            id="ApprovalWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="ApprovalStatement"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                flexWrap: "wrap",
+              }}
             >
-              Approve
-            </button>
-          </div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={approval}
+                    onChange={(e) => setApproval(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="I affirm and authorize the above mentioned persons to be removed
+                from this site"
+                labelPlacement="end"
+              />
+            </Box>
+            <Box
+              id="ApprovalButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={getVerificationOtp}
+                disabled={
+                  !approval ||
+                  !commonEmailSuffix ||
+                  !commonRegNoStart ||
+                  !commonRegNoEnd
+                }
+                size="large"
+                endIcon={<CheckIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Approve
+              </Button>
+            </Box>
+          </Box>
         )}
 
         {showOtp && (
-          <div className="AdminMgmtOtpWrapper">
-            <div className="AdminMgmtOtp">
-              <input
+          <Box
+            id="OtpWrapper"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              margin: "2rem 0rem",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              id="OtpInput"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={{ xs: "100%", md: "50%" }}
+            >
+              <TextField
+                sx={{ width: "80%", margin: "2rem 0rem" }}
+                required
+                id="inp-otp"
+                label="Otp"
                 type="text"
-                placeholder=" "
                 value={otpInput}
                 onChange={(e) => setOtpInput(e.target.value)}
-                required
               />
-              <label className="AdminMgmtTextFieldLabel2">Otp</label>
-            </div>
-            <button
-              onClick={removeUserFromDB}
-              disabled={!otpInput}
-              className="AddInputButtons"
+            </Box>
+            <Box
+              id="SubmitButton"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
             >
-              Remove User
-            </button>
-          </div>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={removeUserFromDB}
+                disabled={!otpInput}
+                size="large"
+                endIcon={<PersonRemoveIcon />}
+                loading={loadingAnim}
+                loadingPosition="end"
+                sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+              >
+                Remove Users
+              </Button>
+            </Box>
+          </Box>
         )}
-      </div>
+      </Box>
     </>
   );
 };
