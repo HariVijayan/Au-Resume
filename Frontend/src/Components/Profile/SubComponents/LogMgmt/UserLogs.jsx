@@ -223,6 +223,8 @@ const UserLogs = () => {
             variant="contained"
             onClick={() => setLogTypeRequested("Regular")}
             size="large"
+            loading={loadingAnim}
+            loadingPosition="end"
             endIcon={<CheckCircleIcon />}
             sx={{
               margin: "2rem 0rem",
@@ -237,6 +239,8 @@ const UserLogs = () => {
             variant="contained"
             onClick={() => setLogTypeRequested("Error")}
             size="large"
+            loading={loadingAnim}
+            loadingPosition="end"
             endIcon={<ErrorIcon />}
             sx={{
               margin: "2rem 0rem",
