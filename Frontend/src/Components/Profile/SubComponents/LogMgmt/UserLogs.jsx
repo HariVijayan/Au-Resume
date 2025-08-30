@@ -2,10 +2,35 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/material";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import FilterListAltIcon from "@mui/icons-material/FilterListAlt";
 
 const PAGE_SIZE = 50;
 
 const UserLogs = () => {
+  const [loadingAnim, setLoadingAnim] = useState(false);
+
+  const theme = useTheme();
+
   const [loading, setLoading] = useState(false);
   const [logsData, setLogsData] = useState({
     DateNewest: [],
@@ -41,6 +66,10 @@ const UserLogs = () => {
     setLinkedAccountFilter(""); // Reset filter when log type changes
 
     const fetchLogs = async () => {
+      setLoadingAnim(true);
+      setServerMessage("Processing your request...");
+      setServerMsgType("info");
+      setShowServerMsg(true);
       try {
         const response = await axios.post(
           "http://localhost:5000/admin/actions/logMgmt/getLogs",
@@ -64,10 +93,12 @@ const UserLogs = () => {
         });
         setTotalRecords(totalRecords);
         setVisibleLogsStart(0);
+        setLoadingAnim(false);
         setServerMessage("Logs fetched successfully");
         setServerMsgType("success");
         setShowServerMsg(true);
       } catch (error) {
+        setLoadingAnim(false);
         if (!isMounted) return;
         setServerMessage(
           error.response?.data?.message || "Error fetching logs"
@@ -157,179 +188,458 @@ const UserLogs = () => {
           {serverMessage}
         </Alert>
       </Snackbar>
-      <div className="AdminMgmtWrapper">
-        <p className="AdminMgmtActionHeading">User Logs</p>
-        <span>
+      <Box
+        id="AdminActionsWrapper"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "2rem 0rem",
+        }}
+      >
+        <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
+          User Logs
+        </Typography>
+        <Typography sx={{ textAlign: "center" }}>
           (Choose the respective buttons given below to see either regular logs
           or error logs registered for user accounts.)
-        </span>
+        </Typography>
 
-        <div className="AdminMgmtActions">
-          <div className="AdminConsoleInputsWrapper">
-            {["Regular", "Error"].map((type) => (
-              <div className="AdminMgmtInputWrapper" key={type}>
-                <button
-                  onClick={() => setLogTypeRequested(type)}
-                  className="AddInputButtons"
+        <Box
+          id="LogType"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            margin: "2rem 0rem",
+            gap: "1rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={() => setLogTypeRequested("Regular")}
+            size="large"
+            endIcon={<CheckCircleIcon />}
+            sx={{
+              margin: "2rem 0rem",
+              textTransform: "none",
+              backgroundColor: `${theme.palette.brown.main}`,
+            }}
+            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+          >
+            Regular Logs
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => setLogTypeRequested("Error")}
+            size="large"
+            endIcon={<ErrorIcon />}
+            sx={{
+              margin: "2rem 0rem",
+              textTransform: "none",
+              backgroundColor: `${theme.palette.black.main}`,
+            }}
+            padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+          >
+            Error Logs
+          </Button>
+        </Box>
+
+        {loading && (
+          <Typography textAlign={"center"}>Loading please wait...</Typography>
+        )}
+
+        {!loading && logTypeRequested && (
+          <>
+            <Box
+              id="LogActionsWrapper"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                width: "100%",
+                flexDirection: "column",
+                margin: "2rem 0rem",
+              }}
+            >
+              <Box
+                id="LogActionsHeading"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>
+                  {logTypeRequested} Logs
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  {type} Logs
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+                  <Typography>Total records currently:</Typography>
+                  <Typography sx={{ color: "red", marginLeft: "1rem" }}>
+                    {totalRecords}
+                  </Typography>
+                </Box>
+              </Box>
 
-      {loading && <div>Loading logs...</div>}
-
-      {!loading && logTypeRequested && (
-        <>
-          <div className="LogDisplayWrapper">
-            <div className="AdminsListHeading">
-              <p className="AdminTableHeading">{logTypeRequested} Logs</p>
-              <span>
-                Total records currently:{" "}
-                <span style={{ color: "red" }}>{totalRecords}</span>
-              </span>
-            </div>
-
-            <div className="LogListSort">
-              <div className="RegisterDropDown">
-                <select
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  margin: "2rem 0rem",
+                }}
+                width={{ xs: "100%", md: "50%", lg: "40%" }}
+              >
+                <TextField
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                  required
+                  id="se-sortby"
+                  select
+                  label="Sort By"
+                  defaultValue="DateNewest"
                   value={sortBy}
-                  id="se-sortBy"
                   onChange={(e) => {
                     setSortBy(e.target.value);
                     setVisibleLogsStart(0);
                   }}
                 >
-                  <option value="DateNewest">Date: Newest First</option>
-                  <option value="DateOldest">Date: Oldest First</option>
-                  <option value="PriorityHighest">
+                  <MenuItem value={"DateNewest"}>Date: Newest First</MenuItem>
+                  <MenuItem value={"DateOldest"}>Date: Oldest First</MenuItem>
+                  <MenuItem value="PriorityHighest">
                     Priority: Highest First
-                  </option>
-                  <option value="PriorityLowest">Priority: Lowest First</option>
-                </select>
-                <label htmlFor="se-sortBy" className="DropDownLabel">
-                  Sort By
-                </label>
-              </div>
-            </div>
+                  </MenuItem>
+                  <MenuItem value="PriorityLowest">
+                    Priority: Lowest First
+                  </MenuItem>
+                </TextField>
+              </Box>
 
-            <div className="LogListFilter">
-              <span onClick={toggleFilters}>
-                Click to show/hide available filters
-              </span>
-            </div>
-
-            {showFilters && (
-              <>
-                {" "}
-                <div className="LogFilterWrapper">
-                  <div className="AdminMgmtOtp">
-                    <input
-                      type="text"
-                      placeholder=" "
-                      value={linkedAccountFilter}
-                      onChange={(e) => setLinkedAccountFilter(e.target.value)}
-                    />
-                    <label className="AdminMgmtTextFieldLabel2">
-                      Linked Account
-                    </label>
-                  </div>
-                  <div className="AdminMgmtOtp">
-                    <input
-                      type="text"
-                      placeholder=" "
-                      value={createdByFilter}
-                      onChange={(e) => setCreatedByFilter(e.target.value)}
-                    />
-                    <label className="AdminMgmtTextFieldLabel2">
-                      Created By
-                    </label>
-                  </div>
-                  <div className="AdminMgmtOtp">
-                    <input
-                      type="text"
-                      placeholder=" "
-                      value={logFilter}
-                      onChange={(e) => setLogFilter(e.target.value)}
-                    />
-                    <label className="AdminMgmtTextFieldLabel2">Log</label>
-                  </div>
-                </div>
-                <button
-                  onClick={applyFilterAndSort}
-                  className="AddInputButtons"
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  width: "100%",
+                  margin: "2rem 0rem",
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={toggleFilters}
+                  size="large"
+                  endIcon={showFilters ? <VisibilityOff /> : <Visibility />}
+                  sx={{
+                    margin: "2rem 0rem",
+                    textTransform: "none",
+                  }}
+                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
                 >
-                  Filter
-                </button>
-              </>
-            )}
-          </div>
-          {!loading && !visibleLogs.length && logTypeRequested && (
-            <span style={{ margin: "2rem 0rem" }}>
-              No logs found for this selection.
-            </span>
-          )}
+                  {showFilters ? "Hide Filters" : "Show Filters"}
+                </Button>
+              </Box>
 
-          {!loading && visibleLogs.length > 0 && (
-            <div className="LogDisplayWrapper">
-              <div className="AdminsList">
-                <table className="CurrentAdminsTable">
-                  <thead>
-                    <tr>
-                      <th>Linked Account</th>
-                      <th>Created By</th>
-                      <th>Created At</th>
-                      <th>Priority</th>
-                      <th>Log</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {visibleLogs.map((log) => (
-                      <tr key={`${log.createdAt}-${log.logDetails}`}>
-                        <td>{log.logLinkedAccount}</td>
-                        <td>{log.logAddedBy}</td>
-                        <td>{log.createdAtFormatted}</td>
-                        <td>{log.logPriority}</td>
-                        <td>{log.logDetails}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              {showFilters && (
+                <>
+                  {" "}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      width: "100%",
+                      margin: "2rem 0rem",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%",
+                        margin: "2rem 0rem",
+                        flexWrap: "wrap",
+                      }}
+                      justifyContent={{ xs: "center", md: "space-evenly" }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                        width={{ xs: "100%", md: "50%", lg: "30%" }}
+                      >
+                        <TextField
+                          sx={{ width: "80%", margin: "2rem 0rem" }}
+                          required
+                          id="inp-linkedAccount"
+                          label="Linked Account"
+                          value={linkedAccountFilter}
+                          onChange={(e) =>
+                            setLinkedAccountFilter(e.target.value)
+                          }
+                        />
+                      </Box>
 
-              <div className="LogsNavigation">
-                <button
-                  onClick={handlePrev}
-                  className="LeftNavigationButtons"
-                  disabled={visibleLogsStart === 0}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                        width={{ xs: "100%", md: "50%", lg: "30%" }}
+                      >
+                        <TextField
+                          sx={{ width: "80%", margin: "2rem 0rem" }}
+                          required
+                          id="inp-createdBy"
+                          label="Created By"
+                          value={createdByFilter}
+                          onChange={(e) => setCreatedByFilter(e.target.value)}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                        width={{ xs: "100%", md: "50%", lg: "30%" }}
+                      >
+                        <TextField
+                          sx={{ width: "80%", margin: "2rem 0rem" }}
+                          required
+                          id="inp-log"
+                          label="Log Value"
+                          value={logFilter}
+                          onChange={(e) => setLogFilter(e.target.value)}
+                        />
+                      </Box>
+                    </Box>
+
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={applyFilterAndSort}
+                      size="large"
+                      endIcon={<FilterListAltIcon />}
+                      sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                      padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                    >
+                      Filter Logs
+                    </Button>
+                  </Box>
+                </>
+              )}
+
+              {!loading && !visibleLogs.length && logTypeRequested && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
                 >
-                  Previous
-                </button>
+                  <Typography sx={{ margin: "2rem 0rem", textAlign: "center" }}>
+                    No logs found for this selection.
+                  </Typography>
+                </Box>
+              )}
 
-                <span>
-                  Showing {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
-                  {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)} out of{" "}
-                  {totalRecords} records.
-                </span>
+              {!loading && visibleLogs.length > 0 && (
+                <>
+                  <TableContainer
+                    component={Paper}
+                    sx={{ width: "100%", overflowX: "auto" }}
+                  >
+                    <Table
+                      stickyHeader
+                      sx={{ minWidth: 650 }}
+                      aria-label="logs table"
+                    >
+                      <TableHead>
+                        <TableRow>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              border: `1px solid ${theme.palette.primary.main}`,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Linked Account
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              border: `1px solid ${theme.palette.primary.main}`,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Created By
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              border: `1px solid ${theme.palette.primary.main}`,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Created At
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              border: `1px solid ${theme.palette.primary.main}`,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Priority
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              border: `1px solid ${theme.palette.primary.main}`,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Log
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
 
-                <button
-                  onClick={handleNext}
-                  className="LeftNavigationButtons"
-                  disabled={
-                    visibleLogsStart + PAGE_SIZE >= totalRecords ||
-                    totalRecords === 0
-                  }
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
-        </>
-      )}
+                      <TableBody>
+                        {visibleLogs.map((log) => (
+                          <TableRow
+                            key={`${log.createdAt}-${log.logDetails}`}
+                            hover
+                          >
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                              }}
+                            >
+                              {log.logLinkedAccount}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                              }}
+                            >
+                              {log.logAddedBy}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                              }}
+                            >
+                              {log.createdAtFormatted}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                              }}
+                            >
+                              {log.logPriority}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                border: `1px solid ${theme.palette.primary.main}`,
+                              }}
+                            >
+                              {log.logDetails}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                      width: "100%",
+                      margin: "2rem 0rem",
+                      flexWrap: "wrap",
+                    }}
+                    justifyContent={{ xs: "center", sm: "space-between" }}
+                  >
+                    <IconButton
+                      aria-label="previous logs"
+                      sx={{ color: theme.palette.black.main }}
+                      onClick={handlePrev}
+                      disabled={visibleLogsStart === 0}
+                    >
+                      <KeyboardDoubleArrowLeftIcon />
+                    </IconButton>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography>
+                        {totalRecords === 0 ? 0 : visibleLogsStart + 1} -{" "}
+                        {Math.min(visibleLogsStart + PAGE_SIZE, totalRecords)}{" "}
+                        of
+                      </Typography>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography sx={{ color: "red", marginLeft: "0.5rem" }}>
+                          {totalRecords}
+                        </Typography>
+
+                        <Typography sx={{ marginLeft: "0.5rem" }}>
+                          records.
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    <IconButton
+                      aria-label="next logs"
+                      sx={{ color: theme.palette.black.main }}
+                      onClick={handleNext}
+                      disabled={
+                        visibleLogsStart + PAGE_SIZE >= totalRecords ||
+                        totalRecords === 0
+                      }
+                    >
+                      <KeyboardDoubleArrowRightIcon />
+                    </IconButton>
+                  </Box>
+                </>
+              )}
+            </Box>
+          </>
+        )}
+      </Box>
     </>
   );
 };
