@@ -1,5 +1,4 @@
 import AdminPanelHeader from "./Header.jsx";
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
 const AdminPanelTemplate = ({

@@ -36,10 +36,23 @@ router.post("/get-final-users", async (req, res) => {
       courseType: modifiableUser.courseType,
       programme: modifiableUser.programme,
       branch: modifiableUser.branch,
+      failedAttempt: modifiableUser.failedLoginAttempts,
+      lockUntil: modifiableUser.lockUntilFormatted,
     });
 
+    const cleanedUserList = finalUserList.map((user) => ({
+      email: user.email,
+      registerNumber: user.registerNumber,
+      department: user.department,
+      courseType: user.courseType,
+      programme: user.programme,
+      branch: user.branch,
+      failedAttempt: user.failedAttempt,
+      lockUntil: user.lockUntil ?? "N/A",
+    }));
+
     res.json({
-      usersList: finalUserList,
+      usersList: cleanedUserList,
     });
   } catch (error) {
     await addLogs(
