@@ -58,13 +58,10 @@ import {
   analyticsAdminRoutes,
 } from "./Routes.js";
 
-import ResumeInputTemplate from "./ResumeFormat.jsx";
 import Overlay from "./Overlay.jsx";
 
 function RouteWrapper() {
   const navigate = useNavigate();
-
-  const { resumeData } = ResumeInputTemplate();
   const [loggedInUserType, setLoggedInUserType] = useState("");
 
   const [serverMessage, setServerMessage] = useState("");
@@ -140,49 +137,6 @@ function RouteWrapper() {
 
     checkUserAccess();
   }, [location.pathname]);
-
-  const downloadResume = async () => {
-    const formData = {
-      resumeData,
-    };
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/generate/Resume",
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          responseType: "arraybuffer",
-        }
-      );
-
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "Resume.pdf";
-      link.click();
-      setServerMessage("Successfully downloaded resume");
-      setServerMsgType("success");
-      setShowServerMsg(true);
-    } catch (error) {
-      setServerMessage(
-        error.response?.data?.message || "Failed to generate resume"
-      );
-      setServerMsgType("error");
-      setShowServerMsg(true);
-    }
-  };
-
-  const [submitClicked, setSubmitClicked] = useState(false);
-
-  useEffect(() => {
-    if (submitClicked === true) {
-      setSubmitClicked(false);
-      downloadResume();
-    }
-  }, [submitClicked]);
 
   const [logoutClicked, setLogoutClicked] = useState(false);
   const [logoutUserType, setLogoutUserType] = useState("");
@@ -581,7 +535,6 @@ function RouteWrapper() {
               setOverlayType={setOverlayType}
               setLogoutClicked={setLogoutClicked}
               setLogoutUserType={setLogoutUserType}
-              setSubmitClicked={setSubmitClicked}
             />
           }
         />
@@ -599,6 +552,14 @@ function RouteWrapper() {
         <Overlay
           overlayTitle={"Save current Resume Data"}
           overlayAction={"Save"}
+          setOverlayType={setOverlayType}
+        />
+      )}
+
+      {overlayType === "DownloadResume" && (
+        <Overlay
+          overlayTitle={"Choose a use case for downloading your resume"}
+          overlayAction={"Download"}
           setOverlayType={setOverlayType}
         />
       )}

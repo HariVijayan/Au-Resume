@@ -28,8 +28,10 @@ const PreviewPdf = () => {
   };
 
   const fetchPdf = async () => {
+    let downloadType = "personal";
     const formData = {
       resumeData,
+      downloadType,
     };
     try {
       const response = await axios.post(

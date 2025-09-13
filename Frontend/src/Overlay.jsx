@@ -19,8 +19,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import SchoolIcon from "@mui/icons-material/School";
+
 const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
   const { resumeData, setResumeData } = ResumeInputTemplate();
+  const [downloadType, setDownloadType] = useState("personal");
 
   const [userPassword, setUserPassword] = useState("");
   const [loadingAnim, setLoadingAnim] = useState(false);
@@ -98,6 +102,42 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       setShowServerMsg(true);
     }
   };
+
+  const downloadResume = async () => {
+    const formData = {
+      resumeData,
+      downloadType,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/generate/Resume",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          responseType: "arraybuffer",
+        }
+      );
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "Resume.pdf";
+      link.click();
+      setServerMessage("Successfully downloaded resume");
+      setServerMsgType("success");
+      setShowServerMsg(true);
+    } catch (error) {
+      setServerMessage(
+        error.response?.data?.message || "Failed to generate resume"
+      );
+      setServerMsgType("error");
+      setShowServerMsg(true);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -172,82 +212,134 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
         >
           {overlayTitle}
         </DialogTitle>
-        <DialogContent
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Box
+
+        {overlayAction === "Fetch" ||
+          (overlayAction === "Save" && (
+            <DialogContent
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                width={{ xs: "90%", md: "70%", lg: "50%" }}
+              >
+                <TextField
+                  required
+                  variant="outlined"
+                  label="Password"
+                  type={showPasswordIcon ? "text" : "password"}
+                  value={userPassword}
+                  onChange={(e) => setUserPassword(e.target.value)}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label={
+                              showPasswordIcon
+                                ? "hide the password"
+                                : "display the password"
+                            }
+                            onClick={showPasswordInput}
+                          >
+                            {showPasswordIcon ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                  sx={{ width: "80%", margin: "2rem 0rem" }}
+                />
+              </Box>
+              {overlayAction === "Fetch" && (
+                <Button
+                  variant="contained"
+                  onClick={fetchPreviousResume}
+                  disabled={!userPassword}
+                  size="large"
+                  endIcon={<CloudDownloadIcon />}
+                  loading={loadingAnim}
+                  loadingPosition="end"
+                  sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                >
+                  Fetch
+                </Button>
+              )}
+
+              {overlayAction === "Save" && (
+                <Button
+                  variant="contained"
+                  onClick={saveCurrentResume}
+                  disabled={!userPassword}
+                  size="large"
+                  endIcon={<BackupIcon />}
+                  loading={loadingAnim}
+                  loadingPosition="end"
+                  sx={{ margin: "2rem 0rem", textTransform: "none" }}
+                  padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
+                >
+                  Save
+                </Button>
+              )}
+            </DialogContent>
+          ))}
+
+        {overlayAction === "Download" && (
+          <DialogContent
             sx={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "space-evenly",
               alignItems: "center",
+              flexDirection: "column",
             }}
-            width={{ xs: "90%", md: "70%", lg: "50%" }}
           >
-            <TextField
-              required
-              variant="outlined"
-              label="Password"
-              type={showPasswordIcon ? "text" : "password"}
-              value={userPassword}
-              onChange={(e) => setUserPassword(e.target.value)}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label={
-                          showPasswordIcon
-                            ? "hide the password"
-                            : "display the password"
-                        }
-                        onClick={showPasswordInput}
-                      >
-                        {showPasswordIcon ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                setDownloadType("personal");
+                downloadResume();
               }}
-              sx={{ width: "80%", margin: "2rem 0rem" }}
-            />
-          </Box>
-          {overlayAction === "Fetch" && (
-            <Button
-              variant="contained"
-              onClick={fetchPreviousResume}
-              disabled={!userPassword}
               size="large"
-              endIcon={<CloudDownloadIcon />}
+              endIcon={<EmojiPeopleIcon />}
               loading={loadingAnim}
               loadingPosition="end"
               sx={{ margin: "2rem 0rem", textTransform: "none" }}
               padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
             >
-              Fetch
+              Personal Use
             </Button>
-          )}
 
-          {overlayAction === "Save" && (
             <Button
               variant="contained"
-              onClick={saveCurrentResume}
-              disabled={!userPassword}
+              onClick={() => {
+                setDownloadType("campus");
+                downloadResume();
+              }}
               size="large"
-              endIcon={<BackupIcon />}
+              endIcon={<SchoolIcon />}
               loading={loadingAnim}
               loadingPosition="end"
               sx={{ margin: "2rem 0rem", textTransform: "none" }}
               padding={{ xs: "1rem 2rem", sm: "2rem 3rem" }}
             >
-              Save
+              Campus Placement
             </Button>
-          )}
-        </DialogContent>
+          </DialogContent>
+        )}
       </Dialog>
     </Box>
   );

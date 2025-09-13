@@ -15,12 +15,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Footer from "../Footer.jsx";
 
-const CustomDiv = ({
-  setSubmitClicked,
-  setLogoutClicked,
-  setLogoutUserType,
-  setOverlayType,
-}) => {
+const CustomDiv = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const theme = useTheme();
 
   const { resumeData, updateField } = ResumeInputTemplate();
@@ -190,7 +185,7 @@ const CustomDiv = ({
             PreviousPageLink={`/resume-builder/languages-known`}
             NextPageName={"Download"}
             NextPageLink={""}
-            setSubmitClicked={setSubmitClicked}
+            setOverlayType={setOverlayType}
           />
         </Box>
         <PreviewPdf />

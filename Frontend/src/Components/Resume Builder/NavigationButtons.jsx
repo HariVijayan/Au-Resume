@@ -10,7 +10,7 @@ const NavigationButtons = ({
   PreviousPageLink,
   NextPageName,
   NextPageLink,
-  setSubmitClicked,
+  setOverlayType,
 }) => {
   const navigate = useNavigate();
   return (
@@ -55,7 +55,7 @@ const NavigationButtons = ({
           <Button
             variant="contained"
             color="success"
-            onClick={() => setSubmitClicked(true)}
+            onClick={() => setOverlayType("DownloadResume")}
             size="large"
             endIcon={<DownloadIcon />}
             sx={{ margin: "2rem 0rem", textTransform: "none" }}

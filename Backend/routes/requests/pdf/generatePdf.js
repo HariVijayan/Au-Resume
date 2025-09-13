@@ -67,13 +67,34 @@ const compileTemplate = (templateFile, resumeData) => {
   return compiledTemplate(resumeData);
 };
 
-const generatePdf = async (htmlContent, headerFile, footerFile) => {
+const generatePdf = async (htmlContent) => {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   await page.setContent(htmlContent, { waitUntil: "load" });
 
   const pdfBuffer = await page.pdf({
-    path: "./output/Resume Output.pdf",
+    // path: "./output/Resume Output.pdf", //For debugging
+    format: "A4",
+    printBackground: true,
+    margin: { top: "15mm", bottom: "20mm", left: "15mm", right: "15mm" },
+    displayHeaderFooter: false,
+  });
+
+  /*await page.screenshot({
+    path: "./output/Screenshot.png",  //For debugging
+    fullPage: true,
+  });*/
+  await browser.close();
+  return pdfBuffer;
+};
+
+const generatePdfWithFooter = async (htmlContent, headerFile, footerFile) => {
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.setContent(htmlContent, { waitUntil: "load" });
+
+  const pdfBuffer = await page.pdf({
+    //path: "./output/Resume Output.pdf", //For debugging
     format: "A4",
     printBackground: true,
     margin: { top: "15mm", bottom: "20mm", left: "15mm", right: "15mm" },
@@ -82,16 +103,16 @@ const generatePdf = async (htmlContent, headerFile, footerFile) => {
     footerTemplate: footerFile,
   });
 
-  await page.screenshot({
-    path: "./output/Screenshot.png",
+  /*await page.screenshot({
+    path: "./output/Screenshot.png", //For debugging
     fullPage: true,
-  });
+  });*/
   await browser.close();
   return pdfBuffer;
 };
 
 router.post("/Resume", async (req, res) => {
-  let { resumeData } = req.body;
+  let { resumeData, downloadType } = req.body;
   let templateType = resumeData.metaData.template;
 
   try {
@@ -103,8 +124,6 @@ router.post("/Resume", async (req, res) => {
     const user = await User.findById(decoded.userId);
     if (!user) return res.status(403).json({ message: "User not found" });
 
-    const timestamp = istDateFormat(new Date());
-
     resumeData = removeEmptyValues(resumeData);
 
     if (templateType != "template1") {
@@ -115,50 +134,70 @@ router.post("/Resume", async (req, res) => {
     const templateCssPath =
       "../../../resources/templates/" + templateType + "/body.css";
 
-    const headerFooterPaths = generateHeaderFooterPaths(templateType);
-
     const templateFile = readFileSync(templatePath);
     const cssFile = readFileSync(templateCssPath);
-    const headerFile = readFileSync(headerFooterPaths.headerPath);
-    let footerFile = readFileSync(headerFooterPaths.footerPath);
-    const auLogoFile = readFileSync(headerFooterPaths.auLogoBase64Path);
 
     let compiledTemplate = compileTemplate(
       templateFile.replace("<style></style>", `<style>${cssFile}</style>`),
       resumeData
     );
-    footerFile = footerFile.replace(
-      '<img id="aulogo" src=""',
-      `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`
-    );
 
-    footerFile = generateFooter(footerFile, timestamp);
+    if (downloadType === "personal") {
+      const pdfBuffer = await generatePdf(compiledTemplate);
+      await addLogs(
+        false,
+        false,
+        user.email,
+        user.email,
+        "Public",
+        "P4",
+        `Generated Resume.`
+      );
 
-    writeFileSync("../../../output/Body.html", compiledTemplate);
-    writeFileSync(
-      "../../../output/Resume Data.txt",
-      JSON.stringify(resumeData, null, 2)
-    );
-    writeFileSync("../../../output/Footer.html", footerFile);
+      res.type("application/pdf");
+      res.end(pdfBuffer, "binary");
+    } else {
+      const headerFooterPaths = generateHeaderFooterPaths(templateType);
 
-    const pdfBuffer = await generatePdf(
-      compiledTemplate,
-      headerFile,
-      footerFile
-    );
+      const headerFile = readFileSync(headerFooterPaths.headerPath);
+      let footerFile = readFileSync(headerFooterPaths.footerPath);
+      const auLogoFile = readFileSync(headerFooterPaths.auLogoBase64Path);
 
-    await addLogs(
-      false,
-      false,
-      user.email,
-      user.email,
-      "Public",
-      "P4",
-      `Generated Resume.`
-    );
+      footerFile = footerFile.replace(
+        '<img id="aulogo" src=""',
+        `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`
+      );
 
-    res.type("application/pdf");
-    res.end(pdfBuffer, "binary");
+      const timestamp = istDateFormat(new Date());
+
+      footerFile = generateFooter(footerFile, timestamp);
+
+      /* writeFileSync("../../../output/Body.html", compiledTemplate);
+      writeFileSync(
+        "../../../output/Resume Data.txt",
+        JSON.stringify(resumeData, null, 2)
+      );
+      writeFileSync("../../../output/Footer.html", footerFile); */ //For debugging
+
+      const pdfBuffer = await generatePdfWithFooter(
+        compiledTemplate,
+        headerFile,
+        footerFile
+      );
+
+      await addLogs(
+        false,
+        false,
+        user.email,
+        user.email,
+        "Public",
+        "P4",
+        `Generated Resume.`
+      );
+
+      res.type("application/pdf");
+      res.end(pdfBuffer, "binary");
+    }
   } catch (error) {
     await addLogs(
       true,
