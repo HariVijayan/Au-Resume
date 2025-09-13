@@ -68,21 +68,10 @@ function RouteWrapper() {
   const [showServerMsg, setShowServerMsg] = useState(false);
   const [serverMsgType, setServerMsgType] = useState("error");
 
-  const forceMultiTabClosureOnLogout = () => {
-    useEffect(() => {
-      const checkBrowserLocalStorage = (event) => {
-        if (event.key === "flagLogout") {
-          navigate("/", { replace: true });
-        }
-      };
+  const [logoutClicked, setLogoutClicked] = useState(false);
+  const [logoutUserType, setLogoutUserType] = useState("");
 
-      window.addEventListener("storage", checkBrowserLocalStorage);
-      return () =>
-        window.removeEventListener("storage", checkBrowserLocalStorage);
-    }, [navigate]);
-  };
-
-  forceMultiTabClosureOnLogout();
+  const [overlayType, setOverlayType] = useState("");
 
   const location = useLocation();
 
@@ -138,9 +127,6 @@ function RouteWrapper() {
     checkUserAccess();
   }, [location.pathname]);
 
-  const [logoutClicked, setLogoutClicked] = useState(false);
-  const [logoutUserType, setLogoutUserType] = useState("");
-
   const logoutUser = async (userType) => {
     try {
       await axios.post(
@@ -167,6 +153,22 @@ function RouteWrapper() {
     }
   };
 
+  const forceMultiTabClosureOnLogout = () => {
+    useEffect(() => {
+      const checkBrowserLocalStorage = (event) => {
+        if (event.key === "flagLogout") {
+          navigate("/", { replace: true });
+        }
+      };
+
+      window.addEventListener("storage", checkBrowserLocalStorage);
+      return () =>
+        window.removeEventListener("storage", checkBrowserLocalStorage);
+    }, [navigate]);
+  };
+
+  forceMultiTabClosureOnLogout();
+
   useEffect(() => {
     if (logoutClicked === true) {
       setLogoutClicked(false);
@@ -174,8 +176,6 @@ function RouteWrapper() {
       setLogoutUserType("");
     }
   }, [logoutClicked]);
-
-  const [overlayType, setOverlayType] = useState("");
 
   return (
     <>
