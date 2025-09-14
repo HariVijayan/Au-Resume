@@ -1,1 +1,10 @@
-null
+{
+  "skills": {
+    "style": "ParaType",
+    "skillSet": "dffdfvdfvnijfgbhjvbjhsbjhvnhsjghfcvhjsdnkjl"
+  },
+  "certifications": {
+    "style": "ParaType",
+    "certificationSet": "wrefewfewifhbewjfnwejnfkh dg hegjer hj rnv revlk hjb mlb,h,l;rmblkml;b,"
+  }
+}

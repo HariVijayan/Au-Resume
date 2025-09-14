@@ -95,11 +95,11 @@ const ResumeInputTemplate = create((set) => ({
       },
     ],
     skills: {
-      type: "",
+      style: "",
       skillSet: [],
     },
     certifications: {
-      type: "",
+      style: "",
       certificationSet: [],
     },
     languages: [],

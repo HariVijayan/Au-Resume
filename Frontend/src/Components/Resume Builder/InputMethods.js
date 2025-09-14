@@ -65,7 +65,7 @@ const modifySkillsList = (e, setSkillsetValue, resumeData, updateField) => {
   newSkills = newSkills.map((skill) => skill.trim());
 
   updatedSkills = {
-    type: "ListType",
+    style: "ListType",
     skillSet: newSkills,
   };
 
@@ -82,7 +82,7 @@ const modifySkillsPara = (e, setSkillsetValue, resumeData, updateField) => {
   setSkillsetValue(value);
 
   updatedSkills = {
-    type: "ParaType",
+    style: "ParaType",
     skillSet: newSkills,
   };
 
@@ -109,7 +109,7 @@ const modifyCertificationsList = (
   );
 
   updatedCertification = {
-    type: "ListType",
+    style: "ListType",
     certificationSet: newCertifications,
   };
 
@@ -131,7 +131,7 @@ const modifyCertificationsPara = (
   setCertificationSetValue(value);
 
   updatedCertification = {
-    type: "ParaType",
+    style: "ParaType",
     certificationSet: newCertifications,
   };
 

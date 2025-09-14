@@ -33,7 +33,7 @@ function removeEmptyValues(obj) {
   } else if (typeof obj === "object" && obj !== null) {
     let newObj = {};
     for (let key in obj) {
-      if (key === "_id") continue; // Skip "_id" fields
+      if (key === "_id") continue;
       const cleanedValue = removeEmptyValues(obj[key]);
       if (cleanedValue !== null) {
         newObj[key] = cleanedValue;
@@ -172,12 +172,7 @@ router.post("/Resume", async (req, res) => {
 
       footerFile = generateFooter(footerFile, timestamp);
 
-      /* writeFileSync("../../../output/Body.html", compiledTemplate);
-      writeFileSync(
-        "../../../output/Resume Data.txt",
-        JSON.stringify(resumeData, null, 2)
-      );
-      writeFileSync("../../../output/Footer.html", footerFile); */ //For debugging
+      writeFileSync("../../../output/Footer.html", footerFile); //For debugging
 
       const pdfBuffer = await generatePdfWithFooter(
         compiledTemplate,
@@ -198,6 +193,12 @@ router.post("/Resume", async (req, res) => {
       res.type("application/pdf");
       res.end(pdfBuffer, "binary");
     }
+
+    writeFileSync("../../../output/Body.html", compiledTemplate);
+    writeFileSync(
+      "../../../output/Resume Data.txt",
+      JSON.stringify(resumeData, null, 2)
+    );
   } catch (error) {
     await addLogs(
       true,

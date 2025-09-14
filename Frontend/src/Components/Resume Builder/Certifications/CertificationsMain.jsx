@@ -26,31 +26,31 @@ const Cerifications = ({
   const [certificationType, setCertificationType] = useState("Default");
 
   useEffect(() => {
-    if (resumeData.certifications.type == "ListType") {
+    if (resumeData.certifications.style == "ListType") {
       setCertificationType("ListType");
-    } else if (resumeData.certifications.type == "ParaType") {
+    } else if (resumeData.certifications.style == "ParaType") {
       setCertificationType("ParaType");
     } else {
       setCertificationType("Default");
     }
   }, [resumeData.certifications]);
 
-  const setCertifications = (type) => {
-    if (type === "ListType") {
+  const setCertifications = (style) => {
+    if (style === "ListType") {
       let updatedCertifications = { ...resumeData.certifications };
-      updatedCertifications.type = "ListType";
+      updatedCertifications.style = "ListType";
       updatedCertifications.certificationSet = [];
 
       updateField("certifications", updatedCertifications);
-    } else if (type === "ParaType") {
+    } else if (style === "ParaType") {
       let updatedCertifications = { ...resumeData.certifications };
-      updatedCertifications.type = "ParaType";
+      updatedCertifications.style = "ParaType";
       updatedCertifications.certificationSet = "";
 
       updateField("certifications", updatedCertifications);
     }
 
-    setCertificationType(type);
+    setCertificationType(style);
   };
 
   return (

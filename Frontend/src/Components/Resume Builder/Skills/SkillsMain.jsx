@@ -22,31 +22,31 @@ const Skills = ({ setLogoutClicked, setLogoutUserType, setOverlayType }) => {
   const [skillType, setSkillType] = useState("Default");
 
   useEffect(() => {
-    if (resumeData.skills.type == "ListType") {
+    if (resumeData.skills.style == "ListType") {
       setSkillType("ListType");
-    } else if (resumeData.skills.type == "ParaType") {
+    } else if (resumeData.skills.style == "ParaType") {
       setSkillType("ParaType");
     } else {
       setSkillType("Default");
     }
   }, [resumeData.skills]);
 
-  const setSkills = (type) => {
-    if (type === "ListType") {
+  const setSkills = (style) => {
+    if (style === "ListType") {
       let updatedSkills = { ...resumeData.skills };
-      updatedSkills.type = "ListType";
+      updatedSkills.style = "ListType";
       updatedSkills.skillSet = [];
 
       updateField("skills", updatedSkills);
-    } else if (type === "ParaType") {
+    } else if (style === "ParaType") {
       let updatedSkills = { ...resumeData.skills };
-      updatedSkills.type = "ParaType";
+      updatedSkills.style = "ParaType";
       updatedSkills.skillSet = "";
 
       updateField("skills", updatedSkills);
     }
 
-    setSkillType(type);
+    setSkillType(style);
   };
 
   return (
