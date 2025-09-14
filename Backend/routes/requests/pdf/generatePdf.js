@@ -39,11 +39,17 @@ function removeEmptyValues(obj) {
         newObj[key] = cleanedValue;
       }
     }
+
+    const keys = Object.keys(newObj);
+    if (keys.length === 1 && keys[0] === "style") {
+      return null;
+    }
+
     const hasOnlyBooleans = Object.values(newObj).every(
       (val) => typeof val === "boolean"
     );
 
-    return Object.keys(newObj).length > 0 && !hasOnlyBooleans ? newObj : null;
+    return keys.length > 0 && !hasOnlyBooleans ? newObj : null;
   } else {
     return obj === "" ? null : obj;
   }
@@ -172,7 +178,7 @@ router.post("/Resume", async (req, res) => {
 
       footerFile = generateFooter(footerFile, timestamp);
 
-      writeFileSync("../../../output/Footer.html", footerFile); //For debugging
+      //writeFileSync("../../../output/Footer.html", footerFile); //For debugging
 
       const pdfBuffer = await generatePdfWithFooter(
         compiledTemplate,
@@ -194,11 +200,11 @@ router.post("/Resume", async (req, res) => {
       res.end(pdfBuffer, "binary");
     }
 
-    writeFileSync("../../../output/Body.html", compiledTemplate);
+    /*writeFileSync("../../../output/Body.html", compiledTemplate);
     writeFileSync(
       "../../../output/Resume Data.txt",
       JSON.stringify(resumeData, null, 2)
-    );
+    );*/ //For debugging
   } catch (error) {
     await addLogs(
       true,
