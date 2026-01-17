@@ -69,7 +69,7 @@ router.post("/current-resume", async (req, res) => {
       await resumeDataDBEntry.save();
     };
 
-    encryptResume(resumeData, user.password, user.encryptionSalt);
+    encryptResume(resumeData, user.password, user.resumeEncryptionSalt);
 
     res.status(200).json({ message: "Resume Saved successfully" });
   } catch (error) {

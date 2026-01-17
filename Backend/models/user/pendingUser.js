@@ -9,7 +9,7 @@ const PendingUserSchema = new mongoose.Schema({
   courseType: { type: String, required: true },
   programme: { type: String, required: true },
   branch: { type: String, required: true },
-  encryptionSalt: { type: String, required: true },
+  resumeEncryptionSalt: { type: String, required: true },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -33,7 +33,7 @@ PendingUserSchema.pre("save", function (next) {
 
   if (!this.expiresAt) {
     this.expiresAt = new Date(
-      this.createdAt.getTime() + process.env.PENDING_USER_EXPIRY * 1000
+      this.createdAt.getTime() + process.env.PENDING_USER_EXPIRY * 1000,
     );
   }
 

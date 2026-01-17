@@ -7,6 +7,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import istDateFormat from "../../helper/functions/dateIstFormat.js";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -28,24 +29,21 @@ router.post("/login", async (req, res) => {
 
     if (user.lockUntil && user.lockUntil > Date.now()) {
       const remainingLockTime = Math.ceil(
-        (user.lockUntil - Date.now()) / 60000
+        (user.lockUntil - Date.now()) / 60000,
       );
       return res.status(403).json({
         message: `Account locked. Try again in ${remainingLockTime} minutes`,
       });
     }
 
-    const hashedInputPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
+    const passwordMatches = await bcrypt.compare(password, user.password);
 
-    if (hashedInputPassword !== user.password) {
+    if (!passwordMatches) {
       user.failedLoginAttempts += 1;
 
       if (user.failedLoginAttempts >= process.env.MAX_FAILED_LOGINS) {
         user.lockUntil = new Date(
-          Date.now() + process.env.ACCOUNT_LOCK_TIME * 1000
+          Date.now() + process.env.ACCOUNT_LOCK_TIME * 1000,
         );
         user.lockUntilFormatted = istDateFormat(user.lockUntil);
 
@@ -72,7 +70,7 @@ router.post("/login", async (req, res) => {
         (rememberMe
           ? process.env.CURREN_SESSION_REMEMBERME_EXPIRY
           : process.env.CURRENT_SESSION_EXPIRY) *
-          1000
+          1000,
     );
     const expiresAtFormatted = istDateFormat(expiresAt);
 
@@ -106,7 +104,7 @@ router.post("/login", async (req, res) => {
     const accessToken = jwt.sign(
       { userId: user._id, sessionId },
       process.env.JWT_SECRET,
-      { expiresIn: rememberMe ? "2d" : "1d" }
+      { expiresIn: rememberMe ? "2d" : "1d" },
     );
 
     res.cookie("accessToken", accessToken, {

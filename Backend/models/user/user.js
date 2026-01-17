@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   failedLoginAttempts: { type: Number, default: 0 },
   lockUntil: { type: Date, default: null },
   lockUntilFormatted: { type: String, default: null },
-  encryptionSalt: { type: String, required: true },
+  resumeEncryptionSalt: { type: String, required: true },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -36,7 +36,7 @@ userSchema.pre("save", function (next) {
 
   if (!this.expiresAt) {
     this.expiresAt = new Date(
-      this.createdAt.getTime() + process.env.USER_ACCOUNT_EXPIRY * 1000
+      this.createdAt.getTime() + process.env.USER_ACCOUNT_EXPIRY * 1000,
     );
   }
 

@@ -34,7 +34,7 @@ router.post("/registration", async (req, res) => {
       courseType: requestedAccount.courseType,
       programme: requestedAccount.programme,
       branch: requestedAccount.branch,
-      encryptionSalt: requestedAccount.encryptionSalt,
+      resumeEncryptionSalt: requestedAccount.resumeEncryptionSalt,
     });
     await verifiedUser.save();
 

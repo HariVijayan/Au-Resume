@@ -74,7 +74,7 @@ router.post("/resume-details", async (req, res) => {
     decryptResume(
       resumeData.encryptedResumeData,
       user.password,
-      user.encryptionSalt
+      user.resumeEncryptionSalt,
     );
   } catch (error) {
     res.status(500).json({ message: "Server error" });

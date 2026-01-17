@@ -6,8 +6,11 @@ import crypto from "crypto";
 import sendEmailToUser from "../../../../helper/functions/sendEmail.js";
 import generateOtp from "../../../../helper/functions/generateOtp.js";
 import checkPassword from "../../../../helper/functions/checkPassword.js";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
+
+const BCRYPT_COST_FACTOR = 12;
 
 router.post("/register", async (req, res) => {
   const {
@@ -45,7 +48,7 @@ router.post("/register", async (req, res) => {
     const requestNewOtp = await generateOtp(
       false,
       email,
-      "New User Registration"
+      "New User Registration",
     );
 
     if (requestNewOtp.Success === "NO") {
@@ -64,7 +67,7 @@ router.post("/register", async (req, res) => {
       email,
       emailSubject,
       emailHeading,
-      emailBody
+      emailBody,
     );
 
     if (sendEmail.Success === "NO") {
@@ -75,13 +78,11 @@ router.post("/register", async (req, res) => {
 
     await PendingUser.deleteMany({ email });
 
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
+    const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    const salt = crypto.randomBytes(16); // 128-bit salt
-    const saltBase64 = salt.toString("base64");
+    const resumeEncryptionSalt = crypto.randomBytes(16); // 128-bit salt
+    const saltBase64 = resumeEncryptionSalt.toString("base64");
 
     const newUser = new PendingUser({
       email,
@@ -91,7 +92,7 @@ router.post("/register", async (req, res) => {
       courseType,
       programme,
       branch,
-      encryptionSalt: saltBase64,
+      resumeEncryptionSalt: saltBase64,
     });
     await newUser.save();
 
