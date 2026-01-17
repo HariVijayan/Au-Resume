@@ -3,7 +3,6 @@ import checkUserAccess from "../../../helper/authentication/userOrAdmin/checkUse
 import otpPreConditions from "../../../helper/authentication/userOrAdmin/otpPreConditions.js";
 import sendEmailToUser from "../../../helper/functions/sendEmail.js";
 import generateOtp from "../../../helper/functions/generateOtp.js";
-import addLogs from "../../../helper/functions/addLogs.js";
 import checkPassword from "../../../helper/functions/checkPassword.js";
 
 const router = express.Router();
@@ -88,15 +87,6 @@ router.post("/getApprovalOtp", async (req, res) => {
       message: "An OTP has been sent to your email",
     });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to send Otp for user profile action. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

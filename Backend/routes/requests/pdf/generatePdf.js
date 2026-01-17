@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 import { fileURLToPath } from "url";
 import User from "../../../models/user/user.js";
 import istDateFormat from "../../../helper/functions/dateIstFormat.js";
-import addLogs from "../../../helper/functions/addLogs.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -150,15 +149,6 @@ router.post("/Resume", async (req, res) => {
 
     if (downloadType === "personal") {
       const pdfBuffer = await generatePdf(compiledTemplate);
-      await addLogs(
-        false,
-        false,
-        user.email,
-        user.email,
-        "Public",
-        "P4",
-        `Generated Resume.`
-      );
 
       res.type("application/pdf");
       res.end(pdfBuffer, "binary");
@@ -186,16 +176,6 @@ router.post("/Resume", async (req, res) => {
         footerFile
       );
 
-      await addLogs(
-        false,
-        false,
-        user.email,
-        user.email,
-        "Public",
-        "P4",
-        `Generated Resume.`
-      );
-
       res.type("application/pdf");
       res.end(pdfBuffer, "binary");
     }
@@ -206,15 +186,6 @@ router.post("/Resume", async (req, res) => {
       JSON.stringify(resumeData, null, 2)
     );*/ //For debugging
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to generate resume. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

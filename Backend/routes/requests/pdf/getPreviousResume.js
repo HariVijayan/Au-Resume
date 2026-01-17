@@ -3,7 +3,6 @@ import ResumeData from "../../../models/pdf/resumeData.js";
 import User from "../../../models/user/user.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import addLogs from "../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -69,16 +68,6 @@ router.post("/resume-details", async (req, res) => {
 
       const decryptedResume = JSON.parse(plaintext);
 
-      await addLogs(
-        false,
-        false,
-        user.email,
-        user.email,
-        "Public",
-        "P4",
-        `Fetched previously stored resume.`
-      );
-
       res.status(200).json(decryptedResume);
     };
 
@@ -88,15 +77,6 @@ router.post("/resume-details", async (req, res) => {
       user.encryptionSalt
     );
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to fetch previous resume. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

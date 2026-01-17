@@ -4,7 +4,6 @@ import adminCurrentSession from "../../models/admin/currentSession.js";
 import adminOtp from "../../models/admin/otp.js";
 import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -62,29 +61,10 @@ router.post("/removeAdmin", async (req, res) => {
 
     await adminUser.deleteOne({ email: remAdminEmail, accountType: adminType });
 
-    await addLogs(
-      true,
-      false,
-      adminEmail,
-      adminEmail,
-      "Confidential",
-      "P4",
-      `Successfully removed admin ${remAdminEmail}.`
-    );
-
     res.json({
       message: "Admin removed successfully",
     });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to remove admin. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

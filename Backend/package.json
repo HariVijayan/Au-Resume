@@ -13,14 +13,18 @@
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "fs": "^0.0.1-security",
     "handlebars": "^4.7.8",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.15.1",
-    "nodemailer": "^7.0.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.21.0",
+    "nodemailer": "^7.0.12",
+    "path": "^0.12.7",
     "pdf-lib": "^1.17.1",
-    "puppeteer": "^24.9.0",
+    "puppeteer": "^24.35.0",
+    "url": "^0.11.4",
     "uuid": "^11.1.0"
   }
 }

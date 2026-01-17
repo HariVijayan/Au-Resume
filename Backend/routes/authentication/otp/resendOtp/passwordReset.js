@@ -3,7 +3,6 @@ import checkUserOrAdminAccess from "../../../../helper/authentication/userOrAdmi
 import otpPreConditions from "../../../../helper/authentication/userOrAdmin/otpPreConditions.js";
 import sendEmailToUser from "../../../../helper/functions/sendEmail.js";
 import generateOtp from "../../../../helper/functions/generateOtp.js";
-import addLogs from "../../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -60,27 +59,8 @@ router.post("/forgot-password", async (req, res) => {
       });
     }
 
-    await addLogs(
-      false,
-      false,
-      email,
-      email,
-      "Public",
-      "P4",
-      `Requested otp resending for password reset.`
-    );
-
     res.json({ message: "New OTP sent to email successfully" });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to resend otp for password reset. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

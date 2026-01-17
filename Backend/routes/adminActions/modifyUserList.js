@@ -1,7 +1,6 @@
 import express from "express";
 import UserDBModel from "../../models/user/user.js";
 import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -55,15 +54,6 @@ router.post("/get-final-users", async (req, res) => {
       usersList: cleanedUserList,
     });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to fetch user list for modification. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

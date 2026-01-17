@@ -2,7 +2,6 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import currentSession from "../../../models/user/currentSession.js";
 import adminCurrentSession from "../../../models/admin/currentSession.js";
-import addLogs from "../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -42,15 +41,6 @@ router.post("/check-access", async (req, res) => {
       res.json({ message: "Valid access token" });
     }
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to check unprotected access. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

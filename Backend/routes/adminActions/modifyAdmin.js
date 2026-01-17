@@ -5,7 +5,6 @@ import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 import sendEmailToUser from "../../helper/functions/sendEmail.js";
 import generatePassword from "../../helper/functions/generatePassword.js";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -126,33 +125,10 @@ router.post("/admin-modifications", async (req, res) => {
       );
     }
 
-    await addLogs(
-      true,
-      false,
-      approvingAdminEmail,
-      approvingAdminEmail,
-      "Confidential",
-      "P4",
-      `Successfully modified admin ${adminEmail}. Changes made: ${
-        nameChangeNeeded ? "Name Change" : ""
-      } ${adminTypeChange ? "Admin Type" : ""} ${
-        passwordReset ? "Password Reset" : ""
-      } ${accountUnlock ? "Account Unlock" : ""}`
-    );
-
     res.status(200).json({
       message: "Admin modified successfully",
     });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to modify admin account. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

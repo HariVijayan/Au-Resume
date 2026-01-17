@@ -2,7 +2,6 @@ import express from "express";
 import currentSession from "../../models/user/currentSession.js";
 import adminCurrentSession from "../../models/admin/currentSession.js";
 import jwt from "jsonwebtoken";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -42,27 +41,8 @@ router.post("/logout", async (req, res) => {
       sameSite: "Strict",
     });
 
-    await addLogs(
-      isAdmin,
-      false,
-      userEmail,
-      userEmail,
-      "Public",
-      "P4",
-      "Successful logout"
-    );
-
     res.json({ message: "Logged out" });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to logout user. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

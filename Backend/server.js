@@ -4,10 +4,6 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import adminUser from "./models/admin/admin.js";
-import adminLogs from "./models/logs/admin.js";
-import adminErrorLogs from "./models/logs/adminError.js";
-import userLogs from "./models/logs/user.js";
-import userErrorLogs from "./models/logs/userError.js";
 
 import previousResume from "./routes/requests/pdf/getPreviousResume.js";
 import generateResume from "./routes/requests/pdf/generatePdf.js";
@@ -35,15 +31,10 @@ import modifyUserList from "./routes/adminActions/modifyUserList.js";
 import addUser from "./routes/adminActions/addUser.js";
 import removeUser from "./routes/adminActions/removeUser.js";
 import modifyUser from "./routes/adminActions/modifyUser.js";
-import fetchLog from "./routes/adminActions/fetchLog.js";
-import getLogDetails from "./routes/adminActions/getLogDetails.js";
-import deleteLogs from "./routes/adminActions/deleteLogs.js";
-import downloadLogs from "./routes/adminActions/downloadLogs.js";
 import getUserDetails from "./routes/requests/userActions/getUserDetails.js";
 import userApprovalOtp from "./routes/requests/userActions/approvalOtp.js";
 import userProfilePasswordReset from "./routes/requests/userActions/resetPasswordWithRecords.js";
 import encryptionKeyReset from "./routes/requests/userActions/resetEncryptionKey.js";
-import fetchUserLogs from "./routes/requests/userActions/fetchLog.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
@@ -114,14 +105,6 @@ app.use("/admin/actions/userMgmt/existingUser", removeUser);
 
 app.use("/admin/actions/userMgmt/modifyAccount", modifyUser);
 
-app.use("/admin/actions/logMgmt", fetchLog);
-
-app.use("/admin/actions/logMgmt/logDetails", getLogDetails);
-
-app.use("/admin/actions/logMgmt/deleteRequest", deleteLogs);
-
-app.use("/admin/actions/logMgmt/downloadRequest", downloadLogs);
-
 app.use("/userDetails", getUserDetails);
 
 app.use("/user/approvals", userApprovalOtp);
@@ -129,8 +112,6 @@ app.use("/user/approvals", userApprovalOtp);
 app.use("/user/passwordAction", userProfilePasswordReset);
 
 app.use("/user/encryptionKey", encryptionKeyReset);
-
-app.use("/user/logAction", fetchUserLogs);
 
 const formatISTTimestamp = (date) => {
   return new Intl.DateTimeFormat("en-GB", {
@@ -157,10 +138,6 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 await adminUser.deleteMany();
-await adminLogs.deleteMany();
-await adminErrorLogs.deleteMany();
-await userLogs.deleteMany();
-await userErrorLogs.deleteMany();
 
 console.log("Admin users database collection initialized.");
 
@@ -196,157 +173,5 @@ const newUser2 = new adminUser({
   accountType: "Admin",
 });
 await newUser2.save();
-
-for (let i = 1; i <= 25; i++) {
-  const newAdminLog = new adminLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P4",
-    logDetails: `Admin log number: ${i}`,
-  });
-  await newAdminLog.save();
-
-  const newAdminErrorLog = new adminErrorLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P4",
-    logDetails: `Admin error log number: ${i}`,
-  });
-  await newAdminErrorLog.save();
-
-  const userLog = new userLogs({
-    logLinkedAccount: "harijv0310@gmail.com",
-    logAddedBy: "harijv0310@gmail.com",
-    logCategory: "Public",
-    logPriority: "P4",
-    logDetails: `User log number: ${i}`,
-  });
-  await userLog.save();
-
-  const userErrorLog = new userErrorLogs({
-    logLinkedAccount: "harijv0310@gmail.com",
-    logAddedBy: "harijv0310@gmail.com",
-    logCategory: "Public",
-    logPriority: "P4",
-    logDetails: `User error log number: ${i}`,
-  });
-  await userErrorLog.save();
-}
-
-for (let i = 26; i <= 50; i++) {
-  const newAdminLog = new adminLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P3",
-    logDetails: `Admin log number: ${i}`,
-  });
-  await newAdminLog.save();
-
-  const newAdminErrorLog = new adminErrorLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P3",
-    logDetails: `Admin error log number: ${i}`,
-  });
-  await newAdminErrorLog.save();
-
-  const userLog = new userLogs({
-    logLinkedAccount: "harijv0310@gmail.com",
-    logAddedBy: "harijv0310@gmail.com",
-    logCategory: "Public",
-    logPriority: "P3",
-    logDetails: `User log number: ${i}`,
-  });
-  await userLog.save();
-
-  const userErrorLog = new userErrorLogs({
-    logLinkedAccount: "harijv0310@gmail.com",
-    logAddedBy: "harijv0310@gmail.com",
-    logCategory: "Public",
-    logPriority: "P3",
-    logDetails: `User error log number: ${i}`,
-  });
-  await userErrorLog.save();
-}
-
-for (let i = 51; i <= 75; i++) {
-  const newAdminLog = new adminLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P2",
-    logDetails: `Admin log number: ${i}`,
-  });
-  await newAdminLog.save();
-
-  const newAdminErrorLog = new adminErrorLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P2",
-    logDetails: `Admin error log number: ${i}`,
-  });
-  await newAdminErrorLog.save();
-
-  const userLog = new userLogs({
-    logLinkedAccount: "harijv0310@gmail.com",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P2",
-    logDetails: `User log number: ${i}`,
-  });
-  await userLog.save();
-
-  const userErrorLog = new userErrorLogs({
-    logLinkedAccount: "harijv0310@gmail.com",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P2",
-    logDetails: `User error log number: ${i}`,
-  });
-  await userErrorLog.save();
-}
-
-for (let i = 76; i <= 105; i++) {
-  const newAdminLog = new adminLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P1",
-    logDetails: `Admin log number: ${i}`,
-  });
-  await newAdminLog.save();
-
-  const newAdminErrorLog = new adminErrorLogs({
-    logLinkedAccount: "System",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P1",
-    logDetails: `Admin error log number: ${i}`,
-  });
-  await newAdminErrorLog.save();
-
-  const userLog = new userLogs({
-    logLinkedAccount: "harijv0310@gmail.com",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P1",
-    logDetails: `User log number: ${i}`,
-  });
-  await userLog.save();
-
-  const userErrorLog = new userErrorLogs({
-    logLinkedAccount: "harijv0310@gmail.com",
-    logAddedBy: "System",
-    logCategory: "Public",
-    logPriority: "P1",
-    logDetails: `User error log number: ${i}`,
-  });
-  await userErrorLog.save();
-}
 
 console.log("New SuperAdmin added. Good to go!");

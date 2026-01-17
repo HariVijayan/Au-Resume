@@ -3,7 +3,6 @@ import checkUserOrAdminAccess from "../../../../helper/authentication/userOrAdmi
 import otpPreConditions from "../../../../helper/authentication/userOrAdmin/otpPreConditions.js";
 import sendEmailToUser from "../../../../helper/functions/sendEmail.js";
 import generateOtp from "../../../../helper/functions/generateOtp.js";
-import addLogs from "../../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -61,27 +60,8 @@ router.post("/password-reset-otp", async (req, res) => {
       });
     }
 
-    await addLogs(
-      false,
-      false,
-      email,
-      email,
-      "Public",
-      "P4",
-      `Requested password reset. Yet to verify request.`
-    );
-
     res.json({ message: "OTP sent to email successfully" });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to perform password reset. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

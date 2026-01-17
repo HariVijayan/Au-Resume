@@ -3,8 +3,6 @@ import checkPendingUserAccess from "../../../../helper/authentication/pendingUse
 import otpPreConditions from "../../../../helper/authentication/pendingUser/otpPreConditions.js";
 import sendEmailToUser from "../../../../helper/functions/sendEmail.js";
 import generateOtp from "../../../../helper/functions/generateOtp.js";
-import addLogs from "../../../../helper/functions/addLogs.js";
-
 const router = express.Router();
 
 router.post("/registration", async (req, res) => {
@@ -57,27 +55,8 @@ router.post("/registration", async (req, res) => {
       });
     }
 
-    await addLogs(
-      false,
-      false,
-      email,
-      email,
-      "Public",
-      "P4",
-      `Requested otp resending to verify new account.`
-    );
-
     res.json({ message: "New OTP sent to email successfully" });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to resend otp for new account registration. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

@@ -1,5 +1,4 @@
 import adminOtp from "../../../models/admin/otp.js";
-import addLogs from "../../functions/addLogs.js";
 
 async function getAdminOtp(adminEmail) {
   const lastOtp = await adminOtp.findOne({ adminEmail });
@@ -8,15 +7,6 @@ async function getAdminOtp(adminEmail) {
     lastOtp &&
     Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
   ) {
-    await addLogs(
-      true,
-      true,
-      adminEmail,
-      adminEmail,
-      "Confidential",
-      "P1",
-      "Too many OTP requests. Potential DOS attack."
-    );
     return {
       Valid: "NO",
       HtmlCode: 429,
@@ -25,16 +15,6 @@ async function getAdminOtp(adminEmail) {
   }
 
   await adminOtp.deleteMany({ email: adminEmail });
-
-  await addLogs(
-    true,
-    false,
-    adminEmail,
-    adminEmail,
-    "Public",
-    "P4",
-    "Successfully generated otp."
-  );
 
   return {
     Valid: "YES",

@@ -6,7 +6,6 @@ import crypto from "crypto";
 import sendEmailToUser from "../../../../helper/functions/sendEmail.js";
 import generateOtp from "../../../../helper/functions/generateOtp.js";
 import checkPassword from "../../../../helper/functions/checkPassword.js";
-import addLogs from "../../../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -96,27 +95,8 @@ router.post("/register", async (req, res) => {
     });
     await newUser.save();
 
-    await addLogs(
-      false,
-      false,
-      email,
-      email,
-      "Public",
-      "P4",
-      `Account created. Yet to be verified.`
-    );
-
     res.status(200).json({ message: "OTP sent to email successfully" });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to register pending user. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

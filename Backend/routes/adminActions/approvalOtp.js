@@ -3,7 +3,6 @@ import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import otpPreConditions from "../../helper/authentication/admin/otpPreConditions.js";
 import sendEmailToUser from "../../helper/functions/sendEmail.js";
 import generateOtp from "../../helper/functions/generateOtp.js";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -83,15 +82,6 @@ router.post("/get-approval-otp", async (req, res) => {
 
     res.json({ message: "OTP sent to email" });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to send Otp for admin portal action. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

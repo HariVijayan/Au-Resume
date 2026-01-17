@@ -5,7 +5,6 @@ import sendEmailToUser from "../../helper/functions/sendEmail.js";
 import generatePassword from "../../helper/functions/generatePassword.js";
 import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -65,30 +64,10 @@ router.post("/newAdmin", async (req, res) => {
           "Admin added. System errored while sending credentials. Delete account and add again",
       });
     }
-
-    await addLogs(
-      true,
-      false,
-      adminEmail,
-      adminEmail,
-      "Confidential",
-      "P4",
-      `Successfully added new admin ${newAdminEmail}.`
-    );
-
     res.json({
       message: "New admin added successfully",
     });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to add new admin. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

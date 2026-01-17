@@ -5,7 +5,6 @@ import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 import sendEmailToUser from "../../helper/functions/sendEmail.js";
 import generatePassword from "../../helper/functions/generatePassword.js";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -97,15 +96,6 @@ router.post("/modifyUser", async (req, res) => {
       message: "User account modified successfully",
     });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to modify user account. ${error}`
-    );
     res.status(500).json({ message: `Server error` });
   }
 });

@@ -6,7 +6,6 @@ import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 import generatePassword from "../../helper/functions/generatePassword.js";
 import sendEmailToUser from "../../helper/functions/sendEmail.js";
 import csvToArray from "../../helper/functions/csvToArray.js";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -143,28 +142,10 @@ router.post("/addNewUser", async (req, res) => {
     }
 
     const result = await userDBModel.insertMany(finalUserList);
-    await addLogs(
-      true,
-      false,
-      adminEmail,
-      adminEmail,
-      "Confidential",
-      "P4",
-      `Successfully added ${result.length} users from ${commonRegNoPrefix} register number group.`
-    );
     return res
       .status(200)
       .json({ message: `${result.length} users inserted successfully` });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to add new users. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });

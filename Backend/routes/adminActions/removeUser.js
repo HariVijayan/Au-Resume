@@ -7,7 +7,6 @@ import pendingUser from "../../models/user/pendingUser.js";
 import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 import csvToArray from "../../helper/functions/csvToArray.js";
-import addLogs from "../../helper/functions/addLogs.js";
 
 const router = express.Router();
 
@@ -137,29 +136,10 @@ router.post("/removeUser", async (req, res) => {
       });
     }
 
-    await addLogs(
-      true,
-      false,
-      adminEmail,
-      adminEmail,
-      "Confidential",
-      "P4",
-      `Successfully removed ${finalUserList.length} users from ${commonRegNoPrefix} register number group.`
-    );
-
     return res
       .status(200)
       .json({ message: `${finalUserList.length} users deleted successfully` });
   } catch (error) {
-    await addLogs(
-      true,
-      true,
-      "System",
-      "System",
-      "Confidential",
-      "P4",
-      `Failed to remove user account. ${error}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 });
