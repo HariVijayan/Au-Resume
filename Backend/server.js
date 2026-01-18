@@ -11,7 +11,7 @@ import saveResume from "./routes/requests/pdf/saveResume.js";
 import firstTimeOtp from "./routes/authentication/otp/firstTimeOtp/passwordReset.js";
 import resendOtpNewUser from "./routes/authentication/otp/resendOtp/newUserRegistration.js";
 import resendOtp from "./routes/authentication/otp/resendOtp/passwordReset.js";
-import verifyOtpNewUser from "./routes/authentication/otp/verifyOtp/newRegistration.js";
+import verifyOtpNewUser from "./routes/authentication/otp/verifyOtp/newUserRegistration.js";
 import verifyOtp from "./routes/authentication/otp/verifyOtp/passwordReset.js";
 import login from "./routes/authentication/login.js";
 import logout from "./routes/authentication/logout.js";
@@ -37,15 +37,18 @@ import userProfilePasswordReset from "./routes/requests/userActions/resetPasswor
 import encryptionKeyReset from "./routes/requests/userActions/resetEncryptionKey.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
+import bcrypt from "bcrypt";
 
 const app = express();
 const port = 5000;
+
+const BCRYPT_COST_FACTOR = 12;
 
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
@@ -144,10 +147,8 @@ console.log("Admin users database collection initialized.");
 const adminEmail = process.env.SUPERADMIN_EMAIL;
 const adminPassword = process.env.SUPERADMIN_PASSWORD;
 
-const hashedPassword = crypto
-  .createHash("sha256")
-  .update(adminPassword)
-  .digest("hex");
+const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);
+const hashedPassword = await bcrypt.hash(adminPassword, salt);
 
 const createdAt = new Date(Date.now());
 const createdAtFormatted = formatISTTimestamp(createdAt);

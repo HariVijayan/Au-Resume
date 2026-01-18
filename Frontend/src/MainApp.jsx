@@ -11,22 +11,22 @@ import Error404 from "./404Error.jsx";
 import Login from "./Components/General/Login/Login.jsx";
 import Register from "./Components/General/Register/Register.jsx";
 import Otp from "./Components/General/Register/VerifyOtp.jsx";
-import ForgotPassword from "./Components/General/Forgot_Password/ForgotPassword.jsx";
-import VerifyPasswordOtp from "./Components/General/Forgot_Password/VerifyOtp.jsx";
-import ResetPassword from "./Components/General/Forgot_Password/ResetPassword.jsx";
-import TemplateChoosing from "./Components/Resume Builder/Templates/Template.jsx";
-import BasicDetails from "./Components/Resume Builder/Basic Details/BasicDetails.jsx";
-import Experience from "./Components/Resume Builder/Experience/ExperienceMain.jsx";
-import EducationPhd from "./Components/Resume Builder/Education/Phd/Phd.jsx";
-import EducationPg from "./Components/Resume Builder/Education/Pg/Pg.jsx";
-import EducationUg from "./Components/Resume Builder/Education/Ug/Ug.jsx";
-import EducationDiploma from "./Components/Resume Builder/Education/Diploma/Diploma.jsx";
-import EducationSchool from "./Components/Resume Builder/Education/School/School.jsx";
-import Projects from "./Components/Resume Builder/Project/Project.jsx";
-import Skills from "./Components/Resume Builder/Skills/SkillsMain.jsx";
-import Certifications from "./Components/Resume Builder/Certifications/CertificationsMain.jsx";
-import LanguagesKnown from "./Components/Resume Builder/Language/Language.jsx";
-import CustomInput from "./Components/Resume Builder/Custom/CustomMain.jsx";
+import ForgotPassword from "./Components/General/ForgotPassword/ForgotPassword.jsx";
+import VerifyPasswordOtp from "./Components/General/ForgotPassword/VerifyOtp.jsx";
+import ResetPassword from "./Components/General/ForgotPassword/ResetPassword.jsx";
+import TemplateChoosing from "./Components/ResumeBuilder/Templates/Template.jsx";
+import BasicDetails from "./Components/ResumeBuilder/BasicDetails/BasicDetails.jsx";
+import Experience from "./Components/ResumeBuilder/Experience/ExperienceMain.jsx";
+import EducationPhd from "./Components/ResumeBuilder/Education/Phd/Phd.jsx";
+import EducationPg from "./Components/ResumeBuilder/Education/Pg/Pg.jsx";
+import EducationUg from "./Components/ResumeBuilder/Education/Ug/Ug.jsx";
+import EducationDiploma from "./Components/ResumeBuilder/Education/Diploma/Diploma.jsx";
+import EducationSchool from "./Components/ResumeBuilder/Education/School/School.jsx";
+import Projects from "./Components/ResumeBuilder/Project/Project.jsx";
+import Skills from "./Components/ResumeBuilder/Skills/SkillsMain.jsx";
+import Certifications from "./Components/ResumeBuilder/Certifications/CertificationsMain.jsx";
+import LanguagesKnown from "./Components/ResumeBuilder/Language/Language.jsx";
+import CustomInput from "./Components/ResumeBuilder/Custom/CustomMain.jsx";
 import AdminPanelTemplate from "./Components/Profile/AdminPanelTemplate.jsx";
 import SuperAdminDashboard from "./Components/Profile/MainDashboard/SuperAdminDashboard.jsx";
 import AdminMgmtDashboard from "./Components/Profile/AdminMgmt/Dashboard.jsx";
@@ -42,7 +42,7 @@ import LogMgmtDashboard from "./Components/Profile/LogMgmt/Dashboard.jsx";
 import AdminLogs from "./Components/Profile/LogMgmt/AdminLogs.jsx";
 import UserLogs from "./Components/Profile/LogMgmt/UserLogs.jsx";
 import LogActions from "./Components/Profile/LogMgmt/LogActions.jsx";
-import UserProfile from "./Components/Resume Builder/UserProfile.jsx";
+import UserProfile from "./Components/ResumeBuilder/UserProfile.jsx";
 import Analytics from "./Components/Profile/MainDashboard/AnalyticsDashboard.jsx";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -134,7 +134,7 @@ function RouteWrapper() {
         { userType },
         {
           withCredentials: true,
-        }
+        },
       );
 
       localStorage.setItem("flagLogout", Date.now());
@@ -146,7 +146,7 @@ function RouteWrapper() {
       setTimeout(() => navigate("/"), 100);
     } catch (error) {
       setServerMessage(
-        error.response?.data?.message || "Failed to logout user"
+        error.response?.data?.message || "Failed to logout user",
       );
       setServerMsgType("error");
       setShowServerMsg(true);

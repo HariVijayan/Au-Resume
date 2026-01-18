@@ -33,15 +33,15 @@ const ModifyAdmin = () => {
   const [otpInput, setOtpInput] = useState("");
 
   const [nameChangeNeeded, setNameChangeNeeded] = useState(false);
-  const [adminTypeChange, setAdminTypeChange] = useState(false);
-  const [passwordReset, setPasswordReset] = useState(false);
-  const [accountUnlock, setAccountUnlock] = useState(false);
+  const [adminTypeChangeNeeded, setAdminTypeChangeNeeded] = useState(false);
+  const [passwordResetNeeded, setPasswordResetNeeded] = useState(false);
+  const [accountUnlockNeeded, setAccountUnlockNeeded] = useState(false);
 
   const [showNewFields, setShowNewFields] = useState(false);
   const [showNewNameField, setShowNewNameField] = useState(false);
   const [showNewAdminField, setShowNewAdminField] = useState(false);
 
-  const [newName, setNewName] = useState("");
+  const [newAdminName, setNewAdminName] = useState("");
   const [newAdminType, setNewAdminType] = useState("");
 
   const [showApproval, setShowApproval] = useState(false);
@@ -67,7 +67,7 @@ const ModifyAdmin = () => {
         const response = await axios.post(
           "http://localhost:5000/superAdmin/fetchAdmin/adminListGrouped",
           {},
-          { withCredentials: true }
+          { withCredentials: true },
         );
         setAdminUsers(response.data.userList);
         setAdminNum(response.data.numAdmins);
@@ -78,7 +78,8 @@ const ModifyAdmin = () => {
       } catch (error) {
         setLoadingAnim(false);
         setServerMessage(
-          error.response?.data?.message || "Failed to fetch current admins list"
+          error.response?.data?.message ||
+            "Failed to fetch current admins list",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -96,7 +97,7 @@ const ModifyAdmin = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setShowModifyAdminOtp(true);
       setShowApproval(false);
@@ -107,7 +108,7 @@ const ModifyAdmin = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -125,19 +126,19 @@ const ModifyAdmin = () => {
         {
           adminEmail,
           currentAdminType,
-          otpInput,
           nameChangeNeeded,
-          adminTypeChange,
-          passwordReset,
-          accountUnlock,
-          newName,
+          adminTypeChangeNeeded,
+          passwordResetNeeded,
+          accountUnlockNeeded,
+          newAdminName,
           newAdminType,
+          otpInput,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setLoadingAnim(false);
       setServerMessage(
-        "Admin account modification successful. Refreshing the page in 5 seconds"
+        "Admin account modification successful. Refreshing the page in 5 seconds",
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -149,7 +150,7 @@ const ModifyAdmin = () => {
       setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
-          "Failed to modify admin account. Refreshing the page in 5 seconds"
+          "Failed to modify admin account. Refreshing the page in 5 seconds",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -172,20 +173,20 @@ const ModifyAdmin = () => {
       setShowNewFields(true);
       setShowNewNameField(true);
     }
-    if (adminTypeChange) {
+    if (adminTypeChangeNeeded) {
       setShowNewFields(true);
       setShowNewAdminField(true);
     }
     if (!nameChangeNeeded) {
       setShowNewNameField(false);
     }
-    if (!adminTypeChange) {
+    if (!adminTypeChangeNeeded) {
       setShowNewAdminField(false);
     }
-    if (!nameChangeNeeded && !adminTypeChange) {
+    if (!nameChangeNeeded && !adminTypeChangeNeeded) {
       setShowNewFields(false);
     }
-  }, [nameChangeNeeded, adminTypeChange]);
+  }, [nameChangeNeeded, adminTypeChangeNeeded]);
 
   return (
     <>
@@ -350,8 +351,10 @@ const ModifyAdmin = () => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={adminTypeChange}
-                        onChange={(e) => setAdminTypeChange(e.target.checked)}
+                        checked={adminTypeChangeNeeded}
+                        onChange={(e) =>
+                          setAdminTypeChangeNeeded(e.target.checked)
+                        }
                         color="primary"
                       />
                     }
@@ -383,8 +386,10 @@ const ModifyAdmin = () => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={passwordReset}
-                        onChange={(e) => setPasswordReset(e.target.checked)}
+                        checked={passwordResetNeeded}
+                        onChange={(e) =>
+                          setPasswordResetNeeded(e.target.checked)
+                        }
                         color="primary"
                       />
                     }
@@ -405,8 +410,10 @@ const ModifyAdmin = () => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={accountUnlock}
-                        onChange={(e) => setAccountUnlock(e.target.checked)}
+                        checked={accountUnlockNeeded}
+                        onChange={(e) =>
+                          setAccountUnlockNeeded(e.target.checked)
+                        }
                         color="primary"
                       />
                     }
@@ -444,8 +451,8 @@ const ModifyAdmin = () => {
                       required
                       id="inp-name"
                       label="New Name"
-                      value={newName}
-                      onChange={(e) => setNewName(e.target.value)}
+                      value={newAdminName}
+                      onChange={(e) => setNewAdminName(e.target.value)}
                     />
                   </Box>
                 )}

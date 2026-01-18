@@ -25,8 +25,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 const Login = ({ setLoggedInUserType }) => {
   const theme = useTheme();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -54,7 +54,7 @@ const Login = ({ setLoggedInUserType }) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/authenticateUser/login",
-        { email, password, rememberMe, isAdmin },
+        { loginEmail, loginPassword, rememberMe, isAdmin },
         { withCredentials: true }
       );
       setLoadingAnim(false);
@@ -128,8 +128,8 @@ const Login = ({ setLoggedInUserType }) => {
               id="inp-Email"
               label="Email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.target.value)}
             />
           </InputBox>
           <InputBox>
@@ -138,8 +138,8 @@ const Login = ({ setLoggedInUserType }) => {
               variant="outlined"
               label="Password"
               type={showPasswordIcon ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
               slotProps={{
                 input: {
                   endAdornment: (
@@ -211,7 +211,7 @@ const Login = ({ setLoggedInUserType }) => {
         <Button
           variant="contained"
           onClick={loginUser}
-          disabled={!email || !password}
+          disabled={!loginEmail || !loginPassword}
           size="large"
           endIcon={<LoginIcon />}
           loading={loadingAnim}

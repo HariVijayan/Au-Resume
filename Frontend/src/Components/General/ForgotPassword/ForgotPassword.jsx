@@ -19,7 +19,7 @@ import WarningIcon from "@mui/icons-material/Warning";
 import { useTheme } from "@mui/material/styles";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const ForgotPassword = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/getFirstOtp/password-reset-otp",
-        { email, isAdmin }
+        { userEmail, isAdmin },
       );
       setLoadingAnim(false);
       setServerMessage("Otp sent to email successfully");
@@ -47,12 +47,12 @@ const ForgotPassword = () => {
       setShowServerMsg(true);
 
       setTimeout(() => {
-        navigate("/verify-password-otp", { state: { email, isAdmin } });
+        navigate("/verify-password-otp", { state: { userEmail, isAdmin } });
       }, 1000); //Redirect to otp verification after 1 seconds of showing success message
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -90,8 +90,8 @@ const ForgotPassword = () => {
               id="inp-Email"
               label="Email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
           </InputBox>
         </InputWrapper>
@@ -131,7 +131,7 @@ const ForgotPassword = () => {
         <Button
           variant="contained"
           onClick={getOtp}
-          disabled={!email}
+          disabled={!userEmail}
           size="large"
           endIcon={<EmailIcon />}
           loading={loadingAnim}

@@ -6,17 +6,17 @@ import generateOtp from "../../../../helper/functions/generateOtp.js";
 const router = express.Router();
 
 router.post("/registration", async (req, res) => {
-  const { email } = req.body;
+  const { userEmail } = req.body;
 
   try {
-    const accountAccessCheck = await checkPendingUserAccess(email);
+    const accountAccessCheck = await checkPendingUserAccess(userEmail);
     if (accountAccessCheck.Valid === "NO") {
       return res
         .status(accountAccessCheck.HtmlCode)
         .json({ message: accountAccessCheck.Reason });
     }
 
-    const otpGenerationPreCheck = await otpPreConditions(email);
+    const otpGenerationPreCheck = await otpPreConditions(userEmail);
 
     if (otpGenerationPreCheck.Valid === "NO") {
       return res
@@ -26,8 +26,8 @@ router.post("/registration", async (req, res) => {
 
     const requestNewOtp = await generateOtp(
       false,
-      email,
-      "New User Registration"
+      userEmail,
+      "New User Registration",
     );
 
     if (requestNewOtp.Success === "NO") {
@@ -43,10 +43,10 @@ router.post("/registration", async (req, res) => {
     const emailBody = `${newOtp} is your OTP. It is valid for 10 minutes.`;
 
     const sendEmail = await sendEmailToUser(
-      email,
+      userEmail,
       emailSubject,
       emailHeading,
-      emailBody
+      emailBody,
     );
 
     if (sendEmail.Success === "NO") {

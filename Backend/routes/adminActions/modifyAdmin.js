@@ -12,13 +12,13 @@ router.post("/admin-modifications", async (req, res) => {
   const {
     adminEmail,
     currentAdminType,
-    otpInput,
     nameChangeNeeded,
-    adminTypeChange,
-    passwordReset,
-    accountUnlock,
-    newName,
+    adminTypeChangeNeeded,
+    passwordResetNeeded,
+    accountUnlockNeeded,
+    newAdminName,
     newAdminType,
+    otpInput,
   } = req.body;
 
   try {
@@ -35,7 +35,7 @@ router.post("/admin-modifications", async (req, res) => {
 
     const adminOtpVerification = await verifyAdminOtp(
       approvingAdminEmail,
-      otpInput
+      otpInput,
     );
 
     if (adminOtpVerification.Valid === "NO") {
@@ -56,11 +56,11 @@ router.post("/admin-modifications", async (req, res) => {
     if (nameChangeNeeded) {
       await adminUser.updateOne(
         { email: adminEmail },
-        { $set: { name: newName } }
+        { $set: { name: newAdminName } },
       );
     }
 
-    if (accountUnlock) {
+    if (accountUnlockNeeded) {
       await adminUser.updateOne(
         { email: adminEmail },
         {
@@ -69,11 +69,11 @@ router.post("/admin-modifications", async (req, res) => {
             lockUntil: null,
             lockUntilFormatted: null,
           },
-        }
+        },
       );
     }
 
-    if (passwordReset) {
+    if (passwordResetNeeded) {
       const newAdminPassword = generatePassword();
       const hashedPassword = crypto
         .createHash("sha256")
@@ -85,7 +85,7 @@ router.post("/admin-modifications", async (req, res) => {
           $set: {
             password: hashedPassword,
           },
-        }
+        },
       );
 
       const emailSubject =
@@ -97,7 +97,7 @@ router.post("/admin-modifications", async (req, res) => {
         adminEmail,
         emailSubject,
         emailHeading,
-        emailBody
+        emailBody,
       );
 
       if (sendEmail.Success === "NO") {
@@ -107,7 +107,7 @@ router.post("/admin-modifications", async (req, res) => {
       }
     }
 
-    if (adminTypeChange) {
+    if (adminTypeChangeNeeded) {
       adminToBeModified = await adminUser.findOne({
         email: adminEmail,
         accountType: newAdminType,
@@ -121,7 +121,7 @@ router.post("/admin-modifications", async (req, res) => {
 
       await adminUser.updateOne(
         { email: adminEmail },
-        { $set: { accountType: newAdminType } }
+        { $set: { accountType: newAdminType } },
       );
     }
 

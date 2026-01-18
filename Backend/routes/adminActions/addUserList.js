@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/get-final-users", async (req, res) => {
   const {
-    newAdditionType,
+    additionType,
     commonEmailSuffix,
     commonRegNoPrefix,
     commonRegNoStart,
@@ -16,12 +16,12 @@ router.post("/get-final-users", async (req, res) => {
     commonUserCourseType,
     commonUserProgramme,
     commonUserBranch,
-    newUserEmail,
-    newUserRegNo,
-    newUserDept,
-    newUserCourseType,
-    newUserProgramme,
-    newUserBranch,
+    userEmail,
+    userRegNo,
+    userDept,
+    userCourseType,
+    userProgramme,
+    userBranch,
   } = req.body;
 
   try {
@@ -37,16 +37,16 @@ router.post("/get-final-users", async (req, res) => {
     let finalUserList = [];
     let skippableRegNoList = csvToArray(skipRegNo);
 
-    if (newAdditionType === "Single") {
+    if (additionType === "Single") {
       finalUserList.push({
-        email: newUserEmail,
-        registerNumber: newUserRegNo,
-        department: newUserDept,
-        courseType: newUserCourseType,
-        programme: newUserProgramme,
-        branch: newUserBranch,
+        email: userEmail,
+        registerNumber: userRegNo,
+        department: userDept,
+        courseType: userCourseType,
+        programme: userProgramme,
+        branch: userBranch,
       });
-    } else if (newAdditionType === "Multiple") {
+    } else if (additionType === "Multiple") {
       for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
         if (skippableRegNoList.includes(i)) {
           continue;

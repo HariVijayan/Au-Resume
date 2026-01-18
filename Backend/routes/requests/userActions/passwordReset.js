@@ -1,7 +1,6 @@
 import express from "express";
 import User from "../../../models/user/user.js";
 import adminUser from "../../../models/admin/admin.js";
-import crypto from "crypto";
 import checkPassword from "../../../helper/functions/checkPassword.js";
 import resumeData from "../../../models/pdf/resumeData.js";
 import userCurrentSession from "../../../models/user/currentSession.js";
@@ -12,7 +11,7 @@ const router = express.Router();
 const BCRYPT_COST_FACTOR = 12;
 
 router.post("/reset-password", async (req, res) => {
-  const { email, newPassword, isAdmin } = req.body;
+  const { userEmail, newPassword, isAdmin } = req.body;
   try {
     const passwordCheck = checkPassword(newPassword);
     if (!passwordCheck.Valid) {
@@ -23,11 +22,14 @@ router.post("/reset-password", async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     if (isAdmin) {
-      await adminUser.updateOne({ email }, { password: hashedPassword });
+      await adminUser.updateOne(
+        { email: userEmail },
+        { password: hashedPassword },
+      );
     } else {
-      await resumeData.deleteMany({ login_email: email });
-      await userCurrentSession.deleteMany({ email });
-      await User.updateOne({ email }, { password: hashedPassword });
+      await resumeData.deleteMany({ login_email: userEmail });
+      await userCurrentSession.deleteMany({ email: userEmail });
+      await User.updateOne({ email: userEmail }, { password: hashedPassword });
     }
 
     res.json({

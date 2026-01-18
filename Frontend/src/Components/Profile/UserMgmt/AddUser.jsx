@@ -36,7 +36,7 @@ const AddNewUser = () => {
   const theme = useTheme();
 
   const [usersList, setUsersList] = useState([]);
-  const [newAdditionType, setNewAdditionType] = useState("");
+  const [additionType, setAdditionType] = useState("");
 
   const [showUsers, setShowUsers] = useState(false);
   const [approval, setApproval] = useState(false);
@@ -51,21 +51,21 @@ const AddNewUser = () => {
 
   const [otpInput, setOtpInput] = useState("");
 
-  const [newUserEmail, setNewUserEmail] = useState("");
-  const [newUserDept, setNewUserDept] = useState(
-    "Information Science and Technology"
+  const [userEmail, setUserEmail] = useState("");
+  const [userDept, setUserDept] = useState(
+    "Information Science and Technology",
   );
-  const [newUserCourseType, setNewUserCourseType] = useState("");
-  const [newUserProgramme, setNewUserProgramme] = useState("");
-  const [newUserBranch, setNewUserBranch] = useState("");
-  const [newUserRegNo, setNewUserRegNo] = useState("");
+  const [userCourseType, setUserCourseType] = useState("");
+  const [userProgramme, setUserProgramme] = useState("");
+  const [userBranch, setUserBranch] = useState("");
+  const [userRegNo, setUserRegNo] = useState("");
 
   const [commonEmailSuffix, setCommonEmailSuffix] = useState(
-    "@student.annauniv.edu"
+    "@student.annauniv.edu",
   );
   const [commonRegNoPrefix, setCommonRegNoPrefix] = useState("");
   const [commonUserDept, setCommonUserDept] = useState(
-    "Information Science and Technology"
+    "Information Science and Technology",
   );
   const [commonUserCourseType, setCommonUserCourseType] = useState("");
   const [commonUserProgramme, setCommonUserProgramme] = useState("");
@@ -76,7 +76,7 @@ const AddNewUser = () => {
 
   const getProgrammesList = (actionType) => {
     if (actionType === "Single") {
-      return dropdownOptions.programmes[newUserCourseType] || [];
+      return dropdownOptions.programmes[userCourseType] || [];
     }
     if (actionType === "Multiple") {
       return dropdownOptions.programmes[commonUserCourseType] || [];
@@ -85,7 +85,7 @@ const AddNewUser = () => {
 
   const getBranchesList = (actionType) => {
     if (actionType === "Single") {
-      return dropdownOptions.branches[newUserProgramme] || [];
+      return dropdownOptions.branches[userProgramme] || [];
     }
     if (actionType === "Multiple") {
       return dropdownOptions.branches[commonUserProgramme] || [];
@@ -94,9 +94,9 @@ const AddNewUser = () => {
 
   const chooseCourseType = (e, actionType) => {
     if (actionType === "Single") {
-      setNewUserCourseType(e);
-      setNewUserProgramme("");
-      setNewUserBranch("");
+      setUserCourseType(e);
+      setUserProgramme("");
+      setUserBranch("");
     }
     if (actionType === "Multiple") {
       setCommonUserCourseType(e);
@@ -107,8 +107,8 @@ const AddNewUser = () => {
 
   const chooseProgramme = (e, actionType) => {
     if (actionType === "Single") {
-      setNewUserProgramme(e);
-      setNewUserBranch("");
+      setUserProgramme(e);
+      setUserBranch("");
     }
     if (actionType === "Multiple") {
       setCommonUserProgramme(e);
@@ -118,7 +118,7 @@ const AddNewUser = () => {
 
   const chooseBranch = (e, actionType) => {
     if (actionType === "Single") {
-      setNewUserBranch(e);
+      setUserBranch(e);
     }
     if (actionType === "Multiple") {
       setCommonUserBranch(e);
@@ -127,7 +127,7 @@ const AddNewUser = () => {
 
   useEffect(() => {
     if (
-      newAdditionType === "Multiple" &&
+      additionType === "Multiple" &&
       commonEmailSuffix &&
       commonRegNoPrefix &&
       commonRegNoStart &&
@@ -142,18 +142,18 @@ const AddNewUser = () => {
       getFinalUserList();
     }
     if (
-      newAdditionType === "Single" &&
-      newUserEmail &&
-      newUserRegNo &&
-      newUserDept &&
-      newUserCourseType &&
-      newUserProgramme &&
-      newUserBranch
+      additionType === "Single" &&
+      userEmail &&
+      userRegNo &&
+      userDept &&
+      userCourseType &&
+      userProgramme &&
+      userBranch
     ) {
       setNeedApprovalMul(false);
       setNeedApprovalSingle(true);
       getFinalUserList();
-    } else if (newAdditionType != "Single" && newAdditionType != "Multiple") {
+    } else if (additionType != "Single" && additionType != "Multiple") {
       setShowUsers(false);
       setNeedApprovalSingle(false);
       setNeedApprovalMul(false);
@@ -167,12 +167,12 @@ const AddNewUser = () => {
     commonUserCourseType,
     commonUserProgramme,
     commonUserBranch,
-    newUserEmail,
-    newUserRegNo,
-    newUserDept,
-    newUserCourseType,
-    newUserProgramme,
-    newUserBranch,
+    userEmail,
+    userRegNo,
+    userDept,
+    userCourseType,
+    userProgramme,
+    userBranch,
   ]);
 
   const modifyAddUserOperation = (newOperationType) => {
@@ -185,16 +185,16 @@ const AddNewUser = () => {
       setCommonUserCourseType("");
       setCommonUserProgramme("");
       setCommonUserBranch("");
-      setNewAdditionType("Single");
+      setAdditionType("Single");
     }
     if (newOperationType === "Multiple") {
-      setNewUserEmail("");
-      setNewUserRegNo("");
-      setNewUserDept("Information Science and Technology");
-      setNewUserCourseType("");
-      setNewUserProgramme("");
-      setNewUserBranch("");
-      setNewAdditionType("Multiple");
+      setUserEmail("");
+      setUserRegNo("");
+      setUserDept("Information Science and Technology");
+      setUserCourseType("");
+      setUserProgramme("");
+      setUserBranch("");
+      setAdditionType("Multiple");
     }
   };
 
@@ -207,7 +207,7 @@ const AddNewUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/userMgmt/addUser/get-final-users",
         {
-          newAdditionType,
+          additionType,
           commonEmailSuffix,
           commonRegNoPrefix,
           commonRegNoStart,
@@ -217,14 +217,14 @@ const AddNewUser = () => {
           commonUserCourseType,
           commonUserProgramme,
           commonUserBranch,
-          newUserEmail,
-          newUserRegNo,
-          newUserDept,
-          newUserCourseType,
-          newUserProgramme,
-          newUserBranch,
+          userEmail,
+          userRegNo,
+          userDept,
+          userCourseType,
+          userProgramme,
+          userBranch,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setUsersList(response.data.usersList);
       setShowUsers(true);
@@ -235,7 +235,7 @@ const AddNewUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response.data.message || "Failed to fetch user list"
+        error.response.data.message || "Failed to fetch user list",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -247,11 +247,11 @@ const AddNewUser = () => {
     setServerMessage("Processing your request...");
     setServerMsgType("info");
     setShowServerMsg(true);
-    if (newAdditionType === "Multiple") {
+    if (additionType === "Multiple") {
       if (parseInt(commonRegNoEnd) - parseInt(commonRegNoStart) > 100) {
         setLoadingAnim(false);
         setServerMessage(
-          "You can only add upto 100 users at a time. Please reduce the user range and complete in multiple requests if needed."
+          "You can only add upto 100 users at a time. Please reduce the user range and complete in multiple requests if needed.",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -260,7 +260,7 @@ const AddNewUser = () => {
       if (parseInt(commonRegNoEnd) < parseInt(commonRegNoStart)) {
         setLoadingAnim(false);
         setServerMessage(
-          "The end register number cannot be less than the start register number. Please correct the range."
+          "The end register number cannot be less than the start register number. Please correct the range.",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -271,7 +271,7 @@ const AddNewUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setShowOtp(true);
       setLoadingAnim(false);
@@ -283,7 +283,7 @@ const AddNewUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -299,7 +299,7 @@ const AddNewUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/userMgmt/newUser/addNewUser",
         {
-          newAdditionType,
+          additionType,
           commonEmailSuffix,
           commonRegNoPrefix,
           commonRegNoStart,
@@ -309,19 +309,19 @@ const AddNewUser = () => {
           commonUserCourseType,
           commonUserProgramme,
           commonUserBranch,
-          newUserEmail,
-          newUserRegNo,
-          newUserDept,
-          newUserCourseType,
-          newUserProgramme,
-          newUserBranch,
+          userEmail,
+          userRegNo,
+          userDept,
+          userCourseType,
+          userProgramme,
+          userBranch,
           otpInput,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setLoadingAnim(false);
       setServerMessage(
-        `New user(s) have been added to the site successfully. Refreshing the page in 5 seconds.`
+        `New user(s) have been added to the site successfully. Refreshing the page in 5 seconds.`,
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -333,7 +333,7 @@ const AddNewUser = () => {
       setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
-          "Failed to add new user(s). Refreshing the page in 5 seconds."
+          "Failed to add new user(s). Refreshing the page in 5 seconds.",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -424,7 +424,7 @@ const AddNewUser = () => {
           </Button>
         </Box>
 
-        {newAdditionType === "Single" && (
+        {additionType === "Single" && (
           <Box
             id="SingleUserInputsWrapper"
             sx={{
@@ -461,8 +461,8 @@ const AddNewUser = () => {
                   id="inp-email"
                   label="Email"
                   type="email"
-                  value={newUserEmail}
-                  onChange={(e) => setNewUserEmail(e.target.value)}
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
                 />
               </Box>
 
@@ -480,8 +480,8 @@ const AddNewUser = () => {
                   required
                   id="inp-regno"
                   label="Register Number"
-                  value={newUserRegNo}
-                  onChange={(e) => setNewUserRegNo(e.target.value)}
+                  value={userRegNo}
+                  onChange={(e) => setUserRegNo(e.target.value)}
                 />
               </Box>
             </Box>
@@ -513,8 +513,8 @@ const AddNewUser = () => {
                   select
                   label="Department"
                   defaultValue="Information Science and Technology"
-                  value={newUserDept}
-                  onChange={(e) => setNewUserDept(e.target.value)}
+                  value={userDept}
+                  onChange={(e) => setUserDept(e.target.value)}
                 >
                   {dropdownOptions.departments.map((option, index) => (
                     <MenuItem key={index} value={option}>
@@ -540,7 +540,7 @@ const AddNewUser = () => {
                   select
                   label="Course Type"
                   defaultValue=""
-                  value={newUserCourseType}
+                  value={userCourseType}
                   onChange={(e) => chooseCourseType(e.target.value, "Single")}
                 >
                   {dropdownOptions.courseTypes.map((option, index) => (
@@ -579,9 +579,9 @@ const AddNewUser = () => {
                   select
                   label="Programme"
                   defaultValue=""
-                  value={newUserProgramme}
+                  value={userProgramme}
                   onChange={(e) => chooseProgramme(e.target.value, "Single")}
-                  disabled={!newUserCourseType}
+                  disabled={!userCourseType}
                 >
                   <MenuItem value="">Choose Programme</MenuItem>
                   {getProgrammesList("Single").map((option, index) => (
@@ -608,9 +608,9 @@ const AddNewUser = () => {
                   select
                   label="Branch"
                   defaultValue=""
-                  value={newUserBranch}
+                  value={userBranch}
                   onChange={(e) => chooseBranch(e.target.value, "Single")}
-                  disabled={!newUserProgramme}
+                  disabled={!userProgramme}
                 >
                   <MenuItem value="">Choose Branch</MenuItem>
                   {getBranchesList("Single").map((option, index) => (
@@ -624,7 +624,7 @@ const AddNewUser = () => {
           </Box>
         )}
 
-        {newAdditionType === "Multiple" && (
+        {additionType === "Multiple" && (
           <Box
             id="MultipleUserInputsWrapper"
             sx={{
@@ -1125,12 +1125,12 @@ const AddNewUser = () => {
                 onClick={getVerificationOtp}
                 disabled={
                   !approval ||
-                  !newUserEmail ||
-                  !newUserRegNo ||
-                  !newUserDept ||
-                  !newUserCourseType ||
-                  !newUserProgramme ||
-                  !newUserBranch
+                  !userEmail ||
+                  !userRegNo ||
+                  !userDept ||
+                  !userCourseType ||
+                  !userProgramme ||
+                  !userBranch
                 }
                 size="large"
                 endIcon={<CheckIcon />}

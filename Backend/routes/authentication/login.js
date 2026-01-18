@@ -3,7 +3,6 @@ import User from "../../models/user/user.js";
 import adminUser from "../../models/admin/admin.js";
 import currentSession from "../../models/user/currentSession.js";
 import adminCurrentSession from "../../models/admin/currentSession.js";
-import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import istDateFormat from "../../helper/functions/dateIstFormat.js";
@@ -12,15 +11,15 @@ import bcrypt from "bcrypt";
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
-  const { email, password, rememberMe, isAdmin } = req.body;
+  const { loginEmail, loginPassword, rememberMe, isAdmin } = req.body;
 
   try {
     let user;
 
     if (isAdmin) {
-      user = await adminUser.findOne({ email });
+      user = await adminUser.findOne({ email: loginEmail });
     } else {
-      user = await User.findOne({ email });
+      user = await User.findOne({ email: loginEmail });
     }
 
     if (!user) {
@@ -36,7 +35,7 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    const passwordMatches = await bcrypt.compare(password, user.password);
+    const passwordMatches = await bcrypt.compare(loginPassword, user.password);
 
     if (!passwordMatches) {
       user.failedLoginAttempts += 1;

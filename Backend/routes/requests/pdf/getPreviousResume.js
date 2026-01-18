@@ -4,6 +4,8 @@ import User from "../../../models/user/user.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
+import bcrypt from "bcrypt";
+
 const router = express.Router();
 
 // Derive key from password and salt
@@ -24,12 +26,10 @@ router.post("/resume-details", async (req, res) => {
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId);
     if (!user) return res.status(401).json({ message: "No user" });
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(userPassword)
-      .digest("hex");
 
-    if (hashedPassword != user.password) {
+    const passwordMatches = await bcrypt.compare(userPassword, user.password);
+
+    if (!passwordMatches) {
       return res.status(400).json({
         message: "Unable to fetch the resume. Incorrect Password",
       });

@@ -29,7 +29,7 @@ const RemoveUser = () => {
   const theme = useTheme();
 
   const [usersList, setUsersList] = useState([]);
-  const [opertationType, setOpertationType] = useState("");
+  const [removalType, setRemovalType] = useState("");
 
   const [showUsers, setShowUsers] = useState(false);
   const [showGetListButton, setShowGetListButton] = useState(null);
@@ -45,11 +45,11 @@ const RemoveUser = () => {
 
   const [otpInput, setOtpInput] = useState("");
 
-  const [remUserEmail, setRemUserEmail] = useState("");
-  const [remUserRegNo, setRemUserRegNo] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userRegNo, setUserRegNo] = useState("");
 
   const [commonEmailSuffix, setCommonEmailSuffix] = useState(
-    "@student.annauniv.edu"
+    "@student.annauniv.edu",
   );
   const [commonRegNoPrefix, setCommonRegNoPrefix] = useState("");
   const [commonRegNoStart, setCommonRegNoStart] = useState("");
@@ -58,7 +58,7 @@ const RemoveUser = () => {
 
   useEffect(() => {
     if (
-      opertationType === "Multiple" &&
+      removalType === "Multiple" &&
       commonEmailSuffix &&
       commonRegNoPrefix &&
       commonRegNoStart &&
@@ -68,29 +68,29 @@ const RemoveUser = () => {
       setServerMessage("Click on 'Get user list' button to fetch user list");
       setServerMsgType("info");
       setShowServerMsg(true);
-    } else if (opertationType === "Single" && remUserEmail && remUserRegNo) {
+    } else if (removalType === "Single" && userEmail && userRegNo) {
       setShowGetListButton(true);
       setServerMessage("Click on 'Get user list' button to fetch user list");
       setServerMsgType("info");
       setShowServerMsg(true);
-    } else if (opertationType != "Single" && opertationType != "Multiple") {
+    } else if (removalType != "Single" && removalType != "Multiple") {
       setShowUsers(false);
       setNeedApprovalSingle(false);
       setNeedApprovalMul(false);
       setShowGetListButton(false);
     } else if (
-      (opertationType === "Single" && !remUserEmail) ||
-      (opertationType === "Single" && !remUserRegNo)
+      (removalType === "Single" && !userEmail) ||
+      (removalType === "Single" && !userRegNo)
     ) {
       setShowUsers(false);
       setNeedApprovalSingle(false);
       setNeedApprovalMul(false);
       setShowGetListButton(false);
     } else if (
-      (opertationType === "Multiple" && !commonEmailSuffix) ||
-      (opertationType === "Multiple" && !commonRegNoPrefix) ||
-      (opertationType === "Multiple" && !commonRegNoStart) ||
-      (opertationType === "Multiple" && !commonRegNoEnd)
+      (removalType === "Multiple" && !commonEmailSuffix) ||
+      (removalType === "Multiple" && !commonRegNoPrefix) ||
+      (removalType === "Multiple" && !commonRegNoStart) ||
+      (removalType === "Multiple" && !commonRegNoEnd)
     ) {
       setShowUsers(false);
       setNeedApprovalSingle(false);
@@ -102,8 +102,8 @@ const RemoveUser = () => {
     commonRegNoPrefix,
     commonRegNoStart,
     commonRegNoEnd,
-    remUserEmail,
-    remUserRegNo,
+    userEmail,
+    userRegNo,
   ]);
 
   const modifyAddUserOperation = (newOperationType) => {
@@ -112,12 +112,12 @@ const RemoveUser = () => {
       setCommonRegNoPrefix("");
       setCommonRegNoStart("");
       setCommonRegNoEnd("");
-      setOpertationType("Single");
+      setRemovalType("Single");
     }
     if (newOperationType === "Multiple") {
-      setRemUserEmail("");
-      setRemUserRegNo("");
-      setOpertationType("Multiple");
+      setUserEmail("");
+      setUserRegNo("");
+      setRemovalType("Multiple");
     }
   };
 
@@ -130,16 +130,16 @@ const RemoveUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/userMgmt/removeUser/get-final-users",
         {
-          opertationType,
+          removalType,
           commonEmailSuffix,
           commonRegNoPrefix,
           commonRegNoStart,
           commonRegNoEnd,
           skipRegNo,
-          remUserEmail,
-          remUserRegNo,
+          userEmail,
+          userRegNo,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setUsersList(response.data.usersList);
       setShowUsers(true);
@@ -148,18 +148,18 @@ const RemoveUser = () => {
       setServerMsgType("success");
       setShowServerMsg(true);
 
-      if (opertationType === "Single") {
+      if (removalType === "Single") {
         setNeedApprovalSingle(true);
         setNeedApprovalMul(false);
       }
-      if (opertationType === "Multiple") {
+      if (removalType === "Multiple") {
         setNeedApprovalMul(true);
         setNeedApprovalSingle(false);
       }
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response.data.message || "Failed to fetch user list"
+        error.response.data.message || "Failed to fetch user list",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -167,10 +167,10 @@ const RemoveUser = () => {
   };
 
   const getVerificationOtp = async () => {
-    if (opertationType === "Multiple") {
+    if (removalType === "Multiple") {
       if (parseInt(commonRegNoEnd) - parseInt(commonRegNoStart) > 100) {
         setServerMessage(
-          "You can only add upto 100 users at a time. Please reduce the user range and complete in multiple requests if needed."
+          "You can only add upto 100 users at a time. Please reduce the user range and complete in multiple requests if needed.",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -178,7 +178,7 @@ const RemoveUser = () => {
       }
       if (parseInt(commonRegNoEnd) < parseInt(commonRegNoStart)) {
         setServerMessage(
-          "The end register number cannot be less than the start register number. Please correct the range."
+          "The end register number cannot be less than the start register number. Please correct the range.",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -193,7 +193,7 @@ const RemoveUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setShowOtp(true);
       setNeedApprovalMul(false);
@@ -205,7 +205,7 @@ const RemoveUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -221,21 +221,21 @@ const RemoveUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/userMgmt/existingUser/removeUser",
         {
-          opertationType,
+          removalType,
           commonEmailSuffix,
           commonRegNoPrefix,
           commonRegNoStart,
           commonRegNoEnd,
           skipRegNo,
-          remUserEmail,
-          remUserRegNo,
+          userEmail,
+          userRegNo,
           otpInput,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setLoadingAnim(false);
       setServerMessage(
-        `User(s) have been removed from the site successfully. Refreshing the page in 5 seconds.`
+        `User(s) have been removed from the site successfully. Refreshing the page in 5 seconds.`,
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -247,7 +247,7 @@ const RemoveUser = () => {
       setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
-          "Failed to remove user(s). Refreshing the page in 5 seconds."
+          "Failed to remove user(s). Refreshing the page in 5 seconds.",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -339,7 +339,7 @@ const RemoveUser = () => {
           </Button>
         </Box>
 
-        {opertationType === "Single" && (
+        {removalType === "Single" && (
           <Box
             id="SingleUserInputsWrapper"
             sx={{
@@ -376,8 +376,8 @@ const RemoveUser = () => {
                   id="inp-email"
                   label="Email"
                   type="email"
-                  value={remUserEmail}
-                  onChange={(e) => setRemUserEmail(e.target.value)}
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
                 />
               </Box>
 
@@ -395,15 +395,15 @@ const RemoveUser = () => {
                   required
                   id="inp-regno"
                   label="Register Number"
-                  value={remUserRegNo}
-                  onChange={(e) => setRemUserRegNo(e.target.value)}
+                  value={userRegNo}
+                  onChange={(e) => setUserRegNo(e.target.value)}
                 />
               </Box>
             </Box>
           </Box>
         )}
 
-        {opertationType === "Multiple" && (
+        {removalType === "Multiple" && (
           <Box
             id="MultipleUserInputsWrapper"
             sx={{
@@ -762,7 +762,7 @@ const RemoveUser = () => {
               <Button
                 variant="contained"
                 onClick={getVerificationOtp}
-                disabled={!approval || !remUserEmail || !remUserRegNo}
+                disabled={!approval || !userEmail || !userRegNo}
                 size="large"
                 endIcon={<CheckIcon />}
                 loading={loadingAnim}

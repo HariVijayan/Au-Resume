@@ -7,14 +7,14 @@ const router = express.Router();
 
 router.post("/get-final-users", async (req, res) => {
   const {
-    opertationType,
+    removalType,
     commonEmailSuffix,
     commonRegNoPrefix,
     commonRegNoStart,
     commonRegNoEnd,
     skipRegNo,
-    remUserEmail,
-    remUserRegNo,
+    userEmail,
+    userRegNo,
   } = req.body;
 
   try {
@@ -30,10 +30,10 @@ router.post("/get-final-users", async (req, res) => {
     let finalUserList = [];
     let skippableRegNoList = csvToArray(skipRegNo);
 
-    if (opertationType === "Single") {
+    if (removalType === "Single") {
       const removableUser = await userDBModel.findOne({
-        email: remUserEmail,
-        registerNumber: remUserRegNo,
+        email: userEmail,
+        registerNumber: userRegNo,
       });
 
       if (!removableUser) {
@@ -41,14 +41,14 @@ router.post("/get-final-users", async (req, res) => {
       }
 
       finalUserList.push({
-        email: remUserEmail,
-        registerNumber: remUserRegNo,
+        email: userEmail,
+        registerNumber: userRegNo,
         department: removableUser.department,
         courseType: removableUser.courseType,
         programme: removableUser.programme,
         branch: removableUser.branch,
       });
-    } else if (opertationType === "Multiple") {
+    } else if (removalType === "Multiple") {
       for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
         if (skippableRegNoList.includes(i)) {
           continue;

@@ -9,7 +9,7 @@ import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 const router = express.Router();
 
 router.post("/newAdmin", async (req, res) => {
-  const { newAdminName, newAdminEmail, adminType, otpInput } = req.body;
+  const { adminName, adminEmail, adminType, otpInput } = req.body;
 
   try {
     const accessToken = req.cookies.accessToken;
@@ -21,9 +21,9 @@ router.post("/newAdmin", async (req, res) => {
         .json({ message: adminAccessCheck.Reason });
     }
 
-    const adminEmail = adminAccessCheck.AdminEmail;
+    const approvingAdminEmail = adminAccessCheck.AdminEmail;
 
-    const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
+    const adminOtpVerification = await verifyAdminOtp(approvingAdminEmail, otpInput);
 
     if (adminOtpVerification.Valid === "NO") {
       return res
@@ -39,20 +39,20 @@ router.post("/newAdmin", async (req, res) => {
       .digest("hex");
 
     const newAdmin = new adminUser({
-      name: newAdminName,
-      email: newAdminEmail,
+      name: adminName,
+      email: adminEmail,
       password: hashedPassword,
-      createdBy: adminEmail,
+      createdBy: approvingAdminEmail,
       accountType: adminType,
     });
     await newAdmin.save();
 
     const emailSubject = "You've been added as an admin to AU Resume Builder";
-    const emailHeading = `Hi ${newAdminName}, your admin account is created in Au Resume Builder.`;
+    const emailHeading = `Hi ${adminName}, your admin account is created in Au Resume Builder.`;
     const emailBody = `${newAdminPassword} is your login password. Use the forgot password option in the login page if you wish to change your password. Ensure "System Admin" option is checked in forgot password page if you proceed to reset your password.`;
 
     const sendEmail = await sendEmailToUser(
-      newAdminEmail,
+      adminEmail,
       emailSubject,
       emailHeading,
       emailBody

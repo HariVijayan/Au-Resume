@@ -6,12 +6,15 @@ import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 import generatePassword from "../../helper/functions/generatePassword.js";
 import sendEmailToUser from "../../helper/functions/sendEmail.js";
 import csvToArray from "../../helper/functions/csvToArray.js";
+import bcrypt from "bcrypt";
+
+const BCRYPT_COST_FACTOR = 12;
 
 const router = express.Router();
 
 router.post("/addNewUser", async (req, res) => {
   const {
-    newAdditionType,
+    additionType,
     commonEmailSuffix,
     commonRegNoPrefix,
     commonRegNoStart,
@@ -21,12 +24,12 @@ router.post("/addNewUser", async (req, res) => {
     commonUserCourseType,
     commonUserProgramme,
     commonUserBranch,
-    newUserEmail,
-    newUserRegNo,
-    newUserDept,
-    newUserCourseType,
-    newUserProgramme,
-    newUserBranch,
+    userEmail,
+    userRegNo,
+    userDept,
+    userCourseType,
+    userProgramme,
+    userBranch,
     otpInput,
   } = req.body;
 
@@ -53,31 +56,29 @@ router.post("/addNewUser", async (req, res) => {
     let finalUserList = [];
     let skippableRegNoList = csvToArray(skipRegNo);
 
-    if (newAdditionType === "Single") {
-      const newUser = await userDBModel.findOne({ email: newUserEmail });
+    if (additionType === "Single") {
+      const newUser = await userDBModel.findOne({ email: userEmail });
       if (newUser) {
         return res.status(400).json({ message: "User already exists" });
       }
       if (!newUser) {
         const newUserPassword = generatePassword();
 
-        const hashedPassword = crypto
-          .createHash("sha256")
-          .update(newUserPassword)
-          .digest("hex");
+        const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);
+        const hashedPassword = await bcrypt.hash(newUserPassword, salt);
 
-        const salt = crypto.randomBytes(16);
-        const saltBase64 = salt.toString("base64");
+        const resumeEncryptionSalt = crypto.randomBytes(16);
+        const saltBase64 = resumeEncryptionSalt.toString("base64");
 
         finalUserList.push({
-          email: newUserEmail,
+          email: userEmail,
           password: hashedPassword,
-          registerNumber: newUserRegNo,
-          department: newUserDept,
-          courseType: newUserCourseType,
-          programme: newUserProgramme,
-          branch: newUserBranch,
-          encryptionSalt: saltBase64,
+          registerNumber: userRegNo,
+          department: userDept,
+          courseType: userCourseType,
+          programme: userProgramme,
+          branch: userBranch,
+          resumeEncryptionSalt: saltBase64,
         });
         const emailSubject =
           "An admin has created your AU Resume Builder account";
@@ -85,10 +86,10 @@ router.post("/addNewUser", async (req, res) => {
         const emailBody = `${newUserPassword} is your login password. Use the forgot password option in the login page if you wish to change your password.`;
 
         const sendEmail = await sendEmailToUser(
-          newUserEmail,
+          userEmail,
           emailSubject,
           emailHeading,
-          emailBody
+          emailBody,
         );
 
         if (sendEmail.Success === "NO") {
@@ -98,7 +99,7 @@ router.post("/addNewUser", async (req, res) => {
           });
         }
       }
-    } else if (newAdditionType === "Multiple") {
+    } else if (additionType === "Multiple") {
       for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
         if (skippableRegNoList.includes(i)) {
           continue;
@@ -108,9 +109,9 @@ router.post("/addNewUser", async (req, res) => {
           iterableValue = `0${i}`;
         }
         const regNo = `${commonRegNoPrefix}${iterableValue}`;
-        const newUserRegNoEmail = `${regNo}${commonEmailSuffix}`;
+        const regNoAddedEmail = `${regNo}${commonEmailSuffix}`;
 
-        const newUser = await userDBModel.findOne({ email: newUserRegNoEmail });
+        const newUser = await userDBModel.findOne({ email: regNoAddedEmail });
 
         if (newUser) {
           return res.status(400).json({ message: "User already exists" });
@@ -119,23 +120,21 @@ router.post("/addNewUser", async (req, res) => {
         if (!newUser) {
           const newUserPassword = generatePassword();
 
-          const hashedPassword = crypto
-            .createHash("sha256")
-            .update(newUserPassword)
-            .digest("hex");
+          const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);
+          const hashedPassword = await bcrypt.hash(newUserPassword, salt);
 
-          const salt = crypto.randomBytes(16);
-          const saltBase64 = salt.toString("base64");
+          const resumeEncryptionSalt = crypto.randomBytes(16);
+          const saltBase64 = resumeEncryptionSalt.toString("base64");
 
           finalUserList.push({
-            email: newUserRegNoEmail,
+            email: regNoAddedEmail,
             password: hashedPassword,
             registerNumber: regNo,
             department: commonUserDept,
             courseType: commonUserCourseType,
             programme: commonUserProgramme,
             branch: commonUserBranch,
-            encryptionSalt: saltBase64,
+            resumeEncryptionSalt: saltBase64,
           });
         }
       }

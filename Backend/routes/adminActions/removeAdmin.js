@@ -8,7 +8,7 @@ import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 const router = express.Router();
 
 router.post("/removeAdmin", async (req, res) => {
-  const { remAdminEmail, adminType, otpInput } = req.body;
+  const { adminEmail, adminType, otpInput } = req.body;
 
   try {
     const accessToken = req.cookies.accessToken;
@@ -20,9 +20,12 @@ router.post("/removeAdmin", async (req, res) => {
         .json({ message: adminAccessCheck.Reason });
     }
 
-    const adminEmail = adminAccessCheck.AdminEmail;
+    const approvingAdminEmail = adminAccessCheck.AdminEmail;
 
-    const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
+    const adminOtpVerification = await verifyAdminOtp(
+      approvingAdminEmail,
+      otpInput,
+    );
 
     if (adminOtpVerification.Valid === "NO") {
       return res
@@ -31,7 +34,7 @@ router.post("/removeAdmin", async (req, res) => {
     }
 
     const removeAdmin = await adminUser.findOne({
-      email: remAdminEmail,
+      email: adminEmail,
       accountType: adminType,
     });
 
@@ -40,26 +43,26 @@ router.post("/removeAdmin", async (req, res) => {
     }
 
     const existingSessions = await adminCurrentSession.find({
-      email: remAdminEmail,
+      email: adminEmail,
     });
 
     if (existingSessions) {
       await adminCurrentSession.deleteMany({
-        email: remAdminEmail,
+        email: adminEmail,
       });
     }
 
     const existingOtp = await adminOtp.find({
-      email: remAdminEmail,
+      email: adminEmail,
     });
 
     if (existingOtp) {
       await adminOtp.deleteMany({
-        email: remAdminEmail,
+        email: adminEmail,
       });
     }
 
-    await adminUser.deleteOne({ email: remAdminEmail, accountType: adminType });
+    await adminUser.deleteOne({ email: adminEmail, accountType: adminType });
 
     res.json({
       message: "Admin removed successfully",

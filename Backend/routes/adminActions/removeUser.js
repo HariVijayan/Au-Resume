@@ -12,14 +12,14 @@ const router = express.Router();
 
 router.post("/removeUser", async (req, res) => {
   const {
-    opertationType,
+    removalType,
     commonEmailSuffix,
     commonRegNoPrefix,
     commonRegNoStart,
     commonRegNoEnd,
     skipRegNo,
-    remUserEmail,
-    remUserRegNo,
+    userEmail,
+    userRegNo,
     otpInput,
   } = req.body;
 
@@ -46,21 +46,21 @@ router.post("/removeUser", async (req, res) => {
     let finalUserList = [];
     let skippableRegNoList = csvToArray(skipRegNo);
 
-    if (opertationType === "Single") {
+    if (removalType === "Single") {
       const existingUser = await userDBModel.findOne({
-        email: remUserEmail,
-        registerNumber: remUserRegNo,
+        email: userEmail,
+        registerNumber: userRegNo,
       });
       if (!existingUser) {
         return res.status(400).json({ message: "User doesn't exist" });
       }
       if (existingUser) {
         finalUserList.push({
-          email: remUserEmail,
-          registerNumber: remUserRegNo,
+          email: userEmail,
+          registerNumber: userRegNo,
         });
       }
-    } else if (opertationType === "Multiple") {
+    } else if (removalType === "Multiple") {
       for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
         if (skippableRegNoList.includes(i)) {
           continue;

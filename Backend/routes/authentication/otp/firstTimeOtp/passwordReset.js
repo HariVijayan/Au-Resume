@@ -7,17 +7,17 @@ import generateOtp from "../../../../helper/functions/generateOtp.js";
 const router = express.Router();
 
 router.post("/password-reset-otp", async (req, res) => {
-  const { email, isAdmin } = req.body;
+  const { userEmail, isAdmin } = req.body;
 
   try {
-    const accountAccessCheck = await checkUserOrAdminAccess(email, isAdmin);
+    const accountAccessCheck = await checkUserOrAdminAccess(userEmail, isAdmin);
     if (accountAccessCheck.Valid === "NO") {
       return res
         .status(accountAccessCheck.HtmlCode)
         .json({ message: accountAccessCheck.Reason });
     }
 
-    const otpGenerationPreCheck = await otpPreConditions(email, isAdmin);
+    const otpGenerationPreCheck = await otpPreConditions(userEmail, isAdmin);
 
     if (otpGenerationPreCheck.Valid === "NO") {
       return res
@@ -25,7 +25,7 @@ router.post("/password-reset-otp", async (req, res) => {
         .json({ message: otpGenerationPreCheck.Reason });
     }
 
-    const requestNewOtp = await generateOtp(isAdmin, email, "Password Reset");
+    const requestNewOtp = await generateOtp(isAdmin, userEmail, "Password Reset");
 
     if (requestNewOtp.Success === "NO") {
       return res.status(requestNewOtp.HtmlCode).json({
@@ -48,7 +48,7 @@ router.post("/password-reset-otp", async (req, res) => {
     const emailBody = `${newOtp} is your OTP. It is valid for 10 minutes.`;
 
     const sendEmail = await sendEmailToUser(
-      email,
+      userEmail,
       emailSubject,
       emailHeading,
       emailBody

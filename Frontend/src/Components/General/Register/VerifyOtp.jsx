@@ -20,12 +20,12 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 const VerifyOTP = () => {
   const theme = useTheme();
 
-  const [otp, setOtp] = useState("");
+  const [otpInput, setOtpInput] = useState("");
   const [countdown, setCountdown] = useState(60); // Initial countdown time
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email;
+  const userEmail = location.state?.userEmail;
 
   const [serverMessage, setServerMessage] = useState("");
   const [showServerMsg, setShowServerMsg] = useState(false);
@@ -33,7 +33,7 @@ const VerifyOTP = () => {
 
   const [loadingAnim, setLoadingAnim] = useState(false);
 
-  if (!email) {
+  if (!userEmail) {
     return (
       <Box
         sx={{
@@ -79,7 +79,7 @@ const VerifyOTP = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/verifyOtp/newUser/registration",
-        { email, otp }
+        { userEmail, otpInput },
       );
       setLoadingAnim(false);
       setServerMessage("Successfully created account");
@@ -105,7 +105,7 @@ const VerifyOTP = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/resendOtp/newUser/registration",
-        { email }
+        { userEmail },
       );
       setLoadingAnim(false);
       setServerMessage("Successfully resent Otp");
@@ -152,8 +152,8 @@ const VerifyOTP = () => {
               required
               id="inp-Otp"
               label="Otp"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              value={otpInput}
+              onChange={(e) => setOtpInput(e.target.value)}
             />
           </InputBox>
         </InputWrapper>
@@ -184,7 +184,7 @@ const VerifyOTP = () => {
             variant="contained"
             color="success"
             onClick={verifyOtp}
-            disabled={!otp}
+            disabled={!otpInput}
             size="large"
             endIcon={<DoneAllIcon />}
             loading={loadingAnim}

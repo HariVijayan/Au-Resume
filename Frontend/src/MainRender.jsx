@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import MainApp from "./MainApp.jsx";
 import { ThemeProvider } from "@mui/material";
-import theme from "./theme.js";
+import theme from "./Theme.js";
 import Box from "@mui/material/Box";
 
 createRoot(document.getElementById("dv-MainWrapper")).render(
@@ -25,5 +25,5 @@ createRoot(document.getElementById("dv-MainWrapper")).render(
         </Box>
       </>
     </StrictMode>
-  </ThemeProvider>
+  </ThemeProvider>,
 );

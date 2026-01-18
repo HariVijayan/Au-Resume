@@ -5,7 +5,7 @@ import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 const router = express.Router();
 
 router.post("/get-final-users", async (req, res) => {
-  const { modifyUserEmail, modifyUserRegNo } = req.body;
+  const { userEmail, userRegNo } = req.body;
 
   try {
     const accessToken = req.cookies.accessToken;
@@ -20,8 +20,8 @@ router.post("/get-final-users", async (req, res) => {
     let finalUserList = [];
 
     const modifiableUser = await UserDBModel.findOne({
-      email: modifyUserEmail,
-      registerNumber: modifyUserRegNo,
+      email: userEmail,
+      registerNumber: userRegNo,
     });
 
     if (!modifiableUser) {

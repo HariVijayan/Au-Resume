@@ -27,8 +27,8 @@ import Paper from "@mui/material/Paper";
 const AddNewAdmin = () => {
   const [adminUsers, setAdminUsers] = useState([]);
   const [numAdmins, setAdminNum] = useState(0);
-  const [newAdminName, setNewAdminName] = useState("");
-  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [adminName, setAdminName] = useState("");
+  const [adminEmail, setAdminEmail] = useState("");
   const [approval, setApproval] = useState(false);
   const [adminType, setAdminType] = useState("");
   const [otpInput, setOtpInput] = useState("");
@@ -54,7 +54,7 @@ const AddNewAdmin = () => {
         const response = await axios.post(
           "http://localhost:5000/superAdmin/fetchAdmin/adminListGrouped",
           {},
-          { withCredentials: true }
+          { withCredentials: true },
         );
         setAdminUsers(response.data.userList);
         setAdminNum(response.data.numAdmins);
@@ -65,7 +65,8 @@ const AddNewAdmin = () => {
       } catch (error) {
         setLoadingAnim(false);
         setServerMessage(
-          error.response?.data?.message || "Failed to fetch current admins list"
+          error.response?.data?.message ||
+            "Failed to fetch current admins list",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -83,7 +84,7 @@ const AddNewAdmin = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setAddAdminOtp(true);
       setNeedApproval(false);
@@ -94,7 +95,7 @@ const AddNewAdmin = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -109,12 +110,12 @@ const AddNewAdmin = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/superAdmin/actions/addNewAdmin/newAdmin",
-        { newAdminName, newAdminEmail, adminType, otpInput },
-        { withCredentials: true }
+        { adminName, adminEmail, adminType, otpInput },
+        { withCredentials: true },
       );
       setLoadingAnim(false);
       setServerMessage(
-        "Admin addition successful. Refreshing the page in 5 seconds"
+        "Admin addition successful. Refreshing the page in 5 seconds",
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -126,7 +127,7 @@ const AddNewAdmin = () => {
       setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
-          "Failed to add new admin. Refreshing the page in 5 seconds"
+          "Failed to add new admin. Refreshing the page in 5 seconds",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -137,12 +138,12 @@ const AddNewAdmin = () => {
   };
 
   useEffect(() => {
-    if (newAdminName && newAdminEmail && adminType) {
+    if (adminName && adminEmail && adminType) {
       setNeedApproval(true);
     } else {
       setNeedApproval(false);
     }
-  }, [adminType, newAdminEmail, newAdminName]);
+  }, [adminType, adminEmail, adminName]);
 
   return (
     <>
@@ -208,8 +209,8 @@ const AddNewAdmin = () => {
               id="inp-name"
               label="Name"
               type="text"
-              value={newAdminName}
-              onChange={(e) => setNewAdminName(e.target.value)}
+              value={adminName}
+              onChange={(e) => setAdminName(e.target.value)}
             />
           </Box>
 
@@ -228,8 +229,8 @@ const AddNewAdmin = () => {
               id="inp-email"
               label="Email"
               type="email"
-              value={newAdminEmail}
-              onChange={(e) => setNewAdminEmail(e.target.value)}
+              value={adminEmail}
+              onChange={(e) => setAdminEmail(e.target.value)}
             />
           </Box>
 
@@ -306,9 +307,7 @@ const AddNewAdmin = () => {
               <Button
                 variant="contained"
                 onClick={getVerificationOtp}
-                disabled={
-                  !approval || !newAdminName || !newAdminEmail || !adminType
-                }
+                disabled={!approval || !adminName || !adminEmail || !adminType}
                 size="large"
                 endIcon={<CheckIcon />}
                 loading={loadingAnim}

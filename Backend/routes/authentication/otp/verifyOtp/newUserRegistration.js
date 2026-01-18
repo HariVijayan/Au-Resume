@@ -7,17 +7,17 @@ import checkPendingUserAccess from "../../../../helper/authentication/pendingUse
 const router = express.Router();
 
 router.post("/registration", async (req, res) => {
-  const { email, otp } = req.body;
+  const { userEmail, otpInput } = req.body;
 
   try {
-    const accountAccessCheck = await checkPendingUserAccess(email);
+    const accountAccessCheck = await checkPendingUserAccess(userEmail);
     if (accountAccessCheck.Valid === "NO") {
       return res
         .status(accountAccessCheck.HtmlCode)
         .json({ message: accountAccessCheck.Reason });
     }
 
-    const otpVerification = await verifyPendingUserOtp(email, otp);
+    const otpVerification = await verifyPendingUserOtp(userEmail, otpInput);
 
     if (otpVerification.Valid === "NO") {
       return res
@@ -38,7 +38,7 @@ router.post("/registration", async (req, res) => {
     });
     await verifiedUser.save();
 
-    await pendingUser.deleteMany({ email });
+    await pendingUser.deleteMany({ email: userEmail });
 
     res.json({
       message: "Registration complete. Redirecting to login page",

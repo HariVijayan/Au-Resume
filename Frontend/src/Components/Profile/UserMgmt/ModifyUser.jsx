@@ -26,10 +26,10 @@ const ModifyUser = () => {
 
   const theme = useTheme();
 
-  const [modifyUserEmail, setModifyUserEmail] = useState("");
-  const [modifyUserRegNo, setModifyUserRegNo] = useState("");
-  const [passwordReset, setPasswordReset] = useState(false);
-  const [accountUnlock, setAccountUnlock] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [userRegNo, setUserRegNo] = useState("");
+  const [passwordResetNeeded, setPasswordResetNeeded] = useState(false);
+  const [accountUnlockNeeded, setAccountUnlockNeeded] = useState(false);
 
   const [accountActions, setAccountActions] = useState(null);
 
@@ -49,7 +49,7 @@ const ModifyUser = () => {
   const [otpInput, setOtpInput] = useState("");
 
   useEffect(() => {
-    if (modifyUserEmail && modifyUserRegNo) {
+    if (userEmail && userRegNo) {
       setShowGetListButton(true);
       setServerMessage("Click on 'Get user list' button to fetch user list");
       setServerMsgType("info");
@@ -57,7 +57,7 @@ const ModifyUser = () => {
     } else {
       setShowGetListButton(false);
     }
-  }, [modifyUserEmail, modifyUserRegNo]);
+  }, [userEmail, userRegNo]);
 
   const getFinalUserList = async () => {
     setLoadingAnim(true);
@@ -68,10 +68,10 @@ const ModifyUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/userMgmt/modifyUser/get-final-users",
         {
-          modifyUserEmail,
-          modifyUserRegNo,
+          userEmail,
+          userRegNo,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setUsersList(response.data.usersList);
       setShowUsers(true);
@@ -84,7 +84,7 @@ const ModifyUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response.data.message || "Failed to fetch user details"
+        error.response.data.message || "Failed to fetch user details",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -100,7 +100,7 @@ const ModifyUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setShowOtp(true);
       setLoadingAnim(false);
@@ -111,7 +111,7 @@ const ModifyUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -127,17 +127,17 @@ const ModifyUser = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/userMgmt/modifyAccount/modifyUser",
         {
-          modifyUserEmail,
-          modifyUserRegNo,
-          passwordReset,
-          accountUnlock,
+          userEmail,
+          userRegNo,
+          passwordResetNeeded,
+          accountUnlockNeeded,
           otpInput,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setLoadingAnim(false);
       setServerMessage(
-        `The requested modification(s) have been performed successfully. Refreshing the page in 5 seconds.`
+        `The requested modification(s) have been performed successfully. Refreshing the page in 5 seconds.`,
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -149,7 +149,7 @@ const ModifyUser = () => {
       setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
-          "Failed to modify user account. Refreshing the page in 5 seconds. Please try again."
+          "Failed to modify user account. Refreshing the page in 5 seconds. Please try again.",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -236,8 +236,8 @@ const ModifyUser = () => {
                 id="inp-email"
                 label="Email"
                 type="email"
-                value={modifyUserEmail}
-                onChange={(e) => setModifyUserEmail(e.target.value)}
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
               />
             </Box>
 
@@ -255,8 +255,8 @@ const ModifyUser = () => {
                 required
                 id="inp-regno"
                 label="Register Number"
-                value={modifyUserRegNo}
-                onChange={(e) => setModifyUserRegNo(e.target.value)}
+                value={userRegNo}
+                onChange={(e) => setUserRegNo(e.target.value)}
               />
             </Box>
           </Box>
@@ -516,8 +516,10 @@ const ModifyUser = () => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={passwordReset}
-                        onChange={(e) => setPasswordReset(e.target.checked)}
+                        checked={passwordResetNeeded}
+                        onChange={(e) =>
+                          setPasswordResetNeeded(e.target.checked)
+                        }
                         color="primary"
                       />
                     }
@@ -538,8 +540,10 @@ const ModifyUser = () => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={accountUnlock}
-                        onChange={(e) => setAccountUnlock(e.target.checked)}
+                        checked={accountUnlockNeeded}
+                        onChange={(e) =>
+                          setAccountUnlockNeeded(e.target.checked)
+                        }
                         color="primary"
                       />
                     }
@@ -601,9 +605,9 @@ const ModifyUser = () => {
                 onClick={getVerificationOtp}
                 disabled={
                   !approval ||
-                  !modifyUserEmail ||
-                  !modifyUserRegNo ||
-                  !(passwordReset || accountUnlock)
+                  !userEmail ||
+                  !userRegNo ||
+                  !(passwordResetNeeded || accountUnlockNeeded)
                 }
                 size="large"
                 endIcon={<CheckIcon />}

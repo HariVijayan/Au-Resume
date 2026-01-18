@@ -14,27 +14,27 @@ const BCRYPT_COST_FACTOR = 12;
 
 router.post("/register", async (req, res) => {
   const {
-    email,
-    password,
-    registerNumber,
-    department,
-    courseType,
-    programme,
-    branch,
+    userEmail,
+    userPassword,
+    userRegNo,
+    userDept,
+    userCourseType,
+    userProgramme,
+    userBranch,
   } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: userEmail });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    const passwordCheck = checkPassword(password);
+    const passwordCheck = checkPassword(userPassword);
     if (!passwordCheck.Valid) {
       return res.status(400).json({ message: passwordCheck.message });
     }
 
-    const lastOtp = await Otp.findOne({ email });
+    const lastOtp = await Otp.findOne({ email: userEmail });
 
     if (
       lastOtp &&
@@ -47,7 +47,7 @@ router.post("/register", async (req, res) => {
 
     const requestNewOtp = await generateOtp(
       false,
-      email,
+      userEmail,
       "New User Registration",
     );
 
@@ -64,7 +64,7 @@ router.post("/register", async (req, res) => {
     const emailBody = `${newOtp} is your OTP. It is valid for 10 minutes.`;
 
     const sendEmail = await sendEmailToUser(
-      email,
+      userEmail,
       emailSubject,
       emailHeading,
       emailBody,
@@ -76,22 +76,22 @@ router.post("/register", async (req, res) => {
       });
     }
 
-    await PendingUser.deleteMany({ email });
+    await PendingUser.deleteMany({ email: userEmail });
 
     const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(userPassword, salt);
 
     const resumeEncryptionSalt = crypto.randomBytes(16); // 128-bit salt
     const saltBase64 = resumeEncryptionSalt.toString("base64");
 
     const newUser = new PendingUser({
-      email,
+      email: userEmail,
       password: hashedPassword,
-      registerNumber,
-      department,
-      courseType,
-      programme,
-      branch,
+      registerNumber: userRegNo,
+      department: userDept,
+      courseType: userCourseType,
+      programme: userProgramme,
+      branch: userBranch,
       resumeEncryptionSalt: saltBase64,
     });
     await newUser.save();

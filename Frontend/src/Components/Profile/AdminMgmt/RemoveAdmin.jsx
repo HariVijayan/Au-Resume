@@ -27,7 +27,7 @@ import Paper from "@mui/material/Paper";
 const RemoveAdmin = () => {
   const [adminUsers, setAdminUsers] = useState([]);
   const [numAdmins, setAdminNum] = useState(0);
-  const [remAdminEmail, setRemAdminEmail] = useState("");
+  const [adminEmail, setAdminEmail] = useState("");
   const [approval, setApproval] = useState(false);
   const [adminType, setAdminType] = useState("");
   const [otpInput, setOtpInput] = useState("");
@@ -55,7 +55,7 @@ const RemoveAdmin = () => {
         const response = await axios.post(
           "http://localhost:5000/superAdmin/fetchAdmin/adminListGrouped",
           {},
-          { withCredentials: true }
+          { withCredentials: true },
         );
         setAdminUsers(response.data.userList);
         setAdminNum(response.data.numAdmins);
@@ -66,7 +66,8 @@ const RemoveAdmin = () => {
       } catch (error) {
         setLoadingAnim(false);
         setServerMessage(
-          error.response?.data?.message || "Failed to fetch current admins list"
+          error.response?.data?.message ||
+            "Failed to fetch current admins list",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -84,7 +85,7 @@ const RemoveAdmin = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setShowRemAdminOtp(true);
       setShowApproval(false);
@@ -95,7 +96,7 @@ const RemoveAdmin = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -110,12 +111,12 @@ const RemoveAdmin = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/superAdmin/actions/existingAdmin/removeAdmin",
-        { remAdminEmail, adminType, otpInput },
-        { withCredentials: true }
+        { adminEmail, adminType, otpInput },
+        { withCredentials: true },
       );
       setLoadingAnim(false);
       setServerMessage(
-        "Admin removal successful. Refreshing the page in 5 seconds"
+        "Admin removal successful. Refreshing the page in 5 seconds",
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -127,7 +128,7 @@ const RemoveAdmin = () => {
       setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
-          "Failed to remove admin. Refreshing the page in 5 seconds"
+          "Failed to remove admin. Refreshing the page in 5 seconds",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -138,12 +139,12 @@ const RemoveAdmin = () => {
   };
 
   useEffect(() => {
-    if (remAdminEmail && adminType) {
+    if (adminEmail && adminType) {
       setShowApproval(true);
     } else {
       setShowApproval(false);
     }
-  }, [adminType, remAdminEmail]);
+  }, [adminType, adminEmail]);
 
   return (
     <>
@@ -208,8 +209,8 @@ const RemoveAdmin = () => {
               id="inp-email"
               label="Email"
               type="email"
-              value={remAdminEmail}
-              onChange={(e) => setRemAdminEmail(e.target.value)}
+              value={adminEmail}
+              onChange={(e) => setAdminEmail(e.target.value)}
             />
           </Box>
 
@@ -286,7 +287,7 @@ const RemoveAdmin = () => {
               <Button
                 variant="contained"
                 onClick={getVerificationOtp}
-                disabled={!approval || !remAdminEmail || !adminType}
+                disabled={!approval || !adminEmail || !adminType}
                 size="large"
                 endIcon={<CheckIcon />}
                 loading={loadingAnim}

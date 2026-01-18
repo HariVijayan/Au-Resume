@@ -27,7 +27,7 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email;
+  const userEmail = location.state?.userEmail;
   const isAdmin = location.state?.isAdmin || false;
 
   const [serverMessage, setServerMessage] = useState("");
@@ -45,7 +45,7 @@ const ResetPassword = () => {
   const showConfirmPasswordInput = () =>
     setShowConfirmPasswordIcon((show) => !show);
 
-  if (!email) {
+  if (!userEmail) {
     return (
       <Box
         sx={{
@@ -89,7 +89,7 @@ const ResetPassword = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/userRequest/reset-password",
-        { email, newPassword, isAdmin }
+        { userEmail, newPassword, isAdmin },
       );
       setLoadingAnim(false);
       setServerMessage("Password reset successful");
@@ -102,7 +102,7 @@ const ResetPassword = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Password reset failed"
+        error.response?.data?.message || "Password reset failed",
       );
       setServerMsgType("error");
       setShowServerMsg(true);

@@ -15,8 +15,6 @@ router.post("/adminListGrouped", async (req, res) => {
         .json({ message: adminAccessCheck.Reason });
     }
 
-    const adminEmail = adminAccessCheck.AdminEmail;
-
     const users = await adminUser.find(
       {},
       {
@@ -28,7 +26,7 @@ router.post("/adminListGrouped", async (req, res) => {
         failedLoginAttempts: 1,
         lockUntilFormatted: 1,
         _id: 0,
-      }
+      },
     );
 
     const numAdmins = users.length;

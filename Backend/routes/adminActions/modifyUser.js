@@ -10,10 +10,10 @@ const router = express.Router();
 
 router.post("/modifyUser", async (req, res) => {
   const {
-    modifyUserEmail,
-    modifyUserRegNo,
-    passwordReset,
-    accountUnlock,
+    userEmail,
+    userRegNo,
+    passwordResetNeeded,
+    accountUnlockNeeded,
     otpInput,
   } = req.body;
 
@@ -38,40 +38,40 @@ router.post("/modifyUser", async (req, res) => {
     }
 
     const modifiableUser = await userDBModel.findOne({
-      email: modifyUserEmail,
-      registerNumber: modifyUserRegNo,
+      email: userEmail,
+      registerNumber: userRegNo,
     });
 
     if (!modifiableUser) {
       return res.status(400).json({ message: "No such user found" });
     }
 
-    if (accountUnlock) {
+    if (accountUnlockNeeded) {
       await userDBModel.updateOne(
-        { email: modifyUserEmail },
+        { email: userEmail },
         {
           $set: {
             failedLoginAttempts: 0,
             lockUntil: null,
             lockUntilFormatted: null,
           },
-        }
+        },
       );
     }
 
-    if (passwordReset) {
+    if (passwordResetNeeded) {
       const newUserPassword = generatePassword();
       const hashedPassword = crypto
         .createHash("sha256")
         .update(newUserPassword)
         .digest("hex");
       await userDBModel.updateOne(
-        { email: modifyUserEmail },
+        { email: userEmail },
         {
           $set: {
             password: hashedPassword,
           },
-        }
+        },
       );
 
       const emailSubject = "AU Resume Builder account password reset";
@@ -79,10 +79,10 @@ router.post("/modifyUser", async (req, res) => {
       const emailBody = `${newUserPassword} is your new password. Use the forgot password option in the login page if you wish to change your password.`;
 
       const sendEmail = await sendEmailToUser(
-        modifyUserEmail,
+        userEmail,
         emailSubject,
         emailHeading,
-        emailBody
+        emailBody,
       );
 
       if (sendEmail.Success === "NO") {

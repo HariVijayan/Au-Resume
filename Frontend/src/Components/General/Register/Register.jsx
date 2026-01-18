@@ -25,14 +25,16 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 const Register = () => {
   const theme = useTheme();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [department, setDept] = useState("Information Science and Technology");
-  const [courseType, setCourseType] = useState("");
-  const [programme, setProgramme] = useState("");
-  const [branch, setBranch] = useState("");
-  const [registerNumber, setRegisterNumber] = useState("");
+  const [userDept, setUserDept] = useState(
+    "Information Science and Technology",
+  );
+  const [userCourseType, setUserCourseType] = useState("");
+  const [userProgramme, setUserProgramme] = useState("");
+  const [userBranch, setUserBranch] = useState("");
+  const [userRegNo, setUserRegNo] = useState("");
   const navigate = useNavigate();
 
   const [serverMessage, setServerMessage] = useState("");
@@ -51,26 +53,26 @@ const Register = () => {
     setShowConfirmPasswordIcon((show) => !show);
 
   const getProgrammesList = () => {
-    return dropdownOptions.programmes[courseType] || [];
+    return dropdownOptions.programmes[userCourseType] || [];
   };
 
   const getBranchesList = () => {
-    return dropdownOptions.branches[programme] || [];
+    return dropdownOptions.branches[userProgramme] || [];
   };
 
   const chooseCourseType = (e) => {
-    setCourseType(e.target.value);
-    setProgramme("");
-    setBranch("");
+    setUserCourseType(e.target.value);
+    setUserProgramme("");
+    setUserBranch("");
   };
 
   const chooseProgramme = (e) => {
-    setProgramme(e.target.value);
-    setBranch("");
+    setUserProgramme(e.target.value);
+    setUserBranch("");
   };
 
   const chooseBranch = (e) => {
-    setBranch(e.target.value);
+    setUserBranch(e.target.value);
   };
 
   const navigateToLogin = () => {
@@ -82,14 +84,14 @@ const Register = () => {
     setServerMessage("Processing your request...");
     setServerMsgType("info");
     setShowServerMsg(true);
-    if (password != confirmPassword) {
+    if (userPassword != confirmPassword) {
       setServerMessage("Passwords doesn't match");
       setServerMsgType("warning");
       setShowServerMsg(true);
       setLoadingAnim(false);
       return;
     }
-    if (!password) {
+    if (!userPassword) {
       setServerMessage("Choose your password to continue");
       setServerMsgType("warning");
       setShowServerMsg(true);
@@ -103,21 +105,21 @@ const Register = () => {
       setLoadingAnim(false);
       return;
     }
-    if (!courseType) {
+    if (!userCourseType) {
       setServerMessage("Choose your course type to continue");
       setServerMsgType("warning");
       setShowServerMsg(true);
       setLoadingAnim(false);
       return;
     }
-    if (!programme) {
+    if (!userProgramme) {
       setServerMessage("Select your programme to continue");
       setServerMsgType("warning");
       setShowServerMsg(true);
       setLoadingAnim(false);
       return;
     }
-    if (!branch) {
+    if (!userBranch) {
       setServerMessage("Select your branch to continue");
       setServerMsgType("warning");
       setShowServerMsg(true);
@@ -128,15 +130,15 @@ const Register = () => {
       const response = await axios.post(
         "http://localhost:5000/createUser/register",
         {
-          email,
-          password,
-          registerNumber,
-          department,
-          courseType,
-          programme,
-          branch,
+          userEmail,
+          userPassword,
+          userRegNo,
+          userDept,
+          userCourseType,
+          userProgramme,
+          userBranch,
         },
-        {}
+        {},
       );
 
       setLoadingAnim(false);
@@ -145,12 +147,12 @@ const Register = () => {
       setShowServerMsg(true);
 
       setTimeout(() => {
-        navigate("/verify-otp", { state: { email } });
+        navigate("/verify-otp", { state: { userEmail } });
       }, 1000); //Redirect to otp verification after 1 seconds of showing success message
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -187,8 +189,8 @@ const Register = () => {
               id="inp-Email"
               label="Email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
           </DualInputBox>
           <DualInputBox>
@@ -197,8 +199,8 @@ const Register = () => {
               required
               id="inp-RegNo"
               label="Register Number"
-              value={registerNumber}
-              onChange={(e) => setRegisterNumber(e.target.value)}
+              value={userRegNo}
+              onChange={(e) => setUserRegNo(e.target.value)}
             />
           </DualInputBox>
         </DualInputWrapper>
@@ -212,8 +214,8 @@ const Register = () => {
               select
               label="Department"
               defaultValue="Information Science and Technology"
-              value={department}
-              onChange={(e) => setDept(e.target.value)}
+              value={userDept}
+              onChange={(e) => setUserDept(e.target.value)}
             >
               {dropdownOptions.departments.map((option, index) => (
                 <MenuItem key={index} value={option}>
@@ -230,7 +232,7 @@ const Register = () => {
               select
               label="Course Type"
               defaultValue=""
-              value={courseType}
+              value={userCourseType}
               onChange={chooseCourseType}
             >
               <MenuItem value="">Choose course type</MenuItem>
@@ -252,9 +254,9 @@ const Register = () => {
               select
               label="Programme"
               defaultValue=""
-              value={programme}
+              value={userProgramme}
               onChange={chooseProgramme}
-              disabled={!courseType}
+              disabled={!userCourseType}
             >
               <MenuItem value="">Choose Programme</MenuItem>
               {getProgrammesList().map((option, index) => (
@@ -272,9 +274,9 @@ const Register = () => {
               select
               label="Branch"
               defaultValue=""
-              value={branch}
+              value={userBranch}
               onChange={chooseBranch}
-              disabled={!programme}
+              disabled={!userProgramme}
             >
               <MenuItem value="">Choose Branch</MenuItem>
               {getBranchesList().map((option, index) => (
@@ -293,8 +295,8 @@ const Register = () => {
               variant="outlined"
               label="Password"
               type={showPasswordIcon ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={userPassword}
+              onChange={(e) => setUserPassword(e.target.value)}
               slotProps={{
                 input: {
                   endAdornment: (
@@ -355,14 +357,14 @@ const Register = () => {
           variant="contained"
           onClick={registerUser}
           disabled={
-            !email ||
-            !password ||
+            !userEmail ||
+            !userPassword ||
             !confirmPassword ||
-            !registerNumber ||
-            !department ||
-            !courseType ||
-            !programme ||
-            !branch
+            !userRegNo ||
+            !userDept ||
+            !userCourseType ||
+            !userProgramme ||
+            !userBranch
           }
           size="large"
           endIcon={<PersonAddAlt1Icon />}

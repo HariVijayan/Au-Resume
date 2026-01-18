@@ -3,6 +3,7 @@ import User from "../../../models/user/user.js";
 import ResumeData from "../../../models/pdf/resumeData.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -27,12 +28,9 @@ router.post("/current-resume", async (req, res) => {
     const user = await User.findById(decoded.userId);
     if (!user) return res.status(401).json({ message: "User not found" });
 
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(userPassword)
-      .digest("hex");
+    const passwordMatches = await bcrypt.compare(userPassword, user.password);
 
-    if (hashedPassword != user.password) {
+    if (!passwordMatches) {
       return res.status(400).json({
         message: "Unable to save the resume. Incorrect Password",
       });

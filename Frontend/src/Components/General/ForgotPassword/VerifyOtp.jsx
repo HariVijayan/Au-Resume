@@ -20,12 +20,12 @@ import { useTheme } from "@mui/material";
 const VerifyOTP = () => {
   const theme = useTheme();
 
-  const [otp, setOtp] = useState("");
+  const [otpInput, setOtpInput] = useState("");
   const [countdown, setCountdown] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email;
+  const userEmail = location.state?.userEmail;
   const isAdmin = location.state?.isAdmin || false;
 
   const [serverMessage, setServerMessage] = useState("");
@@ -34,7 +34,7 @@ const VerifyOTP = () => {
 
   const [loadingAnim, setLoadingAnim] = useState(false);
 
-  if (!email) {
+  if (!userEmail) {
     return (
       <Box
         sx={{
@@ -80,7 +80,7 @@ const VerifyOTP = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/verifyOtp/existingUser/forgot-password",
-        { email, isAdmin, otp }
+        { userEmail, isAdmin, otpInput },
       );
       setLoadingAnim(false);
       setServerMessage("Successfully verified email");
@@ -88,7 +88,7 @@ const VerifyOTP = () => {
       setShowServerMsg(true);
 
       setTimeout(() => {
-        navigate("/reset-password", { state: { email, isAdmin } });
+        navigate("/reset-password", { state: { userEmail, isAdmin } });
       }, 1000); //Redirect to password reset page after 1 seconds of showing success message
     } catch (error) {
       setLoadingAnim(false);
@@ -106,7 +106,7 @@ const VerifyOTP = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/resendOtp/existingUser/forgot-password",
-        { email, isAdmin }
+        { userEmail, isAdmin },
       );
       setLoadingAnim(false);
       setServerMessage("Successfully resent Otp");
@@ -152,8 +152,8 @@ const VerifyOTP = () => {
               required
               id="inp-Otp"
               label="Otp"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              value={otpInput}
+              onChange={(e) => setOtpInput(e.target.value)}
             />
           </InputBox>
         </InputWrapper>
@@ -183,7 +183,7 @@ const VerifyOTP = () => {
           <Button
             variant="contained"
             onClick={verifyOtp}
-            disabled={!otp}
+            disabled={!otpInput}
             size="large"
             endIcon={<CheckIcon />}
             loading={loadingAnim}
