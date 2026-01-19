@@ -14,22 +14,18 @@ router.post("/logout", async (req, res) => {
 
     const { userId, sessionId } = jwt.verify(
       accessToken,
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
     );
-
-    let isAdmin;
 
     let userSession;
 
     let userEmail;
 
     if (userType === "Admin") {
-      isAdmin = true;
       userSession = await adminCurrentSession.findOne({ userId, sessionId });
       userEmail = userSession.email;
       await adminCurrentSession.deleteOne({ userId, sessionId });
     } else {
-      isAdmin = false;
       userSession = await currentSession.findOne({ userId, sessionId });
       userEmail = userSession.email;
       await currentSession.deleteOne({ userId, sessionId });

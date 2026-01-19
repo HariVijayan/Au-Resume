@@ -32,15 +32,15 @@ router.post("/getApprovalOtp", async (req, res) => {
 
     let otpReason = "";
 
-    if (requestType === "PasswordReset") {
+    if (requestType === "Password Reset") {
       const passwordCheck = checkPassword(newPassword);
       if (!passwordCheck.Valid) {
         return res.status(400).json({ message: passwordCheck.message });
       }
       otpReason = "Reset password from profile";
-    } else if (requestType === "GetLogs") {
+    } else if (requestType === "Get Logs") {
       otpReason = "Get user logs from profile";
-    } else if (requestType === "EncryptionKeyReset") {
+    } else if (requestType === "Encryption Key Reset") {
       otpReason = "Reset encryption key from profile";
     } else {
       otpReason = "User Profile Action";
@@ -60,11 +60,11 @@ router.post("/getApprovalOtp", async (req, res) => {
     const emailBody = `${newOtp} is your OTP. It is valid for 10 minutes. If you haven't made this request, kindly reset your password right away and contact the technical team.`;
     let emailHeading = "";
 
-    if (requestType === "PasswordReset") {
+    if (requestType === "Password Reset") {
       emailHeading = `Use the below One Time Password to reset the password for your account.`;
-    } else if (requestType === "GetLogs") {
+    } else if (requestType === "Get Logs") {
       emailHeading = `Use the below One Time Password to verify your identity for getting logs of your account.`;
-    } else if (requestType === "EncryptionKeyReset") {
+    } else if (requestType === "Encryption Key Reset") {
       emailHeading = `Use the below One Time Password to reset the encryption key for your account.`;
     } else {
       emailHeading = `Use the below One Time Password to approve the user profile action.`;
@@ -74,7 +74,7 @@ router.post("/getApprovalOtp", async (req, res) => {
       userEmail,
       emailSubject,
       emailHeading,
-      emailBody
+      emailBody,
     );
 
     if (sendEmail.Success === "NO") {

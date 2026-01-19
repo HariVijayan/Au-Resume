@@ -48,7 +48,7 @@ const ModifyAdmin = () => {
 
   const [showModifyAdminOtp, setShowModifyAdminOtp] = useState(false);
 
-  const requestType = "modifyAdminType";
+  const requestType = "Modify Admin";
 
   const [serverMessage, setServerMessage] = useState("");
   const [showServerMsg, setShowServerMsg] = useState(false);

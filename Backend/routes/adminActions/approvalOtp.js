@@ -33,11 +33,11 @@ router.post("/get-approval-otp", async (req, res) => {
 
     let otpReason = "";
 
-    if (requestType === "addNewAdmin") {
+    if (requestType === "Add Admin") {
       otpReason = "Add a new admin";
-    } else if (requestType === "removeAdmin") {
+    } else if (requestType === "Remove Admin") {
       otpReason = "Remove existing admin";
-    } else if (requestType === "modifyAdminType") {
+    } else if (requestType === "Modify Admin") {
       otpReason = "Modify existing admin";
     } else {
       otpReason = "Admin Portal Action";
@@ -57,11 +57,11 @@ router.post("/get-approval-otp", async (req, res) => {
     const emailBody = `${newOtp} is your OTP. It is valid for 10 minutes. If you haven't made this request, kindly reset your password right away and contact the technical team.`;
     let emailHeading = "";
 
-    if (requestType === "addNewAdmin") {
+    if (requestType === "Add Admin") {
       emailHeading = `Hi ${adminName}, use the below One Time Password to approve the new admin account.`;
-    } else if (requestType === "removeAdmin") {
+    } else if (requestType === "Remove Admin") {
       emailHeading = `Hi ${adminName}, use the below One Time Password to approve the admin account removal.`;
-    } else if (requestType === "modifyAdminType") {
+    } else if (requestType === "Modify Admin") {
       emailHeading = `Hi ${adminName}, use the below One Time Password to approve the admin account modification.`;
     } else {
       emailHeading = `Hi ${adminName}, use the below One Time Password to approve the admin portal action.`;
@@ -71,7 +71,7 @@ router.post("/get-approval-otp", async (req, res) => {
       adminEmail,
       emailSubject,
       emailHeading,
-      emailBody
+      emailBody,
     );
 
     if (sendEmail.Success === "NO") {

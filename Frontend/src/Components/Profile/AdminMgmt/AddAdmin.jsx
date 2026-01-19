@@ -41,7 +41,7 @@ const AddNewAdmin = () => {
 
   const [loadingAnim, setLoadingAnim] = useState(false);
 
-  const requestType = "addNewAdmin";
+  const requestType = "Add Admin";
   const theme = useTheme();
 
   useEffect(() => {

@@ -1,12 +1,14 @@
 import express from "express";
 import User from "../../../models/user/user.js";
-import crypto from "crypto";
 import checkPassword from "../../../helper/functions/checkPassword.js";
 import resumeData from "../../../models/pdf/resumeData.js";
 import userCurrentSession from "../../../models/user/currentSession.js";
 import verifyUserOrAdminOtp from "../../../helper/authentication/userOrAdmin/verifyOtp.js";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
+
+const BCRYPT_COST_FACTOR = 12;
 
 router.post("/resetPassword", async (req, res) => {
   const { userEmail, newPassword, otpInput } = req.body;
@@ -14,7 +16,7 @@ router.post("/resetPassword", async (req, res) => {
     const otpVerification = await verifyUserOrAdminOtp(
       userEmail,
       false,
-      otpInput
+      otpInput,
     );
 
     if (otpVerification.Valid === "NO") {
@@ -28,10 +30,8 @@ router.post("/resetPassword", async (req, res) => {
       return res.status(400).json({ message: passwordCheck.message });
     }
 
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(newPassword)
-      .digest("hex");
+    const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     await resumeData.deleteMany({ login_email: userEmail });
 

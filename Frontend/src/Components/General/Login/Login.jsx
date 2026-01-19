@@ -55,7 +55,7 @@ const Login = ({ setLoggedInUserType }) => {
       const response = await axios.post(
         "http://localhost:5000/authenticateUser/login",
         { loginEmail, loginPassword, rememberMe, isAdmin },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setLoadingAnim(false);
       localStorage.removeItem("flagLogout");
@@ -89,6 +89,7 @@ const Login = ({ setLoggedInUserType }) => {
         }
       }, 1000); //Login after 1 seconds of showing success message
     } catch (error) {
+      console.log(error.response);
       setLoadingAnim(false);
       setServerMessage(error.response?.data?.message || "Login failed");
       setServerMsgType("error");

@@ -45,7 +45,7 @@ function removeEmptyValues(obj) {
     }
 
     const hasOnlyBooleans = Object.values(newObj).every(
-      (val) => typeof val === "boolean"
+      (val) => typeof val === "boolean",
     );
 
     return keys.length > 0 && !hasOnlyBooleans ? newObj : null;
@@ -57,7 +57,7 @@ function removeEmptyValues(obj) {
 const generateFooter = (footerFile, timestamp) => {
   return footerFile.replace(
     "<p>Developed by the Department of IST. Generated at</p>",
-    `<p>Developed by the Department of IST. Generated at ${timestamp}</p>`
+    `<p>Developed by the Department of IST. Generated at ${timestamp}</p>`,
   );
 };
 
@@ -144,10 +144,10 @@ router.post("/Resume", async (req, res) => {
 
     let compiledTemplate = compileTemplate(
       templateFile.replace("<style></style>", `<style>${cssFile}</style>`),
-      resumeData
+      resumeData,
     );
 
-    if (downloadType === "personal") {
+    if (downloadType === "Personal") {
       const pdfBuffer = await generatePdf(compiledTemplate);
 
       res.type("application/pdf");
@@ -161,7 +161,7 @@ router.post("/Resume", async (req, res) => {
 
       footerFile = footerFile.replace(
         '<img id="aulogo" src=""',
-        `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`
+        `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`,
       );
 
       const timestamp = istDateFormat(new Date());
@@ -173,7 +173,7 @@ router.post("/Resume", async (req, res) => {
       const pdfBuffer = await generatePdfWithFooter(
         compiledTemplate,
         headerFile,
-        footerFile
+        footerFile,
       );
 
       res.type("application/pdf");

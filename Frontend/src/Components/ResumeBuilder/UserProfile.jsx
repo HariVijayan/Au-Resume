@@ -93,7 +93,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
         const response = await axios.post(
           "http://localhost:5000/userDetails/getUserDetails",
           { requestType },
-          { withCredentials: true }
+          { withCredentials: true },
         );
         setUserEmail(response.data.Email);
         setUserRegNo(response.data.RegNo);
@@ -110,7 +110,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       } catch (error) {
         setLoadingAnim(false);
         setServerMessage(
-          error.response?.data?.message || "Failed to fetch user's details"
+          error.response?.data?.message || "Failed to fetch user's details",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -125,7 +125,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
     setServerMsgType("info");
     setShowServerMsg(true);
 
-    if (otpReason === "PasswordReset") {
+    if (otpReason === "Password Reset") {
       if (newPassword != confirmPassword) {
         setServerMessage("Passwords doesn't match");
         setServerMsgType("error");
@@ -139,7 +139,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       const response = await axios.post(
         "http://localhost:5000/user/approvals/getApprovalOtp",
         { requestType: otpReason, newPassword },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setRequestType(otpReason);
       setMainContent("ShowOtp");
@@ -151,7 +151,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.message || "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -175,7 +175,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       const response = await axios.post(
         "http://localhost:5000/user/passwordAction/resetPassword",
         { userEmail, newPassword, otpInput },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setServerMessage("Password reset successful");
       setServerMsgType("success");
@@ -187,7 +187,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Password reset failed"
+        error.response?.data?.message || "Password reset failed",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -203,7 +203,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       const response = await axios.post(
         "http://localhost:5000/user/encryptionKey/resetEncKey",
         { userEmail, otpInput },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setMainContent("");
       setServerMessage("Encryption Key reset successful");
@@ -216,7 +216,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to reset encryption key"
+        error.response?.data?.message || "Failed to reset encryption key",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -240,7 +240,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       const response = await axios.post(
         "http://localhost:5000/user/logAction/getLogs",
         { otpInput },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       if (!isMounted) return;
       const {
@@ -283,18 +283,18 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
 
     if (createdByFilter.trim() !== "") {
       selectedLogs = selectedLogs.filter((log) =>
-        log.logAddedBy.toLowerCase().includes(createdByFilter.toLowerCase())
+        log.logAddedBy.toLowerCase().includes(createdByFilter.toLowerCase()),
       );
     }
 
     if (logFilter.trim() !== "") {
       selectedLogs = selectedLogs.filter((log) =>
-        log.logDetails.toLowerCase().includes(logFilter.toLowerCase())
+        log.logDetails.toLowerCase().includes(logFilter.toLowerCase()),
       );
     }
 
     setVisibleLogs(
-      selectedLogs.slice(visibleLogsStart, visibleLogsStart + PAGE_SIZE)
+      selectedLogs.slice(visibleLogsStart, visibleLogsStart + PAGE_SIZE),
     );
     setTotalRecords(selectedLogs.length);
   };
@@ -308,19 +308,19 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
 
   const handleNext = () =>
     setVisibleLogsStart((start) =>
-      Math.min(start + PAGE_SIZE, Math.max(0, totalRecords - PAGE_SIZE))
+      Math.min(start + PAGE_SIZE, Math.max(0, totalRecords - PAGE_SIZE)),
     );
 
   const toggleFilters = () => setShowFilters((prev) => !prev);
 
   const implementUserAction = () => {
-    if (requestType === "GetLogs") {
+    if (requestType === "Get Logs") {
       fetchLogs();
     }
-    if (requestType === "PasswordReset") {
+    if (requestType === "Password Reset") {
       resetPassword();
     }
-    if (requestType === "EncryptionKeyReset") {
+    if (requestType === "Encryption Key Reset") {
       resetEncryptionKey();
     }
   };
@@ -623,11 +623,11 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
             >
               <Button
                 variant="contained"
-                onClick={() => generateOtp("GetLogs")}
+                onClick={() => generateOtp("Get Logs")}
                 size="large"
                 disabled={
-                  requestType === "PasswordReset" ||
-                  requestType === "EncryptionKeyReset"
+                  requestType === "Password Reset" ||
+                  requestType === "Encryption Key Reset"
                 }
                 endIcon={<TableRowsIcon />}
                 loading={loadingAnim}
@@ -643,8 +643,8 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
                 onClick={() => setMainContent("DisclaimerPassword")}
                 size="large"
                 disabled={
-                  requestType === "GetLogs" ||
-                  requestType === "EncryptionKeyReset"
+                  requestType === "Get Logs" ||
+                  requestType === "Encryption Key Reset"
                 }
                 endIcon={<PasswordIcon />}
                 loading={loadingAnim}
@@ -661,7 +661,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
                 onClick={() => setMainContent("DisclaimerEncryption")}
                 size="large"
                 disabled={
-                  requestType === "GetLogs" || requestType === "PasswordReset"
+                  requestType === "Get Logs" || requestType === "Password Reset"
                 }
                 endIcon={<KeyIcon />}
                 loading={loadingAnim}
@@ -762,7 +762,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
 
                 <Button
                   variant="outlined"
-                  onClick={() => generateOtp("PasswordReset")}
+                  onClick={() => generateOtp("Password Reset")}
                   size="large"
                   endIcon={<CheckIcon />}
                   loading={loadingAnim}
@@ -797,7 +797,7 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
                 </Typography>
                 <Button
                   variant="outlined"
-                  onClick={() => generateOtp("EncryptionKeyReset")}
+                  onClick={() => generateOtp("Encryption Key Reset")}
                   size="large"
                   endIcon={<CheckIcon />}
                   loading={loadingAnim}

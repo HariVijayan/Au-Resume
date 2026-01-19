@@ -36,7 +36,7 @@ const RemoveAdmin = () => {
 
   const [showRemAdminOtp, setShowRemAdminOtp] = useState(null);
 
-  const requestType = "removeAdmin";
+  const requestType = "Remove Admin";
 
   const [serverMessage, setServerMessage] = useState("");
   const [showServerMsg, setShowServerMsg] = useState(false);

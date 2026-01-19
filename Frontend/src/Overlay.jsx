@@ -25,7 +25,7 @@ import { Typography } from "@mui/material";
 
 const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
   const { resumeData, setResumeData } = ResumeInputTemplate();
-  const [downloadType, setDownloadType] = useState("personal");
+  const [downloadType, setDownloadType] = useState("Personal");
 
   const [userPassword, setUserPassword] = useState("");
   const [loadingAnim, setLoadingAnim] = useState(false);
@@ -49,7 +49,7 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       const response = await axios.post(
         "http://localhost:5000/getPrevious/resume-details",
         { userPassword },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setUserPassword("");
       setLoadingAnim(false);
@@ -64,7 +64,7 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       setUserPassword("");
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to fetch previous records"
+        error.response?.data?.message || "Failed to fetch previous records",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -80,12 +80,12 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       const response = await axios.post(
         "http://localhost:5000/saveResume/current-resume",
         { userPassword, resumeData },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setUserPassword("");
       setLoadingAnim(false);
       setServerMessage(
-        "Successfully saved current details after end to end encryption"
+        "Successfully saved current details after end to end encryption",
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -97,7 +97,7 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       setUserPassword("");
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to save current details"
+        error.response?.data?.message || "Failed to save current details",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -119,7 +119,7 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
             "Content-Type": "application/json",
           },
           responseType: "arraybuffer",
-        }
+        },
       );
 
       const blob = new Blob([response.data], { type: "application/pdf" });
@@ -132,7 +132,7 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       setShowServerMsg(true);
     } catch (error) {
       setServerMessage(
-        error.response?.data?.message || "Failed to generate resume"
+        error.response?.data?.message || "Failed to generate resume",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -318,7 +318,7 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
               variant="contained"
               color="secondary"
               onClick={() => {
-                setDownloadType("personal");
+                setDownloadType("Personal");
                 downloadResume();
               }}
               size="large"
@@ -342,7 +342,7 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
             <Button
               variant="contained"
               onClick={() => {
-                setDownloadType("campus");
+                setDownloadType("College");
                 downloadResume();
               }}
               size="large"
