@@ -1,7 +1,7 @@
 import { checkSchema } from "express-validator";
-import { Validators } from "../baseValidators.js";
+import { Validators } from "../../baseValidators.js";
 
-const loginInputValidator = checkSchema({
+const inputValidator = checkSchema({
   loginEmail: {
     in: ["body"],
     ...Validators.email,
@@ -23,8 +23,8 @@ const loginInputValidator = checkSchema({
   isAdmin: {
     in: ["body"],
     ...Validators.booleanValue,
-    errorMessage: "IsAdmin is invalid",
+    errorMessage: "IsAdmin value is invalid",
   },
 });
 
-export default loginInputValidator;
+export default inputValidator;

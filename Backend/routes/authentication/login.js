@@ -7,14 +7,14 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import istDateFormat from "../../helper/functions/dateIstFormat.js";
 import bcrypt from "bcrypt";
-import loginInputValidator from "../../helper/inputProcessing/schemas/login.js";
+import inputValidator from "../../helper/inputProcessing/schemas/authentication/login.js";
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 
 const router = express.Router();
 
 router.post(
   "/login",
-  loginInputValidator,
+  inputValidator,
   inputValidationErrorHandler,
   async (req, res) => {
     const { loginEmail, loginPassword, rememberMe, isAdmin } = req.body;

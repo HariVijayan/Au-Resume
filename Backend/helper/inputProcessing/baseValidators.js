@@ -46,7 +46,7 @@ export const Validators = {
     normalizeEmail: true,
   },
 
-  userEmail: {
+  universityEmail: {
     exists: {
       errorMessage: "Email is required",
     },

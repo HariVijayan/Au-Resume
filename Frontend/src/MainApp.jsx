@@ -129,7 +129,7 @@ function RouteWrapper() {
 
   const logoutUser = async (userType) => {
     try {
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:5000/authenticateUser/logout",
         { userType },
         {
