@@ -226,6 +226,7 @@ const AddNewUser = () => {
         },
         { withCredentials: true },
       );
+      console.log(response);
       setUsersList(response.data.usersList);
       setShowUsers(true);
       setLoadingAnim(false);
@@ -233,6 +234,7 @@ const AddNewUser = () => {
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
+      console.log(error.response);
       setLoadingAnim(false);
       setServerMessage(
         error.response.data.message || "Failed to fetch user list",
@@ -319,6 +321,7 @@ const AddNewUser = () => {
         },
         { withCredentials: true },
       );
+      console.log(response);
       setLoadingAnim(false);
       setServerMessage(
         `New user(s) have been added to the site successfully. Refreshing the page in 5 seconds.`,
@@ -330,6 +333,7 @@ const AddNewUser = () => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
     } catch (error) {
+      console.log(error.response);
       setLoadingAnim(false);
       setServerMessage(
         `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||

@@ -65,7 +65,7 @@ export const Validators = {
 
     custom: {
       options: (value) => {
-        const domain = value.split("@")[1];
+        const domain = "@" + value.split("@")[1];
         if (!EmailDomains.includes(domain)) {
           throw new Error("Only university emails are allowed");
         }

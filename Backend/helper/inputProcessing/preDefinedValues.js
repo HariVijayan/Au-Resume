@@ -1,7 +1,7 @@
 export const EmailDomains = [
-  "student.annauniv.edu",
-  "annauniv.edu",
-  "auist.net",
+  "@student.annauniv.edu",
+  "@annauniv.edu",
+  "@auist.net",
 ];
 
 export const AdminTypes = ["SuperAdmin", "Admin", "Analytics"];
