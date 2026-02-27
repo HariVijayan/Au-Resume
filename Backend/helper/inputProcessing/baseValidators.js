@@ -414,6 +414,20 @@ export const Validators = {
     },
   },
 
+  resumeData: {
+    exists: {
+      errorMessage: "Resume Data is required",
+    },
+
+    notEmpty: {
+      errorMessage: "Resume Data cannot be empty",
+    },
+
+    isJSON: {
+      errorMessage: "Resume Data must be a json",
+    },
+  },
+
   resumeDownloadType: {
     exists: {
       errorMessage: "Download Type is required",
