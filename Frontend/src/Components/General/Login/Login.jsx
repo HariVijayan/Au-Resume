@@ -66,32 +66,35 @@ const Login = ({ setLoggedInUserType }) => {
 
       setTimeout(() => {
         if (
-          response?.data?.message ===
+          response?.data?.errorDetails?.message ===
           "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
         ) {
           setLoggedInUserType("Super Admin");
           navigate("/admin-dashboard/super-admin");
         } else if (
-          response?.data?.message ===
+          response?.data?.errorDetails?.message ===
           "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
         ) {
           setLoggedInUserType("Admin");
           navigate("/admin-dashboard/admin-general");
         } else if (
-          response?.data?.message ===
+          response?.data?.errorDetails?.message ===
           "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
         ) {
           setLoggedInUserType("Analytics");
           navigate("/admin-dashboard/analytics");
-        } else if (response?.data?.message === "Login successful") {
+        } else if (
+          response?.data?.errorDetails?.message === "Login successful"
+        ) {
           setLoggedInUserType("User");
           navigate("/resume-builder/template-choosing");
         }
       }, 1000); //Login after 1 seconds of showing success message
     } catch (error) {
-      console.log(error.response);
       setLoadingAnim(false);
-      setServerMessage(error.response?.data?.message || "Login failed");
+      setServerMessage(
+        error.response?.data?.errorDetails?.message || "Login failed",
+      );
       setServerMsgType("error");
       setShowServerMsg(true);
     }

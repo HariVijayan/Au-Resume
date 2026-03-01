@@ -36,8 +36,8 @@ import userApprovalOtp from "./routes/requests/userActions/approvalOtp.js";
 import userProfilePasswordReset from "./routes/requests/userActions/resetPasswordWithRecords.js";
 import encryptionKeyReset from "./routes/requests/userActions/resetEncryptionKey.js";
 import mongoose from "mongoose";
-import crypto from "crypto";
 import bcrypt from "bcrypt";
+import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 const port = 5000;
@@ -174,5 +174,7 @@ const newUser2 = new adminUser({
   accountType: "Admin",
 });
 await newUser2.save();
+
+app.use(errorHandler);
 
 console.log("New SuperAdmin added. Good to go!");

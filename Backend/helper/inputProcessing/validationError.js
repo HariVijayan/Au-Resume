@@ -5,11 +5,15 @@ export const inputValidationErrorHandler = (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({
       success: false,
-      message: "Invalid input provided",
-      errors: errors.array().map((err) => ({
-        field: err.param,
-        message: err.msg,
-      })),
+      errorDetails: {
+        code: "BAD_REQUEST",
+        message: "Invalid input provided",
+        errors: errors.array().map((err) => ({
+          field: err.param,
+          reason: err.msg,
+        })),
+        timestamp: new Date().toISOString(),
+      },
     });
   }
   next();
