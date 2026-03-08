@@ -66,25 +66,25 @@ const Login = ({ setLoggedInUserType }) => {
 
       setTimeout(() => {
         if (
-          response?.data?.errorDetails?.message ===
+          response?.data?.responseDetails?.message ===
           "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
         ) {
           setLoggedInUserType("Super Admin");
           navigate("/admin-dashboard/super-admin");
         } else if (
-          response?.data?.errorDetails?.message ===
+          response?.data?.responseDetails?.message ===
           "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
         ) {
           setLoggedInUserType("Admin");
           navigate("/admin-dashboard/admin-general");
         } else if (
-          response?.data?.errorDetails?.message ===
+          response?.data?.responseDetails?.message ===
           "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
         ) {
           setLoggedInUserType("Analytics");
           navigate("/admin-dashboard/analytics");
         } else if (
-          response?.data?.errorDetails?.message === "Login successful"
+          response?.data?.responseDetails?.message === "Login successful"
         ) {
           setLoggedInUserType("User");
           navigate("/resume-builder/template-choosing");
@@ -93,7 +93,7 @@ const Login = ({ setLoggedInUserType }) => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.errorDetails?.message || "Login failed",
+        error.response?.data?.responseDetails?.message || "Login failed",
       );
       setServerMsgType("error");
       setShowServerMsg(true);

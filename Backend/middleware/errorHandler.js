@@ -5,7 +5,7 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).json({
     success: false,
-    errorDetails: {
+    responseDetails: {
       code,
       message,
       timestamp: new Date().toISOString(),

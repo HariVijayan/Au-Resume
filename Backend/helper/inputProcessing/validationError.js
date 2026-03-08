@@ -5,7 +5,7 @@ export const inputValidationErrorHandler = (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({
       success: false,
-      errorDetails: {
+      responseDetails: {
         code: "BAD_REQUEST",
         message: "Invalid input provided",
         errors: errors.array().map((err) => ({

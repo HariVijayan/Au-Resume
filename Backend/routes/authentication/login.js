@@ -125,7 +125,7 @@ router.post(
     if (user.accountType === "SuperAdmin") {
       res.status(200).json({
         success: true,
-        errorDetails: {
+        responseDetails: {
           code: "SUCCESS",
           message: "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23",
           timestamp: new Date().toISOString(),
@@ -134,7 +134,7 @@ router.post(
     } else if (user.accountType === "Admin") {
       res.status(200).json({
         success: true,
-        errorDetails: {
+        responseDetails: {
           code: "SUCCESS",
           message: "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv",
           timestamp: new Date().toISOString(),
@@ -143,7 +143,7 @@ router.post(
     } else if (user.accountType === "Analytics") {
       res.status(200).json({
         success: true,
-        errorDetails: {
+        responseDetails: {
           code: "SUCCESS",
           message: "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo",
           timestamp: new Date().toISOString(),
@@ -152,7 +152,7 @@ router.post(
     } else {
       res.status(200).json({
         success: true,
-        errorDetails: {
+        responseDetails: {
           code: "SUCCESS",
           message: "Login successful",
           timestamp: new Date().toISOString(),
