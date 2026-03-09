@@ -15,9 +15,13 @@ async function getUserAndAdminOtp(requestedEmail, isAdmin) {
     Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
   ) {
     return {
-      Valid: "NO",
-      HtmlCode: 429,
-      Reason: "Too many OTP requests. Try again in 1 minute",
+      success: false,
+      responseDetails: {
+        statusCode: 429,
+        code: "TOO_MANY_REQUESTS",
+        message: "Too many OTP requests. Try again in 1 minute",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
@@ -28,8 +32,13 @@ async function getUserAndAdminOtp(requestedEmail, isAdmin) {
   }
 
   return {
-    Valid: "YES",
-    HtmlCode: 200,
+    success: true,
+    responseDetails: {
+      statusCode: 200,
+      code: "SUCCESS",
+      message: "Otp preconditions cleared successfully",
+      timestamp: new Date().toISOString(),
+    },
   };
 }
 

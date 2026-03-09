@@ -15,10 +15,16 @@ router.post(
     try {
       const accessToken = req.cookies.accessToken;
       const adminCheck = await checkAdminAccess(accessToken);
-      if (adminCheck.Valid === "NO") {
-        return res
-          .status(adminCheck.HtmlCode)
-          .json({ message: adminCheck.Reason });
+
+      if (!adminCheck.success) {
+        return res.status(adminCheck.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: adminCheck.responseDetails.code,
+            message: adminCheck.responseDetails.message,
+            timestamp: adminCheck.responseDetails.timestamp,
+          },
+        });
       }
 
       const adminAccount = adminCheck.AdminAccount;

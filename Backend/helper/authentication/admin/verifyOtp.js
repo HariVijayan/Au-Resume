@@ -9,26 +9,39 @@ async function verifyAdminOtp(adminEmail, otpInput) {
   if (!storedOtp) {
     await adminOtp.deleteMany({ email: adminEmail });
     return {
-      Valid: "NO",
-      HtmlCode: 400,
-      Reason: "Invalid Otp",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Invalid Otp",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
   if (storedOtp.expiresAt < Date.now()) {
     await adminOtp.deleteMany({ adminEmail });
     return {
-      Valid: "NO",
-      HtmlCode: 400,
-      Reason: "Otp expired",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Otp expired",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
   await adminOtp.deleteMany({ email: adminEmail });
 
   return {
-    Valid: "YES",
-    HtmlCode: 200,
+    success: true,
+    responseDetails: {
+      statusCode: 200,
+      code: "SUCCESS",
+      message: "Otp verified successfully",
+      timestamp: new Date().toISOString(),
+    },
   };
 }
 

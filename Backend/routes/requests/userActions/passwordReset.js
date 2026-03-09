@@ -20,8 +20,16 @@ router.post(
     const { userEmail, newPassword, isAdmin } = req.body;
     try {
       const passwordCheck = checkPassword(newPassword);
-      if (!passwordCheck.Valid) {
-        return res.status(400).json({ message: passwordCheck.message });
+
+      if (!passwordCheck.success) {
+        return res.status(passwordCheck.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: passwordCheck.responseDetails.code,
+            message: passwordCheck.responseDetails.message,
+            timestamp: passwordCheck.responseDetails.timestamp,
+          },
+        });
       }
 
       const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);

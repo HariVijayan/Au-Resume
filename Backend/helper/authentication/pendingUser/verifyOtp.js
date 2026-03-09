@@ -7,25 +7,38 @@ async function verifyPendingUserOtp(requestedEmail, otpInput) {
   });
   if (!storedOtp) {
     return {
-      Valid: "NO",
-      HtmlCode: 400,
-      Reason: "Invalid Otp",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Invalid Otp",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
   if (storedOtp.expiresAt < Date.now()) {
     await userOtp.deleteMany({ email: requestedEmail });
     return {
-      Valid: "NO",
-      HtmlCode: 400,
-      Reason: "OTP expired",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Otp expired",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
   await userOtp.deleteMany({ email: requestedEmail });
 
   return {
-    Valid: "YES",
-    HtmlCode: 200,
+    success: true,
+    responseDetails: {
+      statusCode: 200,
+      code: "SUCCESS",
+      message: "Otp verified successfully",
+      timestamp: new Date().toISOString(),
+    },
   };
 }
 

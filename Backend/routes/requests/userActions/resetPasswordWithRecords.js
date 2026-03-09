@@ -25,10 +25,15 @@ router.post(
         otpInput,
       );
 
-      if (otpVerification.Valid === "NO") {
-        return res
-          .status(otpVerification.HtmlCode)
-          .json({ message: otpVerification.Reason });
+      if (!otpVerification.success) {
+        return res.status(otpVerification.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: otpVerification.responseDetails.code,
+            message: otpVerification.responseDetails.message,
+            timestamp: otpVerification.responseDetails.timestamp,
+          },
+        });
       }
 
       const passwordCheck = checkPassword(newPassword);

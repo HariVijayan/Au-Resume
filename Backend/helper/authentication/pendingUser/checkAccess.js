@@ -4,15 +4,24 @@ async function checkPendingUserAccess(requestedEmail) {
   const requestedAccount = await pendingUser.findOne({ email: requestedEmail });
   if (!requestedAccount) {
     return {
-      Valid: "NO",
-      HtmlCode: 400,
-      Reason: "User not found or already verified",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "User not found or already verified",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
   return {
-    Valid: "YES",
-    HtmlCode: 200,
+    success: true,
+    responseDetails: {
+      statusCode: 200,
+      code: "SUCCESS",
+      message: "Valid pending user",
+      timestamp: new Date().toISOString(),
+    },
     PendingUser: requestedAccount,
   };
 }

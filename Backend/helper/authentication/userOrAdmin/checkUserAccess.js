@@ -4,7 +4,15 @@ import jwt from "jsonwebtoken";
 
 async function checkUserAccess(accessToken) {
   if (!accessToken) {
-    return { Valid: "NO", HtmlCode: 400, Reason: "No token provided" };
+    return {
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "No token provided",
+        timestamp: new Date().toISOString(),
+      },
+    };
   }
 
   const { userId, sessionId } = jwt.verify(accessToken, process.env.JWT_SECRET);
@@ -12,9 +20,13 @@ async function checkUserAccess(accessToken) {
   const session = await userCurrentSession.findOne({ userId, sessionId });
   if (!session) {
     return {
-      Valid: "NO",
-      HtmlCode: 400,
-      Reason: "Session expired. Log in again",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Session expired. Log in again",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
@@ -22,9 +34,13 @@ async function checkUserAccess(accessToken) {
 
   if (session.expiresAt < Date.now()) {
     return {
-      Valid: "NO",
-      HtmlCode: 400,
-      Reason: "Session expired. Log in again",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Session expired. Log in again",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
@@ -32,15 +48,24 @@ async function checkUserAccess(accessToken) {
 
   if (!user) {
     return {
-      Valid: "NO",
-      HtmlCode: 403,
-      Reason: "Unauthorised access. Not an user",
+      success: false,
+      responseDetails: {
+        statusCode: 401,
+        code: "UNAUTHORIZED",
+        message: "Unauthorised access. Not an user",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
   return {
-    Valid: "YES",
-    HtmlCode: 200,
+    success: true,
+    responseDetails: {
+      statusCode: 200,
+      code: "SUCCESS",
+      message: "Valid user",
+      timestamp: new Date().toISOString(),
+    },
     UserEmail: userEmail,
   };
 }

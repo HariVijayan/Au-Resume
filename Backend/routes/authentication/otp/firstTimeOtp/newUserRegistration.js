@@ -36,8 +36,15 @@ router.post(
       }
 
       const passwordCheck = checkPassword(userPassword);
-      if (!passwordCheck.Valid) {
-        return res.status(400).json({ message: passwordCheck.message });
+      if (!passwordCheck.success) {
+        return res.status(passwordCheck.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: passwordCheck.responseDetails.code,
+            message: passwordCheck.responseDetails.message,
+            timestamp: passwordCheck.responseDetails.timestamp,
+          },
+        });
       }
 
       const lastOtp = await Otp.findOne({ email: userEmail });
@@ -57,9 +64,14 @@ router.post(
         "New User Registration",
       );
 
-      if (requestNewOtp.Success === "NO") {
-        return res.status(requestNewOtp.HtmlCode).json({
-          message: "Unable to generate otp",
+      if (!requestNewOtp.success) {
+        return res.status(requestNewOtp.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: requestNewOtp.responseDetails.code,
+            message: "Unable to generate otp",
+            timestamp: requestNewOtp.responseDetails.timestamp,
+          },
         });
       }
 
@@ -76,9 +88,14 @@ router.post(
         emailBody,
       );
 
-      if (sendEmail.Success === "NO") {
-        return res.status(sendEmail.HtmlCode).json({
-          message: "Failed to send otp to user",
+      if (!sendEmail.success) {
+        return res.status(sendEmail.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: sendEmail.responseDetails.code,
+            message: "Error while sending otp email to user",
+            timestamp: sendEmail.responseDetails.timestamp,
+          },
         });
       }
 

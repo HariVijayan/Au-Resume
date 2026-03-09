@@ -10,12 +10,25 @@ async function checkUserOrAdminAccess(requestedEmail, isAdmin) {
   }
 
   if (!requestedAccount) {
-    return { Valid: "NO", HtmlCode: 404, Reason: "User not found" };
+    return {
+      success: false,
+      responseDetails: {
+        statusCode: 404,
+        code: "NOT_FOUND",
+        message: "User not found",
+        timestamp: new Date().toISOString(),
+      },
+    };
   }
 
   return {
-    Valid: "YES",
-    HtmlCode: 200,
+    success: true,
+    responseDetails: {
+      statusCode: 200,
+      code: "SUCCESS",
+      message: "Valid user or admin",
+      timestamp: new Date().toISOString(),
+    },
     UserAccount: requestedAccount,
   };
 }

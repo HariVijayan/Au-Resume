@@ -6,7 +6,7 @@ const generateNewOtp = (length) => {
     "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz123456789!@#$%&*()";
   return Array.from(
     { length },
-    () => characters[Math.floor(Math.random() * characters.length)]
+    () => characters[Math.floor(Math.random() * characters.length)],
   ).join("");
 };
 
@@ -30,15 +30,24 @@ async function generateOtp(isAdmin, otpRequestedBy, otpReason) {
       });
     }
     return {
-      Success: "YES",
-      HtmlCode: 200,
+      success: true,
+      responseDetails: {
+        statusCode: 200,
+        code: "SUCCESS",
+        message: "Successfully generated Otp",
+        timestamp: new Date().toISOString(),
+      },
       NewOtp: newOtp,
     };
   } catch (error) {
     return {
-      Success: "NO",
-      HtmlCode: 500,
-      Reason: error,
+      success: false,
+      responseDetails: {
+        statusCode: 500,
+        code: "INTERNAL_SERVER_ERROR",
+        message: error,
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 }

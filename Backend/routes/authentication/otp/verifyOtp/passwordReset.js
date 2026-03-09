@@ -18,10 +18,15 @@ router.post(
         userEmail,
         isAdmin,
       );
-      if (accountAccessCheck.Valid === "NO") {
-        return res
-          .status(accountAccessCheck.HtmlCode)
-          .json({ message: accountAccessCheck.Reason });
+      if (!accountAccessCheck.success) {
+        return res.status(accountAccessCheck.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: accountAccessCheck.responseDetails.code,
+            message: accountAccessCheck.responseDetails.message,
+            timestamp: accountAccessCheck.responseDetails.timestamp,
+          },
+        });
       }
 
       const otpVerification = await verifyUserOrAdminOtp(
@@ -30,10 +35,15 @@ router.post(
         otpInput,
       );
 
-      if (otpVerification.Valid === "NO") {
-        return res
-          .status(otpVerification.HtmlCode)
-          .json({ message: otpVerification.Reason });
+      if (!otpVerification.success) {
+        return res.status(otpVerification.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: otpVerification.responseDetails.code,
+            message: otpVerification.responseDetails.message,
+            timestamp: otpVerification.responseDetails.timestamp,
+          },
+        });
       }
 
       res.json({

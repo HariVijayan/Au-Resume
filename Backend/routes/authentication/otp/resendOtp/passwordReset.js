@@ -19,18 +19,31 @@ router.post(
         userEmail,
         isAdmin,
       );
-      if (accountAccessCheck.Valid === "NO") {
-        return res
-          .status(accountAccessCheck.HtmlCode)
-          .json({ message: accountAccessCheck.Reason });
+
+      if (!accountAccessCheck.success) {
+        return res.status(accountAccessCheck.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: accountAccessCheck.responseDetails.code,
+            message: accountAccessCheck.responseDetails.message,
+            timestamp: accountAccessCheck.responseDetails.timestamp,
+          },
+        });
       }
 
       const otpGenerationPreCheck = await otpPreConditions(userEmail, isAdmin);
 
-      if (otpGenerationPreCheck.Valid === "NO") {
+      if (!otpGenerationPreCheck.success) {
         return res
-          .status(otpGenerationPreCheck.HtmlCode)
-          .json({ message: otpGenerationPreCheck.Reason });
+          .status(otpGenerationPreCheck.responseDetails.statusCode)
+          .json({
+            success: false,
+            responseDetails: {
+              code: otpGenerationPreCheck.responseDetails.code,
+              message: otpGenerationPreCheck.responseDetails.message,
+              timestamp: otpGenerationPreCheck.responseDetails.timestamp,
+            },
+          });
       }
 
       const requestNewOtp = await generateOtp(
@@ -39,9 +52,14 @@ router.post(
         "Password Reset",
       );
 
-      if (requestNewOtp.Success === "NO") {
-        return res.status(requestNewOtp.HtmlCode).json({
-          message: "Unable to generate otp",
+      if (!requestNewOtp.success) {
+        return res.status(requestNewOtp.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: requestNewOtp.responseDetails.code,
+            message: "Unable to generate otp",
+            timestamp: requestNewOtp.responseDetails.timestamp,
+          },
         });
       }
 
@@ -66,9 +84,14 @@ router.post(
         emailBody,
       );
 
-      if (sendEmail.Success === "NO") {
-        return res.status(sendEmail.HtmlCode).json({
-          message: "Failed to send otp to user",
+      if (!sendEmail.success) {
+        return res.status(sendEmail.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: sendEmail.responseDetails.code,
+            message: "Error while sending otp email to user",
+            timestamp: sendEmail.responseDetails.timestamp,
+          },
         });
       }
 

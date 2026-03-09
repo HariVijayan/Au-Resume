@@ -43,20 +43,32 @@ router.post(
       const accessToken = req.cookies.accessToken;
 
       const adminAccessCheck = await checkAdminAccess(accessToken);
-      if (adminAccessCheck.Valid === "NO") {
-        return res
-          .status(adminAccessCheck.HtmlCode)
-          .json({ message: adminAccessCheck.Reason });
+      if (!adminAccessCheck.success) {
+        return res.status(adminAccessCheck.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: adminAccessCheck.responseDetails.code,
+            message: adminAccessCheck.responseDetails.message,
+            timestamp: adminAccessCheck.responseDetails.timestamp,
+          },
+        });
       }
 
       const adminEmail = adminAccessCheck.AdminEmail;
 
       const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
 
-      if (adminOtpVerification.Valid === "NO") {
+      if (!adminOtpVerification.success) {
         return res
-          .status(adminOtpVerification.HtmlCode)
-          .json({ message: adminOtpVerification.Reason });
+          .status(adminOtpVerification.responseDetails.statusCode)
+          .json({
+            success: false,
+            responseDetails: {
+              code: adminOtpVerification.responseDetails.code,
+              message: adminOtpVerification.responseDetails.message,
+              timestamp: adminOtpVerification.responseDetails.timestamp,
+            },
+          });
       }
 
       let finalUserList = [];
@@ -98,10 +110,15 @@ router.post(
             emailBody,
           );
 
-          if (sendEmail.Success === "NO") {
-            return res.status(sendEmail.HtmlCode).json({
-              message:
-                "User added. System errored while sending credentials. Delete account and add again",
+          if (!sendEmail.success) {
+            return res.status(sendEmail.responseDetails.statusCode).json({
+              success: false,
+              responseDetails: {
+                code: sendEmail.responseDetails.code,
+                message:
+                  "User added. System errored while sending credentials. Delete account and add again",
+                timestamp: sendEmail.responseDetails.timestamp,
+              },
             });
           }
         }

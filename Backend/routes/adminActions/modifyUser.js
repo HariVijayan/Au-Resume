@@ -27,20 +27,31 @@ router.post(
       const accessToken = req.cookies.accessToken;
 
       const adminAccessCheck = await checkAdminAccess(accessToken);
-      if (adminAccessCheck.Valid === "NO") {
-        return res
-          .status(adminAccessCheck.HtmlCode)
-          .json({ message: adminAccessCheck.Reason });
+      if (!adminAccessCheck.success) {
+        return res.status(adminAccessCheck.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: adminAccessCheck.responseDetails.code,
+            message: adminAccessCheck.responseDetails.message,
+            timestamp: adminAccessCheck.responseDetails.timestamp,
+          },
+        });
       }
-
       const adminEmail = adminAccessCheck.AdminEmail;
 
       const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
 
-      if (adminOtpVerification.Valid === "NO") {
+      if (!adminOtpVerification.success) {
         return res
-          .status(adminOtpVerification.HtmlCode)
-          .json({ message: adminOtpVerification.Reason });
+          .status(adminOtpVerification.responseDetails.statusCode)
+          .json({
+            success: false,
+            responseDetails: {
+              code: adminOtpVerification.responseDetails.code,
+              message: adminOtpVerification.responseDetails.message,
+              timestamp: adminOtpVerification.responseDetails.timestamp,
+            },
+          });
       }
 
       const modifiableUser = await userDBModel.findOne({
@@ -91,9 +102,14 @@ router.post(
           emailBody,
         );
 
-        if (sendEmail.Success === "NO") {
-          return res.status(sendEmail.HtmlCode).json({
-            message: "Failed to send new password to the user",
+        if (!sendEmail.success) {
+          return res.status(sendEmail.responseDetails.statusCode).json({
+            success: false,
+            responseDetails: {
+              code: sendEmail.responseDetails.code,
+              message: "Failed to send new password to the user",
+              timestamp: sendEmail.responseDetails.timestamp,
+            },
           });
         }
       }

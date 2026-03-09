@@ -7,36 +7,69 @@ const checkPassword = (password) => {
 
   if (password.length < minLength) {
     return {
-      Valid: false,
-      message: "Password must be at least 8 characters long.",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Password must be at least 8 characters long",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
   if (!hasUpperCase) {
     return {
-      Valid: false,
-      message: "Password must contain at least one uppercase letter.",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Password must contain at least one uppercase letter",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
   if (!hasLowerCase) {
     return {
-      Valid: false,
-      message: "Password must contain at least one lowercase letter.",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Password must contain at least one lowercase letter",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
   if (!hasNumber) {
     return {
-      Valid: false,
-      message: "Password must contain at least one number.",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Password must contain at least one number",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
   if (!hasSpecialChar) {
     return {
-      Valid: false,
-      message: "Password must contain at least one special character.",
+      success: false,
+      responseDetails: {
+        statusCode: 400,
+        code: "BAD_REQUEST",
+        message: "Password must contain at least one special character",
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 
-  return { Valid: true, message: "Password is strong." };
+  return {
+    success: true,
+    responseDetails: {
+      statusCode: 200,
+      code: "SUCCESS",
+      message: "No issues. Strong password",
+      timestamp: new Date().toISOString(),
+    },
+  };
 };
 
 export default checkPassword;

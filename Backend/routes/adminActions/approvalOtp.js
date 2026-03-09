@@ -19,10 +19,15 @@ router.post(
       const accessToken = req.cookies.accessToken;
 
       const adminAccessCheck = await checkAdminAccess(accessToken);
-      if (adminAccessCheck.Valid === "NO") {
-        return res
-          .status(adminAccessCheck.HtmlCode)
-          .json({ message: adminAccessCheck.Reason });
+      if (!adminAccessCheck.success) {
+        return res.status(adminAccessCheck.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: adminAccessCheck.responseDetails.code,
+            message: adminAccessCheck.responseDetails.message,
+            timestamp: adminAccessCheck.responseDetails.timestamp,
+          },
+        });
       }
 
       const adminEmail = adminAccessCheck.AdminEmail;
@@ -31,10 +36,17 @@ router.post(
 
       const otpGenerationPreCheck = await otpPreConditions(adminEmail);
 
-      if (otpGenerationPreCheck.Valid === "NO") {
+      if (!otpGenerationPreCheck.success) {
         return res
-          .status(otpGenerationPreCheck.HtmlCode)
-          .json({ message: otpGenerationPreCheck.Reason });
+          .status(otpGenerationPreCheck.responseDetails.statusCode)
+          .json({
+            success: false,
+            responseDetails: {
+              code: otpGenerationPreCheck.responseDetails.code,
+              message: otpGenerationPreCheck.responseDetails.message,
+              timestamp: otpGenerationPreCheck.responseDetails.timestamp,
+            },
+          });
       }
 
       let otpReason = "";
@@ -51,9 +63,14 @@ router.post(
 
       const requestNewOtp = await generateOtp(true, adminEmail, otpReason);
 
-      if (requestNewOtp.Success === "NO") {
-        return res.status(requestNewOtp.HtmlCode).json({
-          message: "Unable to generate otp",
+      if (!requestNewOtp.success) {
+        return res.status(requestNewOtp.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: requestNewOtp.responseDetails.code,
+            message: "Error while generating otp",
+            timestamp: requestNewOtp.responseDetails.timestamp,
+          },
         });
       }
 
@@ -80,9 +97,14 @@ router.post(
         emailBody,
       );
 
-      if (sendEmail.Success === "NO") {
-        return res.status(sendEmail.HtmlCode).json({
-          message: "Unable to send approval otp",
+      if (!sendEmail.success) {
+        return res.status(sendEmail.responseDetails.statusCode).json({
+          success: false,
+          responseDetails: {
+            code: sendEmail.responseDetails.code,
+            message: "Unable to email approval otp",
+            timestamp: sendEmail.responseDetails.timestamp,
+          },
         });
       }
 

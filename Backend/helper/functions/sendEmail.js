@@ -18,7 +18,7 @@ async function sendEmailToUser(
   emailReceiver,
   emailSubject,
   emailHeading,
-  emailBody
+  emailBody,
 ) {
   try {
     const emailData = {
@@ -58,18 +58,26 @@ async function sendEmailToUser(
     });
 
     await transporter.sendMail(mailOptions);
+    return {
+      success: true,
+      responseDetails: {
+        statusCode: 200,
+        code: "SUCCESS",
+        message: "Email sent successfully",
+        timestamp: new Date().toISOString(),
+      },
+    };
   } catch (error) {
     return {
-      Success: "NO",
-      HtmlCode: 500,
-      Reason: error,
+      success: false,
+      responseDetails: {
+        statusCode: 500,
+        code: "INTERNAL_SERVER_ERROR",
+        message: error,
+        timestamp: new Date().toISOString(),
+      },
     };
   }
-
-  return {
-    Success: "YES",
-    HtmlCode: 200,
-  };
 }
 
 export default sendEmailToUser;
