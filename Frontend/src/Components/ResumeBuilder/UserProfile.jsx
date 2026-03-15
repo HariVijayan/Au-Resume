@@ -95,13 +95,13 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
           { requestType },
           { withCredentials: true },
         );
-        setUserEmail(response.data.Email);
-        setUserRegNo(response.data.RegNo);
-        setUserDept(response.data.Dept);
-        setUserCourseType(response.data.Course);
-        setUserProgramme(response.data.Programme);
-        setUserBranch(response.data.Branch);
-        setAccountCreated(response.data.Created);
+        setUserEmail(response.data.otherData.Email);
+        setUserRegNo(response.data.otherData.RegNo);
+        setUserDept(response.data.otherData.Dept);
+        setUserCourseType(response.data.otherData.Course);
+        setUserProgramme(response.data.otherData.Programme);
+        setUserBranch(response.data.otherData.Branch);
+        setAccountCreated(response.data.otherData.Created);
         setServerMessage("Successfully fetched user's details");
         setServerMsgType("success");
         setShowServerMsg(true);
@@ -110,7 +110,9 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       } catch (error) {
         setLoadingAnim(false);
         setServerMessage(
-          error.response?.data?.message || "Failed to fetch user's details",
+          error.response?.data?.otherData?.errors?.[0]?.reason ||
+            error.response?.data?.responseDetails?.message ||
+            "Failed to fetch user's details",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -151,7 +153,9 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -187,7 +191,9 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Password reset failed",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Password reset failed",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -216,7 +222,9 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to reset encryption key",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to reset encryption key",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -270,7 +278,11 @@ const User = ({ setLogoutClicked, setLogoutUserType }) => {
       });
       setTotalRecords(0);
       setVisibleLogs([]);
-      setServerMessage(error.response?.data?.message || "Failed to fetch logs");
+      setServerMessage(
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to fetch logs",
+      );
       setServerMsgType("error");
       setShowServerMsg(true);
     } finally {

@@ -4,11 +4,13 @@ import UserActiveSession from "../../../models/user/currentSession.js";
 import jwt from "jsonwebtoken";
 import BadRequestError from "../../../middleware/httpStatusCodes/badRequest.js";
 import UnauthorizedError from "../../../middleware/httpStatusCodes/unauthorised.js";
+import asyncHandler from "../../../middleware/asyncHandler.js";
 
 const router = express.Router();
 
-router.post("/getUserDetails", async (req, res) => {
-  try {
+router.post(
+  "/getUserDetails",
+  asyncHandler(async (req, res) => {
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
       throw new BadRequestError("No token provided");
@@ -36,18 +38,24 @@ router.post("/getUserDetails", async (req, res) => {
       throw new UnauthorizedError("Unauthorised access. Not an user");
     }
 
-    res.json({
-      Email: user.email,
-      RegNo: user.registerNumber,
-      Dept: user.department,
-      Course: user.courseType,
-      Programme: user.programme,
-      Branch: user.branch,
-      Created: user.createdAtFormatted,
+    return res.status(200).json({
+      success: true,
+      responseDetails: {
+        code: "SUCCESS",
+        message: "Otp sent to email successfully",
+        timestamp: new Date().toISOString(),
+      },
+      otherData: {
+        Email: user.email,
+        RegNo: user.registerNumber,
+        Dept: user.department,
+        Course: user.courseType,
+        Programme: user.programme,
+        Branch: user.branch,
+        Created: user.createdAtFormatted,
+      },
     });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
+  }),
+);
 
 export default router;

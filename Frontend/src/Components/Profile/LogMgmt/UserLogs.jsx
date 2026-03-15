@@ -74,7 +74,7 @@ const UserLogs = () => {
         const response = await axios.post(
           "http://localhost:5000/admin/actions/logMgmt/getLogs",
           { isAdmin, logTypeRequested },
-          { withCredentials: true }
+          { withCredentials: true },
         );
         if (!isMounted) return;
         const {
@@ -101,7 +101,9 @@ const UserLogs = () => {
         setLoadingAnim(false);
         if (!isMounted) return;
         setServerMessage(
-          error.response?.data?.message || "Error fetching logs"
+          error.response?.data?.otherData?.errors?.[0]?.reason ||
+            error.response?.data?.responseDetails?.message ||
+            "Error fetching logs",
         );
         setServerMsgType("error");
         setShowServerMsg(true);
@@ -132,24 +134,24 @@ const UserLogs = () => {
       selectedLogs = selectedLogs.filter((log) =>
         log.logLinkedAccount
           .toLowerCase()
-          .includes(linkedAccountFilter.toLowerCase())
+          .includes(linkedAccountFilter.toLowerCase()),
       );
     }
 
     if (createdByFilter.trim() !== "") {
       selectedLogs = selectedLogs.filter((log) =>
-        log.logAddedBy.toLowerCase().includes(createdByFilter.toLowerCase())
+        log.logAddedBy.toLowerCase().includes(createdByFilter.toLowerCase()),
       );
     }
 
     if (logFilter.trim() !== "") {
       selectedLogs = selectedLogs.filter((log) =>
-        log.logDetails.toLowerCase().includes(logFilter.toLowerCase())
+        log.logDetails.toLowerCase().includes(logFilter.toLowerCase()),
       );
     }
 
     setVisibleLogs(
-      selectedLogs.slice(visibleLogsStart, visibleLogsStart + PAGE_SIZE)
+      selectedLogs.slice(visibleLogsStart, visibleLogsStart + PAGE_SIZE),
     );
     setTotalRecords(selectedLogs.length);
   };
@@ -163,7 +165,7 @@ const UserLogs = () => {
 
   const handleNext = () =>
     setVisibleLogsStart((start) =>
-      Math.min(start + PAGE_SIZE, Math.max(0, totalRecords - PAGE_SIZE))
+      Math.min(start + PAGE_SIZE, Math.max(0, totalRecords - PAGE_SIZE)),
     );
 
   const toggleFilters = () => setShowFilters((prev) => !prev);

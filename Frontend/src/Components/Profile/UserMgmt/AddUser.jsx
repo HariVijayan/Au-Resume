@@ -226,18 +226,18 @@ const AddNewUser = () => {
         },
         { withCredentials: true },
       );
-      console.log(response);
-      setUsersList(response.data.usersList);
+      setUsersList(response.data.otherData.usersList);
       setShowUsers(true);
       setLoadingAnim(false);
       setServerMessage("Successfully fetched the user list");
       setServerMsgType("success");
       setShowServerMsg(true);
     } catch (error) {
-      console.log(error.response);
       setLoadingAnim(false);
       setServerMessage(
-        error.response.data.message || "Failed to fetch user list",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to fetch user list",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -285,7 +285,9 @@ const AddNewUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -321,7 +323,6 @@ const AddNewUser = () => {
         },
         { withCredentials: true },
       );
-      console.log(response);
       setLoadingAnim(false);
       setServerMessage(
         `New user(s) have been added to the site successfully. Refreshing the page in 5 seconds.`,
@@ -333,10 +334,10 @@ const AddNewUser = () => {
         window.location.reload(false); // This will trigger a page reload after 5 seconds delay
       }, 5000);
     } catch (error) {
-      console.log(error.response);
       setLoadingAnim(false);
       setServerMessage(
-        `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
+        `${error.response?.data?.otherData?.errors?.[0]?.reason} Refreshing the page in 5 seconds.` ||
+          `${error.response?.data?.responseDetails?.message} Refreshing the page in 5 seconds.` ||
           "Failed to add new user(s). Refreshing the page in 5 seconds.",
       );
       setServerMsgType("error");

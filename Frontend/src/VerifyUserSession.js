@@ -9,20 +9,20 @@ const verifySessionForAdminRoutes = async (routeType) => {
     const response = await axios.post(
       "http://localhost:5000/verifyAdminSession/check-admin-access",
       { routeType },
-      { withCredentials: true }
+      { withCredentials: true },
     );
     if (
-      response?.data?.message ===
+      response?.data?.responseDetails?.message ===
       "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
     ) {
       userType = "Super Admin";
     } else if (
-      response?.data?.message ===
+      response?.data?.responseDetails?.message ===
       "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
     ) {
       userType = "Admin";
     } else if (
-      response?.data?.message ===
+      response?.data?.responseDetails?.message ===
       "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
     ) {
       userType = "Analytics";
@@ -44,7 +44,7 @@ const verifySessionForProtectedRoutes = async () => {
     const response = await axios.post(
       "http://localhost:5000/verifySession/protectedRoutes/check-access",
       {},
-      { withCredentials: true }
+      { withCredentials: true },
     );
     return { serverResponse };
   } catch (error) {
@@ -63,28 +63,30 @@ const verifySessionForUnProtectedRoutes = async () => {
     const response = await axios.post(
       "http://localhost:5000/verifySession/authenticationRoutes/check-access",
       {},
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     if (
-      response?.data?.message ===
+      response?.data?.responseDetails?.message ===
       "fkjbcvjhefbvjhbghvvjh3jjn23b23huiyuycbjhejbh23"
     ) {
       userType = "Super Admin";
       redirectRoute = "/admin-dashboard/super-admin";
     } else if (
-      response?.data?.message ===
+      response?.data?.responseDetails?.message ===
       "io6jiojjokomioynoiynhpopjijaoindioioahibhbHVgydv"
     ) {
       userType = "Admin";
       redirectRoute = "/admin-dashboard/admin-general";
     } else if (
-      response?.data?.message ===
+      response?.data?.responseDetails?.message ===
       "g87uh78875gonkloiyhoi0yh0iob5mi5u5hu899igoi5mo"
     ) {
       userType = "Analytics";
       redirectRoute = "/admin-dashboard/analytics";
-    } else if (response?.data?.message === "Valid access token") {
+    } else if (
+      response?.data?.responseDetails?.message === "Valid access token"
+    ) {
       userType = "User";
       redirectRoute = "/resume-builder/template-choosing";
     }

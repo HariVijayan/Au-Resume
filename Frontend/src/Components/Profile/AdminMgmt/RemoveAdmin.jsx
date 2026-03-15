@@ -57,8 +57,8 @@ const RemoveAdmin = () => {
           {},
           { withCredentials: true },
         );
-        setAdminUsers(response.data.userList);
-        setAdminNum(response.data.numAdmins);
+        setAdminUsers(response.data.otherData.userList);
+        setAdminNum(response.data.otherData.numAdmins);
         setLoadingAnim(false);
         setServerMessage("Successfully fetched current admins list");
         setServerMsgType("success");
@@ -66,7 +66,8 @@ const RemoveAdmin = () => {
       } catch (error) {
         setLoadingAnim(false);
         setServerMessage(
-          error.response?.data?.message ||
+          error.response?.data?.otherData?.errors?.[0]?.reason ||
+            error.response?.data?.responseDetails?.message ||
             "Failed to fetch current admins list",
         );
         setServerMsgType("error");
@@ -96,7 +97,9 @@ const RemoveAdmin = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -127,7 +130,8 @@ const RemoveAdmin = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
+        `${error.response?.data?.otherData?.errors?.[0]?.reason}. Refreshing the page in 5 seconds` ||
+          `${error.response?.data?.responseDetails?.message}. Refreshing the page in 5 seconds` ||
           "Failed to remove admin. Refreshing the page in 5 seconds",
       );
       setServerMsgType("error");

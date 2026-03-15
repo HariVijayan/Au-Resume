@@ -53,7 +53,7 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       );
       setUserPassword("");
       setLoadingAnim(false);
-      setResumeData(response.data);
+      setResumeData(response.data.otherData.resumeData);
       setServerMessage("Successfully fetched previous records");
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -64,7 +64,9 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       setUserPassword("");
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to fetch previous records",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to fetch previous records",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -97,7 +99,9 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       setUserPassword("");
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to save current details",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to save current details",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -132,7 +136,9 @@ const Overlay = ({ overlayTitle, overlayAction, setOverlayType }) => {
       setShowServerMsg(true);
     } catch (error) {
       setServerMessage(
-        error.response?.data?.message || "Failed to generate resume",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to generate resume",
       );
       setServerMsgType("error");
       setShowServerMsg(true);

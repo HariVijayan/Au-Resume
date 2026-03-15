@@ -9,6 +9,9 @@ import User from "../../../models/user/user.js";
 import istDateFormat from "../../../helper/functions/dateIstFormat.js";
 import inputValidator from "../../../helper/inputProcessing/schemas/requests/pdf/generatePdf.js";
 import { inputValidationErrorHandler } from "../../../helper/inputProcessing/validationError.js";
+import UnauthorizedError from "../../../middleware/httpStatusCodes/unauthorised.js";
+import ForbiddenError from "../../../middleware/httpStatusCodes/forbidden.js";
+import asyncHandler from "../../../middleware/asyncHandler.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -122,79 +125,78 @@ router.post(
   "/Resume",
   inputValidator,
   inputValidationErrorHandler,
-  async (req, res) => {
+  asyncHandler(async (req, res) => {
     let { resumeData, downloadType } = req.body;
     let templateType = resumeData.metaData.template;
 
-    try {
-      const accessToken = req.cookies.accessToken;
-      if (!accessToken)
-        return res.status(401).json({ message: "No token provided" });
+    const accessToken = req.cookies.accessToken;
+    if (!accessToken) {
+      throw new UnauthorizedError("No token provided");
+    }
 
-      const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
-      const user = await User.findById(decoded.userId);
-      if (!user) return res.status(403).json({ message: "User not found" });
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      throw new ForbiddenError("User not found");
+    }
 
-      resumeData = removeEmptyValues(resumeData);
+    resumeData = removeEmptyValues(resumeData);
 
-      if (templateType != "template1") {
-        templateType = "template1"; //Dummy code to modify if template values are different. If new templates are to be added, remove if condition.
-      }
-      const templatePath =
-        "../../../resources/templates/" + templateType + "/body.html";
-      const templateCssPath =
-        "../../../resources/templates/" + templateType + "/body.css";
+    if (templateType != "template1") {
+      templateType = "template1"; //Dummy code to modify if template values are different. If new templates are to be added, remove if condition.
+    }
+    const templatePath =
+      "../../../resources/templates/" + templateType + "/body.html";
+    const templateCssPath =
+      "../../../resources/templates/" + templateType + "/body.css";
 
-      const templateFile = readFileSync(templatePath);
-      const cssFile = readFileSync(templateCssPath);
+    const templateFile = readFileSync(templatePath);
+    const cssFile = readFileSync(templateCssPath);
 
-      let compiledTemplate = compileTemplate(
-        templateFile.replace("<style></style>", `<style>${cssFile}</style>`),
-        resumeData,
+    let compiledTemplate = compileTemplate(
+      templateFile.replace("<style></style>", `<style>${cssFile}</style>`),
+      resumeData,
+    );
+
+    if (downloadType === "Personal") {
+      const pdfBuffer = await generatePdf(compiledTemplate);
+
+      res.type("application/pdf");
+      res.end(pdfBuffer, "binary");
+    } else {
+      const headerFooterPaths = generateHeaderFooterPaths(templateType);
+
+      const headerFile = readFileSync(headerFooterPaths.headerPath);
+      let footerFile = readFileSync(headerFooterPaths.footerPath);
+      const auLogoFile = readFileSync(headerFooterPaths.auLogoBase64Path);
+
+      footerFile = footerFile.replace(
+        '<img id="aulogo" src=""',
+        `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`,
       );
 
-      if (downloadType === "Personal") {
-        const pdfBuffer = await generatePdf(compiledTemplate);
+      const timestamp = istDateFormat(new Date());
 
-        res.type("application/pdf");
-        res.end(pdfBuffer, "binary");
-      } else {
-        const headerFooterPaths = generateHeaderFooterPaths(templateType);
+      footerFile = generateFooter(footerFile, timestamp);
 
-        const headerFile = readFileSync(headerFooterPaths.headerPath);
-        let footerFile = readFileSync(headerFooterPaths.footerPath);
-        const auLogoFile = readFileSync(headerFooterPaths.auLogoBase64Path);
+      //writeFileSync("../../../output/Footer.html", footerFile); //For debugging
 
-        footerFile = footerFile.replace(
-          '<img id="aulogo" src=""',
-          `<img id="aulogo" src="data:image/png;base64,${auLogoFile}"`,
-        );
+      const pdfBuffer = await generatePdfWithFooter(
+        compiledTemplate,
+        headerFile,
+        footerFile,
+      );
 
-        const timestamp = istDateFormat(new Date());
+      res.type("application/pdf");
+      res.end(pdfBuffer, "binary");
+    }
 
-        footerFile = generateFooter(footerFile, timestamp);
-
-        //writeFileSync("../../../output/Footer.html", footerFile); //For debugging
-
-        const pdfBuffer = await generatePdfWithFooter(
-          compiledTemplate,
-          headerFile,
-          footerFile,
-        );
-
-        res.type("application/pdf");
-        res.end(pdfBuffer, "binary");
-      }
-
-      /*writeFileSync("../../../output/Body.html", compiledTemplate);
+    /*writeFileSync("../../../output/Body.html", compiledTemplate);
     writeFileSync(
       "../../../output/Resume Data.txt",
       JSON.stringify(resumeData, null, 2)
     );*/ //For debugging
-    } catch (error) {
-      res.status(500).json({ message: "Server error" });
-    }
-  },
+  }),
 );
 
 export default router;

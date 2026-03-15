@@ -52,7 +52,9 @@ const ForgotPassword = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);

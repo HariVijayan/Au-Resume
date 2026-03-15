@@ -43,7 +43,7 @@ const PreviewPdf = () => {
             "Content-Type": "application/json",
           },
           responseType: "arraybuffer",
-        }
+        },
       );
       const blob = new Blob([response.data], { type: "application/pdf" });
       const pdfUrl = URL.createObjectURL(blob);
@@ -56,7 +56,9 @@ const PreviewPdf = () => {
     } catch (error) {
       setIsPreviewClicked(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to fetch resume for preview"
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to fetch resume for preview",
       );
       setServerMsgType("error");
       setShowServerMsg(true);

@@ -139,16 +139,15 @@ function RouteWrapper() {
 
       localStorage.setItem("flagLogout", Date.now());
       setTimeout(() => localStorage.removeItem("flagLogout"), 100);
-      setServerMessage(
-        response?.data?.responseDetails?.message || "Logout successful",
-      );
+      setServerMessage("Logout successful");
       setServerMsgType("success");
       setShowServerMsg(true);
 
       setTimeout(() => navigate("/"), 100);
     } catch (error) {
       setServerMessage(
-        error.response?.data?.responseDetails?.message ||
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
           "Failed to logout user",
       );
       setServerMsgType("error");

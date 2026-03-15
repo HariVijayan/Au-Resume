@@ -7,6 +7,11 @@ import crypto from "crypto";
 import bcrypt from "bcrypt";
 import inputValidator from "../../../helper/inputProcessing/schemas/requests/pdf/getPreviousResume.js";
 import { inputValidationErrorHandler } from "../../../helper/inputProcessing/validationError.js";
+import UnauthorizedError from "../../../middleware/httpStatusCodes/unauthorised.js";
+import BadRequestError from "../../../middleware/httpStatusCodes/badRequest.js";
+import NotFoundError from "../../../middleware/httpStatusCodes/notFound.js";
+import ExpectationFailedError from "../../../middleware/httpStatusCodes/expectationFailed.js";
+import asyncHandler from "../../../middleware/asyncHandler.js";
 
 const router = express.Router();
 
@@ -23,72 +28,78 @@ router.post(
   "/resume-details",
   inputValidator,
   inputValidationErrorHandler,
-  async (req, res) => {
-    try {
-      let { userPassword } = req.body;
-      const accessToken = req.cookies.accessToken;
-      if (!accessToken)
-        return res.status(401).json({ message: "No access token provided" });
-      const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
-      const user = await User.findById(decoded.userId);
-      if (!user) return res.status(401).json({ message: "No user" });
-
-      const passwordMatches = await bcrypt.compare(userPassword, user.password);
-
-      if (!passwordMatches) {
-        return res.status(400).json({
-          message: "Unable to fetch the resume. Incorrect Password",
-        });
-      }
-      const resumeData = await ResumeData.findOne({
-        login_email: user.email,
-      });
-      if (!resumeData)
-        return res.status(404).json({ message: "No previous records found" });
-
-      const decryptResume = async (encryptedStr, password, saltBase64) => {
-        const key = await deriveKey(
-          password,
-          Buffer.from(saltBase64, "base64"),
-        );
-
-        let encryptedPayload;
-        try {
-          encryptedPayload = JSON.parse(encryptedStr);
-        } catch {
-          return res.status(410).json({
-            message: "Resume details corrupted. Please save a new one",
-          });
-        }
-
-        const iv = Buffer.from(encryptedPayload.iv, "base64");
-        const ciphertext = Buffer.from(encryptedPayload.ciphertext, "base64");
-        const tag = Buffer.from(encryptedPayload.tag, "base64");
-
-        const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv);
-        decipher.setAuthTag(tag);
-
-        const decrypted = Buffer.concat([
-          decipher.update(ciphertext),
-          decipher.final(),
-        ]);
-
-        const plaintext = decrypted.toString("utf8");
-
-        const decryptedResume = JSON.parse(plaintext);
-
-        res.status(200).json(decryptedResume);
-      };
-
-      decryptResume(
-        resumeData.encryptedResumeData,
-        user.password,
-        user.resumeEncryptionSalt,
-      );
-    } catch (error) {
-      res.status(500).json({ message: "Server error" });
+  asyncHandler(async (req, res) => {
+    let { userPassword } = req.body;
+    const accessToken = req.cookies.accessToken;
+    if (!accessToken) {
+      throw new UnauthorizedError("No access token provided");
     }
-  },
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      throw new UnauthorizedError("Unauthorized access");
+    }
+    const passwordMatches = await bcrypt.compare(userPassword, user.password);
+
+    if (!passwordMatches) {
+      throw new BadRequestError(
+        "Unable to fetch the resume. Incorrect Password",
+      );
+    }
+    const resumeData = await ResumeData.findOne({
+      login_email: user.email,
+    });
+    if (!resumeData) {
+      throw new NotFoundError("No previous records found");
+    }
+
+    const decryptResume = async (encryptedStr, password, saltBase64) => {
+      const key = await deriveKey(password, Buffer.from(saltBase64, "base64"));
+
+      let encryptedPayload;
+      try {
+        encryptedPayload = JSON.parse(encryptedStr);
+      } catch {
+        throw new ExpectationFailedError(
+          "Resume details corrupted. Please save a new one",
+        );
+      }
+
+      const iv = Buffer.from(encryptedPayload.iv, "base64");
+      const ciphertext = Buffer.from(encryptedPayload.ciphertext, "base64");
+      const tag = Buffer.from(encryptedPayload.tag, "base64");
+
+      const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv);
+      decipher.setAuthTag(tag);
+
+      const decrypted = Buffer.concat([
+        decipher.update(ciphertext),
+        decipher.final(),
+      ]);
+
+      const plaintext = decrypted.toString("utf8");
+
+      const decryptedResume = JSON.parse(plaintext);
+
+      return res.status(200).json({
+        success: true,
+        responseDetails: {
+          code: "SUCCESS",
+          message: "Successfully fetched previous resume",
+          timestamp: new Date().toISOString(),
+        },
+        otherData: {
+          resumeData: decryptedResume,
+        },
+      });
+    };
+
+    decryptResume(
+      resumeData.encryptedResumeData,
+      user.password,
+      user.resumeEncryptionSalt,
+    );
+  }),
 );
 
 export default router;

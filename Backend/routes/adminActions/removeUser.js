@@ -9,6 +9,8 @@ import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 import csvToArray from "../../helper/functions/csvToArray.js";
 import inputValidator from "../../helper/inputProcessing/schemas/adminActions/removeUser.js";
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
+import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
+import asyncHandler from "../../middleware/asyncHandler.js";
 
 const router = express.Router();
 
@@ -16,7 +18,7 @@ router.post(
   "/removeUser",
   inputValidator,
   inputValidationErrorHandler,
-  async (req, res) => {
+  asyncHandler(async (req, res) => {
     const {
       removalType,
       commonEmailSuffix,
@@ -29,138 +31,137 @@ router.post(
       otpInput,
     } = req.body;
 
-    try {
-      const accessToken = req.cookies.accessToken;
+    const accessToken = req.cookies.accessToken;
 
-      const adminAccessCheck = await checkAdminAccess(accessToken);
-      if (!adminAccessCheck.success) {
-        return res.status(adminAccessCheck.responseDetails.statusCode).json({
-          success: false,
-          responseDetails: {
-            code: adminAccessCheck.responseDetails.code,
-            message: adminAccessCheck.responseDetails.message,
-            timestamp: adminAccessCheck.responseDetails.timestamp,
-          },
-        });
+    const adminAccessCheck = await checkAdminAccess(accessToken);
+    if (!adminAccessCheck.success) {
+      return res.status(adminAccessCheck.responseDetails.statusCode).json({
+        success: false,
+        responseDetails: {
+          code: adminAccessCheck.responseDetails.code,
+          message: adminAccessCheck.responseDetails.message,
+          timestamp: adminAccessCheck.responseDetails.timestamp,
+        },
+      });
+    }
+
+    const adminEmail = adminAccessCheck.otherData.AdminEmail;
+
+    const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
+
+    if (!adminOtpVerification.success) {
+      return res.status(adminOtpVerification.responseDetails.statusCode).json({
+        success: false,
+        responseDetails: {
+          code: adminOtpVerification.responseDetails.code,
+          message: adminOtpVerification.responseDetails.message,
+          timestamp: adminOtpVerification.responseDetails.timestamp,
+        },
+      });
+    }
+
+    let finalUserList = [];
+    let skippableRegNoList = csvToArray(skipRegNo);
+
+    if (removalType === "Single") {
+      const existingUser = await userDBModel.findOne({
+        email: userEmail,
+        registerNumber: userRegNo,
+      });
+      if (!existingUser) {
+        throw new BadRequestError("User doesn't exist");
       }
-
-      const adminEmail = adminAccessCheck.AdminEmail;
-
-      const adminOtpVerification = await verifyAdminOtp(adminEmail, otpInput);
-
-      if (!adminOtpVerification.success) {
-        return res
-          .status(adminOtpVerification.responseDetails.statusCode)
-          .json({
-            success: false,
-            responseDetails: {
-              code: adminOtpVerification.responseDetails.code,
-              message: adminOtpVerification.responseDetails.message,
-              timestamp: adminOtpVerification.responseDetails.timestamp,
-            },
-          });
-      }
-
-      let finalUserList = [];
-      let skippableRegNoList = csvToArray(skipRegNo);
-
-      if (removalType === "Single") {
-        const existingUser = await userDBModel.findOne({
+      if (existingUser) {
+        finalUserList.push({
           email: userEmail,
           registerNumber: userRegNo,
         });
-        if (!existingUser) {
-          return res.status(400).json({ message: "User doesn't exist" });
+      }
+    } else if (removalType === "Multiple") {
+      for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
+        if (skippableRegNoList.includes(i)) {
+          continue;
         }
+        let iterableValue = i;
+        if (i < 10) {
+          iterableValue = `0${i}`;
+        }
+        const regNo = `${commonRegNoPrefix}${iterableValue}`;
+        const existingUserRegNoEmail = `${regNo}${commonEmailSuffix}`;
+
+        const existingUser = await userDBModel.findOne({
+          email: existingUserRegNoEmail,
+          registerNumber: regNo,
+        });
+
         if (existingUser) {
           finalUserList.push({
-            email: userEmail,
-            registerNumber: userRegNo,
-          });
-        }
-      } else if (removalType === "Multiple") {
-        for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
-          if (skippableRegNoList.includes(i)) {
-            continue;
-          }
-          let iterableValue = i;
-          if (i < 10) {
-            iterableValue = `0${i}`;
-          }
-          const regNo = `${commonRegNoPrefix}${iterableValue}`;
-          const existingUserRegNoEmail = `${regNo}${commonEmailSuffix}`;
-
-          const existingUser = await userDBModel.findOne({
             email: existingUserRegNoEmail,
             registerNumber: regNo,
           });
-
-          if (existingUser) {
-            finalUserList.push({
-              email: existingUserRegNoEmail,
-              registerNumber: regNo,
-            });
-          }
         }
       }
+    }
 
-      for (let i = 0; i < finalUserList.length; i++) {
-        const userToDelete = finalUserList[i];
-        const existingResume = await resumeData.find({
+    for (let i = 0; i < finalUserList.length; i++) {
+      const userToDelete = finalUserList[i];
+      const existingResume = await resumeData.find({
+        login_email: userToDelete.email,
+      });
+
+      const pendingAccount = await pendingUser.find({
+        email: userToDelete.email,
+        registerNumber: userToDelete.registerNumber,
+      });
+
+      const existingOtps = await userOtp.find({
+        email: userToDelete.email,
+      });
+
+      const existingSessions = await userCurrentSession.find({
+        email: userToDelete.email,
+      });
+
+      if (existingSessions) {
+        await userCurrentSession.deleteMany({
+          email: userToDelete.email,
+        });
+      }
+
+      if (existingOtps) {
+        await userOtp.deleteMany({
+          email: userToDelete.email,
+        });
+      }
+
+      if (pendingAccount) {
+        await pendingUser.deleteMany({
+          email: userToDelete.email,
+          registerNumber: userToDelete.registerNumber,
+        });
+      }
+
+      if (existingResume) {
+        await resumeData.deleteMany({
           login_email: userToDelete.email,
         });
-
-        const pendingAccount = await pendingUser.find({
-          email: userToDelete.email,
-          registerNumber: userToDelete.registerNumber,
-        });
-
-        const existingOtps = await userOtp.find({
-          email: userToDelete.email,
-        });
-
-        const existingSessions = await userCurrentSession.find({
-          email: userToDelete.email,
-        });
-
-        if (existingSessions) {
-          await userCurrentSession.deleteMany({
-            email: userToDelete.email,
-          });
-        }
-
-        if (existingOtps) {
-          await userOtp.deleteMany({
-            email: userToDelete.email,
-          });
-        }
-
-        if (pendingAccount) {
-          await pendingUser.deleteMany({
-            email: userToDelete.email,
-            registerNumber: userToDelete.registerNumber,
-          });
-        }
-
-        if (existingResume) {
-          await resumeData.deleteMany({
-            login_email: userToDelete.email,
-          });
-        }
-
-        await userDBModel.deleteMany({
-          email: userToDelete.email,
-          registerNumber: userToDelete.registerNumber,
-        });
       }
 
-      return res.status(200).json({
-        message: `${finalUserList.length} users deleted successfully`,
+      await userDBModel.deleteMany({
+        email: userToDelete.email,
+        registerNumber: userToDelete.registerNumber,
       });
-    } catch (error) {
-      res.status(500).json({ message: "Server error" });
     }
-  },
+
+    return res.status(200).json({
+      success: true,
+      responseDetails: {
+        code: "SUCCESS",
+        message: `${finalUserList.length} users deleted successfully`,
+        timestamp: new Date().toISOString(),
+      },
+    });
+  }),
 );
 
 export default router;

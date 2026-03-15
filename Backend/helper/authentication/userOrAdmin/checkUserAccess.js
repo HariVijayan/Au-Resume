@@ -66,7 +66,9 @@ async function checkUserAccess(accessToken) {
       message: "Valid user",
       timestamp: new Date().toISOString(),
     },
-    UserEmail: userEmail,
+    otherData: {
+      UserEmail: userEmail,
+    },
   };
 }
 

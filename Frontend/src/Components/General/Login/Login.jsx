@@ -93,7 +93,9 @@ const Login = ({ setLoggedInUserType }) => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.responseDetails?.message || "Login failed",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Login failed",
       );
       setServerMsgType("error");
       setShowServerMsg(true);

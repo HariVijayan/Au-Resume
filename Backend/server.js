@@ -131,6 +131,8 @@ const formatISTTimestamp = (date) => {
     .replace(",", "");
 };
 
+app.use(errorHandler);
+
 app.listen(port, () => {
   console.log(`Server started running at port number ${port} successfully.`);
 });
@@ -174,7 +176,5 @@ const newUser2 = new adminUser({
   accountType: "Admin",
 });
 await newUser2.save();
-
-app.use(errorHandler);
 
 console.log("New SuperAdmin added. Good to go!");

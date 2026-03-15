@@ -7,6 +7,7 @@ import userCurrentSession from "../../../models/user/currentSession.js";
 import bcrypt from "bcrypt";
 import inputValidator from "../../../helper/inputProcessing/schemas/requests/userActions/passwordReset.js";
 import { inputValidationErrorHandler } from "../../../helper/inputProcessing/validationError.js";
+import asyncHandler from "../../../middleware/asyncHandler.js";
 
 const router = express.Router();
 
@@ -16,46 +17,44 @@ router.post(
   "/reset-password",
   inputValidator,
   inputValidationErrorHandler,
-  async (req, res) => {
+  asyncHandler(async (req, res) => {
     const { userEmail, newPassword, isAdmin } = req.body;
-    try {
-      const passwordCheck = checkPassword(newPassword);
+    const passwordCheck = checkPassword(newPassword);
 
-      if (!passwordCheck.success) {
-        return res.status(passwordCheck.responseDetails.statusCode).json({
-          success: false,
-          responseDetails: {
-            code: passwordCheck.responseDetails.code,
-            message: passwordCheck.responseDetails.message,
-            timestamp: passwordCheck.responseDetails.timestamp,
-          },
-        });
-      }
-
-      const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);
-      const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-      if (isAdmin) {
-        await adminUser.updateOne(
-          { email: userEmail },
-          { password: hashedPassword },
-        );
-      } else {
-        await resumeData.deleteMany({ login_email: userEmail });
-        await userCurrentSession.deleteMany({ email: userEmail });
-        await User.updateOne(
-          { email: userEmail },
-          { password: hashedPassword },
-        );
-      }
-
-      res.json({
-        message: "Password updated. Redirecting to login page",
+    if (!passwordCheck.success) {
+      return res.status(passwordCheck.responseDetails.statusCode).json({
+        success: false,
+        responseDetails: {
+          code: passwordCheck.responseDetails.code,
+          message: passwordCheck.responseDetails.message,
+          timestamp: passwordCheck.responseDetails.timestamp,
+        },
       });
-    } catch (error) {
-      res.status(500).json({ message: "Server error" });
     }
-  },
+
+    const salt = await bcrypt.genSalt(BCRYPT_COST_FACTOR);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    if (isAdmin) {
+      await adminUser.updateOne(
+        { email: userEmail },
+        { password: hashedPassword },
+      );
+    } else {
+      await resumeData.deleteMany({ login_email: userEmail });
+      await userCurrentSession.deleteMany({ email: userEmail });
+      await User.updateOne({ email: userEmail }, { password: hashedPassword });
+    }
+
+    return res.status(200).json({
+      success: true,
+      responseDetails: {
+        code: "SUCCESS",
+        message: "Password updated successfully. Redirecting to login page",
+        timestamp: new Date().toISOString(),
+      },
+    });
+  }),
 );
 
 export default router;

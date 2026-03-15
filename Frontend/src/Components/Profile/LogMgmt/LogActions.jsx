@@ -59,11 +59,11 @@ const LogActions = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/logMgmt/logDetails/getLogDetails",
         { collectionName, startDate, endDate },
-        { withCredentials: true }
+        { withCredentials: true },
       );
-      setTotalLogs(response.data.logs);
-      setTotalRecords(response.data.toBeAffectedLogs);
-      setVisibleLogs(response.data.logs.slice(0, PAGE_SIZE));
+      setTotalLogs(response.data.otherData.logs);
+      setTotalRecords(response.data.otherData.toBeAffectedLogs);
+      setVisibleLogs(response.data.otherData.logs.slice(0, PAGE_SIZE));
       setVisibleLogsStart(0);
       setLoadingAnim(false);
       setServerMessage("Logs fetched successfully");
@@ -71,7 +71,11 @@ const LogActions = () => {
       setShowServerMsg(true);
     } catch (error) {
       setLoadingAnim(false);
-      setServerMessage(error.response?.data?.message || "Error fetching logs");
+      setServerMessage(
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Error fetching logs",
+      );
       setServerMsgType("error");
       setShowServerMsg(true);
       setVisibleLogs([]);
@@ -91,7 +95,7 @@ const LogActions = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/approvals/get-approval-otp",
         { requestType },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setShowOtp(true);
       setLoadingAnim(false);
@@ -101,7 +105,9 @@ const LogActions = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp"
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -117,11 +123,11 @@ const LogActions = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/logMgmt/deleteRequest/deleteLogs",
         { otpInput, collectionName, startDate, endDate },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setLoadingAnim(false);
       setServerMessage(
-        "Log deletion successful. Refreshing the page in 5 seconds"
+        "Log deletion successful. Refreshing the page in 5 seconds",
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -132,8 +138,9 @@ const LogActions = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
-          "Failed to remove logs. Refreshing the page in 5 seconds"
+        `${error.response?.data?.otherData?.errors?.[0]?.reason}. Refreshing the page in 5 seconds` ||
+          `${error.response?.data?.responseDetails?.message}. Refreshing the page in 5 seconds` ||
+          "Failed to remove logs. Refreshing the page in 5 seconds",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -152,7 +159,7 @@ const LogActions = () => {
       const response = await axios.post(
         "http://localhost:5000/admin/actions/logMgmt/downloadRequest/downloadLogs",
         { otpInput, collectionName, startDate, endDate },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const blob = new Blob([response.data], {
@@ -165,7 +172,7 @@ const LogActions = () => {
       URL.revokeObjectURL(link.href);
       setLoadingAnim(false);
       setServerMessage(
-        "Log downloaded successfully. Refreshing the page in 5 seconds"
+        "Log downloaded successfully. Refreshing the page in 5 seconds",
       );
       setServerMsgType("success");
       setShowServerMsg(true);
@@ -175,8 +182,9 @@ const LogActions = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        `${error.response?.data?.message}. Refreshing the page in 5 seconds` ||
-          "Failed to download logs. Refreshing the page in 5 seconds"
+        `${error.response?.data?.otherData?.errors?.[0]?.reason}. Refreshing the page in 5 seconds` ||
+          `${error.response?.data?.responseDetails?.message}. Refreshing the page in 5 seconds` ||
+          "Failed to download logs. Refreshing the page in 5 seconds",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -210,7 +218,7 @@ const LogActions = () => {
   const handleNext = () => {
     const newStart = Math.min(
       visibleLogsStart + PAGE_SIZE,
-      Math.max(0, totalRecords - PAGE_SIZE)
+      Math.max(0, totalRecords - PAGE_SIZE),
     );
     setVisibleLogsStart(newStart);
     setVisibleLogs(totalLogs.slice(newStart, newStart + PAGE_SIZE));

@@ -141,7 +141,7 @@ const RemoveUser = () => {
         },
         { withCredentials: true },
       );
-      setUsersList(response.data.usersList);
+      setUsersList(response.data.otherData.usersList);
       setShowUsers(true);
       setLoadingAnim(false);
       setServerMessage("Successfully fetched the user list");
@@ -159,7 +159,9 @@ const RemoveUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response.data.message || "Failed to fetch user list",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to fetch user list",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -205,7 +207,9 @@ const RemoveUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -246,7 +250,8 @@ const RemoveUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
+        `${error.response?.data?.otherData?.errors?.[0]?.reason} Refreshing the page in 5 seconds.` ||
+          `${error.response?.data?.responseDetails?.message} Refreshing the page in 5 seconds.` ||
           "Failed to remove user(s). Refreshing the page in 5 seconds.",
       );
       setServerMsgType("error");

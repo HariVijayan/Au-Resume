@@ -8,11 +8,13 @@ export const inputValidationErrorHandler = (req, res, next) => {
       responseDetails: {
         code: "BAD_REQUEST",
         message: "Invalid input provided",
+        timestamp: new Date().toISOString(),
+      },
+      otherData: {
         errors: errors.array().map((err) => ({
           field: err.param,
           reason: err.msg,
         })),
-        timestamp: new Date().toISOString(),
       },
     });
   }

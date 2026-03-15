@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import inputValidator from "../../helper/inputProcessing/schemas/authentication/logout.js";
 import UnauthorizedError from "../../middleware/httpStatusCodes/unauthorised.js";
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
+import asyncHandler from "../../middleware/asyncHandler.js";
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.post(
   "/logout",
   inputValidator,
   inputValidationErrorHandler,
-  async (req, res) => {
+  asyncHandler(async (req, res) => {
     const { userType } = req.body;
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
@@ -44,7 +45,7 @@ router.post(
       sameSite: "Strict",
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       responseDetails: {
         code: "SUCCESS",
@@ -52,7 +53,7 @@ router.post(
         timestamp: new Date().toISOString(),
       },
     });
-  },
+  }),
 );
 
 export default router;

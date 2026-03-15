@@ -7,6 +7,7 @@ import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 import inputValidator from "../../helper/inputProcessing/schemas/adminActions/addAdmin.js";
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
+import asyncHandler from "../../middleware/asyncHandler.js";
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.post(
   "/newAdmin",
   inputValidator,
   inputValidationErrorHandler,
-  async (req, res) => {
+  asyncHandler(async (req, res) => {
     const { adminName, adminEmail, adminType, otpInput } = req.body;
     const accessToken = req.cookies.accessToken;
 
@@ -30,7 +31,7 @@ router.post(
       });
     }
 
-    const approvingAdminEmail = adminAccessCheck.AdminEmail;
+    const approvingAdminEmail = adminAccessCheck.otherData.AdminEmail;
 
     const adminOtpVerification = await verifyAdminOtp(
       approvingAdminEmail,
@@ -86,7 +87,7 @@ router.post(
         },
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       responseDetails: {
         code: "SUCCESS",
@@ -94,7 +95,7 @@ router.post(
         timestamp: new Date().toISOString(),
       },
     });
-  },
+  }),
 );
 
 export default router;

@@ -10,6 +10,7 @@ const errorHandler = (err, req, res, next) => {
       message,
       timestamp: new Date().toISOString(),
     },
+    otherData: {},
   });
 };
 

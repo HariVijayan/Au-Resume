@@ -102,7 +102,9 @@ const ResetPassword = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Password reset failed",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Password reset failed",
       );
       setServerMsgType("error");
       setShowServerMsg(true);

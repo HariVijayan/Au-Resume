@@ -66,8 +66,10 @@ async function checkAdminAccess(accessToken) {
       message: "Valid access",
       timestamp: new Date().toISOString(),
     },
-    AdminAccount: admin,
-    AdminEmail: adminEmail,
+    otherData: {
+      AdminAccount: admin,
+      AdminEmail: adminEmail,
+    },
   };
 }
 

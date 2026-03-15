@@ -37,7 +37,9 @@ async function generateOtp(isAdmin, otpRequestedBy, otpReason) {
         message: "Successfully generated Otp",
         timestamp: new Date().toISOString(),
       },
-      NewOtp: newOtp,
+      otherData: {
+        NewOtp: newOtp,
+      },
     };
   } catch (error) {
     return {

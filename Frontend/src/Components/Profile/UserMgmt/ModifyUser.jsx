@@ -73,7 +73,7 @@ const ModifyUser = () => {
         },
         { withCredentials: true },
       );
-      setUsersList(response.data.usersList);
+      setUsersList(response.data.otherData.usersList);
       setShowUsers(true);
       setAccountActions(true);
       setNeedApproval(true);
@@ -84,7 +84,9 @@ const ModifyUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response.data.message || "Failed to fetch user details",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to fetch user details",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -111,7 +113,9 @@ const ModifyUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        error.response?.data?.message || "Failed to generate Otp",
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to generate Otp",
       );
       setServerMsgType("error");
       setShowServerMsg(true);
@@ -148,7 +152,8 @@ const ModifyUser = () => {
     } catch (error) {
       setLoadingAnim(false);
       setServerMessage(
-        `${error.response?.data?.message} Refreshing the page in 5 seconds.` ||
+        `${error.response?.data?.otherData?.errors?.[0]?.reason} Refreshing the page in 5 seconds.` ||
+          `${error.response?.data?.responseDetails?.message} Refreshing the page in 5 seconds.` ||
           "Failed to modify user account. Refreshing the page in 5 seconds. Please try again.",
       );
       setServerMsgType("error");

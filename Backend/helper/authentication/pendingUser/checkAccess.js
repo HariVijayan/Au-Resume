@@ -22,7 +22,9 @@ async function checkPendingUserAccess(requestedEmail) {
       message: "Valid pending user",
       timestamp: new Date().toISOString(),
     },
-    PendingUser: requestedAccount,
+    otherData: {
+      PendingUser: requestedAccount,
+    },
   };
 }
 

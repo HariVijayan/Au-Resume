@@ -29,7 +29,9 @@ async function checkUserOrAdminAccess(requestedEmail, isAdmin) {
       message: "Valid user or admin",
       timestamp: new Date().toISOString(),
     },
-    UserAccount: requestedAccount,
+    otherData: {
+      UserAccount: requestedAccount,
+    },
   };
 }
 

@@ -123,7 +123,7 @@ router.post(
     });
 
     if (user.accountType === "SuperAdmin") {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         responseDetails: {
           code: "SUCCESS",
@@ -132,7 +132,7 @@ router.post(
         },
       });
     } else if (user.accountType === "Admin") {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         responseDetails: {
           code: "SUCCESS",
@@ -141,7 +141,7 @@ router.post(
         },
       });
     } else if (user.accountType === "Analytics") {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         responseDetails: {
           code: "SUCCESS",
@@ -150,7 +150,7 @@ router.post(
         },
       });
     } else {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         responseDetails: {
           code: "SUCCESS",

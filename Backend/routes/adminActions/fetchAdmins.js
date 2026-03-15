@@ -1,11 +1,13 @@
 import express from "express";
 import adminUser from "../../models/admin/admin.js";
 import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
+import asyncHandler from "../../middleware/asyncHandler.js";
 
 const router = express.Router();
 
-router.post("/adminListGrouped", async (req, res) => {
-  try {
+router.post(
+  "/adminListGrouped",
+  asyncHandler(async (req, res) => {
     const accessToken = req.cookies.accessToken;
 
     const adminAccessCheck = await checkAdminAccess(accessToken);
@@ -50,13 +52,19 @@ router.post("/adminListGrouped", async (req, res) => {
       }))
       .sort((a, b) => sortOrder[a.accountType] - sortOrder[b.accountType]);
 
-    res.json({
-      userList: cleanedUsers,
-      numAdmins: numAdmins,
+    return res.status(200).json({
+      success: true,
+      responseDetails: {
+        code: "SUCCESS",
+        message: "Successfully fetched admin list",
+        timestamp: new Date().toISOString(),
+      },
+      otherData: {
+        userList: cleanedUsers,
+        numAdmins: numAdmins,
+      },
     });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
+  }),
+);
 
 export default router;

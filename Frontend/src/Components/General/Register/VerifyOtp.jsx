@@ -91,7 +91,11 @@ const VerifyOTP = () => {
       }, 1000); //Redirect to login page after 1 seconds of showing success message
     } catch (error) {
       setLoadingAnim(false);
-      setServerMessage(error.response?.data?.message || "Failed to verify Otp");
+      setServerMessage(
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to verify Otp",
+      );
       setServerMsgType("error");
       setShowServerMsg(true);
     }
@@ -116,7 +120,11 @@ const VerifyOTP = () => {
       setIsResendDisabled(true);
     } catch (error) {
       setLoadingAnim(false);
-      setServerMessage(error.response?.data?.message || "Failed to resend Otp");
+      setServerMessage(
+        error.response?.data?.otherData?.errors?.[0]?.reason ||
+          error.response?.data?.responseDetails?.message ||
+          "Failed to resend Otp",
+      );
       setServerMsgType("error");
       setShowServerMsg(true);
     }
