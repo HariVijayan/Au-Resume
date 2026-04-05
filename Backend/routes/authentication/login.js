@@ -13,6 +13,7 @@ import asyncHandler from "../../middleware/asyncHandler.js";
 import NotFoundError from "../../middleware/httpStatusCodes/notFound.js";
 import ForbiddenError from "../../middleware/httpStatusCodes/forbidden.js";
 import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
+import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -32,12 +33,24 @@ router.post(
     }
 
     if (!user) {
+      logWarning(
+        "/authenticateUser/login",
+        "USER_NOT_FOUND",
+        "Login attempt with non-existent email",
+        `email: ${loginEmail}`,
+      );
       throw new NotFoundError("User dosen't exist");
     }
 
     if (user.lockUntil && user.lockUntil > Date.now()) {
       const remainingLockTime = Math.ceil(
         (user.lockUntil - Date.now()) / 60000,
+      );
+      logWarning(
+        "/authenticateUser/login",
+        "ACCOUNT_LOCKED",
+        "Login attempt on locked account",
+        `email: ${loginEmail}, remaining lock time: ${remainingLockTime}m`,
       );
       throw new ForbiddenError(
         `Account locked. Try again in ${remainingLockTime} minutes`,
@@ -56,12 +69,24 @@ router.post(
         user.lockUntilFormatted = istDateFormat(user.lockUntil);
 
         await user.save();
+        logWarning(
+          "/authenticateUser/login",
+          "ACCOUNT_LOCK_TRIGGERED",
+          "Account locked after max failed attempts",
+          `email: ${loginEmail}, attempts: ${user.failedLoginAttempts}`,
+        );
         throw new ForbiddenError(
           "Too many failed attempts. Account locked for 30 minutes",
         );
       }
 
       await user.save();
+      logWarning(
+        "/authenticateUser/login",
+        "INVALID_PASSWORD",
+        "Failed login attempt",
+        `email: ${loginEmail}, attempts: ${user.failedLoginAttempts}`,
+      );
       throw new BadRequestError("Invalid email or password");
     }
 
@@ -121,6 +146,13 @@ router.post(
       sameSite: "Strict",
       maxAge: rememberMe ? 2 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
     });
+
+    logInfo(
+      "/authenticateUser/login",
+      "LOGIN_SUCCESS",
+      "User authenticated successfully",
+      `email: ${loginEmail}, type: ${user.accountType}`,
+    );
 
     if (user.accountType === "SuperAdmin") {
       return res.status(200).json({

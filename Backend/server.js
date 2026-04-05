@@ -38,6 +38,7 @@ import encryptionKeyReset from "./routes/requests/userActions/resetEncryptionKey
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import errorHandler from "./middleware/errorHandler.js";
+import { scheduleLogRotation } from "./helper/functions/logRotationScheduler.js";
 
 const app = express();
 const port = 5000;
@@ -135,6 +136,7 @@ app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server started running at port number ${port} successfully.`);
+  scheduleLogRotation();
 });
 
 mongoose

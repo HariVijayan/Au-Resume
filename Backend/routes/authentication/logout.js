@@ -6,6 +6,7 @@ import inputValidator from "../../helper/inputProcessing/schemas/authentication/
 import UnauthorizedError from "../../middleware/httpStatusCodes/unauthorised.js";
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -17,6 +18,12 @@ router.post(
     const { userType } = req.body;
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
+      logWarning(
+        "/authenticateUser/logout",
+        "NO_ACCESS_TOKEN",
+        "Logout attempt without access token",
+        "",
+      );
       throw new UnauthorizedError("No access token provided");
     }
 
@@ -44,6 +51,13 @@ router.post(
       secure: true,
       sameSite: "Strict",
     });
+
+    logInfo(
+      "/authenticateUser/logout",
+      "LOGOUT_SUCCESS",
+      "User logged out successfully",
+      `email: ${userEmail}, type: ${userType}`,
+    );
 
     return res.status(200).json({
       success: true,
