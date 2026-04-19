@@ -10,6 +10,7 @@ import { inputValidationErrorHandler } from "../../../helper/inputProcessing/val
 import UnauthorizedError from "../../../middleware/httpStatusCodes/unauthorised.js";
 import BadRequestError from "../../../middleware/httpStatusCodes/badRequest.js";
 import asyncHandler from "../../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -31,18 +32,36 @@ router.post(
     let { resumeData, userPassword } = req.body;
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
+      logWarning(
+        "/saveResume/current-resume",
+        "NO_ACCESS_TOKEN",
+        "Save resume details attempt without access token",
+        ``,
+      );
       throw new UnauthorizedError("No access token provided");
     }
 
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId);
     if (!user) {
+      logWarning(
+        "/saveResume/current-resume",
+        "NOT_A_USER",
+        "Save resume details attempt by invalid user",
+        ``,
+      );
       throw new UnauthorizedError("Unauthorized access");
     }
 
     const passwordMatches = await bcrypt.compare(userPassword, user.password);
 
     if (!passwordMatches) {
+      logWarning(
+        "/saveResume/current-resume",
+        "NOT_A_USER",
+        "Save resume details attempt with invalid password",
+        `email: ${user.email}`,
+      );
       throw new BadRequestError(
         "Unable to fetch the resume. Incorrect Password",
       );
@@ -80,6 +99,13 @@ router.post(
     };
 
     encryptResume(resumeData, user.password, user.resumeEncryptionSalt);
+
+    logInfo(
+      "/saveResume/current-resume",
+      "RESUME_SAVE_SUCCESS",
+      "Successfully saved user's resume data",
+      `email:  ${user.email}`,
+    );
 
     return res.status(200).json({
       success: true,

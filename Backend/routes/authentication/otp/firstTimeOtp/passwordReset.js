@@ -6,6 +6,7 @@ import generateOtp from "../../../../helper/functions/generateOtp.js";
 import inputValidator from "../../../../helper/inputProcessing/schemas/authentication/otp/firstTimeOtp/passwordReset.js";
 import { inputValidationErrorHandler } from "../../../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../../../middleware/asyncHandler.js";
+import { logInfo } from "../../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -90,6 +91,13 @@ router.post(
         },
       });
     }
+
+    logInfo(
+      "/getFirstOtp/password-reset-otp",
+      "PWD_RESET_OTP_SENT",
+      "Successful sent otp to user email to complete password reset",
+      `email: ${userEmail}`,
+    );
 
     return res.status(200).json({
       success: true,

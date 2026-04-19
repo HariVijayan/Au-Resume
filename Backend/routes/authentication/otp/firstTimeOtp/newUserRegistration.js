@@ -12,6 +12,10 @@ import { inputValidationErrorHandler } from "../../../../helper/inputProcessing/
 import BadRequestError from "../../../../middleware/httpStatusCodes/badRequest.js";
 import TooManyRequestsError from "../../../../middleware/httpStatusCodes/tooManyRequests.js";
 import asyncHandler from "../../../../middleware/asyncHandler.js";
+import {
+  logWarning,
+  logInfo,
+} from "../../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -34,6 +38,12 @@ router.post(
 
     const existingUser = await User.findOne({ email: userEmail });
     if (existingUser) {
+      logWarning(
+        "/createUser/register",
+        "EXISTING_USER",
+        "Registration attempt for existing user email",
+        `email: ${userEmail}`,
+      );
       throw new BadRequestError("Email already exists");
     }
 
@@ -55,6 +65,12 @@ router.post(
       lastOtp &&
       Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
     ) {
+      logWarning(
+        "/createUser/register",
+        "TOO_MANY_OTP_REQUESTS",
+        "User requested too many otp's",
+        `email: ${userEmail}`,
+      );
       throw new TooManyRequestsError(
         "Too many OTP requests. Try again in 1 minute",
       );
@@ -120,6 +136,13 @@ router.post(
       resumeEncryptionSalt: saltBase64,
     });
     await newUser.save();
+
+    logInfo(
+      "/createUser/register",
+      "REGISTRATION_OTP_SENT",
+      "Successfully sent otp to user email to complete registration",
+      `email: ${userEmail}`,
+    );
 
     return res.status(200).json({
       success: true,

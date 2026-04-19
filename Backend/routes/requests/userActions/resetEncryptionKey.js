@@ -6,6 +6,7 @@ import verifyUserOrAdminOtp from "../../../helper/authentication/userOrAdmin/ver
 import inputValidator from "../../../helper/inputProcessing/schemas/requests/userActions/resetEncryptionKey.js";
 import { inputValidationErrorHandler } from "../../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../../middleware/asyncHandler.js";
+import { logInfo } from "../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -38,6 +39,13 @@ router.post(
     await resumeData.deleteMany({ login_email: userEmail });
 
     await User.updateOne({ email: userEmail }, { encryptionSalt: saltBase64 });
+
+    logInfo(
+      "/user/encryptionKey/resetEncKey",
+      "ENC_KEY_RESET_SUCCESS",
+      "Successfully reset user's encryption key",
+      `email:  ${userEmail}`,
+    );
 
     return res.status(200).json({
       success: true,

@@ -6,6 +6,7 @@ import checkPendingUserAccess from "../../../../helper/authentication/pendingUse
 import inputValidator from "../../../../helper/inputProcessing/schemas/authentication/otp/verifyOtp/newUserRegistration.js";
 import { inputValidationErrorHandler } from "../../../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../../../middleware/asyncHandler.js";
+import { logInfo } from "../../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -55,6 +56,13 @@ router.post(
     await verifiedUser.save();
 
     await pendingUser.deleteMany({ email: userEmail });
+
+    logInfo(
+      "/verifyOtp/newUser/registration",
+      "REGISTRATION_OTP_VERIFIED",
+      "Successfully verifies otp and completed registration",
+      `email: ${userEmail}`,
+    );
 
     return res.status(200).json({
       success: true,

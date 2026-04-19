@@ -5,6 +5,7 @@ import adminCurrentSession from "../../../models/admin/currentSession.js";
 import ForbiddenError from "../../../middleware/httpStatusCodes/forbidden.js";
 import UnauthorizedError from "../../../middleware/httpStatusCodes/unauthorised.js";
 import asyncHandler from "../../../middleware/asyncHandler.js";
+import { logInfo } from "../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -35,6 +36,13 @@ router.post(
     if (!session || session.expiresAt < Date.now()) {
       throw new ForbiddenError("Session expired. Log in again");
     }
+
+    logInfo(
+      "/verifySession/authenticationRoutes/check-access",
+      "SUCCESSFUL_ACCESS_CHECK",
+      "User has existing session. Reverting to dashboard",
+      `email:  ${session.email}`,
+    );
 
     if (userAccountType === "SuperAdmin") {
       return res.status(200).json({

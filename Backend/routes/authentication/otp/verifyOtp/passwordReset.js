@@ -4,6 +4,7 @@ import checkUserOrAdminAccess from "../../../../helper/authentication/userOrAdmi
 import inputValidator from "../../../../helper/inputProcessing/schemas/authentication/otp/verifyOtp/passwordReset.js";
 import { inputValidationErrorHandler } from "../../../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../../../middleware/asyncHandler.js";
+import { logInfo } from "../../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -42,6 +43,13 @@ router.post(
         },
       });
     }
+
+    logInfo(
+      "/verifyOtp/existingUser/forgot-password",
+      "PWD_RESET_OTP_VERIFIED",
+      "Successful verified otp to complete password reset",
+      `email: ${userEmail}`,
+    );
 
     return res.status(200).json({
       success: true,

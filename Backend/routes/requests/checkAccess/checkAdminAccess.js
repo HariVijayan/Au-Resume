@@ -4,6 +4,7 @@ import inputValidator from "../../../helper/inputProcessing/schemas/requests/che
 import { inputValidationErrorHandler } from "../../../helper/inputProcessing/validationError.js";
 import UnauthorizedError from "../../../middleware/httpStatusCodes/unauthorised.js";
 import asyncHandler from "../../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -15,6 +16,15 @@ router.post(
     const { routeType } = req.body;
 
     const accessToken = req.cookies.accessToken;
+    if (!accessToken) {
+      logWarning(
+        "/verifyAdminSession/check-admin-access",
+        "NO_ACCESS_TOKEN",
+        "Access attempt on admin route without access token",
+        ``,
+      );
+      throw new UnauthorizedError("No token provided");
+    }
     const adminCheck = await checkAdminAccess(accessToken);
 
     if (!adminCheck.success) {
@@ -34,11 +44,30 @@ router.post(
       routeType === "SuperAdmin" &&
       adminAccount.accountType != "SuperAdmin"
     ) {
+      logWarning(
+        "/verifyAdminSession/check-admin-access",
+        "UNAUTHORISED_ACCESS_ATTEMPT",
+        "Unauthorised access attempt on an admin route",
+        `email: ${adminAccount.email}`,
+      );
       throw new UnauthorizedError("Unauthorised Access Request");
     }
     if (routeType === "Admin" && adminAccount.accountType === "Analytics") {
+      logWarning(
+        "/verifyAdminSession/check-admin-access",
+        "UNAUTHORISED_ACCESS_ATTEMPT",
+        "Unauthorised access attempt on an admin route",
+        `email: ${adminAccount.email}`,
+      );
       throw new UnauthorizedError("Unauthorised Access Request");
     }
+
+    logInfo(
+      "/verifyAdminSession/check-admin-access",
+      "SUCCESSFUL_ADMIN_ACCESS_CHECK",
+      "Successful access verification on admin route",
+      `email:  ${adminAccount.email}`,
+    );
 
     if (adminAccount.accountType === "SuperAdmin") {
       return res.status(200).json({

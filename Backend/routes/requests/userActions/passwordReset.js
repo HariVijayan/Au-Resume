@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import inputValidator from "../../../helper/inputProcessing/schemas/requests/userActions/passwordReset.js";
 import { inputValidationErrorHandler } from "../../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../../middleware/asyncHandler.js";
+import { logInfo } from "../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -45,6 +46,13 @@ router.post(
       await userCurrentSession.deleteMany({ email: userEmail });
       await User.updateOne({ email: userEmail }, { password: hashedPassword });
     }
+
+    logInfo(
+      "/userRequest/reset-password",
+      "PWD_RESET_SUCCESS",
+      "Successfully reset user's password from login page",
+      `email:  ${userEmail}`,
+    );
 
     return res.status(200).json({
       success: true,

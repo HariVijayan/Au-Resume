@@ -12,6 +12,7 @@ import { inputValidationErrorHandler } from "../../../helper/inputProcessing/val
 import UnauthorizedError from "../../../middleware/httpStatusCodes/unauthorised.js";
 import ForbiddenError from "../../../middleware/httpStatusCodes/forbidden.js";
 import asyncHandler from "../../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../../helper/functions/systemLogger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -131,12 +132,24 @@ router.post(
 
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
+      logWarning(
+        "/generate/Resume",
+        "NO_ACCESS_TOKEN",
+        "Resume generation attempt without access token",
+        ``,
+      );
       throw new UnauthorizedError("No token provided");
     }
 
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId);
     if (!user) {
+      logWarning(
+        "/generate/Resume",
+        "NOT_A_USER",
+        "Resume generation attempt by invalid user",
+        ``,
+      );
       throw new ForbiddenError("User not found");
     }
 
@@ -160,6 +173,13 @@ router.post(
 
     if (downloadType === "Personal") {
       const pdfBuffer = await generatePdf(compiledTemplate);
+
+      logInfo(
+        "/generate/Resume",
+        "SUCCESSFUL_RESUME_CREATE",
+        "Successfully created resume",
+        `email:  ${user.email}`,
+      );
 
       res.type("application/pdf");
       res.end(pdfBuffer, "binary");
@@ -185,6 +205,13 @@ router.post(
         compiledTemplate,
         headerFile,
         footerFile,
+      );
+
+      logInfo(
+        "/generate/Resume",
+        "SUCCESSFUL_RESUME_CREATE",
+        "Successfully created resume",
+        `email:  ${user.email}`,
       );
 
       res.type("application/pdf");

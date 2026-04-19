@@ -12,6 +12,7 @@ import BadRequestError from "../../../middleware/httpStatusCodes/badRequest.js";
 import NotFoundError from "../../../middleware/httpStatusCodes/notFound.js";
 import ExpectationFailedError from "../../../middleware/httpStatusCodes/expectationFailed.js";
 import asyncHandler from "../../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -32,16 +33,34 @@ router.post(
     let { userPassword } = req.body;
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
+      logWarning(
+        "/getPrevious/resume-details",
+        "NO_ACCESS_TOKEN",
+        "Fetch previous resume details attempt without access token",
+        ``,
+      );
       throw new UnauthorizedError("No access token provided");
     }
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId);
     if (!user) {
+      logWarning(
+        "/getPrevious/resume-details",
+        "NOT_A_USER",
+        "Fetch previous resume details attempt by invalid user",
+        ``,
+      );
       throw new UnauthorizedError("Unauthorized access");
     }
     const passwordMatches = await bcrypt.compare(userPassword, user.password);
 
     if (!passwordMatches) {
+      logWarning(
+        "/getPrevious/resume-details",
+        "NOT_A_USER",
+        "Fetch previous resume details attempt with invalid password",
+        `email: ${user.email}`,
+      );
       throw new BadRequestError(
         "Unable to fetch the resume. Incorrect Password",
       );
@@ -50,6 +69,12 @@ router.post(
       login_email: user.email,
     });
     if (!resumeData) {
+      logWarning(
+        "/getPrevious/resume-details",
+        "NO_RECORDS_FOUND",
+        "Fetch previous resume details attempt returned no results",
+        `email: ${user.email}`,
+      );
       throw new NotFoundError("No previous records found");
     }
 
@@ -60,6 +85,12 @@ router.post(
       try {
         encryptedPayload = JSON.parse(encryptedStr);
       } catch {
+        logWarning(
+          "/getPrevious/resume-details",
+          "DECRYPTION_FAILED",
+          "Failed to decrypt previously stored user's resume details",
+          `email: ${user.email}`,
+        );
         throw new ExpectationFailedError(
           "Resume details corrupted. Please save a new one",
         );
@@ -80,6 +111,13 @@ router.post(
       const plaintext = decrypted.toString("utf8");
 
       const decryptedResume = JSON.parse(plaintext);
+
+      logInfo(
+        "/getPrevious/resume-details",
+        "STORED_RESUME_FETCH_SUCCESS",
+        "Successfully fetched previously stored resume data",
+        `email:  ${user.email}`,
+      );
 
       return res.status(200).json({
         success: true,

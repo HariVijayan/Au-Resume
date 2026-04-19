@@ -7,6 +7,7 @@ import checkPassword from "../../../helper/functions/checkPassword.js";
 import inputValidator from "../../../helper/inputProcessing/schemas/requests/userActions/approvalOtp.js";
 import { inputValidationErrorHandler } from "../../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../../middleware/asyncHandler.js";
+import { logInfo } from "../../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -116,6 +117,13 @@ router.post(
         },
       });
     }
+
+    logInfo(
+      "/user/approvals/getApprovalOtp",
+      "OTP_SENT_SUCCESS",
+      "Successfully sent otp to user's email",
+      `email:  ${userEmail}`,
+    );
 
     return res.status(200).json({
       success: true,
