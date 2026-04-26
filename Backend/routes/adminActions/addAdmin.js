@@ -8,6 +8,7 @@ import verifyAdminOtp from "../../helper/authentication/admin/verifyOtp.js";
 import inputValidator from "../../helper/inputProcessing/schemas/adminActions/addAdmin.js";
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import {  logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -87,6 +88,15 @@ router.post(
         },
       });
     }
+
+    logInfo(
+      "/superAdmin/actions/addNewAdmin/newAdmin",
+      "ADMIN_ADDITION_SUCCESS",
+      "New admin added successfully",
+      `email: ${adminEmail}, adminType: ${adminType}`,
+    );
+
+
     return res.status(200).json({
       success: true,
       responseDetails: {

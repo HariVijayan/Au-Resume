@@ -11,6 +11,7 @@ import inputValidator from "../../helper/inputProcessing/schemas/adminActions/ad
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
 
 const BCRYPT_COST_FACTOR = 12;
 
@@ -76,6 +77,12 @@ router.post(
     if (additionType === "Single") {
       const newUser = await userDBModel.findOne({ email: userEmail });
       if (newUser) {
+        logWarning(
+        "/admin/actions/userMgmt/newUser/addNewUser",
+        "EXISTING_USER",
+        "Failed to add user. User already exists",
+        `email: ${userEmail} already exists`,
+      );
         throw new BadRequestError("User already exists");
       }
       if (!newUser) {
@@ -120,6 +127,14 @@ router.post(
             },
           });
         }
+
+        logInfo(
+      "/admin/actions/userMgmt/newUser/addNewUser",
+      "USER_ADDITION_SUCCESS",
+      "New user added successfully",
+      `email: ${userEmail} added successfully`,
+        );
+
       }
     } else if (additionType === "Multiple") {
       for (let i = commonRegNoStart; i <= commonRegNoEnd; i++) {
@@ -136,6 +151,12 @@ router.post(
         const newUser = await userDBModel.findOne({ email: regNoAddedEmail });
 
         if (newUser) {
+          logWarning(
+        "/admin/actions/userMgmt/newUser/addNewUser",
+        "EXISTING_USER",
+        "Failed to add user. User already exists",
+        `email: ${regNoAddedEmail} already exists`,
+      );
           throw new BadRequestError("User already exists");
         }
 
@@ -158,6 +179,13 @@ router.post(
             branch: commonUserBranch,
             resumeEncryptionSalt: saltBase64,
           });
+
+          logInfo(
+      "/admin/actions/userMgmt/newUser/addNewUser",
+      "USER_ADDITION_SUCCESS",
+      "New user added successfully",
+      `email: ${regNoAddedEmail} added successfully`,
+        );
         }
       }
     }

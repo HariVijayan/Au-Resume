@@ -6,6 +6,7 @@ import inputValidator from "../../helper/inputProcessing/schemas/adminActions/re
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -49,6 +50,12 @@ router.post(
       });
 
       if (!removableUser) {
+        logWarning(
+        "/admin/userMgmt/removeUser/get-final-users",
+        "INVALID_USER",
+        "No such user found.",
+        `email: ${userEmail} doesn't exist`,
+      );
         throw new BadRequestError("User not found");
       }
 
@@ -89,6 +96,13 @@ router.post(
         }
       }
     }
+
+    logInfo(
+      "/admin/userMgmt/removeUser/get-final-users",
+      "FETCH_USER_LIST_SUCCESS",
+      "Successfully created removable users list",
+      ``,
+    );
 
     return res.status(200).json({
       success: true,

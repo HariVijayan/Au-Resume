@@ -2,6 +2,7 @@ import express from "express";
 import adminUser from "../../models/admin/admin.js";
 import checkAdminAccess from "../../helper/authentication/admin/checkAccess.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import {  logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -51,6 +52,13 @@ router.post(
         lockUntilFormatted: user.lockUntilFormatted ?? "N/A",
       }))
       .sort((a, b) => sortOrder[a.accountType] - sortOrder[b.accountType]);
+
+    logInfo(
+      "/superAdmin/fetchAdmin/adminListGrouped",
+      "FETCH_ADMIN_LIST_SUCCESS",
+      "Successfully fetched admin list",
+      ``,
+    );
 
     return res.status(200).json({
       success: true,

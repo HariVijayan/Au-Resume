@@ -4,6 +4,7 @@ import csvToArray from "../../helper/functions/csvToArray.js";
 import inputValidator from "../../helper/inputProcessing/schemas/adminActions/addUserList.js";
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import {  logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -78,6 +79,13 @@ router.post(
         });
       }
     }
+
+    logInfo(
+        "/admin/userMgmt/addUser/get-final-users",
+        "FETCH_USER_LIST_SUCCESS",
+        "Successfully created new users list",
+        ``,
+      );
 
     return res.status(200).json({
       success: true,

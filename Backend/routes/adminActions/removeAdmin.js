@@ -8,6 +8,7 @@ import inputValidator from "../../helper/inputProcessing/schemas/adminActions/re
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -56,6 +57,12 @@ router.post(
     });
 
     if (!removeAdmin) {
+      logWarning(
+        "/superAdmin/actions/existingAdmin/removeAdmin",
+        "INVALID_ADMIN",
+        "Failed to remove admin. No such admin found.",
+        `email: ${adminEmail} doesn't exist`,
+      );
       throw new BadRequestError("No such admin found");
     }
 
@@ -80,6 +87,13 @@ router.post(
     }
 
     await adminUser.deleteOne({ email: adminEmail, accountType: adminType });
+
+    logInfo(
+      "/superAdmin/actions/existingAdmin/removeAdmin",
+      "ADMIN_REMOVAL_SUCCESS",
+      "Successfully removed admin",
+      `email: ${adminEmail} removed successfully`,
+    );
 
     return res.status(200).json({
       success: true,

@@ -9,6 +9,7 @@ import inputValidator from "../../helper/inputProcessing/schemas/adminActions/mo
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -58,6 +59,12 @@ router.post(
     });
 
     if (!modifiableUser) {
+      logWarning(
+        "/admin/actions/userMgmt/modifyAccount/modifyUser",
+        "INVALID_USER",
+        "No such user found",
+        `email: ${userEmail} doesn't exist`,
+      );
       throw new BadRequestError("No such user found");
     }
 
@@ -111,6 +118,13 @@ router.post(
         });
       }
     }
+
+    logInfo(
+      "/admin/actions/userMgmt/modifyAccount/modifyUser",
+      "USER_MODIFICATION_SUCCESS",
+      "User account modified successfully",
+      `email: ${userEmail} modified successfully`,
+    );
 
     return res.status(200).json({
       success: true,

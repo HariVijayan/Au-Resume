@@ -6,6 +6,7 @@ import generateOtp from "../../helper/functions/generateOtp.js";
 import inputValidator from "../../helper/inputProcessing/schemas/adminActions/approvalOtp.js";
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import {  logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -105,6 +106,13 @@ router.post(
         },
       });
     }
+
+    logInfo(
+      "/admin/approvals/get-approval-otp",
+      "OTP_SENT_SUCCESSFULLY",
+      "Admin actions approval otp sent to email successfully",
+      `email: ${adminEmail}, action: ${requestType}`,
+    );
 
     return res.status(200).json({
       success: true,

@@ -9,6 +9,7 @@ import inputValidator from "../../helper/inputProcessing/schemas/adminActions/mo
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -67,6 +68,12 @@ router.post(
     });
 
     if (!adminToBeModified) {
+      logWarning(
+        "/superAdmin/actions/modifyAdmin/admin-modifications",
+        "INVALID_ADMIN",
+        "No such admin found",
+        `email: ${adminEmail} doesn't exist`,
+      );
       throw new BadRequestError("No such admin found");
     }
 
@@ -136,6 +143,12 @@ router.post(
       });
 
       if (adminToBeModified) {
+        logWarning(
+        "/superAdmin/actions/modifyAdmin/admin-modifications",
+        "INVALID_ACCESS_TYPE",
+        "The mentioned admin already has the provided access type",
+        `email: ${adminEmail}, accountType: ${newAdminType}`,
+      );
         throw new BadRequestError(
           "The mentioned admin already has the provided access type",
         );
@@ -146,6 +159,13 @@ router.post(
         { $set: { accountType: newAdminType } },
       );
     }
+
+    logInfo(
+      "/superAdmin/actions/modifyAdmin/admin-modifications",
+      "ADMIN_MODIFICATION_SUCCESS",
+      "Admin modified successfully",
+      `email: ${adminEmail} modified successfully`,
+    );
 
     return res.status(200).json({
       success: true,

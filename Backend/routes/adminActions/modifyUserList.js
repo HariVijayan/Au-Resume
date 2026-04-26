@@ -5,6 +5,7 @@ import inputValidator from "../../helper/inputProcessing/schemas/adminActions/mo
 import { inputValidationErrorHandler } from "../../helper/inputProcessing/validationError.js";
 import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
+import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
 
 const router = express.Router();
 
@@ -38,6 +39,12 @@ router.post(
     });
 
     if (!modifiableUser) {
+      logWarning(
+        "/admin/userMgmt/modifyUser/get-final-users",
+        "INVALID_USER",
+        "No such user found",
+        `email: ${userEmail} doesn't exist`,
+      );
       throw new BadRequestError("No such user found");
     }
 
@@ -62,6 +69,13 @@ router.post(
       failedAttempt: user.failedAttempt,
       lockUntil: user.lockUntil ?? "N/A",
     }));
+
+    logInfo(
+      "/admin/userMgmt/modifyUser/get-final-users",
+      "FETCH_USER_LIST_SUCCESS",
+      "Successfully created modifiable users list",
+      ``,
+    );
 
     return res.status(200).json({
       success: true,
