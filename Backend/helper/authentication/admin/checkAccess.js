@@ -1,9 +1,16 @@
 import adminUser from "../../../models/admin/admin.js";
 import adminCurrentSession from "../../../models/admin/currentSession.js";
 import jwt from "jsonwebtoken";
+import { logWarning, logInfo } from "../../functions/systemLogger.js";
 
 async function checkAdminAccess(accessToken) {
   if (!accessToken) {
+    logWarning(
+      "/helper/authentication/admin/checkAccess",
+      "NO_ACCESS_TOKEN",
+      "No access token provided",
+      ``,
+    );
     return {
       success: false,
       responseDetails: {
@@ -19,6 +26,12 @@ async function checkAdminAccess(accessToken) {
 
   const session = await adminCurrentSession.findOne({ userId, sessionId });
   if (!session) {
+    logWarning(
+      "/helper/authentication/admin/checkAccess",
+      "NO_ACTIVE_SESSION",
+      "No current active session",
+      ``,
+    );
     return {
       success: false,
       responseDetails: {
@@ -33,6 +46,12 @@ async function checkAdminAccess(accessToken) {
   const adminEmail = session.email;
 
   if (session.expiresAt < Date.now()) {
+    logWarning(
+      "/helper/authentication/admin/checkAccess",
+      "EXPIRED_SESSION",
+      "Expired session",
+      `email: ${adminEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -47,6 +66,12 @@ async function checkAdminAccess(accessToken) {
   const admin = await adminUser.findOne({ email: adminEmail });
 
   if (!admin) {
+    logWarning(
+      "/helper/authentication/admin/checkAccess",
+      "NOT_AN_ADMIN",
+      "User is not an admin",
+      `email: ${adminEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -57,6 +82,13 @@ async function checkAdminAccess(accessToken) {
       },
     };
   }
+
+  logInfo(
+    "/helper/authentication/admin/checkAccess",
+    "ACCESS_CHECK_SUCCESS",
+    "Admin access check verification success",
+    `email: ${adminEmail}`,
+  );
 
   return {
     success: true,

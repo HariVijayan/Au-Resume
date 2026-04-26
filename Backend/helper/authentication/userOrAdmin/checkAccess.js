@@ -1,5 +1,6 @@
 import admin from "../../../models/admin/admin.js";
 import user from "../../../models/user/user.js";
+import { logWarning, logInfo } from "../../functions/systemLogger.js";
 
 async function checkUserOrAdminAccess(requestedEmail, isAdmin) {
   let requestedAccount;
@@ -10,6 +11,12 @@ async function checkUserOrAdminAccess(requestedEmail, isAdmin) {
   }
 
   if (!requestedAccount) {
+    logWarning(
+      "/helper/authentication/userOrAdmin/checkAccess",
+      "INVALID_USER",
+      "No such user or admin exists",
+      `email: ${requestedEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -20,6 +27,13 @@ async function checkUserOrAdminAccess(requestedEmail, isAdmin) {
       },
     };
   }
+
+  logInfo(
+    "/helper/authentication/userOrAdmin/checkAccess",
+    "ACCESS_CHECK_SUCCESS",
+    "Access check verification success",
+    `email: ${requestedEmail}`,
+  );
 
   return {
     success: true,

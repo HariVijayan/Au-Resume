@@ -1,4 +1,5 @@
 import userOtp from "../../../models/user/otp.js";
+import { logWarning, logInfo } from "../../functions/systemLogger.js";
 
 async function getPendingUserOtp(requestedEmail) {
   const lastOtp = await userOtp.findOne({ email: requestedEmail });
@@ -6,6 +7,12 @@ async function getPendingUserOtp(requestedEmail) {
     lastOtp &&
     Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
   ) {
+    logWarning(
+      "/helper/authentication/pendingUser/otpPreConditions",
+      "TOO_MANY_REQUESTS",
+      "Too many requests in a short period",
+      `email: ${requestedEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -18,6 +25,13 @@ async function getPendingUserOtp(requestedEmail) {
   }
 
   await userOtp.deleteMany({ email: requestedEmail });
+
+  logInfo(
+    "/helper/authentication/pendingUser/otpPreConditions",
+    "OTP_PRECONDITIONS_VERIFIED",
+    "Otp preconditions cleared successfully",
+    `email: ${requestedEmail}`,
+  );
 
   return {
     success: true,

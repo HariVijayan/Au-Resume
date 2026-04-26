@@ -1,4 +1,5 @@
 import adminOtp from "../../../models/admin/otp.js";
+import { logWarning, logInfo } from "../../functions/systemLogger.js";
 
 async function getAdminOtp(adminEmail) {
   const lastOtp = await adminOtp.findOne({ adminEmail });
@@ -7,6 +8,12 @@ async function getAdminOtp(adminEmail) {
     lastOtp &&
     Date.now() - lastOtp.createdAt.getTime() < process.env.OTP_REQUEST_LIMIT
   ) {
+    logWarning(
+      "/helper/authentication/admin/otpPreConditions",
+      "TOO_MANY_REQUESTS",
+      "Too many requests in a short period",
+      `email: ${adminEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -19,6 +26,13 @@ async function getAdminOtp(adminEmail) {
   }
 
   await adminOtp.deleteMany({ email: adminEmail });
+
+  logInfo(
+    "/helper/authentication/admin/otpPreConditions",
+    "OTP_PRECONDITIONS_VERIFIED",
+    "Otp preconditions cleared successfully",
+    `email: ${adminEmail}`,
+  );
 
   return {
     success: true,

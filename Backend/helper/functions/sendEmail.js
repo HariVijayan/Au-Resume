@@ -3,6 +3,7 @@ import Handlebars from "handlebars";
 import { fileURLToPath } from "url";
 import path from "path";
 import fs from "fs";
+import { logError, logInfo } from "./systemLogger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,6 +59,14 @@ async function sendEmailToUser(
     });
 
     await transporter.sendMail(mailOptions);
+
+    logInfo(
+      "/helper/functions/sendEmail",
+      "EMAIL_SENT_SUCCESS",
+      "Successfully sent email to user",
+      `Sent email to ${emailReceiver}`,
+    );
+
     return {
       success: true,
       responseDetails: {
@@ -68,6 +77,12 @@ async function sendEmailToUser(
       },
     };
   } catch (error) {
+    logError(
+      "/helper/functions/sendEmail",
+      "EMAIL_SENDING_FAILURE",
+      error,
+      `email: ${emailReceiver}. Failed to send email`,
+    );
     return {
       success: false,
       responseDetails: {

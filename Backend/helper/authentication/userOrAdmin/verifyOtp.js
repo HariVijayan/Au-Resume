@@ -1,5 +1,6 @@
 import adminOtp from "../../../models/admin/otp.js";
 import userOtp from "../../../models/user/otp.js";
+import { logWarning, logInfo } from "../../functions/systemLogger.js";
 
 async function verifyUserOrAdminOtp(requestedEmail, isAdmin, otpInput) {
   let lastOtp;
@@ -11,6 +12,12 @@ async function verifyUserOrAdminOtp(requestedEmail, isAdmin, otpInput) {
   }
 
   if (!lastOtp) {
+    logWarning(
+      "/helper/authentication/userOrAdmin/verifyOtp",
+      "INVALID_OTP",
+      "No such otp exists for the user",
+      `email: ${requestedEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -28,6 +35,13 @@ async function verifyUserOrAdminOtp(requestedEmail, isAdmin, otpInput) {
     } else {
       await userOtp.deleteMany({ email: requestedEmail });
     }
+
+    logWarning(
+      "/helper/authentication/userOrAdmin/verifyOtp",
+      "EXPIRED_OTP",
+      "Otp expired",
+      `email: ${requestedEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -44,6 +58,13 @@ async function verifyUserOrAdminOtp(requestedEmail, isAdmin, otpInput) {
   } else {
     await userOtp.deleteMany({ email: requestedEmail });
   }
+
+  logInfo(
+    "/helper/authentication/userOrAdmin/verifyOtp",
+    "OTP_VERIFICATION_SUCCESS",
+    "Otp verified successfully",
+    `email: ${requestedEmail}`,
+  );
 
   return {
     success: true,

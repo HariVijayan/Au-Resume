@@ -1,5 +1,6 @@
 import userOtp from "../../models/user/otp.js";
 import adminOtp from "../../models/admin/otp.js";
+import { logError, logInfo } from "./systemLogger.js";
 
 const generateNewOtp = (length) => {
   const characters =
@@ -29,6 +30,13 @@ async function generateOtp(isAdmin, otpRequestedBy, otpReason) {
         otpFor: otpReason,
       });
     }
+
+    logInfo(
+      "/helper/functions/generateOtp",
+      "OTP_GENERATION_SUCCESS",
+      "Successfully generated otp",
+      `email: ${otpRequestedBy} successfully generated otp`,
+    );
     return {
       success: true,
       responseDetails: {
@@ -42,6 +50,12 @@ async function generateOtp(isAdmin, otpRequestedBy, otpReason) {
       },
     };
   } catch (error) {
+    logError(
+      "/helper/functions/generateOtp",
+      "OTP_GENERATION_FAILURE",
+      error,
+      `email: ${otpRequestedBy}. Failed to generate otp`,
+    );
     return {
       success: false,
       responseDetails: {

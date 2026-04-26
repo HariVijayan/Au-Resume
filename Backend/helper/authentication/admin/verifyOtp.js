@@ -1,4 +1,5 @@
 import adminOtp from "../../../models/admin/otp.js";
+import { logWarning, logInfo } from "../../functions/systemLogger.js";
 
 async function verifyAdminOtp(adminEmail, otpInput) {
   const storedOtp = await adminOtp.findOne({
@@ -8,6 +9,14 @@ async function verifyAdminOtp(adminEmail, otpInput) {
 
   if (!storedOtp) {
     await adminOtp.deleteMany({ email: adminEmail });
+
+    logWarning(
+      "/helper/authentication/admin/verifyOtp",
+      "INVALID_OTP",
+      "No such otp exists for the user",
+      `email: ${adminEmail}`,
+    );
+
     return {
       success: false,
       responseDetails: {
@@ -21,6 +30,14 @@ async function verifyAdminOtp(adminEmail, otpInput) {
 
   if (storedOtp.expiresAt < Date.now()) {
     await adminOtp.deleteMany({ adminEmail });
+
+    logWarning(
+      "/helper/authentication/admin/verifyOtp",
+      "EXPIRED_OTP",
+      "Otp expired",
+      `email: ${adminEmail}`,
+    );
+
     return {
       success: false,
       responseDetails: {
@@ -33,6 +50,13 @@ async function verifyAdminOtp(adminEmail, otpInput) {
   }
 
   await adminOtp.deleteMany({ email: adminEmail });
+
+  logInfo(
+    "/helper/authentication/admin/verifyOtp",
+    "OTP_VERIFICATION_SUCCESS",
+    "Otp verified successfully",
+    `email: ${adminEmail}`,
+  );
 
   return {
     success: true,

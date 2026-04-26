@@ -1,4 +1,5 @@
 import userOtp from "../../../models/user/otp.js";
+import { logWarning, logInfo } from "../../functions/systemLogger.js";
 
 async function verifyPendingUserOtp(requestedEmail, otpInput) {
   const storedOtp = await userOtp.findOne({
@@ -6,6 +7,12 @@ async function verifyPendingUserOtp(requestedEmail, otpInput) {
     otp: otpInput,
   });
   if (!storedOtp) {
+    logWarning(
+      "/helper/authentication/pendingUser/verifyOtp",
+      "INVALID_OTP",
+      "No such otp exists for the user",
+      `email: ${requestedEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -19,6 +26,12 @@ async function verifyPendingUserOtp(requestedEmail, otpInput) {
 
   if (storedOtp.expiresAt < Date.now()) {
     await userOtp.deleteMany({ email: requestedEmail });
+    logWarning(
+      "/helper/authentication/pendingUser/verifyOtp",
+      "EXPIRED_OTP",
+      "Otp expired",
+      `email: ${requestedEmail}`,
+    );
     return {
       success: false,
       responseDetails: {
@@ -30,6 +43,13 @@ async function verifyPendingUserOtp(requestedEmail, otpInput) {
     };
   }
   await userOtp.deleteMany({ email: requestedEmail });
+
+  logInfo(
+    "/helper/authentication/pendingUser/verifyOtp",
+    "OTP_VERIFICATION_SUCCESS",
+    "Otp verified successfully",
+    `email: ${requestedEmail}`,
+  );
 
   return {
     success: true,
