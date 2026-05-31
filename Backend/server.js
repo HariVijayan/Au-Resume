@@ -39,11 +39,20 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import errorHandler from "./middleware/errorHandler.js";
 import { scheduleLogRotation } from "./helper/functions/logRotationScheduler.js";
+import { getRedisClient, closeRedisClient } from "./middleware/redis.js";
+import {
+  startQueueProcessor,
+  stopQueueProcessor,
+} from "./middleware/userLogHandler.js";
 
 const app = express();
 const port = 5000;
 
 const BCRYPT_COST_FACTOR = 12;
+
+// Trust proxy MUST be set before cors if Express is behind a reverse proxy
+// This allows req.ip to correctly reflect the real client IP from X-Forwarded-For
+app.set("trust proxy", 1);
 
 app.use(
   cors({
@@ -134,15 +143,49 @@ const formatISTTimestamp = (date) => {
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Server started running at port number ${port} successfully.`);
-  scheduleLogRotation();
-});
+// Do NOT listen here. Startup sequence happens in start() function below.
+// Listening before Redis/Mongo init would cause requests to fail.
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected successfully."))
-  .catch((err) => console.error("MongoDB connection error:", err));
+const start = async () => {
+  await mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB connected successfully."))
+    .catch((err) => console.error("MongoDB connection error:", err));
+
+  await getRedisClient();
+  startQueueProcessor();
+
+  const PORT = process.env.PORT ?? 5000;
+  const server = app.listen(PORT, () => {
+    console.log(`[Server] Listening on :${PORT}`);
+    scheduleLogRotation();
+  });
+
+  // ── Graceful shutdown ──────────────────────────────────────────────────────
+  // Shutdown order matters:
+  //   1. Stop accepting new requests  (server.close)
+  //   2. Flush the Redis log queue    (stopQueueProcessor)
+  //   3. Disconnect Mongo             (mongoose.disconnect)
+  //   4. Close Redis                  (closeRedisClient)
+  const shutdown = async (signal) => {
+    console.log(`[Server] ${signal} received. Shutting down...`);
+    server.close(async () => {
+      await stopQueueProcessor();
+      await mongoose.disconnect();
+      await closeRedisClient();
+      console.log("[Server] Clean exit.");
+      process.exit(0);
+    });
+  };
+
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
+  process.on("SIGINT", () => shutdown("SIGINT"));
+};
+
+start().catch((err) => {
+  console.error("[Startup] Fatal:", err);
+  process.exit(1);
+});
 
 await adminUser.deleteMany();
 

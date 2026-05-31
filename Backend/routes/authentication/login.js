@@ -14,6 +14,7 @@ import NotFoundError from "../../middleware/httpStatusCodes/notFound.js";
 import ForbiddenError from "../../middleware/httpStatusCodes/forbidden.js";
 import BadRequestError from "../../middleware/httpStatusCodes/badRequest.js";
 import { logWarning, logInfo } from "../../helper/functions/systemLogger.js";
+import { writeLog, extractIp } from "../../middleware/userLogHandler.js";
 
 const router = express.Router();
 
@@ -22,7 +23,11 @@ router.post(
   inputValidator,
   inputValidationErrorHandler,
   asyncHandler(async (req, res) => {
+    const requestStartTime = Date.now();
     const { loginEmail, loginPassword, rememberMe, isAdmin } = req.body;
+    const adminOrUser = isAdmin ? "admin" : "user";
+    const clientIp = extractIp(req);
+    const userAgent = req.headers["user-agent"] || null;
 
     let user;
 
@@ -39,6 +44,16 @@ router.post(
         "Login attempt with non-existent email",
         `email: ${loginEmail}`,
       );
+      writeLog(adminOrUser, {
+        email: loginEmail,
+        route: "/authenticateUser/login",
+        statusCode: 404,
+        ip: clientIp,
+        userAgent,
+        timestamp: new Date(requestStartTime),
+        duration: Date.now() - requestStartTime,
+        log: "Login attempt with non-existent email",
+      });
       throw new NotFoundError("User dosen't exist");
     }
 
@@ -52,6 +67,16 @@ router.post(
         "Login attempt on locked account",
         `email: ${loginEmail}, remaining lock time: ${remainingLockTime}m`,
       );
+      writeLog(adminOrUser, {
+        email: user.email,
+        route: "/authenticateUser/login",
+        statusCode: 403,
+        ip: clientIp,
+        userAgent,
+        timestamp: new Date(requestStartTime),
+        duration: Date.now() - requestStartTime,
+        log: `Account locked. Remaining lock time: ${remainingLockTime} minutes`,
+      });
       throw new ForbiddenError(
         `Account locked. Try again in ${remainingLockTime} minutes`,
       );
@@ -75,6 +100,16 @@ router.post(
           "Account locked after max failed attempts",
           `email: ${loginEmail}, attempts: ${user.failedLoginAttempts}`,
         );
+        writeLog(adminOrUser, {
+          email: user.email,
+          route: "/authenticateUser/login",
+          statusCode: 403,
+          ip: clientIp,
+          userAgent,
+          timestamp: new Date(requestStartTime),
+          duration: Date.now() - requestStartTime,
+          log: `Account locked after ${user.failedLoginAttempts} failed login attempts`,
+        });
         throw new ForbiddenError(
           "Too many failed attempts. Account locked for 30 minutes",
         );
@@ -87,6 +122,16 @@ router.post(
         "Failed login attempt",
         `email: ${loginEmail}, attempts: ${user.failedLoginAttempts}`,
       );
+      writeLog(adminOrUser, {
+        email: user.email,
+        route: "/authenticateUser/login",
+        statusCode: 400,
+        ip: clientIp,
+        userAgent,
+        timestamp: new Date(requestStartTime),
+        duration: Date.now() - requestStartTime,
+        log: `Invalid password. Failed attempts: ${user.failedLoginAttempts}`,
+      });
       throw new BadRequestError("Invalid email or password");
     }
 
@@ -153,6 +198,17 @@ router.post(
       "User authenticated successfully",
       `email: ${loginEmail}, type: ${user.accountType}`,
     );
+
+    writeLog(adminOrUser, {
+      email: user.email,
+      route: "/authenticateUser/login",
+      statusCode: 200,
+      ip: clientIp,
+      userAgent,
+      timestamp: new Date(requestStartTime),
+      duration: Date.now() - requestStartTime,
+      log: `Successful login. Account type: ${user.accountType}. Remember me: ${rememberMe}`,
+    });
 
     if (user.accountType === "SuperAdmin") {
       return res.status(200).json({

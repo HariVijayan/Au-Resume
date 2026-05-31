@@ -11,10 +11,9 @@ const apiActivityLogger = (req, res, next) => {
     const statusCode = res.statusCode;
 
     const code = `${method}_${statusCode}`;
-    const message = `${method} ${route}`;
     const details = `duration: ${duration}ms`;
 
-    logInfo(route, code, message, details);
+    logInfo(route, code, details);
 
     return originalSend.call(this, data);
   };
@@ -22,4 +21,4 @@ const apiActivityLogger = (req, res, next) => {
   next();
 };
 
-export default apiActivityLogger;
+export default apiActivityLogger; //Add app.use(apiActivityLogger) in server.js for automatic addition of Info logs
